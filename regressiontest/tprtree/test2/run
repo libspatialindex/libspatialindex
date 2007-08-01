@@ -1,0 +1,23 @@
+#! /bin/bash
+
+echo Generating dataset
+../Generator -ds 1000 -sl 100 > mix
+
+echo Creating new TPR-Tree and Querying
+../TPRTreeLoad mix tree 10 > res
+
+echo Running exhaustive search
+../Exhaustive mix > res2
+
+echo Comparing results
+sort -n res > a
+sort -n res2 > b
+if diff a b
+then
+echo "Same results with exhaustive search. Everything seems fine."
+echo Results: `wc -l a`
+rm -rf a b res res2 tree.*
+else
+echo "PROBLEM! We got different results from exhaustive search!"
+fi
+
