@@ -57,13 +57,13 @@ public:
 		delete pS;
 
 		// data should be an array of characters representing a Region as a string.
-		//byte* pData = 0;
-		//size_t cLen = 0;
-		//d.getData(cLen, &pData);
-			// do something.
-			//string s = reinterpret_cast<char*>(pData);
-			//cout << s << endl;
-		//delete[] pData;
+		byte* pData = 0;
+		size_t cLen = 0;
+		d.getData(cLen, &pData);
+		// do something.
+		//string s = reinterpret_cast<char*>(pData);
+		//cout << s << endl;
+		delete[] pData;
 
 		cout << d.getIdentifier() << endl;
 			// the ID of this data entry is an answer to the query. I will just print it to stdout.

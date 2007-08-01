@@ -104,9 +104,9 @@ int main(int argc, char** argv)
 				phigh[0] = x2; phigh[1] = y2;
 				Region r = Region(plow, phigh, 2);
 
-				//ostringstream os;
-				//os << r;
-				//string data = os.str();
+				ostringstream os;
+				os << r;
+				string data = os.str();
 					// associate some data with this region. I will use a string that represents the
 					// region itself, as an example.
 					// NOTE: It is not necessary to associate any data here. A null pointer can be used. In that
@@ -123,9 +123,9 @@ int main(int argc, char** argv)
 					// array of bytes can be inserted in the index (see RTree::Node::load and RTree::Node::store for
 					// an example of how to do that).
 
-				//tree->insertData(data.size() + 1, reinterpret_cast<const byte*>(data.c_str()), r, id);
+				tree->insertData(data.size() + 1, reinterpret_cast<const byte*>(data.c_str()), r, id);
 
-				tree->insertData(0, 0, r, id);
+				//tree->insertData(0, 0, r, id);
 					// example of passing zero size and a null pointer as the associated data.
 			}
 			else if (op == DELETE)
