@@ -27,7 +27,6 @@
 
 #include "MVRTree.h"
 
-#include <strings.h>
 using std::set;
 using std::stack;
 using std::vector;
