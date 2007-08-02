@@ -28,6 +28,7 @@
 
 #include "RTree.h"
 
+#include <strings.h>
 using std::stack;
 using std::vector;
 using std::priority_queue;
