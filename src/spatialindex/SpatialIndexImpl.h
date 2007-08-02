@@ -27,6 +27,7 @@
 #ifdef PTHREADS
 	#include <pthread.h>
 #endif
+#include <strings.h>
 
 typedef Tools::PoolPointer<Region> RegionPtr;
 typedef Tools::PoolPointer<Point> PointPtr;
