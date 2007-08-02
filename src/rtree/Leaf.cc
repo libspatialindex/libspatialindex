@@ -27,7 +27,6 @@
 
 #include "Leaf.h"
 
-#include <strings.h>
 
 using std::stack;
 using std::vector;
