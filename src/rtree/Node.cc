@@ -24,7 +24,7 @@
 #include "RTree.h"
 #include "Node.h"
 #include "Index.h"
-
+#include <strings.h>
 using std::stack;
 using std::vector;
 using namespace SpatialIndex::RTree;
