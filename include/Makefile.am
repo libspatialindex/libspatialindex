@@ -1,8 +1,6 @@
 SUBDIRS = tools
 
-spatialindexdir = $(includedir)/spatialindex
-
-pkginclude_HEADERS = 	SpatialIndex.h \
+nobase_pkginclude_HEADERS = 	SpatialIndex.h \
 			RTree.h \
 			MVRTree.h \
 			TPRTree.h \

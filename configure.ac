@@ -31,6 +31,8 @@ LIBS="$LIBS"
 AC_CHECK_FUNCS([gettimeofday bzero memset memcpy bcopy])
 
 AC_CONFIG_FILES([	Makefile
+					include/Makefile
+					include/tools/Makefile
 					src/Makefile
 					src/spatialindex/Makefile
 					src/storagemanager/Makefile

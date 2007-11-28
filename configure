@@ -20675,7 +20675,7 @@ fi
 done
 
 
-ac_config_files="$ac_config_files Makefile src/Makefile src/spatialindex/Makefile src/storagemanager/Makefile src/rtree/Makefile src/mvrtree/Makefile src/tprtree/Makefile src/tools/Makefile src/tools/geometry/Makefile src/tools/tools/Makefile regressiontest/Makefile regressiontest/rtree/Makefile regressiontest/mvrtree/Makefile regressiontest/tprtree/Makefile"
+ac_config_files="$ac_config_files Makefile include/Makefile include/tools/Makefile src/Makefile src/spatialindex/Makefile src/storagemanager/Makefile src/rtree/Makefile src/mvrtree/Makefile src/tprtree/Makefile src/tools/Makefile src/tools/geometry/Makefile src/tools/tools/Makefile regressiontest/Makefile regressiontest/rtree/Makefile regressiontest/mvrtree/Makefile regressiontest/tprtree/Makefile"
 
 
 cat >confcache <<\_ACEOF
@@ -21279,6 +21279,8 @@ do
   case $ac_config_target in
     "depfiles") CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
+    "include/Makefile") CONFIG_FILES="$CONFIG_FILES include/Makefile" ;;
+    "include/tools/Makefile") CONFIG_FILES="$CONFIG_FILES include/tools/Makefile" ;;
     "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
     "src/spatialindex/Makefile") CONFIG_FILES="$CONFIG_FILES src/spatialindex/Makefile" ;;
     "src/storagemanager/Makefile") CONFIG_FILES="$CONFIG_FILES src/storagemanager/Makefile" ;;
