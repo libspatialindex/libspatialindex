@@ -3,25 +3,17 @@ INSTALLING
 To install the library you need to do the
 following:
 
-  1. Install the Tools library (download from
-  http://cs-people.bu.edu/marioh/tools).
-
-  2. If the Tools library is not installed in
-  the default path, then use the LDFLAGS and
-  CPPFLAGS environment variables to direct
-  the configure script to the right path, e.g.:
-    export LDFLAGS="-L/home/marioh/usr/lib"
-    export CPPFLAGS="-I/home/marioh/usr/include"
-
-  3. Set the CXXFLAGS environment variable to
+  1. Set the CXXFLAGS environment variable to
   your preferred settings, for example:
     export CXXFLAGS="-O2"
     export CXXFLAGS="-Wall -g"
-  The default flags are "-g -O2" or "-g", depending
-  on your system.
+  The default flags are "-O2 -DNDEBUG". 
 
-  4. Run:
+  2. Run:
     ./configure
+
+  You can use --enable-debug to compile a debug library.
+
   By default include files and library files
   will be installed in /usr/local. If you would
   like to use a different installation directory
