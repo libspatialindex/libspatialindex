@@ -30,8 +30,8 @@ namespace SpatialIndex
 		MovingPoint();
 		MovingPoint(const double* pCoords, const double* pVCoords, const Tools::IInterval& ti, size_t dimension);
 		MovingPoint(const double* pCoords, const double* pVCoords, double tStart, double tEnd, size_t dimension);
-		MovingPoint(const Tools::Geometry::Point& p, const Tools::Geometry::Point& vp, const Tools::IInterval& ti);
-		MovingPoint(const Tools::Geometry::Point& p, const Tools::Geometry::Point& vp, double tStart, double tEnd);
+		MovingPoint(const Point& p, const Point& vp, const Tools::IInterval& ti);
+		MovingPoint(const Point& p, const Point& vp, double tStart, double tEnd);
 		MovingPoint(const MovingPoint& p);
 		virtual ~MovingPoint();
 
@@ -41,7 +41,7 @@ namespace SpatialIndex
 		virtual double getCoord(size_t index, double t) const;
 		virtual double getProjectedCoord(size_t index, double t) const;
 		virtual double getVCoord(size_t index) const;
-		virtual void getPointAtTime(double t, Tools::Geometry::Point& out) const;
+		virtual void getPointAtTime(double t, Point& out) const;
 
 		//
 		// IObject interface
@@ -58,8 +58,8 @@ namespace SpatialIndex
 		//
 		// IEvolvingShape interface
 		//
-		virtual void getVMBR(Tools::Geometry::Region& out) const;
-		virtual void getMBRAtTime(double t, Tools::Geometry::Region& out) const;
+		virtual void getVMBR(Region& out) const;
+		virtual void getMBRAtTime(double t, Region& out) const;
 
 		virtual void makeInfinite(size_t dimension);
 		virtual void makeDimension(size_t dimension);

@@ -22,17 +22,11 @@
 #ifndef __spatialindex__impl_h
 #define __spatialindex__impl_h
 
-#include <SpatialIndex.h>
+#include "../../include/SpatialIndex.h"
 
-#ifdef PTHREADS
-	#include <pthread.h>
-#endif
-#include <strings.h>
-
-typedef Tools::PoolPointer<Region> RegionPtr;
-typedef Tools::PoolPointer<Point> PointPtr;
+typedef Tools::PoolPointer<SpatialIndex::Region> RegionPtr;
+typedef Tools::PoolPointer<SpatialIndex::Point> PointPtr;
 typedef Tools::PoolPointer<SpatialIndex::TimeRegion> TimeRegionPtr;
 typedef Tools::PoolPointer<SpatialIndex::MovingRegion> MovingRegionPtr;
 
 #endif /*__spatialindex_impl_h*/
-

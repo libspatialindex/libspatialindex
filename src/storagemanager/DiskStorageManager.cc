@@ -19,20 +19,17 @@
 //  Email:
 //    mhadji@gmail.com
 
-#include "../spatialindex/SpatialIndexImpl.h"
-
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdio.h>
 
+#include "../spatialindex/SpatialIndexImpl.h"
 #include "DiskStorageManager.h"
 
 using namespace SpatialIndex;
 using namespace SpatialIndex::StorageManager;
-using std::map;
-using std::vector;
 
 SpatialIndex::IStorageManager* SpatialIndex::StorageManager::returnDiskStorageManager(Tools::PropertySet& ps)
 {
@@ -245,7 +242,7 @@ DiskStorageManager::~DiskStorageManager()
 	close(m_dataFile);
 	if (m_buffer != 0) delete[] m_buffer;
 
-	map<id_type, Entry*>::iterator it = m_pageIndex.begin();
+	std::map<id_type, Entry*>::iterator it = m_pageIndex.begin();
 
 	while (it != m_pageIndex.end())
 	{
@@ -288,7 +285,7 @@ void DiskStorageManager::flush()
 	if (byteswritten != sizeof(size_t))
 		throw Tools::IllegalStateException("Corrupted storage manager index file.");
 
-	map<id_type, Entry*>::iterator it = m_pageIndex.begin();
+	std::map<id_type, Entry*>::iterator it = m_pageIndex.begin();
 
 	while (it != m_pageIndex.end())
 	{
@@ -323,11 +320,11 @@ void DiskStorageManager::flush()
 
 void DiskStorageManager::loadByteArray(const id_type id, size_t& len, byte** data)
 {
-	map<id_type, Entry*>::iterator it = m_pageIndex.find(id);
+	std::map<id_type, Entry*>::iterator it = m_pageIndex.find(id);
 
 	if (it == m_pageIndex.end()) throw Tools::InvalidPageException(id);
 
-	vector<id_type>& pages = (*it).second->m_pages;
+	std::vector<id_type>& pages = (*it).second->m_pages;
 	size_t cNext = 0;
 	size_t cTotal = pages.size();
 
@@ -399,7 +396,7 @@ void DiskStorageManager::storeByteArray(id_type& id, const size_t len, const byt
 	else
 	{
 		// find the entry.
-		map<id_type, Entry*>::iterator it = m_pageIndex.find(id);
+		std::map<id_type, Entry*>::iterator it = m_pageIndex.find(id);
 
 		// check if it exists.
 		if (it == m_pageIndex.end()) throw Tools::IndexOutOfBoundsException(id);
@@ -459,7 +456,7 @@ void DiskStorageManager::storeByteArray(id_type& id, const size_t len, const byt
 
 void DiskStorageManager::deleteByteArray(const id_type id)
 {
-	map<id_type, Entry*>::iterator it = m_pageIndex.find(id);
+	std::map<id_type, Entry*>::iterator it = m_pageIndex.find(id);
 
 	if (it == m_pageIndex.end()) throw Tools::InvalidPageException(id);
 

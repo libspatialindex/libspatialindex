@@ -22,13 +22,10 @@
 #include <stdexcept>
 
 #include "../spatialindex/SpatialIndexImpl.h"
-
 #include "MemoryStorageManager.h"
 
 using namespace SpatialIndex;
 using namespace SpatialIndex::StorageManager;
-using std::stack;
-using std::vector;
 
 SpatialIndex::IStorageManager* SpatialIndex::StorageManager::returnMemoryStorageManager(Tools::PropertySet& ps)
 {
@@ -48,7 +45,7 @@ MemoryStorageManager::MemoryStorageManager(Tools::PropertySet& ps)
 
 MemoryStorageManager::~MemoryStorageManager()
 {
-	for (vector<Entry*>::iterator it = m_buffer.begin(); it != m_buffer.end(); it++) delete *it;
+	for (std::vector<Entry*>::iterator it = m_buffer.begin(); it != m_buffer.end(); it++) delete *it;
 }
 
 void MemoryStorageManager::loadByteArray(const id_type id, size_t& len, byte** data)

@@ -24,7 +24,7 @@
 
 namespace SpatialIndex
 {
-	class MovingRegion : public TimeRegion, public Tools::Geometry::IEvolvingShape
+	class MovingRegion : public TimeRegion, public IEvolvingShape
 	{
 	public:
 		MovingRegion();
@@ -37,12 +37,12 @@ namespace SpatialIndex
 			const double* pVLow, const double* pVHigh,
 			double tStart, double tEnd, size_t dimension);
 		MovingRegion(
-			const Tools::Geometry::Point& low, const Tools::Geometry::Point& high,
-			const Tools::Geometry::Point& vlow, const Tools::Geometry::Point& vhigh,
+			const Point& low, const Point& high,
+			const Point& vlow, const Point& vhigh,
 			const Tools::IInterval& ti);
 		MovingRegion(
-			const Tools::Geometry::Point& low, const Tools::Geometry::Point& high,
-			const Tools::Geometry::Point& vlow, const Tools::Geometry::Point& vhigh,
+			const Point& low, const Point& high,
+			const Point& vlow, const Point& vhigh,
 			double tStart, double tEnd);
 		MovingRegion(const Region& mbr, const Region& vbr, const IInterval& ivI);
 		MovingRegion(const Region& mbr, const Region& vbr, double tStart, double tEnd);
@@ -110,16 +110,16 @@ namespace SpatialIndex
 		//
 		// IEvolvingShape interface
 		//
-		virtual void getVMBR(Tools::Geometry::Region& out) const;
-		virtual void getMBRAtTime(double t, Tools::Geometry::Region& out) const;
+		virtual void getVMBR(Region& out) const;
+		virtual void getMBRAtTime(double t, Region& out) const;
 
 		//
 		// ITimeShape interface
 		//
 		virtual double getAreaInTime() const;
 		virtual double getAreaInTime(const IInterval& ivI) const;
-		virtual double getIntersectingAreaInTime(const Tools::Geometry::ITimeShape& r) const;
-		virtual double getIntersectingAreaInTime(const IInterval& ivI, const Tools::Geometry::ITimeShape& r) const;
+		virtual double getIntersectingAreaInTime(const ITimeShape& r) const;
+		virtual double getIntersectingAreaInTime(const IInterval& ivI, const ITimeShape& r) const;
 
 		virtual void makeInfinite(size_t dimension);
 		virtual void makeDimension(size_t dimension);

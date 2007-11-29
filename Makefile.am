@@ -10,7 +10,7 @@ libspatialindex_la_LIBADD = \
 	src/rtree/librtree.la \
 	src/mvrtree/libmvrtree.la \
 	src/tprtree/libtprtree.la \
-	src/tools/geometry/libgeometry.la \
-	src/tools/tools/libtools.la
+	src/tools/libtools.la
 
 libspatialindex_la_LDFLAGS = -version-info 1:0:1 
+

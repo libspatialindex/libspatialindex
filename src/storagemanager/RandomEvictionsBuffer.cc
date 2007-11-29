@@ -23,12 +23,10 @@
 #include <stdlib.h>
 
 #include "../spatialindex/SpatialIndexImpl.h"
-
 #include "RandomEvictionsBuffer.h"
 
 using namespace SpatialIndex;
 using namespace SpatialIndex::StorageManager;
-using std::map;
 
 IBuffer* SpatialIndex::StorageManager::returnRandomEvictionsBuffer(IStorageManager& sm, Tools::PropertySet& ps)
 {
@@ -76,7 +74,7 @@ void RandomEvictionsBuffer::removeEntry()
 
 	size_t entry = static_cast<size_t>(floor(((double) m_buffer.size()) * drand48()));
 
-	map<id_type, Entry*>::iterator it = m_buffer.begin();
+	std::map<id_type, Entry*>::iterator it = m_buffer.begin();
 	for (size_t cIndex = 0; cIndex < entry; cIndex++) it++;
 
 	if ((*it).second->m_bDirty)

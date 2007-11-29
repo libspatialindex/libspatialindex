@@ -24,14 +24,14 @@
 
 namespace SpatialIndex
 {
-	class TimeRegion : public Tools::Geometry::Region, public Tools::Geometry::ITimeShape
+	class TimeRegion : public Region, public ITimeShape
 	{
 	public:
 		TimeRegion();
 		TimeRegion(const double* pLow, const double* pHigh, const Tools::IInterval& ti, size_t dimension);
 		TimeRegion(const double* pLow, const double* pHigh, double tStart, double tEnd, size_t dimension);
-		TimeRegion(const Tools::Geometry::Point& low, const Tools::Geometry::Point& high, const Tools::IInterval& ti);
-		TimeRegion(const Tools::Geometry::Point& low, const Tools::Geometry::Point& high, double tStart, double tEnd);
+		TimeRegion(const Point& low, const Point& high, const Tools::IInterval& ti);
+		TimeRegion(const Point& low, const Point& high, double tStart, double tEnd);
 		TimeRegion(const Region& in, const Tools::IInterval& ti);
 		TimeRegion(const Region& in, double tStart, double tEnd);
 		TimeRegion(const TimePoint& low, const TimePoint& high);
@@ -66,16 +66,16 @@ namespace SpatialIndex
 		//
 		// ITimeShape interface
 		//
-		virtual bool intersectsShapeInTime(const Tools::Geometry::ITimeShape& in) const;
-		virtual bool intersectsShapeInTime(const Tools::IInterval& ivI, const Tools::Geometry::ITimeShape& in) const;
-		virtual bool containsShapeInTime(const Tools::Geometry::ITimeShape& in) const;
-		virtual bool containsShapeInTime(const Tools::IInterval& ivI, const Tools::Geometry::ITimeShape& in) const;
-		virtual bool touchesShapeInTime(const Tools::Geometry::ITimeShape& in) const;
-		virtual bool touchesShapeInTime(const Tools::IInterval& ivI, const Tools::Geometry::ITimeShape& in) const;
+		virtual bool intersectsShapeInTime(const ITimeShape& in) const;
+		virtual bool intersectsShapeInTime(const Tools::IInterval& ivI, const ITimeShape& in) const;
+		virtual bool containsShapeInTime(const ITimeShape& in) const;
+		virtual bool containsShapeInTime(const Tools::IInterval& ivI, const ITimeShape& in) const;
+		virtual bool touchesShapeInTime(const ITimeShape& in) const;
+		virtual bool touchesShapeInTime(const Tools::IInterval& ivI, const ITimeShape& in) const;
 		virtual double getAreaInTime() const;
 		virtual double getAreaInTime(const Tools::IInterval& ivI) const;
-		virtual double getIntersectingAreaInTime(const Tools::Geometry::ITimeShape& r) const;
-		virtual double getIntersectingAreaInTime(const Tools::IInterval& ivI, const Tools::Geometry::ITimeShape& r) const;
+		virtual double getIntersectingAreaInTime(const ITimeShape& r) const;
+		virtual double getIntersectingAreaInTime(const Tools::IInterval& ivI, const ITimeShape& r) const;
 
 		//
 		// IInterval interface

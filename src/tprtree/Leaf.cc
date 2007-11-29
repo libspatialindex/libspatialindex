@@ -20,15 +20,11 @@
 //    mhadji@gmail.com
 
 #include "../spatialindex/SpatialIndexImpl.h"
-
 #include "TPRTree.h"
 #include "Node.h"
 #include "Index.h"
-
 #include "Leaf.h"
 
-using std::stack;
-using std::vector;
 using namespace SpatialIndex::TPRTree;
 
 Leaf::~Leaf()
@@ -63,7 +59,7 @@ void Leaf::split(size_t dataLength, byte* pData, MovingRegion& mbr, id_type id, 
 {
 	m_pTree->m_stats.m_splits++;
 
-	vector<size_t> g1, g2;
+	std::vector<size_t> g1, g2;
 
 	switch (m_pTree->m_treeVariant)
 	{
@@ -112,7 +108,7 @@ void Leaf::deleteData(id_type id, std::stack<id_type>& pathBuffer)
 	deleteEntry(child);
 	m_pTree->writeNode(this);
 
-	stack<NodePtr> toReinsert;
+	std::stack<NodePtr> toReinsert;
 	NodePtr ptrThis(this, &(m_pTree->m_leafPool));
 	condenseTree(toReinsert, pathBuffer, ptrThis);
 	ptrThis.relinquish();

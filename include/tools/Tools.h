@@ -1,4 +1,4 @@
-// Tools Library
+// Spatial Index Library
 //
 // Copyright (C) 2004  Navel Ltd.
 //
@@ -38,21 +38,8 @@
 #include <list>
 #include <algorithm>
 #include <cmath>
+#include <limits>
 #include <climits>
-
-#if TIME_WITH_SYS_TIME
-	#include <sys/time.h>
-	#include <time.h>
-#else
-	#if HAVE_SYS_TIME_H
-		#include <sys/time.h>
-	#else
-		#include <time.h>
-	#endif
-#endif
-
-#include <sys/resource.h>
-#include <unistd.h>
 
 #if HAVE_PTHREAD_H
 #include <pthread.h>
@@ -62,9 +49,8 @@
 #include "PointerPool.h"
 #include "PoolPointer.h"
 
-typedef uint8_t byte;
-
 #define interface class
+typedef uint8_t byte;
 
 namespace Tools
 {
@@ -74,15 +60,6 @@ namespace Tools
 		IT_LEFTOPEN,
 		IT_OPEN,
 		IT_CLOSED
-	};
-
-	enum Level
-	{
-		LVL_VERYLOW = 0x0,
-		LVL_LOW,
-		LVL_MEDIUM,
-		LVL_HIGH,
-		LVL_VERYHIGH
 	};
 
 	enum VariantType
@@ -103,19 +80,6 @@ namespace Tools
 		VT_EMPTY,
 		VT_LONGLONG,
 		VT_ULONGLONG
-	};
-
-	enum Architecture
-	{
-		ARCH_LITTLEENDIAN = 0x0,
-		ARCH_BIGENDIAN,
-		ARCH_NONIEEE
-	};
-
-	enum RandomGeneratorType
-	{
-		RGT_DRAND48 = 0x0,
-		RGT_MERSENNE
 	};
 
 	//
@@ -205,17 +169,6 @@ namespace Tools
 		std::string m_error;
 	}; // NotSupportedException
 
-	class ParseErrorException : public Exception
-	{
-	public:
-		ParseErrorException(std::string s);
-		virtual ~ParseErrorException() {}
-		virtual std::string what();
-
-	private:
-		std::string m_error;
-	}; // ParseErrorException
-
 	//
 	// Interfaces
 	//
@@ -294,66 +247,9 @@ namespace Tools
 			// sets the stream pointer to the first entry, if possible.
 	}; // IObjectStream
 
-	namespace Geometry
-	{
-		class Region;
-		class Point;
-
-		enum Quadrant
-		{
-			Q_UPPERRIGHT = 0x0,
-			Q_LOWERRIGHT,
-			Q_UPPERLEFT,
-			Q_LOWERLEFT
-		};
-
-		// since all base classes are interfaces (there is no state involved) all
-		// inheritance can be virtual for efficiency.
-		interface IShape : public virtual ISerializable
-		{
-		public:
-			virtual bool intersectsShape(const IShape& in) const = 0;
-			virtual bool containsShape(const IShape& in) const = 0;
-			virtual bool touchesShape(const IShape& in) const = 0;
-			virtual void getCenter(Point& out) const = 0;
-			virtual size_t getDimension() const = 0;
-			virtual void getMBR(Region& out) const = 0;
-			virtual double getArea() const = 0;
-			virtual double getMinimumDistance(const IShape& in) const = 0;
-			virtual ~IShape() {}
-		}; // IShape
-
-		// since all base classes are interfaces (there is no state involved) all
-		// inheritance can be virtual for efficiency.
-		interface ITimeShape : public virtual IShape, public virtual IInterval
-		{
-		public:
-			virtual bool intersectsShapeInTime(const ITimeShape& in) const = 0;
-			virtual bool intersectsShapeInTime(const IInterval& ivI, const ITimeShape& in) const = 0;
-			virtual bool containsShapeInTime(const ITimeShape& in) const = 0;
-			virtual bool containsShapeInTime(const IInterval& ivI, const ITimeShape& in) const = 0;
-			virtual bool touchesShapeInTime(const ITimeShape& in) const = 0;
-			virtual bool touchesShapeInTime(const IInterval& ivI, const ITimeShape& in) const = 0;
-			virtual double getAreaInTime() const = 0;
-			virtual double getAreaInTime(const IInterval& ivI) const = 0;
-			virtual double getIntersectingAreaInTime(const ITimeShape& r) const = 0;
-			virtual double getIntersectingAreaInTime(const IInterval& ivI, const ITimeShape& r) const = 0;
-			virtual ~ITimeShape() {}
-		}; // ITimeShape
-
-		// since all base classes are interfaces (there is no state involved) all
-		// inheritance can be virtual for efficiency.
-		interface IEvolvingShape : public virtual IShape
-		{
-		public:
-			virtual void getVMBR(Region& out) const = 0;
-			virtual void getMBRAtTime(double t, Region& out) const = 0;
-			virtual ~IEvolvingShape() {}
-		}; // IEvolvingShape
-	}
-
-	IObjectStream* externalSort(IObjectStream& source, size_t bufferSize);
-	IObjectStream* externalSort(IObjectStream& source, IObjectComparator& pComp, size_t bufferSize);
+	//
+	// Classes & Functions
+	//
 
 	class Variant
 	{
@@ -434,14 +330,10 @@ namespace Tools
 
 	std::ostream& operator<<(std::ostream& os, const Tools::Interval& iv);
 
-	// Code for the Mersenne generator has been kindly contributed by the MassDAL Code Bank:
-	// http://www.cs.rutgers.edu/~muthu/massdal-code-index.html
 	class Random
 	{
 	public:
 		Random();
-		Random(uint32_t seed);
-		Random(uint32_t seed, RandomGeneratorType t);
 		Random(uint32_t seed, uint16_t xsubi0);
 		virtual ~Random();
 
@@ -469,233 +361,13 @@ namespace Tools
 			// returns a uniformly distributed double in the range [0, 1).
 		double nextUniformDouble(double low, double high);
 			// returns a uniformly distributed double in the range [low, high).
-	
-		// these use the inversion method, thus they are extremely slow. Use with caution.
-		double nextNormalDouble();
-			// returns doubles using a normal distribution with mean 0.0 and std 1.0 (unbounded).
-		double nextNormalDouble(double mean, double std);
-			// returns doubles using a normal distribution with mean mean and std std (unbounded).
-
-		// these use the inversion method, thus they are extremely slow. Use with caution.
-		int32_t nextSkewedLong(int32_t low, int32_t high, Level);
-			// returns longs using a Zipf distribution in the range [low, high).
-		double nextSkewedDouble(double low, double high, Level);
-			// returns doubles using a Zipf distribution in the range [low, high).
-		double nextSkewedDouble(Level);
-			// returns doubles using a Zipf distribution in the range [0.0, 1.0).
-
 		bool flipCoin();
-			// A Bernoulli trial with probability p = 50%.
-		bool bernulliTrial(double p);
-			// A Bernoulli trial with probability of success p.
-
-		size_t getSize() const;
-			// Returns the total size of the random number generator (seed size, etc.).
-
-		uint32_t getSeed() const;
 
 	private:
-		void initMersenne();
-		void initDrand(uint16_t xsubi0);
+		void initDrand(uint32_t seed, uint16_t xsubi0);
 
-		enum
-		{
-			MERS_N = 624,
-			MERS_M = 397,
-			MERS_R = 31,
-			MERS_U = 11,
-			MERS_S = 7,
-			MERS_T = 15,
-			MERS_L = 18,
-			MERS_A = 0x9908B0DF,
-			MERS_B = 0x9D2C5680,
-			MERS_C = 0xEFC60000
-		};
-
-		RandomGeneratorType m_type;
-		void* m_buffer;
-		Architecture m_architecture;
-		uint32_t m_seed;
+		uint16_t* m_pBuffer;
 	}; // Random
-
-	class PRGZipf
-	{
-	public:
-		PRGZipf(int32_t min, int32_t max, double s, Tools::Random* pRandom);
-		virtual ~PRGZipf();
-
-		int32_t nextLong();
-
-	private:
-		void initLookupTable();
-
-		int32_t m_min;
-		int32_t m_max;
-		double m_s;
-		Tools::Random* m_pRandom;
-		double* m_pLookupTable;
-	}; // PRGZipf
-
-	class PRGFrechet
-	{
-	public:
-		PRGFrechet(double a, double b, Tools::Random* pRandom);
-		virtual ~PRGFrechet();
-
-		double nextDouble();
-
-	private:
-		double m_alpha;
-		double m_beta;
-		Tools::Random* m_pRandom;
-	}; // PRGFrechet
-
-	class Hash
-	{
-	public:
-		virtual ~Hash();
-
-		virtual void hash(
-			const std::string& s,
-			byte** out, size_t& lout
-		) = 0;
-		virtual void hash(
-			const byte* in, size_t lin,
-			byte** out, size_t& lout
-		) = 0;
-	}; // Hash
-
-	// Implements the hash functions described in:
-	// Wegman and Carter
-	// New classes and applications of hash functions, FOCS 1979
-	class UniversalHash : public Hash
-	{
-	public:
-		typedef uint32_t value_type;
-
-		UniversalHash(uint16_t k = 2);
-		UniversalHash(Tools::Random& r, uint16_t k = 2);
-		UniversalHash(uint64_t a, uint64_t b);
-		UniversalHash(const UniversalHash& h);
-		UniversalHash(const byte* data);
-		virtual ~UniversalHash();
-
-		virtual UniversalHash& operator=(const UniversalHash& in);
-		virtual bool operator==(const UniversalHash& in) const;
-
-		virtual value_type hash(value_type x) const;
-		virtual size_t getSize() const;
-		virtual void getData(byte** buffer, size_t& length) const;
-
-		virtual void hash(
-			const std::string& s,
-			byte** out, size_t& lout
-		);
-		virtual void hash(
-			const byte* in, size_t lin,
-			byte** out, size_t& lout
-		);
-
-		static const uint64_t m_P = 0x1FFFFFFFFFFFFFFFull; // 2^61 - 1
-
-	private:
-		uint64_t* m_a;
-		uint16_t m_k;
-
-		friend std::ostream& Tools::operator<<(
-			std::ostream& os,
-			const Tools::UniversalHash& h
-		);
-	}; // UniversalHash
-
-	std::ostream& operator<<(std::ostream& os, const Tools::UniversalHash& h);
-
-	class SHA1Hash : public Hash
-	{
-	public:
-		virtual ~SHA1Hash();
-
-		virtual void hash(
-			const std::string& s,
-			byte** out, size_t& lout
-		);
-		virtual void hash(
-			const byte* in, size_t lin,
-			byte** out, size_t& lout
-		);
-		virtual void hash(
-			std::istream& s,
-			byte** out, size_t& lout
-		);
-		virtual std::string hash(const std::string& s);
-
-	public:
-		static const uint16_t HashLength = 20;
-	}; // SHA1Hash
-
-#if HAVE_GETTIMEOFDAY
-	class ResourceUsage
-	{
-	public:
-		ResourceUsage();
-
-		void start();
-		void stop();
-		void reset();
-
-		double getTotalTime();
-		double getUserTime();
-		double getSystemTime();
-		size_t getPageFaults();
-		size_t getReadIO();
-		size_t getWriteIO();
-		size_t getPeakResidentMemoryUsage();
-		size_t getTotalMemoryUsage();
-
-	private:
-		double combineTime(const struct timeval&);
-		void addTimeval(struct timeval&, const struct timeval&);
-		void subtractTimeval(struct timeval&, const struct timeval&, const struct timeval&);
-
-  		struct rusage m_tmpRU;
-  		struct timeval m_tmpTV;
-  		struct timeval m_totalTime;
-  		struct timeval m_userTime;
-  		struct timeval m_systemTime;
-  		size_t m_pageFaults;
-  		size_t m_readIO;
-  		size_t m_writeIO;
-  		size_t m_peakMemory;
-  		size_t m_totalMemory;
-  	}; // ResourceUsage
-#endif
-
-#if BUILD_CPU_I686
-	class CycleCounter
-	{
-	public:
-		CycleCounter();
-		void start();
-		void stop();
-		void reset();
-		double getTotalCycles();
-		double getCPUMHz();
-		double getCyclesPerSecond();
-
-	private:
-		uint64_t m_tmpCycles;
-		uint64_t m_totalCycles;
-		bool m_bRunning;
-
-		uint64_t rdtsc();
-	}; // CycleCounter
-#endif
-
-	class System
-	{
-	public:
-		static Architecture getArchitecture();
-	}; // System
 
 	class SharedLock
 	{
@@ -721,47 +393,10 @@ namespace Tools
 #endif
 	}; // ExclusiveLock
 
-	class StringTokenizer
-	{
-	public:
-		StringTokenizer(
-			const std::string& s,
-			const std::string& delimiters = " \t",
-			bool bTrim = true
-		);
-		bool hasMoreTokens();
-		std::string getNextToken();
-		void reset();
-
-	private:
-		size_t m_index;
-		std::vector<std::string> m_token;
-	}; // StringTokenizer
-
-	std::string trimLeft(const std::string& source, const std::string& t = " \t");
-	std::string trimRight(const std::string& source, const std::string& t = " \t");
-	std::string trim(const std::string& source, const std::string& t = " \t");
-	char toLower(char c);
-	char toUpper(char c);
-	std::string toUpperCase(const std::string& s);
-	std::string toLowerCase(const std::string& s);
-
-	uint64_t choose(uint32_t n, uint32_t k);
-
-	void compressRLE(
-		size_t blockSize,
-		byte* in, size_t lin,
-		byte** out, size_t& lout);
-	void uncompressRLE(
-		size_t blockSize,
-		byte* in, size_t lin,
-		byte** out, size_t& lout);
+	IObjectStream* externalSort(IObjectStream& source, size_t bufferSize);
+	IObjectStream* externalSort(IObjectStream& source, IObjectComparator& pComp, size_t bufferSize);
 }
 
-#include "Point.h"
-#include "Region.h"
-#include "LineSegment.h"
 #include "TemporaryFile.h"
 
 #endif /* __tools_h */
-

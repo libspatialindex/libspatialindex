@@ -23,7 +23,7 @@
  * Does not support degenerate time intervals or shrinking regions.
 */
 
-#include <SpatialIndex.h>
+#include "../../include/SpatialIndex.h"
 
 using namespace SpatialIndex;
 using namespace std;
@@ -1065,14 +1065,14 @@ void MovingRegion::storeToByteArray(byte** data, size_t& len)
 //
 // IEvolvingShape interface
 //
-void MovingRegion::getVMBR(Tools::Geometry::Region& out) const
+void MovingRegion::getVMBR(Region& out) const
 {
 	out.makeDimension(m_dimension);
 	memcpy(out.m_pLow, m_pVLow, m_dimension * sizeof(double));
 	memcpy(out.m_pHigh, m_pVHigh, m_dimension * sizeof(double));
 }
 
-void MovingRegion::getMBRAtTime(double t, Tools::Geometry::Region& out) const
+void MovingRegion::getMBRAtTime(double t, Region& out) const
 {
 	out.makeDimension(m_dimension);
 	for (size_t cDim = 0; cDim < m_dimension; cDim++)
@@ -1140,12 +1140,12 @@ double MovingRegion::getAreaInTime(const IInterval& ivI) const
 	}
 }
 
-double MovingRegion::getIntersectingAreaInTime(const Tools::Geometry::ITimeShape& r) const
+double MovingRegion::getIntersectingAreaInTime(const ITimeShape& r) const
 {
 	return getIntersectingAreaInTime(r, r);
 }
 
-double MovingRegion::getIntersectingAreaInTime(const IInterval& ivI, const Tools::Geometry::ITimeShape& in) const
+double MovingRegion::getIntersectingAreaInTime(const IInterval& ivI, const ITimeShape& in) const
 {
 	const MovingRegion* pr = dynamic_cast<const MovingRegion*>(&in);
 	if (pr != 0) return getIntersectingAreaInTime(*pr);

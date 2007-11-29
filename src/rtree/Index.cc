@@ -20,15 +20,11 @@
 //    mhadji@gmail.com
 
 #include "../spatialindex/SpatialIndexImpl.h"
-
 #include "RTree.h"
 #include "Node.h"
 #include "Leaf.h"
-
 #include "Index.h"
 
-using std::stack;
-using std::vector;
 using namespace SpatialIndex::RTree;
 
 Index::~Index()
@@ -101,7 +97,7 @@ void Index::split(size_t dataLength, byte* pData, Region& mbr, id_type id, NodeP
 {
 	m_pTree->m_stats.m_splits++;
 
-	vector<size_t> g1, g2;
+	std::vector<size_t> g1, g2;
 
 	switch (m_pTree->m_treeVariant)
 	{

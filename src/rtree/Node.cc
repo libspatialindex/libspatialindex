@@ -20,12 +20,10 @@
 //    mhadji@gmail.com
 
 #include "../spatialindex/SpatialIndexImpl.h"
-
 #include "RTree.h"
 #include "Node.h"
 #include "Index.h"
-using std::stack;
-using std::vector;
+
 using namespace SpatialIndex::RTree;
 
 //
@@ -327,7 +325,7 @@ void Node::deleteEntry(size_t index)
 	}
 }
 
-bool Node::insertData(size_t dataLength, byte* pData, Region& mbr, id_type id, stack<id_type>& pathBuffer, byte* overflowTable)
+bool Node::insertData(size_t dataLength, byte* pData, Region& mbr, id_type id, std::stack<id_type>& pathBuffer, byte* overflowTable)
 {
 	if (m_children < m_capacity)
 	{
@@ -354,7 +352,7 @@ bool Node::insertData(size_t dataLength, byte* pData, Region& mbr, id_type id, s
 	{
 		overflowTable[m_level] = 1;
 
-		vector<size_t> vReinsert, vKeep;
+		std::vector<size_t> vReinsert, vKeep;
 		reinsertData(dataLength, pData, mbr, id, vReinsert, vKeep);
 
 		size_t lReinsert = vReinsert.size();
@@ -520,7 +518,7 @@ bool Node::insertData(size_t dataLength, byte* pData, Region& mbr, id_type id, s
 	}
 }
 
-void Node::reinsertData(size_t dataLength, byte* pData, Region& mbr, id_type id, vector<size_t>& reinsert, vector<size_t>& keep)
+void Node::reinsertData(size_t dataLength, byte* pData, Region& mbr, id_type id, std::vector<size_t>& reinsert, std::vector<size_t>& keep)
 {
 	ReinsertEntry** v = new ReinsertEntry*[m_capacity + 1];
 
@@ -579,7 +577,7 @@ void Node::reinsertData(size_t dataLength, byte* pData, Region& mbr, id_type id,
 	delete[] v;
 }
 
-void Node::rtreeSplit(size_t dataLength, byte* pData, Region& mbr, id_type id, vector<size_t>& group1, vector<size_t>& group2)
+void Node::rtreeSplit(size_t dataLength, byte* pData, Region& mbr, id_type id, std::vector<size_t>& group1, std::vector<size_t>& group2)
 {
 	size_t cChild;
 	size_t minimumLoad = static_cast<size_t>(std::floor(m_capacity * m_pTree->m_fillFactor));
@@ -984,7 +982,7 @@ void Node::pickSeeds(size_t& index1, size_t& index2)
 	}
 }
 
-void Node::condenseTree(stack<NodePtr>& toReinsert, stack<id_type>& pathBuffer, NodePtr& ptrThis)
+void Node::condenseTree(std::stack<NodePtr>& toReinsert, std::stack<id_type>& pathBuffer, NodePtr& ptrThis)
 {
 	size_t minimumLoad = static_cast<size_t>(std::floor(m_capacity * m_pTree->m_fillFactor));
 

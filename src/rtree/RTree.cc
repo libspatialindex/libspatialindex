@@ -20,17 +20,11 @@
 //    mhadji@gmail.com
 
 #include "../spatialindex/SpatialIndexImpl.h"
-
 #include "Node.h"
 #include "Leaf.h"
 #include "Index.h"
 #include "BulkLoader.h"
-
 #include "RTree.h"
-
-using std::stack;
-using std::vector;
-using std::priority_queue;
 
 RTree::Data::Data(size_t len, byte* pData, Region& r, id_type id)
 	: m_id(id), m_region(r), m_pData(0), m_dataLength(len)
@@ -380,7 +374,7 @@ void SpatialIndex::RTree::RTree::nearestNeighborQuery(uint32_t k, const IShape& 
 
 	try
 	{
-		priority_queue<NNEntry*, vector<NNEntry*>, NNEntry::ascending> queue;
+		std::priority_queue<NNEntry*, std::vector<NNEntry*>, NNEntry::ascending> queue;
 
 		queue.push(new NNEntry(m_rootID, 0, 0.0));
 
@@ -610,7 +604,7 @@ void SpatialIndex::RTree::RTree::addCommand(ICommand* pCommand, CommandType ct)
 bool SpatialIndex::RTree::RTree::isIndexValid()
 {
 	bool ret = true;
-	stack<ValidateEntry> st;
+	std::stack<ValidateEntry> st;
 	NodePtr root = readNode(m_rootID);
 
 	if (root->m_level != m_stats.m_treeHeight - 1)
@@ -1088,7 +1082,7 @@ void SpatialIndex::RTree::RTree::insertData_impl(size_t dataLength, byte* pData,
 {
 	assert(mbr.getDimension() == m_dimension);
 
-	stack<id_type> pathBuffer;
+	std::stack<id_type> pathBuffer;
 	byte* overflowTable = 0;
 
 	try
@@ -1120,7 +1114,7 @@ void SpatialIndex::RTree::RTree::insertData_impl(size_t dataLength, byte* pData,
 {
 	assert(mbr.getDimension() == m_dimension);
 
-	stack<id_type> pathBuffer;
+	std::stack<id_type> pathBuffer;
 	NodePtr root = readNode(m_rootID);
 	NodePtr n = root->chooseSubtree(mbr, level, pathBuffer);
 
@@ -1138,7 +1132,7 @@ bool SpatialIndex::RTree::RTree::deleteData_impl(const Region& mbr, id_type id)
 {
 	assert(mbr.m_dimension == m_dimension);
 
-	stack<id_type> pathBuffer;
+	std::stack<id_type> pathBuffer;
 	NodePtr root = readNode(m_rootID);
 	NodePtr l = root->findLeaf(mbr, id, pathBuffer);
 	if (l.get() == root.get())
@@ -1297,7 +1291,7 @@ void SpatialIndex::RTree::RTree::rangeQuery(RangeQueryType type, const IShape& q
 
 	try
 	{
-		stack<NodePtr> st;
+		std::stack<NodePtr> st;
 		NodePtr root = readNode(m_rootID);
 
 		if (root->m_children > 0 && query.intersectsShape(root->m_nodeMBR)) st.push(root);

@@ -23,7 +23,7 @@
 
 int main(int argc, char** argv)
 {
-	size_t ds = 1000, sl = 100, mui = 20, sd = UNIFORM, id = UNIFORM;
+	size_t ds = 1000, sl = 100, mui = 20, id = UNIFORM;
 	double a = 0.01;
 
 	for (int i = 1; i < argc; i++)
@@ -68,30 +68,6 @@ int main(int argc, char** argv)
 			}
 			mui = atoi(argv[i]);
 		}
-		else if (! strcmp(argv[i], "-sd"))
-		{
-			i++;
-			if (i >= argc)
-			{
-				cerr << "Missing speed distribution." << endl;
-				return -1;
-			}
-			if (strcmp(argv[i], "zipf") == 0) sd = ZIPF;
-			else if (strcmp(argv[i], "gaussian") == 0) sd = GAUSSIAN;
-			else sd = UNIFORM;
-		}
-		else if (! strcmp(argv[i], "-id"))
-		{
-			i++;
-			if (i >= argc)
-			{
-				cerr << "Missing initial distribution." << endl;
-				return -1;
-			}
-			if (strcmp(argv[i], "zipf") == 0) id = ZIPF;
-			else if (strcmp(argv[i], "gaussian") == 0) id = GAUSSIAN;
-			else id = UNIFORM;
-		}
 		else
 		{
 			cerr << "Usage: " << endl
@@ -106,7 +82,6 @@ int main(int argc, char** argv)
 	}
 
 	RandomGenerator g = RandomGenerator(ds, sl, mui, a);
-	g.m_speedDistribution = sd;
 	g.m_initialDistribution = id;
 	g.m_maxX = 1.0; g.m_maxY = 1.0;
 	g.m_minQueryExtent = 0.05; g.m_maxQueryExtent = 0.1;

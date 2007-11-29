@@ -20,7 +20,6 @@
 //    mhadji@gmail.com
 
 #include "../spatialindex/SpatialIndexImpl.h"
-
 #include "Statistics.h"
 
 using namespace SpatialIndex::MVRTree;
@@ -164,31 +163,29 @@ void Statistics::reset()
 
 std::ostream& SpatialIndex::MVRTree::operator<<(std::ostream& os, const Statistics& s)
 {
-	using std::endl;
-
-	os	<< "Reads: " << s.m_reads << endl
-		<< "Writes: " << s.m_writes << endl
-		<< "Hits: " << s.m_hits << endl
-		<< "Misses: " << s.m_misses << endl
-		<< "Number of live data: " << s.m_data << endl
-		<< "Total number of data: " << s.m_totalData << endl
-		<< "Number of nodes: " << s.m_nodes << endl
-		<< "Numer of dead index nodes: " << s.m_deadIndexNodes << endl
-		<< "Numer of dead leaf nodes: " << s.m_deadLeafNodes << endl;
+	os	<< "Reads: " << s.m_reads << std::endl
+		<< "Writes: " << s.m_writes << std::endl
+		<< "Hits: " << s.m_hits << std::endl
+		<< "Misses: " << s.m_misses << std::endl
+		<< "Number of live data: " << s.m_data << std::endl
+		<< "Total number of data: " << s.m_totalData << std::endl
+		<< "Number of nodes: " << s.m_nodes << std::endl
+		<< "Numer of dead index nodes: " << s.m_deadIndexNodes << std::endl
+		<< "Numer of dead leaf nodes: " << s.m_deadLeafNodes << std::endl;
 
 	for (size_t cTree = 0; cTree < s.m_treeHeight.size(); cTree++)
 	{
-		os << "Tree " << cTree << ", Height " << s.m_treeHeight[cTree] << endl;
+		os << "Tree " << cTree << ", Height " << s.m_treeHeight[cTree] << std::endl;
 	}
 
 	for (size_t cLevel = 0; cLevel < s.m_nodesInLevel.size(); cLevel++)
 	{
-		os << "Level " << cLevel << " pages: " << s.m_nodesInLevel[cLevel] << endl;
+		os << "Level " << cLevel << " pages: " << s.m_nodesInLevel[cLevel] << std::endl;
 	}
 
-	os	<< "Splits: " << s.m_splits << endl
-		<< "Adjustments: " << s.m_adjustments << endl
-		<< "Query results: " << s.m_queryResults << endl;
+	os	<< "Splits: " << s.m_splits << std::endl
+		<< "Adjustments: " << s.m_adjustments << std::endl
+		<< "Query results: " << s.m_queryResults << std::endl;
 
 	return os;
 }

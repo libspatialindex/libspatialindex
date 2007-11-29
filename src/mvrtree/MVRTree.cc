@@ -20,17 +20,10 @@
 //    mhadji@gmail.com
 
 #include "../spatialindex/SpatialIndexImpl.h"
-
 #include "Node.h"
 #include "Leaf.h"
 #include "Index.h"
-
 #include "MVRTree.h"
-
-using std::set;
-using std::stack;
-using std::vector;
-using std::priority_queue;
 
 SpatialIndex::MVRTree::Data::Data(size_t len, byte* pData, TimeRegion& r, id_type id)
 	: m_id(id), m_region(r), m_pData(0), m_dataLength(len)
@@ -512,8 +505,8 @@ void SpatialIndex::MVRTree::MVRTree::addCommand(ICommand* pCommand, CommandType 
 bool SpatialIndex::MVRTree::MVRTree::isIndexValid()
 {
 	bool ret = true;
-	stack<ValidateEntry> st;
-	set<id_type> visitedEntries;
+	std::stack<ValidateEntry> st;
+	std::set<id_type> visitedEntries;
 	size_t degenerateEntries = 0;
 
 	for (size_t cRoot = 0; cRoot < m_roots.size(); cRoot++)
@@ -535,7 +528,7 @@ bool SpatialIndex::MVRTree::MVRTree::isIndexValid()
 	{
 		ValidateEntry e = st.top(); st.pop();
 
-		set<id_type>::iterator itSet = visitedEntries.find(e.m_pNode->m_identifier);
+		std::set<id_type>::iterator itSet = visitedEntries.find(e.m_pNode->m_identifier);
 		if (itSet == visitedEntries.end())
 		{
 			visitedEntries.insert(e.m_pNode->m_identifier);
@@ -1090,7 +1083,7 @@ void SpatialIndex::MVRTree::MVRTree::insertData_impl(size_t dataLength, byte* pD
 	assert(mbr.getDimension() == m_dimension);
 	assert(m_currentTime <= mbr.m_startTime);
 
-	stack<id_type> pathBuffer;
+	std::stack<id_type> pathBuffer;
 	m_currentTime = mbr.m_startTime;
 
 	NodePtr root = readNode(m_roots[m_roots.size() - 1].m_id);
@@ -1111,7 +1104,7 @@ void SpatialIndex::MVRTree::MVRTree::insertData_impl(size_t dataLength, byte* pD
 {
 	assert(mbr.getDimension() == m_dimension);
 
-	stack<id_type> pathBuffer;
+	std::stack<id_type> pathBuffer;
 
 	NodePtr root = readNode(m_roots[m_roots.size() - 1].m_id);
 	NodePtr l = root->chooseSubtree(mbr, level, pathBuffer);
@@ -1132,7 +1125,7 @@ bool SpatialIndex::MVRTree::MVRTree::deleteData_impl(const TimeRegion& mbr, id_t
 
 	m_currentTime = mbr.m_endTime;
 
-	stack<id_type> pathBuffer;
+	std::stack<id_type> pathBuffer;
 	NodePtr root = readNode(m_roots[m_roots.size() - 1].m_id);
 	NodePtr l = root->findLeaf(mbr, id, pathBuffer);
 
@@ -1285,10 +1278,10 @@ void SpatialIndex::MVRTree::MVRTree::rangeQuery(RangeQueryType type, const IShap
 
 	try
 	{
-		set<id_type> visitedNodes;
-		set<id_type> visitedData;
-		stack<NodePtr> st;
-		vector<id_type> ids;
+		std::set<id_type> visitedNodes;
+		std::set<id_type> visitedData;
+		std::stack<NodePtr> st;
+		std::vector<id_type> ids;
 		findRootIdentifiers(*ti, ids);
 
 		for (size_t cRoot = 0; cRoot < ids.size(); cRoot++)
@@ -1351,7 +1344,7 @@ void SpatialIndex::MVRTree::MVRTree::rangeQuery(RangeQueryType type, const IShap
 	}
 }
 
-void SpatialIndex::MVRTree::MVRTree::findRootIdentifiers(const Tools::IInterval& ti, vector<id_type>& ids)
+void SpatialIndex::MVRTree::MVRTree::findRootIdentifiers(const Tools::IInterval& ti, std::vector<id_type>& ids)
 {
 	ids.clear();
 

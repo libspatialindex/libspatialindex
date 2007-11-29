@@ -47,9 +47,7 @@ using namespace std;
 #define INSERT 1
 #define QUERY 2
 
-#define GAUSSIAN 0
 #define UNIFORM 1
-#define ZIPF 2
 
 class RandomGenerator
 {
@@ -57,7 +55,6 @@ public:
 	RandomGenerator(int ds, int sl, int mui, double a)
 		: m_datasetSize(ds),
 		m_simulationLength(sl),
-		m_speedDistribution(ZIPF),
 		m_initialDistribution(UNIFORM),
 		m_maximumUpdateInterval(mui),
 		m_queriesPerTimeInstant(5),
@@ -110,14 +107,13 @@ public:
 	};
 
 	virtual void generate();
-	MyMovingObject* createObject(int id, int st, double xmin, double xmax, double ymin, double ymax, int dist);
+	MyMovingObject* createObject(int id, int st, double xmin, double xmax, double ymin, double ymax);
 	MyMovingObject* createObject(int id, int st, double x, double y);
 	double generateSpeed();
 
 public:
 	int m_datasetSize;
 	int m_simulationLength;
-	int m_speedDistribution;
 	int m_initialDistribution;
 	int m_maximumUpdateInterval;
 	int m_queriesPerTimeInstant;

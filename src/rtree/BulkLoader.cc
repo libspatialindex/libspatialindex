@@ -23,11 +23,9 @@
 #include <unistd.h>
 
 #include "../spatialindex/SpatialIndexImpl.h"
-
 #include "RTree.h"
 #include "Leaf.h"
 #include "Index.h"
-
 #include "BulkLoader.h"
 
 using namespace SpatialIndex::RTree;

@@ -19,10 +19,9 @@
 //  Email:
 //    mhadji@gmail.com
 
-#include <SpatialIndex.h>
+#include "../../include/SpatialIndex.h"
 
 using namespace SpatialIndex;
-using namespace std;
 
 TimeRegion::TimeRegion()
 	: Region(), m_startTime(-std::numeric_limits<double>::max()), m_endTime(std::numeric_limits<double>::max())

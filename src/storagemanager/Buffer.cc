@@ -20,7 +20,6 @@
 //    mhadji@gmail.com
 
 #include "../spatialindex/SpatialIndexImpl.h"
-
 #include "Buffer.h"
 
 using namespace SpatialIndex::StorageManager;

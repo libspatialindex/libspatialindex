@@ -19,7 +19,7 @@
 //  Email:
 //    mhadji@gmail.com
 
-#include <SpatialIndex.h>
+#include "../../include/SpatialIndex.h"
 
 using namespace SpatialIndex;
 
@@ -166,7 +166,7 @@ double MovingPoint::getVCoord(size_t d) const
 	return m_pVCoords[d];
 }
 
-void MovingPoint::getPointAtTime(double t, Tools::Geometry::Point& out) const
+void MovingPoint::getPointAtTime(double t, Point& out) const
 {
 	out.makeDimension(m_dimension);
 	for (size_t cDim = 0; cDim < m_dimension; cDim++)
@@ -229,14 +229,14 @@ void MovingPoint::storeToByteArray(byte** data, size_t& len)
 //
 // IEvolvingShape interface
 //
-void MovingPoint::getVMBR(Tools::Geometry::Region& out) const
+void MovingPoint::getVMBR(Region& out) const
 {
 	out.makeDimension(m_dimension);
 	memcpy(out.m_pLow, m_pVCoords, m_dimension * sizeof(double));
 	memcpy(out.m_pHigh, m_pVCoords, m_dimension * sizeof(double));
 }
 
-void MovingPoint::getMBRAtTime(double t, Tools::Geometry::Region& out) const
+void MovingPoint::getMBRAtTime(double t, Region& out) const
 {
 	out.makeDimension(m_dimension);
 	for (size_t cDim = 0; cDim < m_dimension; cDim++)

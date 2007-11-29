@@ -21,24 +21,11 @@
 
 #include "RandomGenerator.h"
 
-RandomGenerator::MyMovingObject* RandomGenerator::createObject(int id, int st, double xmin, double xmax, double ymin, double ymax, int dist)
+RandomGenerator::MyMovingObject* RandomGenerator::createObject(int id, int st, double xmin, double xmax, double ymin, double ymax)
 {
 	double x, y;
-	if (dist == ZIPF)
-	{
-		x = m_random.nextSkewedDouble(xmin, xmax, Tools::LVL_LOW);
-		y = m_random.nextSkewedDouble(ymin, ymax, Tools::LVL_LOW);
-	}
-	else if (dist == GAUSSIAN)
-	{
-		x = m_random.nextNormalDouble(xmin, xmax);
-		y = m_random.nextNormalDouble(ymin, ymax);
-	}
-	else
-	{
-		x = m_random.nextUniformDouble(xmin, xmax);
-		y = m_random.nextUniformDouble(ymin, ymax);
-	}
+	x = m_random.nextUniformDouble(xmin, xmax);
+	y = m_random.nextUniformDouble(ymin, ymax);
 
 	return createObject(id, st, x, y);
 }
@@ -92,21 +79,7 @@ RandomGenerator::MyMovingObject* RandomGenerator::createObject(int id, int st, d
 
 double RandomGenerator::generateSpeed()
 {
-	if (m_speedDistribution == ZIPF)
-	{
-		return m_random.nextSkewedDouble(m_minSpeed, m_maxSpeed, Tools::LVL_LOW);
-	}
-	else if (m_speedDistribution == GAUSSIAN)
-	{
-		double v = m_random.nextNormalDouble(m_speedMean, m_speedStandardDeviation);
-		if (v > m_maxSpeed) v = m_maxSpeed;
-		else if (v < m_minSpeed) v = m_minSpeed;
-		return v;
-	}
-	else
-	{
-		return m_random.nextUniformDouble(m_minSpeed, m_maxSpeed);
-	}
+	return m_random.nextUniformDouble(m_minSpeed, m_maxSpeed);
 }
 
 void RandomGenerator::generate()
@@ -126,7 +99,7 @@ void RandomGenerator::generate()
 
 	for (int cObject = 0; cObject < m_datasetSize; cObject++)
 	{
-		createObject(cObject, 0, 0.0, m_maxX, 0.0, m_maxY, m_initialDistribution);
+		createObject(cObject, 0, 0.0, m_maxX, 0.0, m_maxY);
 
 		if (cObject % 10000 == 0) cerr << cObject << endl;
 	}
@@ -176,7 +149,7 @@ void RandomGenerator::generate()
 
 			if (bKilled && o->m_outOfBounds)
 			{
-				createObject(o->m_id, Tnow, 0.0, m_maxX, 0.0, m_maxY, UNIFORM);
+				createObject(o->m_id, Tnow, 0.0, m_maxX, 0.0, m_maxY);
 			}
 			else
 			{

@@ -22,21 +22,8 @@
 #ifndef __spatialindex_h
 #define __spatialindex_h
 
-#include <assert.h>
-#include <iostream>
-#include <vector>
-#include <map>
-#include <limits>
-#include <stack>
-#include <queue>
-#include <set>
-#include <cmath>
-#include <string>
-#include <sstream>
-
-#include <tools/Tools.h>
-
-using namespace Tools::Geometry;
+#include "tools/Tools.h"
+using namespace Tools;
 
 # if !HAVE_MEMCPY
 #  define memcpy(d, s, n) bcopy ((s), (d), (n))
@@ -49,8 +36,8 @@ using namespace Tools::Geometry;
 
 namespace SpatialIndex
 {
-	//const std::string VERSION;
-	//const std::string DATE;
+	class Point;
+	class Region;
 
 	typedef int64_t id_type;
 
@@ -64,6 +51,45 @@ namespace SpatialIndex
 	//
 	// Interfaces
 	//
+
+	interface IShape : public virtual ISerializable
+	{
+	public:
+		virtual bool intersectsShape(const IShape& in) const = 0;
+		virtual bool containsShape(const IShape& in) const = 0;
+		virtual bool touchesShape(const IShape& in) const = 0;
+		virtual void getCenter(Point& out) const = 0;
+		virtual size_t getDimension() const = 0;
+		virtual void getMBR(Region& out) const = 0;
+		virtual double getArea() const = 0;
+		virtual double getMinimumDistance(const IShape& in) const = 0;
+		virtual ~IShape() {}
+	}; // IShape
+
+	interface ITimeShape : public virtual IShape, public virtual IInterval
+	{
+	public:
+		virtual bool intersectsShapeInTime(const ITimeShape& in) const = 0;
+		virtual bool intersectsShapeInTime(const IInterval& ivI, const ITimeShape& in) const = 0;
+		virtual bool containsShapeInTime(const ITimeShape& in) const = 0;
+		virtual bool containsShapeInTime(const IInterval& ivI, const ITimeShape& in) const = 0;
+		virtual bool touchesShapeInTime(const ITimeShape& in) const = 0;
+		virtual bool touchesShapeInTime(const IInterval& ivI, const ITimeShape& in) const = 0;
+		virtual double getAreaInTime() const = 0;
+		virtual double getAreaInTime(const IInterval& ivI) const = 0;
+		virtual double getIntersectingAreaInTime(const ITimeShape& r) const = 0;
+		virtual double getIntersectingAreaInTime(const IInterval& ivI, const ITimeShape& r) const = 0;
+		virtual ~ITimeShape() {}
+	}; // ITimeShape
+
+	interface IEvolvingShape : public virtual IShape
+	{
+	public:
+		virtual void getVMBR(Region& out) const = 0;
+		virtual void getMBRAtTime(double t, Region& out) const = 0;
+		virtual ~IEvolvingShape() {}
+	}; // IEvolvingShape
+
 	interface IEntry : public Tools::IObject
 	{
 	public:
@@ -155,7 +181,7 @@ namespace SpatialIndex
 		virtual bool deleteData(const IShape& shape, id_type shapeIdentifier) = 0;
 		virtual void containsWhatQuery(const IShape& query, IVisitor& v)  = 0;
 		virtual void intersectsWithQuery(const IShape& query, IVisitor& v) = 0;
-		virtual void pointLocationQuery(const Tools::Geometry::Point& query, IVisitor& v) = 0;
+		virtual void pointLocationQuery(const Point& query, IVisitor& v) = 0;
 		virtual void nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v, INearestNeighborComparator& nnc) = 0;
 		virtual void nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v) = 0;
 		virtual void selfJoinQuery(const IShape& s, IVisitor& v) = 0;
@@ -201,6 +227,9 @@ namespace SpatialIndex
 	extern std::ostream& operator<<(std::ostream&, const IStatistics&);
 }
 
+#include "Point.h"
+#include "Region.h"
+#include "LineSegment.h"
 #include "TimePoint.h"
 #include "TimeRegion.h"
 #include "MovingPoint.h"

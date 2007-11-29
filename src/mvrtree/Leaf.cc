@@ -20,15 +20,11 @@
 //    mhadji@gmail.com
 
 #include "../spatialindex/SpatialIndexImpl.h"
-
 #include "MVRTree.h"
 #include "Node.h"
 #include "Index.h"
-
 #include "Leaf.h"
 
-using std::stack;
-using std::vector;
 using namespace SpatialIndex::MVRTree;
 
 Leaf::~Leaf()
@@ -65,7 +61,7 @@ void Leaf::split(
 {
 	m_pTree->m_stats.m_splits++;
 
-	vector<size_t> g1, g2;
+	std::vector<size_t> g1, g2;
 
 	switch (m_pTree->m_treeVariant)
 	{

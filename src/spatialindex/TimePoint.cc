@@ -19,7 +19,7 @@
 //  Email:
 //    mhadji@gmail.com
 
-#include <SpatialIndex.h>
+#include "../../include/SpatialIndex.h"
 
 using namespace SpatialIndex;
 

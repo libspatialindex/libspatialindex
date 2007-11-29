@@ -20,15 +20,11 @@
 //    mhadji@gmail.com
 
 #include "../spatialindex/SpatialIndexImpl.h"
-
 #include "MVRTree.h"
 #include "Node.h"
 #include "Index.h"
 #include "Leaf.h"
 
-using std::stack;
-using std::vector;
-using std::set;
 using namespace SpatialIndex::MVRTree;
 
 //
@@ -353,7 +349,7 @@ bool Node::deleteEntry(size_t index)
 }
 
 bool Node::insertData(
-	size_t dataLength, byte* pData, TimeRegion& mbr, id_type id, stack<id_type>& pathBuffer,
+					  size_t dataLength, byte* pData, TimeRegion& mbr, id_type id, std::stack<id_type>& pathBuffer,
 	TimeRegion& mbr2, id_type id2, bool bInsertMbr2, bool bForceAdjust)
 {
 	// we should be certain that when bInsertMbr2 is true the node needs to be version split
@@ -607,7 +603,7 @@ bool Node::insertData(
 	}
 }
 
-void Node::insertData(TimeRegion& mbr1, id_type id1, TimeRegion& mbr2, id_type id2, Node* oldVersion, stack<id_type>& pathBuffer)
+void Node::insertData(TimeRegion& mbr1, id_type id1, TimeRegion& mbr2, id_type id2, Node* oldVersion, std::stack<id_type>& pathBuffer)
 {
 	// this should be called only from insertData above
 	// it tries to fit two new entries into the node
@@ -749,7 +745,7 @@ bool Node::deleteData(id_type id, double delTime, std::stack<id_type>& pathBuffe
 					parent->m_ptrMBR[cSibling]->intersectsShape(m_nodeMBR))
 				{
 					NodePtr sibling = m_pTree->readNode(parent->m_pIdentifier[cSibling]);
-					vector<DeleteDataEntry> toCheck;
+					std::vector<DeleteDataEntry> toCheck;
 					alive = 0;
 
 					// if this child does not have a single parent, we cannot borrow an entry.
@@ -788,7 +784,7 @@ bool Node::deleteData(id_type id, double delTime, std::stack<id_type>& pathBuffe
 					// create interval counters for checking weak version condition
 					// [Yufei Tao, Dimitris Papadias, 'MV3R-Tree: A Spatio-Temporal Access Method for Timestamp and
 					// Interval Queries', Section 3.2]
-					set<double> Si;
+					std::set<double> Si;
 					for (size_t cSiblingChild = 0; cSiblingChild < sibling->m_children; cSiblingChild++)
 					{
 						Si.insert(sibling->m_ptrMBR[cSiblingChild]->m_startTime);
@@ -800,8 +796,8 @@ bool Node::deleteData(id_type id, double delTime, std::stack<id_type>& pathBuffe
 
 					for (size_t cSiblingChild = 0; cSiblingChild < sibling->m_children; cSiblingChild++)
 					{
-						set<double>::iterator it1 = Si.begin();
-						set<double>::iterator it2 = Si.begin();
+						std::set<double>::iterator it1 = Si.begin();
+						std::set<double>::iterator it2 = Si.begin();
 						for (size_t cIndex = 0; cIndex < Si.size() - 1; cIndex++)
 						{
 							it2++;
@@ -811,15 +807,15 @@ bool Node::deleteData(id_type id, double delTime, std::stack<id_type>& pathBuffe
 						}
 					}
 
-					vector<DeleteDataEntry> Sdel;
+					std::vector<DeleteDataEntry> Sdel;
 
 					for (size_t cCheck = 0; cCheck < toCheck.size(); cCheck++)
 					{
 						bool good = true;
 
 						// check if it can be removed without a weak version underflow
-						set<double>::iterator it1 = Si.begin();
-						set<double>::iterator it2 = Si.begin();
+						std::set<double>::iterator it1 = Si.begin();
+						std::set<double>::iterator it2 = Si.begin();
 						for (size_t cIndex = 0; cIndex < Si.size() - 1; cIndex++)
 						{
 							it2++;
@@ -925,7 +921,7 @@ bool Node::deleteData(id_type id, double delTime, std::stack<id_type>& pathBuffe
 				}
 				else
 				{
-					stack<NodePtr> Sins;
+					std::stack<NodePtr> Sins;
 					Sins.push(m_pTree->readNode(m_pIdentifier[child]));
 					while (! Sins.empty())
 					{
@@ -1029,7 +1025,7 @@ bool Node::deleteData(id_type id, double delTime, std::stack<id_type>& pathBuffe
 	return false;
 }
 
-void Node::rtreeSplit(size_t dataLength, byte* pData, TimeRegion& mbr, id_type id, vector<size_t>& group1, vector<size_t>& group2,
+void Node::rtreeSplit(size_t dataLength, byte* pData, TimeRegion& mbr, id_type id, std::vector<size_t>& group1, std::vector<size_t>& group2,
 											TimeRegion& mbr2, id_type id2, bool bInsertMbr2)
 {
 	size_t cChild;

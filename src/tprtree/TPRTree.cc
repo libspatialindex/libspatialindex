@@ -20,16 +20,10 @@
 //    mhadji@gmail.com
 
 #include "../spatialindex/SpatialIndexImpl.h"
-
 #include "Node.h"
 #include "Leaf.h"
 #include "Index.h"
-
 #include "TPRTree.h"
-
-using std::stack;
-using std::vector;
-using std::priority_queue;
 
 TPRTree::Data::Data(size_t len, byte* pData, MovingRegion& r, id_type id)
 	: m_id(id), m_region(r), m_pData(0), m_dataLength(len)
@@ -252,8 +246,8 @@ SpatialIndex::TPRTree::TPRTree::~TPRTree()
 void SpatialIndex::TPRTree::TPRTree::insertData(size_t len, const byte* pData, const IShape& shape, id_type id)
 {
 	if (shape.getDimension() != m_dimension) throw Tools::IllegalArgumentException("insertData: Shape has the wrong number of dimensions.");
-	const Tools::Geometry::IEvolvingShape* es = dynamic_cast<const Tools::Geometry::IEvolvingShape*>(&shape);
-	if (es == 0) throw Tools::IllegalArgumentException("insertData: Shape does not support the Tools::Geometry::IEvolvingShape interface.");
+	const IEvolvingShape* es = dynamic_cast<const IEvolvingShape*>(&shape);
+	if (es == 0) throw Tools::IllegalArgumentException("insertData: Shape does not support the Tools::IEvolvingShape interface.");
 	const Tools::IInterval *pivI  = dynamic_cast<const Tools::IInterval*>(&shape);
 	if (pivI == 0) throw Tools::IllegalArgumentException("insertData: Shape does not support the Tools::IInterval interface.");
 
@@ -314,8 +308,8 @@ void SpatialIndex::TPRTree::TPRTree::insertData(size_t len, const byte* pData, c
 bool SpatialIndex::TPRTree::TPRTree::deleteData(const IShape& shape, id_type id)
 {
 	if (shape.getDimension() != m_dimension) throw Tools::IllegalArgumentException("insertData: Shape has the wrong number of dimensions.");
-	const Tools::Geometry::IEvolvingShape* es = dynamic_cast<const Tools::Geometry::IEvolvingShape*>(&shape);
-	if (es == 0) throw Tools::IllegalArgumentException("insertData: Shape does not support the Tools::Geometry::IEvolvingShape interface.");
+	const IEvolvingShape* es = dynamic_cast<const IEvolvingShape*>(&shape);
+	if (es == 0) throw Tools::IllegalArgumentException("insertData: Shape does not support the Tools::IEvolvingShape interface.");
 	const Tools::IInterval *pivI  = dynamic_cast<const Tools::IInterval*>(&shape);
 	if (pivI == 0) throw Tools::IllegalArgumentException("insertData: Shape does not support the Tools::IInterval interface.");
 
@@ -526,7 +520,7 @@ bool SpatialIndex::TPRTree::TPRTree::isIndexValid()
 {
 	bool ret = true;
 
-	stack<ValidateEntry> st;
+	std::stack<ValidateEntry> st;
 	NodePtr root = readNode(m_rootID);
 
 	if (root->m_level != m_stats.m_treeHeight - 1)
@@ -1047,7 +1041,7 @@ void SpatialIndex::TPRTree::TPRTree::insertData_impl(size_t dataLength, byte* pD
 	assert(mr.getDimension() == m_dimension);
 	assert(m_currentTime <= mr.m_startTime);
 
-	stack<id_type> pathBuffer;
+	std::stack<id_type> pathBuffer;
 	byte* overflowTable = 0;
 
 	try
@@ -1079,7 +1073,7 @@ void SpatialIndex::TPRTree::TPRTree::insertData_impl(size_t dataLength, byte* pD
 {
 	assert(mr.getDimension() == m_dimension);
 
-	stack<id_type> pathBuffer;
+	std::stack<id_type> pathBuffer;
 	NodePtr root = readNode(m_rootID);
 	NodePtr n = root->chooseSubtree(mr, level, pathBuffer);
 
@@ -1097,7 +1091,7 @@ bool SpatialIndex::TPRTree::TPRTree::deleteData_impl(const MovingRegion& mr, id_
 {
 	assert(mr.m_dimension == m_dimension);
 
-	stack<id_type> pathBuffer;
+	std::stack<id_type> pathBuffer;
 
 	NodePtr root = readNode(m_rootID);
 	NodePtr l = root->findLeaf(mr, id, pathBuffer);
@@ -1262,7 +1256,7 @@ void SpatialIndex::TPRTree::TPRTree::rangeQuery(RangeQueryType type, const IShap
 
 	try
 	{
-		stack<NodePtr> st;
+		std::stack<NodePtr> st;
 		NodePtr root = readNode(m_rootID);
 
 		if (root->m_children > 0 && mr->intersectsRegionInTime(root->m_nodeMBR)) st.push(root);
