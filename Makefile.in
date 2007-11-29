@@ -60,6 +60,9 @@ libspatialindex_la_DEPENDENCIES = src/spatialindex/liblibrary.la \
 	src/tools/geometry/libgeometry.la src/tools/tools/libtools.la
 am_libspatialindex_la_OBJECTS =
 libspatialindex_la_OBJECTS = $(am_libspatialindex_la_OBJECTS)
+libspatialindex_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(libspatialindex_la_LDFLAGS) $(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -203,7 +206,16 @@ top_srcdir = @top_srcdir@
 SUBDIRS = src . regressiontest include
 lib_LTLIBRARIES = libspatialindex.la
 libspatialindex_la_SOURCES = 
-libspatialindex_la_LIBADD = src/spatialindex/liblibrary.la src/storagemanager/libstoragemanager.la src/rtree/librtree.la src/mvrtree/libmvrtree.la src/tprtree/libtprtree.la src/tools/geometry/libgeometry.la src/tools/tools/libtools.la
+libspatialindex_la_LIBADD = \
+	src/spatialindex/liblibrary.la \
+	src/storagemanager/libstoragemanager.la \
+	src/rtree/librtree.la \
+	src/mvrtree/libmvrtree.la \
+	src/tprtree/libtprtree.la \
+	src/tools/geometry/libgeometry.la \
+	src/tools/tools/libtools.la
+
+libspatialindex_la_LDFLAGS = -release 1.0.1 
 all: all-recursive
 
 .SUFFIXES:
@@ -268,7 +280,7 @@ clean-libLTLIBRARIES:
 	  rm -f "$${dir}/so_locations"; \
 	done
 libspatialindex.la: $(libspatialindex_la_OBJECTS) $(libspatialindex_la_DEPENDENCIES) 
-	$(LINK) -rpath $(libdir) $(libspatialindex_la_OBJECTS) $(libspatialindex_la_LIBADD) $(LIBS)
+	$(libspatialindex_la_LINK) -rpath $(libdir) $(libspatialindex_la_OBJECTS) $(libspatialindex_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)

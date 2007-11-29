@@ -13,4 +13,4 @@ libspatialindex_la_LIBADD = \
 	src/tools/geometry/libgeometry.la \
 	src/tools/tools/libtools.la
 
-libspatialindex_la_LDFLAGS = -no-undefined -version-info 1:0:1
+libspatialindex_la_LDFLAGS = -release 1.0.1 
