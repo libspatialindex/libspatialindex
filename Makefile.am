@@ -12,5 +12,5 @@ libspatialindex_la_LIBADD = \
 	src/tprtree/libtprtree.la \
 	src/tools/libtools.la
 
-libspatialindex_la_LDFLAGS = -version-info 1:0:1 
+libspatialindex_la_LDFLAGS = -version-info 1:0:0 
 
