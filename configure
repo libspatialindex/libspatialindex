@@ -20380,12 +20380,12 @@ fi;
 
 if test "x$enable_debug" = "xyes"; then
 	CXXFLAGS="$CXXFLAGS -g -DDEBUG"
-	echo "$as_me:$LINENO: result: yes" >&5
-echo "${ECHO_T}yes" >&6
+	echo "$as_me:$LINENO: result: checking wether debug information is enabled... yes" >&5
+echo "${ECHO_T}checking wether debug information is enabled... yes" >&6
 else
 	CXXFLAGS="$CXXFLAGS -O2 -DNDEBUG"
-	echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6
+	echo "$as_me:$LINENO: result: checking wether debug information is enabled... no" >&5
+echo "${ECHO_T}checking wether debug information is enabled... no" >&6
 fi
 
 # Checks for library functions.
