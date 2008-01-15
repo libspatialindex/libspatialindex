@@ -1,0 +1,96 @@
+# Commands
+#
+MAKE = nmake
+RM = -del
+
+.SUFFIXES: .cc
+
+# Check compiler version given in command line
+# nmake -f makefile.vc MSVC_VER=xxxx
+#
+!IFNDEF MSVC_VER
+#assume msvc 7.1
+MSVC_VER=1310
+!ENDIF
+
+!IF $(MSVC_VER) == 1400
+MSVC_CPPFLAGS = /EHs /D "_CRT_SECURE_NO_DEPRECATE"
+!ELSE
+MSVC_CPPFLAGS = /GX
+!ENDIF
+
+#CFLAGS = -Iheaders /GX /MD /GR /Zi /nologo
+#CFLAGS = -Iheaders /GX /MD /GR /O1 /D "NDEBUG" /nologo
+CFLAGS = -Iinclude /MD /GR /O2 /D "NDEBUG" /nologo $(MSVC_CPPFLAGS)
+
+
+VERSION = 12
+LIBNAME =	spatialindex.lib
+DLLNAME = 	spatialindex$(VERSION).dll
+
+OBJ = 	src\mvrtree\Index.obj \
+        src\mvrtree\Leaf.obj \
+        src\mvrtree\MVRtree.obj \
+        src\mvrtree\Node.obj \
+        src\mvrtree\PointerPoolNode.obj \
+        src\mvrtree\Statistics.obj \
+        src\rtree\BulkLoader.obj \
+        src\rtree\Index.obj \
+        src\rtree\Leaf.obj \
+        src\rtree\Node.obj \
+        src\rtree\PointerPoolNode.obj \
+        src\rtree\RTree.obj \
+        src\rtree\Statistics.obj \
+        src\spatialindex\LineSegment.obj \
+        src\spatialindex\MovingPoint.obj \
+        src\spatialindex\MovingRegion.obj \
+        src\spatialindex\Point.obj \
+        src\spatialindex\Region.obj \
+        src\spatialindex\SpatialIndexImpl.obj \
+        src\spatialindex\TimePoint.obj \
+        src\spatialindex\TimeRegion.obj \
+        src\storagemanager\Buffer.obj \
+        src\storagemanager\DiskStorageManager.obj \
+        src\storagemanager\MemoryStorageManager.obj \
+        src\storagemanager\RandomEvictionsBuffer.obj \
+        src\tools\ExternalSort.obj \
+        src\tools\TemporaryFile.obj \
+        src\tools\Tools.obj \
+        src\tprtree\Index.obj \
+        src\tprtree\Leaf.obj \
+        src\tprtree\Node.obj \
+        src\tprtree\PointerPoolNode.obj \
+        src\tprtree\Statistics.obj \
+        src\tprtree\TPRTree.obj 
+        
+	
+
+default:	$(LIBNAME) $(DLLNAME) 
+
+$(LIBNAME):	$(OBJ)
+	if exist $(LIBNAME) del $(LIBNAME)
+	lib /out:$(LIBNAME) $(OBJ)
+
+$(DLLNAME):	$(OBJ)
+	link /dll /debug $(OBJ) /out:$(DLLNAME)
+
+
+  
+
+   
+.cc.obj:                          
+	$(CC) $(CFLAGS) /c $*.cc /Fo$@
+
+
+.c.obj:
+	$(CC) $(CFLAGS) /c $*.c /Fo$@
+
+clean:
+	$(RM) $(LIBNAME)
+	$(RM) $(DLLNAME)
+	$(RM) *.ilk
+	$(RM) *.manifest
+	$(RM) *.obj
+	$(RM) *.pdb
+	
+
