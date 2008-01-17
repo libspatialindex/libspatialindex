@@ -57,6 +57,15 @@ CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
+	--mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
+	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
+	$(LDFLAGS) -o $@
 SOURCES = $(librtree_la_SOURCES)
 DIST_SOURCES = $(librtree_la_SOURCES)
 ETAGS = etags
@@ -169,7 +178,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 noinst_LTLIBRARIES = librtree.la
 INCLUDES = -I../../include 
-librtree_la_SOURCES = BulkLoader.cc Index.cc Leaf.cc Node.cc RTree.cc Statistics.cc
+librtree_la_SOURCES = BulkLoader.cc Index.cc Leaf.cc Node.cc RTree.cc Statistics.cc BulkLoader.h Index.h Leaf.h Node.h PointerPoolNode.h RTree.h Statistics.h
 all: all-am
 
 .SUFFIXES:

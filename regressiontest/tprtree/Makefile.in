@@ -67,6 +67,15 @@ CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
+	--mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
+	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
+	$(LDFLAGS) -o $@
 SOURCES = $(Exhaustive_SOURCES) $(Generator_SOURCES) \
 	$(TPRTreeLoad_SOURCES) $(TPRTreeQuery_SOURCES)
 DIST_SOURCES = $(Exhaustive_SOURCES) $(Generator_SOURCES) \
@@ -180,7 +189,7 @@ target_alias = @target_alias@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 INCLUDES = -I../../include 
-Generator_SOURCES = RandomGenerator.cc Generator.cc 
+Generator_SOURCES = RandomGenerator.cc Generator.cc RandomGenerator.h
 Generator_LDADD = ../../libspatialindex.la
 Exhaustive_SOURCES = Exhaustive.cc 
 Exhaustive_LDADD = ../../libspatialindex.la
