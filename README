@@ -191,11 +191,11 @@ that are stored. There are three main reasons for this decision:
     level customized data processing.
 
 Two storage managers are provided in the current implementation:
+
  1) MemoryStorageManager
  2) DiskStorageManager
 
-
- MemoryStorageManager
+MemoryStorageManager
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 As it is implied be the name, this is a main memory implementation. Everything 
@@ -203,7 +203,7 @@ is stored in main memory using a simple vector. No properties are needed to
 initialize a MemoryStorageManager object. When a MemoryStorageManager instance 
 goes out of scope, all data that it contains are lost.
 
- DiskStorageManager
+DiskStorageManager
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 The disk storage manager uses two random access files for storing information. 
@@ -212,7 +212,8 @@ One with extension .idx and the other with extension .dat.
 A list of all the supported properties that can be provided during 
 initialization, follows:
 
-    Property      Type        Description
+    ---------   -------- ------------------
+    Property      Type     Description
     ---------   -------- ------------------
  1. FileName    VT_PCHAR The base name of the file to open (no extension)
  2. Overwrite   VT_BOOL  If Overwrite is true and a storage manager with the 
@@ -220,6 +221,7 @@ initialization, follows:
                          truncated and overwritten. All data will be lost.
  3. PageSize    VT_ULONG The page size to use. If the specified filename 
                          already exists and Overwrite is false, PageSize is ignored.
+    ---------   -------- ------------------
 
 For entities that are larger than the page size, multiple pages are used. 
 Although, the empty space on the last page is lost. Also, there is no effort 
@@ -383,6 +385,7 @@ complying with the following property strings:
     LeafPoolCapacity           VT_LONG   Default is 100
     RegionPoolCapacity         VT_LONG   Default is 1000
     PointPoolCapacity          VT_LONG   Default is 500
+    -----------------------    --------  -----------------------------------------------
 
 
 ------------------------------------------------------------------------------
