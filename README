@@ -212,16 +212,16 @@ One with extension .idx and the other with extension .dat.
 A list of all the supported properties that can be provided during 
 initialization, follows:
 
----------   -------- ------------------
+=========   ======== ===========================================================
 Property      Type     Description
----------   -------- ------------------
+=========   ======== ===========================================================
 FileName    VT_PCHAR The base name of the file to open (no extension)
 Overwrite   VT_BOOL  If Overwrite is true and a storage manager with the 
                      specified filename already exists, it will be 
                      truncated and overwritten. All data will be lost.
 PageSize    VT_ULONG The page size to use. If the specified filename 
                      already exists and Overwrite is false, PageSize is ignored.
----------   -------- ------------------
+=========   ======== ===========================================================
 
 For entities that are larger than the page size, multiple pages are used. 
 Although, the empty space on the last page is lost. Also, there is no effort 
