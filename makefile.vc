@@ -24,7 +24,7 @@ MSVC_CPPFLAGS = /GX
 CFLAGS = -Iinclude /MD /GR /O2 /D "NDEBUG" /nologo $(MSVC_CPPFLAGS)
 
 
-VERSION = 12
+VERSION = 13
 LIBNAME =	spatialindex.lib
 DLLNAME = 	spatialindex$(VERSION).dll
 
