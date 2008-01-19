@@ -365,27 +365,27 @@ thus can be changed at any time.
 An initialization PropertySet is used for setting the above options, 
 complying with the following property strings:
 
-=======================    ========  ===========================================================
+=======================    =========  ===========================================================
 Property                    Type      Description
-=======================    ========  ===========================================================
-IndexIndentifier           VT_LONG   If specified an existing index will be 
-                                     opened from the supplied storage manager with 
-                                     the given index id. Behavior is unspecified
-                                     if the index id or the storage manager are incorrect.
-Dimension                  VT_ULONG  Dimensionality of the data that will be inserted.
-IndexCapacity              VT_ULONG  The index node capacity. Default is 100.
-LeafCapactiy               VT_ULONG  The leaf node capacity. Default is 100.
-FillFactor                 VT_DOUBLE The fill factor. Default is 70%
-TreeVariant                VT_LONG   Can be one of Linear, Quadratic or Rstar. Default is Rstar
-NearMinimumOverlapFactor   VT_ULONG  Default is 32.
-SplitDistributionFactor    VT_DOUBLE Default is 0.4
-ReinsertFactor             VT_DOUBLE Default is 0.3
-EnsureTightMBRs            VT_BOOL   Default is true
-IndexPoolCapacity          VT_LONG   Default is 100
-LeafPoolCapacity           VT_LONG   Default is 100
-RegionPoolCapacity         VT_LONG   Default is 1000
-PointPoolCapacity          VT_LONG   Default is 500
-=======================    ========  ===========================================================
+=======================    =========  ===========================================================
+IndexIndentifier           VT_LONG    If specified an existing index will be 
+                                      opened from the supplied storage manager with 
+                                      the given index id. Behavior is unspecified
+                                      if the index id or the storage manager are incorrect.
+Dimension                  VT_ULONG   Dimensionality of the data that will be inserted.
+IndexCapacity              VT_ULONG   The index node capacity. Default is 100.
+LeafCapactiy               VT_ULONG   The leaf node capacity. Default is 100.
+FillFactor                 VT_DOUBLE  The fill factor. Default is 70%
+TreeVariant                VT_LONG    Can be one of Linear, Quadratic or Rstar. Default is Rstar
+NearMinimumOverlapFactor   VT_ULONG   Default is 32.
+SplitDistributionFactor    VT_DOUBLE  Default is 0.4
+ReinsertFactor             VT_DOUBLE  Default is 0.3
+EnsureTightMBRs            VT_BOOL    Default is true
+IndexPoolCapacity          VT_LONG    Default is 100
+LeafPoolCapacity           VT_LONG    Default is 100
+RegionPoolCapacity         VT_LONG    Default is 1000
+PointPoolCapacity          VT_LONG    Default is 500
+=======================    =========  ===========================================================
 
 
 ------------------------------------------------------------------------------
