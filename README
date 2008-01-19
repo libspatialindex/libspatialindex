@@ -385,7 +385,7 @@ IndexPoolCapacity          VT_LONG      Default is 100
 LeafPoolCapacity           VT_LONG      Default is 100
 RegionPoolCapacity         VT_LONG      Default is 1000
 PointPoolCapacity          VT_LONG      Default is 500
-=======================    =========  ===========================================================
+=======================    =========    ===========================================================
 
 
 ------------------------------------------------------------------------------
