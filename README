@@ -5,7 +5,7 @@
 :Author: Marios Hadjieleftheriou
 :Contact: marioh@research.att.com
 :Revision: $Revision$
-:Date: $Date: 2007-09-05 17:53:35 -0500 (Wed, 05 Sep 2007) $
+:Date: $Date$
 
 ..  The next heading encountered becomes our H2
 ..
@@ -196,7 +196,7 @@ Two storage managers are provided in the current implementation:
 
 
  MemoryStorageManager
-..............................................................................
+~~~~~~~~~~~~~~~~~~~~~~~
 
 As it is implied be the name, this is a main memory implementation. Everything 
 is stored in main memory using a simple vector. No properties are needed to 
@@ -204,7 +204,7 @@ initialize a MemoryStorageManager object. When a MemoryStorageManager instance
 goes out of scope, all data that it contains are lost.
 
  DiskStorageManager
-..............................................................................
+~~~~~~~~~~~~~~~~~~~~~~~
 
 The disk storage manager uses two random access files for storing information. 
 One with extension .idx and the other with extension .dat.
@@ -363,27 +363,29 @@ thus can be changed at any time.
 An initialization PropertySet is used for setting the above options, 
 complying with the following property strings:
 
+    -----------------------    --------  -----------------------------------------------
     Property                    Type      Description
     -----------------------    --------  -----------------------------------------------
- 1. IndexIndentifier           VT_LONG   If specified an existing index will be 
+    IndexIndentifier           VT_LONG   If specified an existing index will be 
                                          opened from the supplied storage manager with 
                                          the given index id. Behavior is unspecified
                                          if the index id or the storage manager are incorrect.
- 2. Dimension                  VT_ULONG  Dimensionality of the data that will be inserted.
- 3. IndexCapacity              VT_ULONG  The index node capacity. Default is 100.
- 4. LeafCapactiy               VT_ULONG  The leaf node capacity. Default is 100.
- 5. FillFactor                 VT_DOUBLE The fill factor. Default is 70%
- 6. TreeVariant                VT_LONG   Can be one of Linear, Quadratic or Rstar. Default is Rstar
- 7. NearMinimumOverlapFactor   VT_ULONG  Default is 32.
- 8. SplitDistributionFactor    VT_DOUBLE Default is 0.4
- 9. ReinsertFactor             VT_DOUBLE Default is 0.3
- 10.EnsureTightMBRs            VT_BOOL   Default is true
- 11.IndexPoolCapacity          VT_LONG   Default is 100
- 12.LeafPoolCapacity           VT_LONG   Default is 100
- 13.RegionPoolCapacity         VT_LONG   Default is 1000
- 14.PointPoolCapacity          VT_LONG   Default is 500
+    Dimension                  VT_ULONG  Dimensionality of the data that will be inserted.
+    IndexCapacity              VT_ULONG  The index node capacity. Default is 100.
+    LeafCapactiy               VT_ULONG  The leaf node capacity. Default is 100.
+    FillFactor                 VT_DOUBLE The fill factor. Default is 70%
+    TreeVariant                VT_LONG   Can be one of Linear, Quadratic or Rstar. Default is Rstar
+    NearMinimumOverlapFactor   VT_ULONG  Default is 32.
+    SplitDistributionFactor    VT_DOUBLE Default is 0.4
+    ReinsertFactor             VT_DOUBLE Default is 0.3
+    EnsureTightMBRs            VT_BOOL   Default is true
+    IndexPoolCapacity          VT_LONG   Default is 100
+    LeafPoolCapacity           VT_LONG   Default is 100
+    RegionPoolCapacity         VT_LONG   Default is 1000
+    PointPoolCapacity          VT_LONG   Default is 500
 
 
+------------------------------------------------------------------------------
 Contact Information
 ------------------------------------------------------------------------------
 
@@ -391,6 +393,7 @@ You can contact me at mhadji@gmail.com for further assistance. Please read the
 above information carefully and also do not be afraid to browse through the 
 code and especially the test files inside regressiontest directory.
 
+------------------------------------------------------------------------------
 References
 ------------------------------------------------------------------------------
 [guttman84] "R-Trees: A Dynamic Index Structure for Spatial Searching"
