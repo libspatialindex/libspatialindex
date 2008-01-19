@@ -212,16 +212,16 @@ One with extension .idx and the other with extension .dat.
 A list of all the supported properties that can be provided during 
 initialization, follows:
 
-    ---------   -------- ------------------
-    Property      Type     Description
-    ---------   -------- ------------------
- 1. FileName    VT_PCHAR The base name of the file to open (no extension)
- 2. Overwrite   VT_BOOL  If Overwrite is true and a storage manager with the 
-                         specified filename already exists, it will be 
-                         truncated and overwritten. All data will be lost.
- 3. PageSize    VT_ULONG The page size to use. If the specified filename 
-                         already exists and Overwrite is false, PageSize is ignored.
-    ---------   -------- ------------------
+---------   -------- ------------------
+Property      Type     Description
+---------   -------- ------------------
+FileName    VT_PCHAR The base name of the file to open (no extension)
+Overwrite   VT_BOOL  If Overwrite is true and a storage manager with the 
+                     specified filename already exists, it will be 
+                     truncated and overwritten. All data will be lost.
+PageSize    VT_ULONG The page size to use. If the specified filename 
+                     already exists and Overwrite is false, PageSize is ignored.
+---------   -------- ------------------
 
 For entities that are larger than the page size, multiple pages are used. 
 Although, the empty space on the last page is lost. Also, there is no effort 
@@ -240,7 +240,7 @@ written to disk only after flushing the storage manager or during object
 destruction. In case of an unexpected failure changes to the storage manager
 will be lost due to a stale .idx file. Avoiding such disasters is future work.
 
- SpatialIndex Interfaces
+SpatialIndex Interfaces
 ------------------------------------------------------------------------------
 
 A spatial index is any index structure that accesses spatial information 
@@ -333,7 +333,7 @@ It is the users responsibility to manager the index IDs. Associating the
 wrong index ID with the wrong storage manager or index type has undefined
 results.
 
- The RTree Package
+The RTree Package
 ------------------------------------------------------------------------------
 
 The RTree index [guttman84] is a balanced tree structure that consists of 
@@ -365,27 +365,27 @@ thus can be changed at any time.
 An initialization PropertySet is used for setting the above options, 
 complying with the following property strings:
 
-    -----------------------    --------  -----------------------------------------------
-    Property                    Type      Description
-    -----------------------    --------  -----------------------------------------------
-    IndexIndentifier           VT_LONG   If specified an existing index will be 
-                                         opened from the supplied storage manager with 
-                                         the given index id. Behavior is unspecified
-                                         if the index id or the storage manager are incorrect.
-    Dimension                  VT_ULONG  Dimensionality of the data that will be inserted.
-    IndexCapacity              VT_ULONG  The index node capacity. Default is 100.
-    LeafCapactiy               VT_ULONG  The leaf node capacity. Default is 100.
-    FillFactor                 VT_DOUBLE The fill factor. Default is 70%
-    TreeVariant                VT_LONG   Can be one of Linear, Quadratic or Rstar. Default is Rstar
-    NearMinimumOverlapFactor   VT_ULONG  Default is 32.
-    SplitDistributionFactor    VT_DOUBLE Default is 0.4
-    ReinsertFactor             VT_DOUBLE Default is 0.3
-    EnsureTightMBRs            VT_BOOL   Default is true
-    IndexPoolCapacity          VT_LONG   Default is 100
-    LeafPoolCapacity           VT_LONG   Default is 100
-    RegionPoolCapacity         VT_LONG   Default is 1000
-    PointPoolCapacity          VT_LONG   Default is 500
-    -----------------------    --------  -----------------------------------------------
+-----------------------    --------  -----------------------------------------------
+Property                    Type      Description
+-----------------------    --------  -----------------------------------------------
+IndexIndentifier           VT_LONG   If specified an existing index will be 
+                                     opened from the supplied storage manager with 
+                                     the given index id. Behavior is unspecified
+                                     if the index id or the storage manager are incorrect.
+Dimension                  VT_ULONG  Dimensionality of the data that will be inserted.
+IndexCapacity              VT_ULONG  The index node capacity. Default is 100.
+LeafCapactiy               VT_ULONG  The leaf node capacity. Default is 100.
+FillFactor                 VT_DOUBLE The fill factor. Default is 70%
+TreeVariant                VT_LONG   Can be one of Linear, Quadratic or Rstar. Default is Rstar
+NearMinimumOverlapFactor   VT_ULONG  Default is 32.
+SplitDistributionFactor    VT_DOUBLE Default is 0.4
+ReinsertFactor             VT_DOUBLE Default is 0.3
+EnsureTightMBRs            VT_BOOL   Default is true
+IndexPoolCapacity          VT_LONG   Default is 100
+LeafPoolCapacity           VT_LONG   Default is 100
+RegionPoolCapacity         VT_LONG   Default is 1000
+PointPoolCapacity          VT_LONG   Default is 500
+-----------------------    --------  -----------------------------------------------
 
 
 ------------------------------------------------------------------------------
