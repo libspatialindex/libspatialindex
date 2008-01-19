@@ -44,15 +44,17 @@ Installation
 By default include files and library files will be installed in /usr/local. If 
 you would like to use a different installation directory (e.g., in case 
 that you do not have root access) run the configure script with 
-the --prefix option::
+the --prefix option:
+
+::
 
     ./configure --prefix=/home/marioh/usr
 
-  Make the library::
+Make the library::
 
      make
 
-  Install the library::
+Install the library::
 
      make install
 
