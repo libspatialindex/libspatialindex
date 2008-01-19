@@ -365,9 +365,9 @@ thus can be changed at any time.
 An initialization PropertySet is used for setting the above options, 
 complying with the following property strings:
 
-=======================    ===========  ===========================================================
+=======================    ===========  ============================================================
 Property                    Type         Description
-=======================    ===========  ===========================================================
+=======================    ===========  ============================================================
 IndexIndentifier           VT_LONG      If specified an existing index will be 
                                         opened from the supplied storage manager with 
                                         the given index id. Behavior is unspecified
@@ -385,7 +385,7 @@ IndexPoolCapacity          VT_LONG      Default is 100
 LeafPoolCapacity           VT_LONG      Default is 100
 RegionPoolCapacity         VT_LONG      Default is 1000
 PointPoolCapacity          VT_LONG      Default is 500
-=======================    =========    ===========================================================
+=======================    =========    ============================================================
 
 
 ------------------------------------------------------------------------------
