@@ -1,0 +1,299 @@
+2008-01-15 19:33  hobu
+
+	* makefile.vc: add nmake makefile
+
+2007-12-07 20:44  kenneth
+
+	* debian/libspatialindex1.dirs, debian/libspatialindex1.install,
+	  debian/libspatialindex11.dirs, debian/libspatialindex11.install:
+	  Wrong names
+
+2007-12-07 19:58  kenneth
+
+	* configure, debian/rules: Fixed rules file
+
+2007-12-07 18:10  kenneth
+
+	* config.guess, config.sub, debian/control: Updates to the control
+	  file (packaging)
+	  Removal of files that shouldn't be in SVN
+
+2007-11-30 18:04  mhadji
+
+	* Makefile.in, configure, configure.ac:
+
+2007-11-30 16:50  seang
+
+	* Makefile.am: Version info to 1:0:0
+
+2007-11-29 22:26  mhadji
+
+	* INSTALL, configure, configure.ac:
+
+2007-11-29 21:54  mhadji
+
+	* include/LineSegment.h, include/Point.h, include/Region.h,
+	  include/tools/LineSegment.h, include/tools/Point.h,
+	  include/tools/Region.h, src/spatialindex/LineSegment.cc,
+	  src/spatialindex/Point.cc, src/spatialindex/Region.cc,
+	  src/tools/ExternalSort.cc, src/tools/ExternalSort.h,
+	  src/tools/TemporaryFile.cc, src/tools/Tools.cc:
+
+2007-11-29 21:48  mhadji
+
+	* Makefile.am, Makefile.in, aclocal.m4, configure, configure.ac,
+	  include/Makefile.am, include/Makefile.in, include/MovingPoint.h,
+	  include/MovingRegion.h, include/SpatialIndex.h,
+	  include/TimePoint.h, include/TimeRegion.h,
+	  include/tools/Makefile.am, include/tools/Makefile.in,
+	  include/tools/PointerPool.h, include/tools/PoolPointer.h,
+	  include/tools/SmartPointer.h, include/tools/TemporaryFile.h,
+	  include/tools/Tools.h, regressiontest/Makefile.in,
+	  regressiontest/mvrtree/Makefile.in,
+	  regressiontest/rtree/Makefile.in,
+	  regressiontest/tprtree/Generator.cc,
+	  regressiontest/tprtree/Makefile.in,
+	  regressiontest/tprtree/RandomGenerator.cc,
+	  regressiontest/tprtree/RandomGenerator.h, src/Makefile.in,
+	  src/mvrtree/Index.cc, src/mvrtree/Leaf.cc,
+	  src/mvrtree/MVRTree.cc, src/mvrtree/Makefile.in,
+	  src/mvrtree/Node.cc, src/mvrtree/Statistics.cc,
+	  src/rtree/BulkLoader.cc, src/rtree/Index.cc, src/rtree/Leaf.cc,
+	  src/rtree/Makefile.in, src/rtree/Node.cc, src/rtree/RTree.cc,
+	  src/rtree/Statistics.cc, src/spatialindex/Makefile.am,
+	  src/spatialindex/Makefile.in, src/spatialindex/MovingPoint.cc,
+	  src/spatialindex/MovingRegion.cc,
+	  src/spatialindex/SpatialIndexImpl.h,
+	  src/spatialindex/TimePoint.cc, src/spatialindex/TimeRegion.cc,
+	  src/storagemanager/Buffer.cc,
+	  src/storagemanager/DiskStorageManager.cc,
+	  src/storagemanager/Makefile.in,
+	  src/storagemanager/MemoryStorageManager.cc,
+	  src/storagemanager/RandomEvictionsBuffer.cc,
+	  src/tools/Makefile.am, src/tools/Makefile.in, src/tools/geometry,
+	  src/tools/tools, src/tprtree/Index.cc, src/tprtree/Leaf.cc,
+	  src/tprtree/Makefile.in, src/tprtree/Node.cc,
+	  src/tprtree/Statistics.cc, src/tprtree/TPRTree.cc:
+
+2007-11-29 18:00  seang
+
+	* debian, debian/README, debian/README.Debian, debian/changelog,
+	  debian/compat, debian/control, debian/copyright, debian/dirs,
+	  debian/docs, debian/libspatialindex1-dev.dirs,
+	  debian/libspatialindex1-dev.install,
+	  debian/libspatialindex1.doc-base.EX,
+	  debian/libspatialindex11.dirs, debian/libspatialindex11.install,
+	  debian/rules: Add debian directory created by dh_make
+
+2007-11-29 04:05  hobu
+
+	* Makefile.am, Makefile.in: use -version-info instead of -release
+
+2007-11-29 00:59  hobu
+
+	* include/Makefile.in, include/tools/Makefile.in: include
+	  Makefile.in's
+
+2007-11-29 00:55  hobu
+
+	* Makefile.am, Makefile.in: use .'s to separate version info and
+	  don't do -no-undefined
+
+2007-11-29 00:19  hobu
+
+	* Makefile.am: tweak formatting
+
+2007-11-29 00:11  seang
+
+	* Makefile.am: Add version-info to Makefile.am
+
+2007-11-28 23:54  hobu
+
+	* Makefile.am, Makefile.in, include/Makefile.am,
+	  include/tools/Makefile.am: finish incorporating -ltools
+
+2007-11-28 22:48  hobu
+
+	* Makefile.am, Makefile.in, configure, configure.ac,
+	  include/Makefile.am, include/tools/Makefile.am: more progress on
+	  automake for includes directories... close, but not quite
+
+2007-11-28 22:38  hobu
+
+	* include/Makefile.am, include/tools/Makefile.am: Add automake
+	  files for includes
+
+2007-11-28 21:03  hobu
+
+	* Makefile.am, Makefile.in, aclocal.m4, configure, configure.ac,
+	  include/tools, regressiontest/Makefile.in,
+	  regressiontest/mvrtree/Makefile.in,
+	  regressiontest/rtree/Makefile.in,
+	  regressiontest/tprtree/Makefile.in, src/Makefile.am,
+	  src/Makefile.in, src/mvrtree/Makefile.in, src/rtree/Makefile.in,
+	  src/spatialindex/Makefile.in, src/storagemanager/Makefile.in,
+	  src/tools, src/tools/Makefile.in, src/tools/geometry/Makefile.am,
+	  src/tools/geometry/Makefile.in, src/tools/tools/Makefile.am,
+	  src/tools/tools/Makefile.in, src/tprtree/Makefile.in: start
+	  incorporating -ltools into the tree
+
+2007-08-30 15:16  mhadji
+
+	* INSTALL, a: README should be INSTALL, and INSTALL should be
+	  README
+
+2007-08-30 15:15  mhadji
+
+	* INSTALL, README: README should be INSTALL, and INSTALL should be
+	  README
+
+2007-08-30 15:13  mhadji
+
+	* README, a: README file should be INSTALL, and INSTALL should be
+	  README
+
+2007-08-02 04:37  hobu
+
+	* src/storagemanager/DiskStorageManager.cc: revert r9
+
+2007-08-02 04:37  hobu
+
+	* src/rtree/Leaf.cc: revert r10
+
+2007-08-02 04:36  hobu
+
+	* src/rtree/Node.cc: revert r11
+
+2007-08-02 04:36  hobu
+
+	* src/rtree/RTree.cc: revert r12
+
+2007-08-02 04:35  hobu
+
+	* src/mvrtree/MVRTree.cc: revert r13
+
+2007-08-02 04:34  hobu
+
+	* src/spatialindex/SpatialIndexImpl.h: add strings.h
+
+2007-08-02 04:27  hobu
+
+	* src/mvrtree/MVRTree.cc: add strings.h
+
+2007-08-02 04:26  hobu
+
+	* src/rtree/RTree.cc: add strings.h
+
+2007-08-02 04:25  hobu
+
+	* src/rtree/Node.cc: add strings.h
+
+2007-08-02 02:23  hobu
+
+	* src/rtree/Leaf.cc: include <strings.h>
+
+2007-08-02 02:21  hobu
+
+	* src/storagemanager/DiskStorageManager.cc: include <strings.h> in
+	  DiskStorageManager (this is not available on Solaris by default)
+
+2007-08-01 20:49  hobu
+
+	* regressiontest/rtree/test1/data,
+	  regressiontest/rtree/test1/queries: add data and queries for
+	  tests
+
+2007-08-01 20:48  hobu
+
+	* INSTALL, Makefile.in, README, aclocal.m4,
+	  regressiontest/Makefile.in, regressiontest/mvrtree/Makefile.in,
+	  regressiontest/rtree/Makefile.in,
+	  regressiontest/rtree/RTreeLoad.cc,
+	  regressiontest/rtree/RTreeQuery.cc,
+	  regressiontest/tprtree/Makefile.in, src/Makefile.in,
+	  src/mvrtree/Makefile.in, src/rtree/Makefile.in,
+	  src/spatialindex/Makefile.in, src/storagemanager/Makefile.in,
+	  src/tprtree/Makefile.in: add Marios' latest updates
+
+2007-08-01 20:40  hobu
+
+	* spatialindex.111.zip: oops, don't include zip files
+
+2007-08-01 20:37  hobu
+
+	* AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am, Makefile.in,
+	  NEWS, README, aclocal.m4, config.guess, config.sub, configure,
+	  configure.ac, depcomp, include, include/MVRTree.h,
+	  include/MovingPoint.h, include/MovingRegion.h, include/RTree.h,
+	  include/SpatialIndex.h, include/TPRTree.h, include/TimePoint.h,
+	  include/TimeRegion.h, install-sh, ltmain.sh, missing,
+	  mkinstalldirs, regressiontest, regressiontest/Makefile.am,
+	  regressiontest/Makefile.in, regressiontest/mvrtree,
+	  regressiontest/mvrtree/Exhaustive.cc,
+	  regressiontest/mvrtree/Generator.cc,
+	  regressiontest/mvrtree/MVRTreeLoad.cc,
+	  regressiontest/mvrtree/MVRTreeQuery.cc,
+	  regressiontest/mvrtree/Makefile.am,
+	  regressiontest/mvrtree/Makefile.in, regressiontest/mvrtree/test1,
+	  regressiontest/mvrtree/test1/run, regressiontest/mvrtree/test2,
+	  regressiontest/mvrtree/test2/run, regressiontest/rtree,
+	  regressiontest/rtree/Exhaustive.cc,
+	  regressiontest/rtree/Generator.cc,
+	  regressiontest/rtree/Makefile.am,
+	  regressiontest/rtree/Makefile.in,
+	  regressiontest/rtree/RTreeBulkLoad.cc,
+	  regressiontest/rtree/RTreeLoad.cc,
+	  regressiontest/rtree/RTreeQuery.cc, regressiontest/rtree/test1,
+	  regressiontest/rtree/test1/run, regressiontest/rtree/test2,
+	  regressiontest/rtree/test2/run, regressiontest/rtree/test3,
+	  regressiontest/rtree/test3/run, regressiontest/rtree/test4,
+	  regressiontest/rtree/test4/run, regressiontest/tprtree,
+	  regressiontest/tprtree/Exhaustive.cc,
+	  regressiontest/tprtree/Generator.cc,
+	  regressiontest/tprtree/Makefile.am,
+	  regressiontest/tprtree/Makefile.in,
+	  regressiontest/tprtree/RandomGenerator.cc,
+	  regressiontest/tprtree/RandomGenerator.h,
+	  regressiontest/tprtree/TPRTreeLoad.cc,
+	  regressiontest/tprtree/TPRTreeQuery.cc,
+	  regressiontest/tprtree/test1, regressiontest/tprtree/test1/run,
+	  regressiontest/tprtree/test2, regressiontest/tprtree/test2/run,
+	  spatialindex.111.zip, src, src/Makefile.am, src/Makefile.in,
+	  src/mvrtree, src/mvrtree/Index.cc, src/mvrtree/Index.h,
+	  src/mvrtree/Leaf.cc, src/mvrtree/Leaf.h, src/mvrtree/MVRTree.cc,
+	  src/mvrtree/MVRTree.h, src/mvrtree/Makefile.am,
+	  src/mvrtree/Makefile.in, src/mvrtree/Node.cc, src/mvrtree/Node.h,
+	  src/mvrtree/PointerPoolNode.h, src/mvrtree/Statistics.cc,
+	  src/mvrtree/Statistics.h, src/rtree, src/rtree/BulkLoader.cc,
+	  src/rtree/BulkLoader.h, src/rtree/Index.cc, src/rtree/Index.h,
+	  src/rtree/Leaf.cc, src/rtree/Leaf.h, src/rtree/Makefile.am,
+	  src/rtree/Makefile.in, src/rtree/Node.cc, src/rtree/Node.h,
+	  src/rtree/PointerPoolNode.h, src/rtree/RTree.cc,
+	  src/rtree/RTree.h, src/rtree/Statistics.cc,
+	  src/rtree/Statistics.h, src/spatialindex,
+	  src/spatialindex/Makefile.am, src/spatialindex/Makefile.in,
+	  src/spatialindex/MovingPoint.cc,
+	  src/spatialindex/MovingRegion.cc,
+	  src/spatialindex/SpatialIndexImpl.cc,
+	  src/spatialindex/SpatialIndexImpl.h,
+	  src/spatialindex/TimePoint.cc, src/spatialindex/TimeRegion.cc,
+	  src/storagemanager, src/storagemanager/Buffer.cc,
+	  src/storagemanager/Buffer.h,
+	  src/storagemanager/DiskStorageManager.cc,
+	  src/storagemanager/DiskStorageManager.h,
+	  src/storagemanager/Makefile.am, src/storagemanager/Makefile.in,
+	  src/storagemanager/MemoryStorageManager.cc,
+	  src/storagemanager/MemoryStorageManager.h,
+	  src/storagemanager/RandomEvictionsBuffer.cc,
+	  src/storagemanager/RandomEvictionsBuffer.h, src/tprtree,
+	  src/tprtree/Index.cc, src/tprtree/Index.h, src/tprtree/Leaf.cc,
+	  src/tprtree/Leaf.h, src/tprtree/Makefile.am,
+	  src/tprtree/Makefile.in, src/tprtree/Node.cc, src/tprtree/Node.h,
+	  src/tprtree/PointerPoolNode.h, src/tprtree/Statistics.cc,
+	  src/tprtree/Statistics.h, src/tprtree/TPRTree.cc,
+	  src/tprtree/TPRTree.h: add 1.1.1 version of library
+
+2007-08-01 20:32  hobu
+
+	* .: basic layout
+
