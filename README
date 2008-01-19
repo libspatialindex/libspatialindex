@@ -364,6 +364,7 @@ thus can be changed at any time.
 
 An initialization PropertySet is used for setting the above options, 
 complying with the following property strings:
+
 =======================    ========  ===========================================================
 Property                    Type      Description
 =======================    ========  ===========================================================
