@@ -1,29 +1,57 @@
-INSTALLING
+*****************************************************************************
+ SpatialIndex Installation 
+*****************************************************************************
 
-To install the library you need to do the
-following:
+:Author: Marios Hadjieleftheriou
+:Contact: marioh@research.att.com
+:Revision: $Revision$
+:Date: $Date$
 
-  1. Set the CXXFLAGS environment variable to
-  your preferred settings, for example:
+..  The next heading encountered becomes our H2
+..
+
+.. sectnum::
+
+.. contents::
+    :depth: 2
+    :backlinks: top
+    
+To install the library you need to do the following:
+
+1. Set the CXXFLAGS environment variable to your preferred settings, for example:
+
+::
+
     export CXXFLAGS="-O2"
     export CXXFLAGS="-Wall -g"
-  The default flags are "-O2 -DNDEBUG". 
 
-  2. Run:
+The default flags are "-O2 -DNDEBUG". 
+
+2. Run:
+
+::
+
     ./configure
 
-  You can use --enable-debug to compile a debug library.
+You can use --enable-debug to compile a debug library.
 
-  By default include files and library files
-  will be installed in /usr/local. If you would
-  like to use a different installation directory
-  (e.g., in case that you do not have root access)
-  run the configure script with the --prefix option:
+By default include files and library files will be installed in /usr/local. 
+If you would like to use a different installation directory (e.g., in case 
+that you do not have root access) run the configure script with the --prefix option:
+
+::
+
     ./configure --prefix=/home/marioh/usr
 
-  5. Make the library:
+5. Make the library:
+
+::
+  
     make
 
-  6. Install the library:
+6. Install the library:
+
+::
+
     make install
 
