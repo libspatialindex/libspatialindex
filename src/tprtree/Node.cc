@@ -247,7 +247,7 @@ Node::Node() :
 {
 }
 
-Node::Node(TPRTree* pTree, id_type id, size_t level, size_t capacity) :
+Node::Node(SpatialIndex::TPRTree::TPRTree* pTree, id_type id, size_t level, size_t capacity) :
 	m_pTree(pTree),
 	m_level(level),
 	m_identifier(id),

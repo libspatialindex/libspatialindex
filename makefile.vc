@@ -21,24 +21,29 @@ MSVC_CPPFLAGS = /GX
 
 #CFLAGS = -Iheaders /GX /MD /GR /Zi /nologo
 #CFLAGS = -Iheaders /GX /MD /GR /O1 /D "NDEBUG" /nologo
-CFLAGS = -Iinclude /MD /GR /O2 /D "NDEBUG" /nologo $(MSVC_CPPFLAGS)
+CFLAGS = -Iinclude /MD /GR /O2  /D "NDEBUG" /D "PACKAGE_BUGREPORT=\"hobu.inc@gmail.com\"" /nologo $(MSVC_CPPFLAGS)
 
 
 VERSION = 13
 LIBNAME =	spatialindex.lib
 DLLNAME = 	spatialindex$(VERSION).dll
 
+LAS_DIRLIST =  src\mvrtree \
+                src\rtree \
+                src\spatialindex \
+                src\storagemanager \
+                src\tools \
+                src\tprtree
+
 OBJ = 	src\mvrtree\Index.obj \
         src\mvrtree\Leaf.obj \
         src\mvrtree\MVRtree.obj \
         src\mvrtree\Node.obj \
-        src\mvrtree\PointerPoolNode.obj \
         src\mvrtree\Statistics.obj \
         src\rtree\BulkLoader.obj \
         src\rtree\Index.obj \
         src\rtree\Leaf.obj \
         src\rtree\Node.obj \
-        src\rtree\PointerPoolNode.obj \
         src\rtree\RTree.obj \
         src\rtree\Statistics.obj \
         src\spatialindex\LineSegment.obj \
@@ -50,16 +55,16 @@ OBJ = 	src\mvrtree\Index.obj \
         src\spatialindex\TimePoint.obj \
         src\spatialindex\TimeRegion.obj \
         src\storagemanager\Buffer.obj \
-        src\storagemanager\DiskStorageManager.obj \
+#        src\storagemanager\DiskStorageManager.obj \
         src\storagemanager\MemoryStorageManager.obj \
         src\storagemanager\RandomEvictionsBuffer.obj \
         src\tools\ExternalSort.obj \
         src\tools\TemporaryFile.obj \
+        src\tools\rand48.obj \
         src\tools\Tools.obj \
         src\tprtree\Index.obj \
         src\tprtree\Leaf.obj \
         src\tprtree\Node.obj \
-        src\tprtree\PointerPoolNode.obj \
         src\tprtree\Statistics.obj \
         src\tprtree\TPRTree.obj 
         
@@ -92,5 +97,6 @@ clean:
 	$(RM) *.manifest
 	$(RM) *.obj
 	$(RM) *.pdb
-	
+	for %d in ( $(LAS_DIRLIST) ) do \
+		del %d\*.obj 	
 

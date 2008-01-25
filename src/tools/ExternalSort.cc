@@ -1,4 +1,5 @@
-// Spatial Index Library
+
+// Tools Library
 //
 // Copyright (C) 2004  Navel Ltd.
 //
@@ -20,9 +21,9 @@
 //    mhadji@gmail.com
 
 #include <stdio.h>
-#include <unistd.h>
 
-#include "../../include/tools/Tools.h"
+#include "../include/tools/Tools.h"
+
 #include "ExternalSort.h"
 
 using namespace std;
@@ -74,13 +75,13 @@ Tools::ExternalSort::ExternalSort(
 	IObjectStream& source,
 	size_t bufferSize
 )
- : m_cMaxBufferSize(bufferSize),
-   m_bFitsInBuffer(false),
-   m_cNumberOfSortedRecords(0),
-   m_cNumberOfReturnedRecords(0),
-   m_pExternalSource(&source),
-   m_pTemplateRecord(0),
-   m_pComparator(0)
+: m_cMaxBufferSize(bufferSize),
+  m_bFitsInBuffer(false),
+  m_cNumberOfSortedRecords(0),
+  m_cNumberOfReturnedRecords(0),
+  m_pExternalSource(&source),
+  m_pTemplateRecord(0),
+  m_pComparator(0)
 {
 	mergeRuns();
 }
@@ -90,13 +91,13 @@ Tools::ExternalSort::ExternalSort(
 	IObjectComparator& comp,
 	size_t bufferSize
 )
- : m_cMaxBufferSize(bufferSize),
-   m_bFitsInBuffer(false),
-   m_cNumberOfSortedRecords(0),
-   m_cNumberOfReturnedRecords(0),
-   m_pExternalSource(&source),
-   m_pTemplateRecord(0),
-   m_pComparator(&comp)
+: m_cMaxBufferSize(bufferSize),
+  m_bFitsInBuffer(false),
+  m_cNumberOfSortedRecords(0),
+  m_cNumberOfReturnedRecords(0),
+  m_pExternalSource(&source),
+  m_pTemplateRecord(0),
+  m_pComparator(&comp)
 {
 	mergeRuns();
 }
@@ -136,10 +137,12 @@ void Tools::ExternalSort::initializeRuns(
 
 			m_cNumberOfSortedRecords++;
 
-			//if (m_cNumberOfSortedRecords % 1000000 == 0)
-			//	std::cerr
-			//		<< "Tools::ExternalSort::initializeRuns: loaded "
-			//		<< m_cNumberOfSortedRecords << " objects." << std::endl;
+			#ifdef DEBUG
+			if (m_cNumberOfSortedRecords % 1000000 == 0)
+				std::cerr
+					<< "Tools::ExternalSort::initializeRuns: loaded "
+					<< m_cNumberOfSortedRecords << std::endl;
+			#endif
 
 			if (m_pTemplateRecord == 0)
 				m_pTemplateRecord = o->clone();
@@ -176,15 +179,14 @@ void Tools::ExternalSort::mergeRuns()
 
 	while (runs.size() > 1)
 	{
-		TemporaryFile* output = 0;
-		output = new TemporaryFile();
+		TemporaryFile* output = new TemporaryFile();
 
 		priority_queue<
 			PQEntry*,
 			vector<PQEntry*>,
 			PQEntry::ascendingComparator> buffer;
 
-		uint32_t cRun = 0, cMaxRun = 0;
+		size_t cRun = 0, cMaxRun = 0;
 		size_t len;
 		byte* data;
 
@@ -200,7 +202,7 @@ void Tools::ExternalSort::mergeRuns()
 				delete[] data;
 				buffer.push(new PQEntry(pS, m_pComparator, runs[cRun]));
 			}
-			catch (EndOfStreamException& e)
+			catch (EndOfStreamException)
 			{
 				// if there are no more records in the file, do nothing.
 			}
@@ -220,7 +222,7 @@ void Tools::ExternalSort::mergeRuns()
 				pqe->m_spFile->loadNextObject(pqe->m_pRecord);
 				buffer.push(pqe);
 			}
-			catch (EndOfStreamException& e)
+			catch (EndOfStreamException)
 			{
 				// if there are no more records in the file, do nothing.
 				delete pqe;
@@ -228,7 +230,6 @@ void Tools::ExternalSort::mergeRuns()
 			catch (...)
 			{
 				delete pqe;
-				delete output;
 				throw;
 			}
 		}
@@ -295,4 +296,3 @@ void Tools::ExternalSort::rewind()
 		throw;
 	}
 }
-

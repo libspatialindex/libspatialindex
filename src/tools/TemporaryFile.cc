@@ -1,4 +1,4 @@
-// Spatial Index Library
+// Tools Library
 //
 // Copyright (C) 2004  Navel Ltd.
 //
@@ -19,23 +19,20 @@
 //  Email:
 //    mhadji@gmail.com
 
-#include <stdio.h>
-#include <unistd.h>
+#include <io.h>
 
-#include "../../include/tools/Tools.h"
+#include "../include/tools/Tools.h"
 
 Tools::TemporaryFile::TemporaryFile()
- : m_currentFile(0),
-   m_fileSize(0),
-   m_bEOF(false)
+: m_currentFile(0),
+  m_fileSize(0),
+  m_bEOF(false)
 {
 	char p[5 + 6] = "tmpfXXXXXX";
-	int fd = mkstemp(p);
-	if (fd == -1)
+	if (_mktemp(p) != 0)
 		throw IllegalStateException(
 			"Tools::TemporaryFile::TemporaryFile: Cannot create tmp file."
 		);
-	close(fd);
 
 	m_file.open(p, std::ios::in | std::ios::out | std::ios::trunc | std::ios::binary);
 
@@ -69,12 +66,10 @@ void Tools::TemporaryFile::storeNextObject(
 	if (m_fileSize > 1073741824L)
 	{
 		char p[5 + 6] = "tmpfXXXXXX";
-		int fd = mkstemp(p);
-		if (fd == -1)
+		if (_mktemp(p) != 0)
 			throw IllegalStateException(
 				"Tools::TemporaryFile::storeNextObject: Cannot create tmp file."
 			);
-		close(fd);
 
 		m_file.close();
 		m_file.clear();
@@ -236,4 +231,3 @@ void Tools::TemporaryFile::rewindForWriting()
 	m_fileSize = 0;
 	m_bEOF = false;
 }
-

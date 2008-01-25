@@ -65,7 +65,7 @@ namespace SpatialIndex
 			size_t m_dataLength;
 		}; // Data
 
-		extern ISpatialIndex* returnMVRTree(IStorageManager& in, Tools::PropertySet& in);
+		extern ISpatialIndex* returnMVRTree(IStorageManager& ind, Tools::PropertySet& in);
 		extern ISpatialIndex* createNewMVRTree(
 			IStorageManager& in,
 			double fillFactor,

@@ -1,4 +1,4 @@
-// Spatial Index Library
+// Tools Library
 //
 // Copyright (C) 2004  Navel Ltd.
 //

@@ -26,6 +26,9 @@
 #include "Leaf.h"
 
 using namespace SpatialIndex::MVRTree;
+typedef SpatialIndex::IShape IShape;
+typedef SpatialIndex::id_type id_type;
+typedef SpatialIndex::TimeRegion TimeRegion;
 
 //
 // Tools::IObject interface
@@ -791,9 +794,11 @@ bool Node::deleteData(id_type id, double delTime, std::stack<id_type>& pathBuffe
 						Si.insert(sibling->m_ptrMBR[cSiblingChild]->m_endTime);
 					}
 					// duplicate entries have been removed and the set is sorted
-					size_t SiCounts[Si.size() - 1];
-					bzero(SiCounts, (Si.size() - 1) * sizeof(size_t));
-
+	//				size_t SiCounts[Si.size() - 1];
+//					bzero(SiCounts, (Si.size() - 1) * sizeof(size_t));
+                    size_t *SiCounts;
+                    SiCounts = (size_t*) malloc((Si.size()-1)*sizeof(size_t));
+                    
 					for (size_t cSiblingChild = 0; cSiblingChild < sibling->m_children; cSiblingChild++)
 					{
 						std::set<double>::iterator it1 = Si.begin();

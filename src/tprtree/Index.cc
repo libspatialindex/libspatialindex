@@ -31,7 +31,7 @@ Index::~Index()
 {
 }
 
-Index::Index(TPRTree* pTree, id_type id, size_t level) : Node(pTree, id, level, pTree->m_indexCapacity)
+Index::Index(SpatialIndex::TPRTree::TPRTree* pTree, id_type id, size_t level) : Node(pTree, id, level, pTree->m_indexCapacity)
 {
 }
 

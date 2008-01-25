@@ -31,7 +31,7 @@ Leaf::~Leaf()
 {
 }
 
-Leaf::Leaf(RTree* pTree, id_type id): Node(pTree, id, 0, pTree->m_leafCapacity)
+Leaf::Leaf(SpatialIndex::RTree::RTree* pTree, id_type id): Node(pTree, id, 0, pTree->m_leafCapacity)
 {
 }
 

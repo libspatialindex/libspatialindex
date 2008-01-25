@@ -20,7 +20,10 @@
 //    mhadji@gmail.com
 
 #include <stdio.h>
+
+#ifndef _MSC_VER
 #include <unistd.h>
+#endif
 
 #include "../spatialindex/SpatialIndexImpl.h"
 #include "RTree.h"
@@ -222,7 +225,7 @@ void BulkLoader::TmpFile::rewind()
 }
 
 void BulkLoader::bulkLoadUsingSTR(
-	RTree* pTree,
+	SpatialIndex::RTree::RTree* pTree,
 	IDataStream& stream,
 	size_t bindex,
 	size_t bleaf,
@@ -275,7 +278,7 @@ void BulkLoader::bulkLoadUsingSTR(
 }
 
 void BulkLoader::createLevel(
-	RTree* pTree,
+	SpatialIndex::RTree::RTree* pTree,
 	Tools::IObjectStream& stream,
 	size_t dimension,
 	size_t k,
@@ -338,7 +341,7 @@ void BulkLoader::createLevel(
 	}
 }
 
-Node* BulkLoader::createNode(RTree* pTree, std::vector<Tools::SmartPointer<IData> >& e, size_t level)
+Node* BulkLoader::createNode(SpatialIndex::RTree::RTree* pTree, std::vector<Tools::SmartPointer<IData> >& e, size_t level)
 {
 	Node* n;
 

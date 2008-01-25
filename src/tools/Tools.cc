@@ -20,6 +20,8 @@
 //    mhadji@gmail.com
 
 #include "../../include/tools/Tools.h"
+#include "../../include/tools/rand48.hpp"
+
 #include "ExternalSort.h"
 
 Tools::IndexOutOfBoundsException::IndexOutOfBoundsException(size_t i)

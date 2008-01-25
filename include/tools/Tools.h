@@ -22,7 +22,20 @@
 #ifndef __tools_h
 #define __tools_h
 
-#include <stdint.h>
+#ifdef _MSC_VER
+   typedef signed char             int8_t;
+   typedef short int               int16_t;
+   typedef int                     int32_t;
+   typedef __int64                 int64_t;
+   typedef unsigned char           uint8_t;
+   typedef unsigned short int      uint16_t;
+   typedef unsigned int            uint32_t;
+   typedef unsigned __int64        uint64_t;
+#else
+   #include <stdint.h>		
+#endif
+
+//#include <stdint.h>
 #include <assert.h>
 #include <iostream>
 #include <iomanip>
@@ -182,7 +195,7 @@ namespace Tools
 		virtual double getUpperBound() const = 0;
 		virtual void setBounds(double, double) = 0;
 		virtual bool intersectsInterval(const IInterval&) const = 0;
-		virtual bool intersectsInterval(IntervalType type, double start, double end) const = 0;
+		virtual bool intersectsInterval(IntervalType type, const double start, const double end) const = 0;
 		virtual bool containsInterval(const IInterval&) const = 0;
 		virtual IntervalType getIntervalType() const = 0;
 	}; // IInterval
@@ -275,7 +288,10 @@ namespace Tools
 			void* pvVal;               // VT_PVOID
 		} m_val;
 	}; // Variant
-
+	
+	class PropertySet;
+	std::ostream& operator<<(std::ostream& os, const Tools::PropertySet& p);
+	    
 	class PropertySet : public ISerializable
 	{
 	public:
@@ -300,7 +316,7 @@ namespace Tools
 		);
 	}; // PropertySet
 
-	std::ostream& operator<<(std::ostream& os, const Tools::PropertySet& p);
+
 
 	// does not support degenerate intervals.
 	class Interval : public IInterval
@@ -318,7 +334,7 @@ namespace Tools
 		virtual double getUpperBound() const;
 		virtual void setBounds(double, double);
 		virtual bool intersectsInterval(const IInterval&) const;
-		virtual bool intersectsInterval(IntervalType type, double start, double end) const;
+		virtual bool intersectsInterval(IntervalType type, const double start, const double end) const;
 		virtual bool containsInterval(const IInterval&) const;
 		virtual IntervalType getIntervalType() const;
 		virtual ~Interval() {}

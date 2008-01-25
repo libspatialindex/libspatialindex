@@ -24,7 +24,9 @@
 
 using namespace SpatialIndex::StorageManager;
 using std::map;
-
+typedef SpatialIndex::id_type id_type;
+typedef SpatialIndex::TimeRegion TimeRegion;
+    
 Buffer::Buffer(IStorageManager& sm, Tools::PropertySet& ps) :
 	m_capacity(10),
 	m_bWriteThrough(false),

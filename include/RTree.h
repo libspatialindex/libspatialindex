@@ -70,7 +70,7 @@ namespace SpatialIndex
 			size_t m_dataLength;
 		}; // Data
 
-		extern ISpatialIndex* returnRTree(IStorageManager& in, Tools::PropertySet& in);
+		extern ISpatialIndex* returnRTree(IStorageManager& ind, Tools::PropertySet& in);
 		extern ISpatialIndex* createNewRTree(
 			IStorageManager& sm,
 			double fillFactor,

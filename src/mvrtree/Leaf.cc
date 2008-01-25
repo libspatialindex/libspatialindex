@@ -25,6 +25,8 @@
 #include "Index.h"
 #include "Leaf.h"
 
+typedef SpatialIndex::id_type id_type;
+typedef SpatialIndex::TimeRegion TimeRegion;
 using namespace SpatialIndex::MVRTree;
 
 Leaf::~Leaf()

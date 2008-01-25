@@ -21,6 +21,7 @@
 
 #include <time.h>
 #include <stdlib.h>
+#include "../include/tools/rand48.hpp"
 
 #include "../spatialindex/SpatialIndexImpl.h"
 #include "RandomEvictionsBuffer.h"
@@ -52,6 +53,7 @@ IBuffer* SpatialIndex::StorageManager::createNewRandomEvictionsBuffer(IStorageMa
 
 RandomEvictionsBuffer::RandomEvictionsBuffer(IStorageManager& sm, Tools::PropertySet& ps) : Buffer(sm, ps)
 {
+
 	srand48(time(NULL));
 }
 
@@ -72,7 +74,11 @@ void RandomEvictionsBuffer::removeEntry()
 {
 	if (m_buffer.size() == 0) return;
 
-	size_t entry = static_cast<size_t>(floor(((double) m_buffer.size()) * drand48()));
+    double random;
+
+    random =  drand48();
+
+	size_t entry = static_cast<size_t>(floor(((double) m_buffer.size()) * random));
 
 	std::map<id_type, Entry*>::iterator it = m_buffer.begin();
 	for (size_t cIndex = 0; cIndex < entry; cIndex++) it++;

@@ -24,15 +24,20 @@
 
 #include "tools/Tools.h"
 using namespace Tools;
-
-# if !HAVE_MEMCPY
-#  define memcpy(d, s, n) bcopy ((s), (d), (n))
-#  define memmove(d, s, n) bcopy ((s), (d), (n))
-# endif
-
+//
+//# if !HAVE_MEMCPY
+//#  define memcpy(d, s, n) bcopy ((s), (d), (n))
+//#  define memmove(d, s, n) bcopy ((s), (d), (n))
+//# endif
+//
 # if !HAVE_BZERO
 #  define bzero(d, n) memset((d), 0, (n))
 # endif
+
+#ifndef M_PI_2
+	#define M_PI_2 1.57079632679489661922
+#endif
+
 
 namespace SpatialIndex
 {
@@ -216,7 +221,7 @@ namespace SpatialIndex
 		extern IStorageManager* createNewDiskStorageManager(std::string& baseName, size_t pageSize);
 		extern IStorageManager* loadDiskStorageManager(std::string& baseName);
 
-		extern IBuffer* returnRandomEvictionsBuffer(IStorageManager& in, Tools::PropertySet& in);
+		extern IBuffer* returnRandomEvictionsBuffer(IStorageManager& ind, Tools::PropertySet& in);
 		extern IBuffer* createNewRandomEvictionsBuffer(IStorageManager& in, size_t capacity, bool bWriteThrough);
 	}
 
