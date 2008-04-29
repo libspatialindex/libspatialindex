@@ -24,12 +24,7 @@
 
 #include "tools/Tools.h"
 using namespace Tools;
-//
-//# if !HAVE_MEMCPY
-//#  define memcpy(d, s, n) bcopy ((s), (d), (n))
-//#  define memmove(d, s, n) bcopy ((s), (d), (n))
-//# endif
-//
+
 # if !HAVE_BZERO
 #  define bzero(d, n) memset((d), 0, (n))
 # endif
@@ -37,7 +32,6 @@ using namespace Tools;
 #ifndef M_PI_2
 	#define M_PI_2 1.57079632679489661922
 #endif
-
 
 namespace SpatialIndex
 {
