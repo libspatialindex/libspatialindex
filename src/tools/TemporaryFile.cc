@@ -19,9 +19,14 @@
 //  Email:
 //    mhadji@gmail.com
 
+#ifndef _MSC_VER
+#include <stdio.h>
+#include <unistd.h>
+#else
 #include <io.h>
+#endif
 
-#include "../include/tools/Tools.h"
+#include "../../include/tools/Tools.h"
 
 Tools::TemporaryFile::TemporaryFile()
 : m_currentFile(0),
@@ -29,10 +34,20 @@ Tools::TemporaryFile::TemporaryFile()
   m_bEOF(false)
 {
 	char p[5 + 6] = "tmpfXXXXXX";
+
+#ifndef _MSC_VER
+	int fd = mkstemp(p);
+	if (fd == -1)
+#else
 	if (_mktemp(p) != 0)
+#endif
 		throw IllegalStateException(
 			"Tools::TemporaryFile::TemporaryFile: Cannot create tmp file."
 		);
+
+#ifndef _MSC_VER
+	close(fd);
+#endif
 
 	m_file.open(p, std::ios::in | std::ios::out | std::ios::trunc | std::ios::binary);
 
@@ -66,10 +81,19 @@ void Tools::TemporaryFile::storeNextObject(
 	if (m_fileSize > 1073741824L)
 	{
 		char p[5 + 6] = "tmpfXXXXXX";
+#ifndef _MSC_VER
+		int fd = mkstemp(p);
+		if (fd == -1)
+#else
 		if (_mktemp(p) != 0)
+#endif
 			throw IllegalStateException(
 				"Tools::TemporaryFile::storeNextObject: Cannot create tmp file."
 			);
+
+#ifndef _MSC_VER
+		close(fd);
+#endif
 
 		m_file.close();
 		m_file.clear();

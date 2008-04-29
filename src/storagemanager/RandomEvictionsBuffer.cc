@@ -21,7 +21,7 @@
 
 #include <time.h>
 #include <stdlib.h>
-#include "../include/tools/rand48.hpp"
+#include "../../include/tools/rand48.h"
 
 #include "../spatialindex/SpatialIndexImpl.h"
 #include "RandomEvictionsBuffer.h"

@@ -20,7 +20,7 @@
 //    mhadji@gmail.com
 
 #include "../../include/tools/Tools.h"
-#include "../../include/tools/rand48.hpp"
+#include "../../include/tools/rand48.h"
 
 #include "ExternalSort.h"
 
