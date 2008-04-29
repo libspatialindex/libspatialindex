@@ -172,9 +172,7 @@ bool LineSegment::touchesShape(const IShape& s) const
 
 void LineSegment::getCenter(Point& out) const
 {
-//	double coords[m_dimension];
-    double *coords;
-    coords = (double*) malloc(m_dimension * sizeof(double));
+	double coords = new double[m_dimension];
 	for (size_t cDim = 0; cDim < m_dimension; cDim++)
 	{
 		coords[cDim] =
@@ -182,6 +180,7 @@ void LineSegment::getCenter(Point& out) const
 			std::min(m_pStartPoint[cDim], m_pEndPoint[cDim]);
 	}
 
+	delete[] coords;
 	out = Point(coords, m_dimension);
 }
 
@@ -192,18 +191,16 @@ size_t LineSegment::getDimension() const
 
 void LineSegment::getMBR(Region& out) const
 {
-	//double low[m_dimension];
-	//double high[m_dimension];
-    double *low;
-    double *high;
-    low = (double*) malloc(m_dimension * sizeof(double));
-    high = (double*) malloc(m_dimension * sizeof(double));
+	double low = new double[m_dimension];
+	double high = new double[m_dimension];
 	for (size_t cDim = 0; cDim < m_dimension; cDim++)
 	{
 		low[cDim] = std::min(m_pStartPoint[cDim], m_pEndPoint[cDim]);
 		high[cDim] = std::max(m_pStartPoint[cDim], m_pEndPoint[cDim]);
 	}
 
+	delete[] low;
+	delete[] high;
 	out = Region(low, high, m_dimension);
 }
 
