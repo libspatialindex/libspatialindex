@@ -172,7 +172,7 @@ bool LineSegment::touchesShape(const IShape& s) const
 
 void LineSegment::getCenter(Point& out) const
 {
-	double coords = new double[m_dimension];
+	double* coords = new double[m_dimension];
 	for (size_t cDim = 0; cDim < m_dimension; cDim++)
 	{
 		coords[cDim] =
@@ -180,8 +180,8 @@ void LineSegment::getCenter(Point& out) const
 			std::min(m_pStartPoint[cDim], m_pEndPoint[cDim]);
 	}
 
-	delete[] coords;
 	out = Point(coords, m_dimension);
+	delete[] coords;
 }
 
 size_t LineSegment::getDimension() const
@@ -191,17 +191,17 @@ size_t LineSegment::getDimension() const
 
 void LineSegment::getMBR(Region& out) const
 {
-	double low = new double[m_dimension];
-	double high = new double[m_dimension];
+	double* low = new double[m_dimension];
+	double* high = new double[m_dimension];
 	for (size_t cDim = 0; cDim < m_dimension; cDim++)
 	{
 		low[cDim] = std::min(m_pStartPoint[cDim], m_pEndPoint[cDim]);
 		high[cDim] = std::max(m_pStartPoint[cDim], m_pEndPoint[cDim]);
 	}
 
+	out = Region(low, high, m_dimension);
 	delete[] low;
 	delete[] high;
-	out = Region(low, high, m_dimension);
 }
 
 double LineSegment::getArea() const

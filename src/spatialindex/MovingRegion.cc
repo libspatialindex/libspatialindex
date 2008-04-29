@@ -580,8 +580,8 @@ double MovingRegion::getCenterDistanceInTime(const IInterval& ivI, const MovingR
 
 	double H = tmax - tmin;
 
-	double dx = new double[m_dimension];
-	double dv = new double[m_dimension];
+	double* dx = new double[m_dimension];
+	double* dv = new double[m_dimension];
 	double a = 0.0, b = 0.0, c = 0.0, f = 0.0, l = 0.0, m = 0.0, n = 0.0;
 
 	for (size_t cDim = 0; cDim < m_dimension; cDim++)
