@@ -580,11 +580,8 @@ double MovingRegion::getCenterDistanceInTime(const IInterval& ivI, const MovingR
 
 	double H = tmax - tmin;
 
-//	double dx[m_dimension], dv[m_dimension];
-	double *dx;
-	double *dv;
-	dx = (double*) malloc(m_dimension * sizeof(double));
-	dv = (double*) malloc(m_dimension * sizeof(double));
+	double dx = new double[m_dimension];
+	double dv = new double[m_dimension];
 	double a = 0.0, b = 0.0, c = 0.0, f = 0.0, l = 0.0, m = 0.0, n = 0.0;
 
 	for (size_t cDim = 0; cDim < m_dimension; cDim++)
@@ -612,6 +609,9 @@ double MovingRegion::getCenterDistanceInTime(const IInterval& ivI, const MovingR
 	l = 2.0 * a * H + b;
 	m = 4.0 * a * c - b * b;
 	n = 2.0 * std::sqrt(a);
+
+	delete[] dx;
+	delete[] dv;
 
 	return (l * f + log(l / n + f) * m / n - b * std::sqrt(c) - std::log(b / n + std::sqrt(c)) * m / n) / (4.0 * a);
 }
