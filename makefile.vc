@@ -13,16 +13,7 @@ RM = -del
 MSVC_VER=1310
 !ENDIF
 
-!IF $(MSVC_VER) == 1400
-MSVC_CPPFLAGS = /EHs /D "_CRT_SECURE_NO_DEPRECATE"
-!ELSE
-MSVC_CPPFLAGS = /GX
-!ENDIF
-
-#CFLAGS = -Iheaders /GX /MD /GR /Zi /nologo
-#CFLAGS = -Iheaders /GX /MD /GR /O1 /D "NDEBUG" /nologo
-CFLAGS = -Iinclude /MD /GR /O2  /D "NDEBUG" /D "PACKAGE_BUGREPORT=\"hobu.inc@gmail.com\"" /nologo $(MSVC_CPPFLAGS)
-
+CFLAGS = -Iinclude /EHs /MD /GR /O2  /D "NDEBUG" /D "PACKAGE_BUGREPORT=\"hobu.inc@gmail.com\"" /nologo
 
 VERSION = 13
 LIBNAME =	spatialindex.lib
@@ -68,7 +59,6 @@ OBJ = 	src\mvrtree\Index.obj \
         src\tprtree\Statistics.obj \
         src\tprtree\TPRTree.obj 
         
-	
 
 default:	$(LIBNAME) $(DLLNAME) 
 
