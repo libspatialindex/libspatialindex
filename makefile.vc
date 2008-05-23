@@ -46,7 +46,7 @@ OBJ = 	src\mvrtree\Index.obj \
         src\spatialindex\TimePoint.obj \
         src\spatialindex\TimeRegion.obj \
         src\storagemanager\Buffer.obj \
-#        src\storagemanager\DiskStorageManager.obj \
+        src\storagemanager\DiskStorageManager.obj \
         src\storagemanager\MemoryStorageManager.obj \
         src\storagemanager\RandomEvictionsBuffer.obj \
         src\tools\ExternalSort.obj \
