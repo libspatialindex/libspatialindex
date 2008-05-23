@@ -46,8 +46,8 @@ namespace SpatialIndex
 				std::vector<id_type> m_pages;
 			};
 
-			int m_dataFile;
-			int m_indexFile;
+			std::fstream m_dataFile;
+			std::fstream m_indexFile;
 			size_t m_pageSize;
 			id_type m_nextPage;
 			std::priority_queue<id_type, std::vector<id_type>, std::greater<id_type> > m_emptyPages;

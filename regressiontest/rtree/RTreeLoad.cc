@@ -78,6 +78,7 @@ int main(int argc, char** argv)
 		// Create a new storage manager with the provided base name and a 4K page size.
 		string baseName = argv[2];
 		IStorageManager* diskfile = StorageManager::createNewDiskStorageManager(baseName, 4096);
+
 		StorageManager::IBuffer* file = StorageManager::createNewRandomEvictionsBuffer(*diskfile, 10, false);
 			// applies a main memory random buffer on top of the persistent storage manager
 			// (LRU buffer, etc can be created the same way).
@@ -87,6 +88,7 @@ int main(int argc, char** argv)
 		id_type indexIdentifier;
 		ISpatialIndex* tree = RTree::createNewRTree(*file, 0.7, atoi(argv[3]), atoi(argv[3]), 2, SpatialIndex::RTree::RV_RSTAR, indexIdentifier);
 
+		std::cout << "a" << std::endl;
 		size_t count = 0;
 		id_type id;
 		uint32_t op;
