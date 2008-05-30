@@ -539,7 +539,7 @@ Tools::IntervalType Tools::Interval::getIntervalType() const
 Tools::Random::Random()
 {
 	m_pBuffer = 0;
-	initDrand(0x4A76FF11, 0xD31A);
+	initDrand(time(0), 0xD31A);
 }
 
 Tools::Random::Random(uint32_t seed, uint16_t xsubi0)
