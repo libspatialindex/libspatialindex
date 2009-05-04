@@ -19,6 +19,8 @@
 //  Email:
 //    mhadji@gmail.com
 
+#include <cstring>
+
 #include "../../include/SpatialIndex.h"
 
 using namespace SpatialIndex;

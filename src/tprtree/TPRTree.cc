@@ -19,6 +19,8 @@
 //  Email:
 //    mhadji@gmail.com
 
+#include <cstring>
+
 #include "../spatialindex/SpatialIndexImpl.h"
 #include "Node.h"
 #include "Leaf.h"

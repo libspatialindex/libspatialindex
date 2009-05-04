@@ -25,6 +25,8 @@
 
 #include "../../include/SpatialIndex.h"
 
+#include <cstring>
+
 using namespace SpatialIndex;
 using namespace std;
 

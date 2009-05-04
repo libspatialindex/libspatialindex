@@ -20,6 +20,7 @@
 //    mhadji@gmail.com
 
 #include <fstream>
+#include <cstring>
 
 #include "../spatialindex/SpatialIndexImpl.h"
 #include "DiskStorageManager.h"

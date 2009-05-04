@@ -19,6 +19,7 @@
 //  Email:
 //    mhadji@gmail.com
 
+#include <cstring>
 #include <stdio.h>
 
 #ifndef _MSC_VER

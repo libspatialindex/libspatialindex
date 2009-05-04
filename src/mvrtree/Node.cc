@@ -25,6 +25,8 @@
 #include "Index.h"
 #include "Leaf.h"
 
+#include <cstring>
+
 using namespace SpatialIndex::MVRTree;
 typedef SpatialIndex::IShape IShape;
 typedef SpatialIndex::id_type id_type;

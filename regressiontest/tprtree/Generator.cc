@@ -19,6 +19,8 @@
 //  Email:
 //    mhadji@gmail.com
 
+#include <cstring>
+
 #include "RandomGenerator.h"
 
 int main(int argc, char** argv)

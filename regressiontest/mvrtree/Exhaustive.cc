@@ -25,6 +25,8 @@
 #include <map>
 #include <queue>
 #include <cmath>
+#include <cstring>
+#include <limits>
 
 using namespace std;
 

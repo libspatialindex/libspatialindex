@@ -25,6 +25,8 @@
 #include "Index.h"
 #include "MVRTree.h"
 
+#include <cstring>
+
 SpatialIndex::MVRTree::Data::Data(size_t len, byte* pData, TimeRegion& r, id_type id)
 	: m_id(id), m_region(r), m_pData(0), m_dataLength(len)
 {

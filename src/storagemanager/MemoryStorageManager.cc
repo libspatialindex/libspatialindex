@@ -20,6 +20,7 @@
 //    mhadji@gmail.com
 
 #include <stdexcept>
+#include <cstring>
 
 #include "../spatialindex/SpatialIndexImpl.h"
 #include "MemoryStorageManager.h"

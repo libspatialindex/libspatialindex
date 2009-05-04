@@ -20,6 +20,7 @@
 //    mhadji@gmail.com
 
 #include <assert.h>
+#include <cstring>
 #include <iostream>
 #include <fstream>
 #include <map>

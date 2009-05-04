@@ -19,6 +19,8 @@
 //  Email:
 //    mhadji@gmail.com
 
+#include <cstring>
+
 #ifndef __storagemanager_memorystoragemanager_h
 #define __storagemanager_memorystoragemanager_h
 

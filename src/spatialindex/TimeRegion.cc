@@ -21,6 +21,8 @@
 
 #include "../../include/SpatialIndex.h"
 
+#include <cstring>
+
 using namespace SpatialIndex;
 
 TimeRegion::TimeRegion()

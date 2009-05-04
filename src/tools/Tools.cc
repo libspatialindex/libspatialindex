@@ -23,6 +23,7 @@
 #include "../../include/tools/rand48.h"
 
 #include "ExternalSort.h"
+#include <cstring>
 
 Tools::IndexOutOfBoundsException::IndexOutOfBoundsException(size_t i)
 {

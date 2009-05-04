@@ -21,6 +21,10 @@
 
 // NOTE: Please read README.txt before browsing this code.
 
+#include <cstring>
+
+#include <cstring>
+
 // include library header file.
 #include <SpatialIndex.h>
 
