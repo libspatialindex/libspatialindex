@@ -19,6 +19,7 @@
 //  Email:
 //    mhadji@gmail.com
 
+#include <time.h>
 #include "../../include/tools/Tools.h"
 #include "../../include/tools/rand48.h"
 
