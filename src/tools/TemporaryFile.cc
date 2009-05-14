@@ -39,7 +39,7 @@ Tools::TemporaryFile::TemporaryFile()
 	int fd = mkstemp(p);
 	if (fd == -1)
 #else
-	if (_mktemp(p) != 0)
+	if (!_mktemp(p))
 #endif
 		throw IllegalStateException(
 			"Tools::TemporaryFile::TemporaryFile: Cannot create tmp file."
