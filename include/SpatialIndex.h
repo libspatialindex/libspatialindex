@@ -33,6 +33,9 @@ using namespace Tools;
 	#define M_PI_2 1.57079632679489661922
 #endif
 
+// tons of warnings about inheritence via dominance on msvc
+#pragma warning(disable:4250)
+
 namespace SpatialIndex
 {
 	class Point;
