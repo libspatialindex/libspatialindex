@@ -58,16 +58,16 @@ MSVCVER = 0.0
 
 !IF "$(BUILD_DEBUG)" == "YES"
 OPTFLAGS= /nologo /MDd /EHsc /Z7 /W4 /D_CRT_SECURE_NO_DEPRECATE /D_CRT_NONSTDC_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /DDEBUG /D_DEBUG /DDEBUG /Fd$(SPATIALINDEX_HOME)\spatialindex.pdb
-LAS_LIB = libspatialindex_d.lib
-LAS_DLL = libspatialindex_d$(DLL_VERSION).dll
-LAS_LIB_DLL = libspatialindex_i.lib
+LAS_LIB = spatialindex_d.lib
+LAS_DLL = spatialindex_d$(DLL_VERSION).dll
+LAS_LIB_DLL = spatialindex_i.lib
 !ELSE
 
 # You may need to remove /GR if you are statically linking libLAS
 OPTFLAGS=/nologo /MD /EHsc /Ox /GR /W2 /D_CRT_SECURE_NO_DEPRECATE /D_CRT_NONSTDC_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /DNDEBUG /D "PACKAGE_BUGREPORT=\"hobu.inc@gmail.com\""
-LAS_LIB = libspatialindex.lib
-LAS_DLL = libspatialindex$(DLL_VERSION).dll
-LAS_LIB_DLL = libspatialindex_i.lib
+LAS_LIB = spatialindex.lib
+LAS_DLL = spatialindex$(DLL_VERSION).dll
+LAS_LIB_DLL = spatialindex_i.lib
 !ENDIF
 
 # Check if multiple process build available
