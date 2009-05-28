@@ -1,23 +1,94 @@
+
+.SUFFIXES: .cc
+
+SPATIALINDEX_HOME=.
+DLL_VERSION = 1
+
+
+###############################################################################
+# Set BUILD_DEBUG balue to YES if you want to make debug build
+# and to prepare not optimized binaries.
+!IFNDEF BUILD_DEBUG 
+BUILD_DEBUG = NO
+!ENDIF
+
+
+###############################################################################
+# Derive version of Visual C++ being used from NMAKE if not specified
+#
+# WARNING:
+# If we should expect variety of NMAKE build versions, tests below may fail
+# and we will need to fall back to setting MSVCVER as command line parameter.
+#
+!IF "$(_NMAKE_VER)" == ""
+MSVCVER = 4.0
+!ERROR *** Failed to determine version of Visual C++
+!ELSEIF "$(_NMAKE_VER)" == "162"
+MSVCVER = 5.0
+!ERROR *** Detected Visual C++ 5.0 - NOT SUPPORTED
+!ELSEIF "$(_NMAKE_VER)" == "6.00.8168.0"
+MSVCVER = 6.0
+!ERROR *** Detected Visual C++ 6.0 - NOT SUPPORTED
+!ELSEIF "$(_NMAKE_VER)" == "7.00.9466"
+MSVCVER = 7.0
+!ELSEIF "$(_NMAKE_VER)" == "7.10.3077"
+MSVCVER = 7.1
+!ELSEIF "$(_NMAKE_VER)" == "8.00.50727.42"
+MSVCVER = 8.0
+!ELSEIF "$(_NMAKE_VER)" == "8.00.50727.762"
+MSVCVER = 8.0
+!ELSEIF "$(_NMAKE_VER)" == "9.00.21022.08"
+MSVCVER = 9.0
+!ELSEIF "$(_NMAKE_VER)" == "9.00.30729.01"
+MSVCVER = 9.0
+!ELSE
+MSVCVER = 0.0
+!ENDIF
+
+!IF "$(MSVCVER)" == "0.0"
+!MESSAGE *** Cannot determined Visual C++ version
+!ERROR *** Aborting make job
+!ELSE
+!MESSAGE *** Using Microsoft NMAKE version $(_NMAKE_VER)
+!MESSAGE *** Using Microsoft Visual C++ version $(MSVCVER)
+!ENDIF
+
+###############################################################################
+# Compilation flags for Release and Debug modes
+
+!IF "$(BUILD_DEBUG)" == "YES"
+OPTFLAGS= /nologo /MDd /EHsc /Z7 /W4 /D_CRT_SECURE_NO_DEPRECATE /D_CRT_NONSTDC_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /DDEBUG /D_DEBUG /DDEBUG /Fd$(SPATIALINDEX_HOME)\spatialindex.pdb
+LAS_LIB = libspatialindex_d.lib
+LAS_DLL = libspatialindex_d$(DLL_VERSION).dll
+LAS_LIB_DLL = libspatialindex_i.lib
+!ELSE
+
+# You may need to remove /GR if you are statically linking libLAS
+OPTFLAGS=/nologo /MD /EHsc /Ox /GR /W2 /D_CRT_SECURE_NO_DEPRECATE /D_CRT_NONSTDC_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /DNDEBUG /D "PACKAGE_BUGREPORT=\"hobu.inc@gmail.com\""
+LAS_LIB = libspatialindex.lib
+LAS_DLL = libspatialindex$(DLL_VERSION).dll
+LAS_LIB_DLL = libspatialindex_i.lib
+!ENDIF
+
+# Check if multiple process build available
+!IF "$(MSVCVER)" == "9.0"
+MPFLAGS=/MP
+!MESSAGE *** Using /MP flag with number of effective processors
+!ELSE
+MPFLAGS=""
+!ENDIF
+
+
+INCLUDES=-I$(SPATIALINDEX_HOME)/include
+CFLAGS= $(MPFLAGS) $(OPTFLAGS) $(INCLUDES) 
+
+
 # Commands
 #
 MAKE = nmake
 RM = -del
-
-.SUFFIXES: .cc
-
-# Check compiler version given in command line
-# nmake -f makefile.vc MSVC_VER=xxxx
-#
-!IFNDEF MSVC_VER
-#assume msvc 7.1
-MSVC_VER=1310
-!ENDIF
-
-CFLAGS = -Iinclude /EHs /MD /GR /O2  /D "NDEBUG" /D "PACKAGE_BUGREPORT=\"hobu.inc@gmail.com\"" /nologo
-
-VERSION = 13
-LIBNAME =	spatialindex.lib
-DLLNAME = 	spatialindex$(VERSION).dll
+CC=     cl
+LINK=   link
 
 LAS_DIRLIST =  src\mvrtree \
                 src\rtree \
@@ -26,7 +97,7 @@ LAS_DIRLIST =  src\mvrtree \
                 src\tools \
                 src\tprtree
 
-OBJ = 	src\mvrtree\Index.obj \
+OBJS = 	src\mvrtree\Index.obj \
         src\mvrtree\Leaf.obj \
         src\mvrtree\MVRtree.obj \
         src\mvrtree\Node.obj \
@@ -60,29 +131,31 @@ OBJ = 	src\mvrtree\Index.obj \
         src\tprtree\TPRTree.obj 
         
 
-default:	$(LIBNAME) $(DLLNAME) 
+default: $(LAS_DLL)
 
-$(LIBNAME):	$(OBJ)
-	if exist $(LIBNAME) del $(LIBNAME)
-	lib /out:$(LIBNAME) $(OBJ)
-
-$(DLLNAME):	$(OBJ)
-	link /dll /debug $(OBJ) /out:$(DLLNAME)
+all: default
 
 
-  
+$(LAS_LIB):	$(OBJS)
+    if exist $(LAS_LIB) del $(LAS_LIB)
+    $(LINK) /lib /nologo /out:$(LAS_LIB) $(OBJS)
+	
+$(LAS_DLL):	$(LAS_LIB) $(RES)
+    $(LINK) /dll \
+            $(OBJS) $(LAS_LIB) \
+            /out:$(LAS_DLL) /implib:$(LAS_LIB_DLL)
+    if exist $(LAS_DLL).manifest mt -manifest $(LAS_DLL).manifest -outputresource:$(LAS_DLL);2   
 
    
 .cc.obj:                          
 	$(CC) $(CFLAGS) /c $*.cc /Fo$@
 
-
 .c.obj:
 	$(CC) $(CFLAGS) /c $*.c /Fo$@
 
 clean:
-	$(RM) $(LIBNAME)
-	$(RM) $(DLLNAME)
+	$(RM) $(LAS_LIB)
+	$(RM) $(LAS_DLL)
 	$(RM) *.ilk
 	$(RM) *.manifest
 	$(RM) *.obj
