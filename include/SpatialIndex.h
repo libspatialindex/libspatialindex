@@ -34,7 +34,9 @@ using namespace Tools;
 #endif
 
 // tons of warnings about inheritence via dominance on msvc
+#ifdef _MSC_VER
 #pragma warning(disable:4250)
+#endif
 
 namespace SpatialIndex
 {
