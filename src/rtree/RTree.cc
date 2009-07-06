@@ -724,13 +724,18 @@ void SpatialIndex::RTree::RTree::initNew(Tools::PropertySet& ps)
 	var = ps.getProperty("FillFactor");
 	if (var.m_varType != Tools::VT_EMPTY)
 	{
-		if (
-			var.m_varType != Tools::VT_DOUBLE ||
-			var.m_val.dblVal <= 0.0 ||
-			((m_treeVariant == RV_LINEAR || m_treeVariant == RV_QUADRATIC) && var.m_val.dblVal > 0.5) ||
-			var.m_val.dblVal >= 1.0)
-			throw Tools::IllegalArgumentException("initNew: Property FillFactor must be Tools::VT_DOUBLE and in (0.0, 1.0) for RSTAR, (0.0, 0.5) for LINEAR and QUADRATIC");
-
+	    if (var.m_varType != Tools::VT_DOUBLE)
+            throw Tools::IllegalArgumentException("initNew: Property FillFactor was not of type Tools::VT_DOUBLE");
+        
+        if (var.m_val.dblVal <= 0.0)
+            throw Tools::IllegalArgumentException("initNew: Property FillFactor was less than 0.0");
+        
+        if (((m_treeVariant == RV_LINEAR || m_treeVariant == RV_QUADRATIC) && var.m_val.dblVal > 0.5))
+            throw Tools::IllegalArgumentException(  "initNew: Property FillFactor must be in range "
+                                                    "(0.0, 0.5) for LINEAR or QUADRATIC index types");
+        if ( var.m_val.dblVal >= 1.0)
+            throw Tools::IllegalArgumentException(  "initNew: Property FillFactor must be in range "
+                                                    "(0.0, 1.0) for RSTAR index type");
 		m_fillFactor = var.m_val.dblVal;
 	}
 
