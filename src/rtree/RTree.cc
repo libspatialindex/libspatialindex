@@ -452,6 +452,7 @@ void SpatialIndex::RTree::RTree::nearestNeighborQuery(uint32_t k, const IShape& 
 	NNComparator nnc;
 	nearestNeighborQuery(k, query, v, nnc);
 }
+                                   
 
 void SpatialIndex::RTree::RTree::selfJoinQuery(const IShape& query, IVisitor& v)
 {

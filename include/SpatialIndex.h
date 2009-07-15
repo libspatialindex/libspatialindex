@@ -107,6 +107,7 @@ namespace SpatialIndex
 	public:
 		virtual size_t getChildrenCount() const = 0;
 		virtual id_type getChildIdentifier(size_t index) const = 0;
+                virtual void getChildData(size_t index, size_t& len, byte** data) const = 0;
 		virtual void getChildShape(size_t index, IShape** out) const = 0;
 		virtual size_t getLevel() const = 0;
 		virtual bool isIndex() const = 0;
@@ -194,7 +195,8 @@ namespace SpatialIndex
 		virtual void addCommand(ICommand* in, CommandType ct) = 0;
 		virtual bool isIndexValid() = 0;
 		virtual void getStatistics(IStatistics** out) const = 0;
-		virtual ~ISpatialIndex() {}
+		virtual ~ISpatialIndex() {}                
+
 	}; // ISpatialIndex
 
 	namespace StorageManager

@@ -32,7 +32,7 @@ namespace SpatialIndex
 	{
 		class RTree : public ISpatialIndex
 		{
-			class NNEntry;
+                  //class NNEntry;
 
 		public:
 			RTree(IStorageManager&, Tools::PropertySet&);
@@ -56,6 +56,8 @@ namespace SpatialIndex
 				// PointPoolCapacity        VT_LONG   Default is 500
 
 			virtual ~RTree();
+
+
 
 			//
 			// ISpatialIndex interface
@@ -142,6 +144,9 @@ namespace SpatialIndex
 			bool m_rwLock;
 #endif
 
+
+
+
 			class NNEntry
 			{
 			public:
@@ -196,6 +201,8 @@ namespace SpatialIndex
 		std::ostream& operator<<(std::ostream& os, const RTree& t);
 	}
 }
+
+
 
 #endif /*__spatialindex_rtree_rtree_h*/
 

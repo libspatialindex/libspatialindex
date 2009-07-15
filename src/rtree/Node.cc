@@ -183,6 +183,21 @@ void Node::getChildShape(size_t index, IShape** out) const
 	*out = new Region(*(m_ptrMBR[index]));
 }
 
+void Node::getChildData(size_t index, size_t& length, byte** data) const
+{
+        if (index < 0 || index >= m_children) throw Tools::IndexOutOfBoundsException(index);
+        if (m_pData[index] == NULL) 
+        {
+                length = 0;
+                data = NULL;
+        } 
+        else
+        {
+                length = m_pDataLength[index];
+                *data = m_pData[index];
+        }
+}
+
 size_t Node::getLevel() const
 {
 	return m_level;
