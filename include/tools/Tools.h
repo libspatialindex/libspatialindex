@@ -22,22 +22,23 @@
 #pragma once
 
 #ifdef _MSC_VER
-   typedef __int8 int8_t;
-   typedef __int16 int16_t;
-   typedef __int32 int32_t;
-   typedef __int64 int64_t;
-   typedef unsigned __int8 uint8_t;
-   typedef unsigned __int16 uint16_t;
-   typedef unsigned __int32 uint32_t;
-   typedef unsigned __int64 uint64_t;
+typedef __int8 int8_t;
+typedef __int16 int16_t;
+typedef __int32 int32_t;
+typedef __int64 int64_t;
+typedef unsigned __int8 uint8_t;
+typedef unsigned __int16 uint16_t;
+typedef unsigned __int32 uint32_t;
+typedef unsigned __int64 uint64_t;
 
-	#if defined(SPATIALINDEX_CREATE_DLL)
-		#define _spatialindex_exported __declspec(dllexport)      // creator of dll
-	#else
-		#define _spatialindex_exported __declspec(dllimport)      // user of dll
-	#endif
+#if defined(SPATIALINDEX_CREATE_DLL)
+#define _spatialindex_exported __declspec(dllexport)      // creator of dll
 #else
-   #include <stdint.h>
+#define _spatialindex_exported __declspec(dllimport)      // user of dll
+#endif
+#else
+#include <stdint.h>
+#define _spatialindex_exported
 #endif
 
 #include <assert.h>

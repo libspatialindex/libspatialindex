@@ -25,11 +25,11 @@
 using namespace Tools;
 
 # if !HAVE_BZERO
-#  define bzero(d, n) memset((d), 0, (n))
+# define bzero(d, n) memset((d), 0, (n))
 # endif
 
 #ifndef M_PI_2
-	#define M_PI_2 1.57079632679489661922
+#define M_PI_2 1.57079632679489661922
 #endif
 
 namespace SpatialIndex
