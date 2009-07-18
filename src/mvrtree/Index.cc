@@ -26,14 +26,12 @@
 #include "Index.h"
 
 using namespace SpatialIndex::MVRTree;
-typedef SpatialIndex::id_type id_type;
-typedef SpatialIndex::TimeRegion TimeRegion;
-    
+
 Index::~Index()
 {
 }
 
-Index::Index(MVRTree* pTree, id_type id, size_t level) : Node(pTree, id, level, pTree->m_indexCapacity)
+Index::Index(SpatialIndex::MVRTree::MVRTree* pTree, id_type id, size_t level) : Node(pTree, id, level, pTree->m_indexCapacity)
 {
 }
 

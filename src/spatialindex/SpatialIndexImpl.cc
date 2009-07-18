@@ -25,10 +25,17 @@
 #include "../mvrtree/MVRTree.h"
 #include "../tprtree/TPRTree.h"
 
-using namespace SpatialIndex;
+SpatialIndex::InvalidPageException::InvalidPageException(id_type id)
+{
+	std::ostringstream s;
+	s << "Unknown page id " << id;
+	m_error = s.str();
+}
 
-//const std::string VERSION = "0.82b";
-//const std::string DATE = "March 16th 2005";
+std::string SpatialIndex::InvalidPageException::what()
+{
+	return "InvalidPageException: " + m_error;
+}
 
 std::ostream& SpatialIndex::operator<<(std::ostream& os, const ISpatialIndex& i)
 {
@@ -59,8 +66,6 @@ std::ostream& SpatialIndex::operator<<(std::ostream& os, const ISpatialIndex& i)
 
 std::ostream& SpatialIndex::operator<<(std::ostream& os, const IStatistics& s)
 {
-	using std::endl;
-
 	const SpatialIndex::RTree::Statistics* pRTreeStats = dynamic_cast<const SpatialIndex::RTree::Statistics*>(&s);
 	if (pRTreeStats != 0)
 	{

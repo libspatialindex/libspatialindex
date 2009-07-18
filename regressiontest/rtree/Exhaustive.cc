@@ -19,15 +19,7 @@
 //  Email:
 //    mhadji@gmail.com
 
-#include <assert.h>
-#include <cstring>
-#include <iostream>
-#include <fstream>
-#include <map>
-#include <queue>
-#include <cmath>
-
-using namespace std;
+#include <tools/Tools.h>
 
 #define INSERT 1
 #define DELETE 0
@@ -82,7 +74,7 @@ public:
 
 	NNEntry(size_t id, double dist) : m_id(id), m_dist(dist) {}
 
-	struct greater : public binary_function<NNEntry*, NNEntry*, bool>
+	struct greater : public std::binary_function<NNEntry*, NNEntry*, bool>
 	{
 		bool operator()(const NNEntry* __x, const NNEntry* __y) const { return __x->m_dist > __y->m_dist; }
 	};
@@ -92,7 +84,7 @@ int main(int argc, char** argv)
 {
 	if (argc != 3)
 	{
-		cerr << "Usage: " << argv[0] << " data_file query_type [intersection | 10NN | selfjoin]." << endl;
+		std::cerr << "Usage: " << argv[0] << " data_file query_type [intersection | 10NN | selfjoin]." << std::endl;
 		return -1;
 	}
 	uint32_t queryType = 0;
@@ -102,18 +94,18 @@ int main(int argc, char** argv)
 	else if (strcmp(argv[2], "selfjoin") == 0) queryType = 2;
 	else
 	{
-		cerr << "Unknown query type." << endl;
+		std::cerr << "Unknown query type." << std::endl;
 		return -1;
 	}
 
-	ifstream fin(argv[1]);
+	std::ifstream fin(argv[1]);
 	if (! fin)
 	{
-		cerr << "Cannot open data file" << argv[1] << "." << endl;
+		std::cerr << "Cannot open data file" << argv[1] << "." << std::endl;
 		return -1;
 	}
 
-	multimap<size_t, Region> data;
+	std::multimap<size_t, Region> data;
 	size_t id;
 	uint32_t op;
 	double x1, x2, y1, y2;
@@ -126,7 +118,7 @@ int main(int argc, char** argv)
 		if (op == INSERT)
 		{
 			//insert
-			data.insert(pair<size_t, Region>(id, Region(x1, y1, x2, y2)));
+			data.insert(std::pair<size_t, Region>(id, Region(x1, y1, x2, y2)));
 		}
 		else if (op == DELETE)
 		{
@@ -138,18 +130,18 @@ int main(int argc, char** argv)
 			if (queryType == 0)
 			{
 				Region query = Region(x1, y1, x2, y2);
-				for (multimap<size_t, Region>::iterator it = data.begin(); it != data.end(); it++)
+				for (std::multimap<size_t, Region>::iterator it = data.begin(); it != data.end(); it++)
 				{
-					if (query.intersects((*it).second)) cout << (*it).first << endl;
+					if (query.intersects((*it).second)) std::cout << (*it).first << std::endl;
 				}
 			}
 			else if (queryType == 1)
 			{
 				Region query = Region(x1, y1, x1, y1);
 
-				priority_queue<NNEntry*, vector<NNEntry*>, NNEntry::greater > queue;
+				std::priority_queue<NNEntry*, std::vector<NNEntry*>, NNEntry::greater > queue;
 
-				for (multimap<size_t, Region>::iterator it = data.begin(); it != data.end(); it++)
+				for (std::multimap<size_t, Region>::iterator it = data.begin(); it != data.end(); it++)
 				{
 					queue.push(new NNEntry((*it).first, (*it).second.getMinDist(query)));
 				}
@@ -163,8 +155,8 @@ int main(int argc, char** argv)
 
 					if (count >= 10 && e->m_dist > knearest) break;
 
-					//cout << e->m_id << " " << e->m_dist << endl;
-					cout << e->m_id << endl;
+					//std::cout << e->m_id << " " << e->m_dist << std::endl;
+					std::cout << e->m_id << std::endl;
 					count++;
 					knearest = e->m_dist;
 					delete e;
@@ -180,11 +172,11 @@ int main(int argc, char** argv)
 			{
 				Region query = Region(x1, y1, x2, y2);
 
-				for (multimap<size_t, Region>::iterator it1 = data.begin(); it1 != data.end(); it1++)
+				for (std::multimap<size_t, Region>::iterator it1 = data.begin(); it1 != data.end(); it1++)
 				{
 					if (query.intersects((*it1).second))
 					{
-						for (multimap<size_t, Region>::iterator it2 = data.begin(); it2 != data.end(); it2++)
+						for (std::multimap<size_t, Region>::iterator it2 = data.begin(); it2 != data.end(); it2++)
 						{
 							if (
 								(*it1).first != (*it2).first &&

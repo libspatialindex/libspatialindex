@@ -19,12 +19,11 @@
 //  Email:
 //    mhadji@gmail.com
 
-#ifndef __spatialindex_point_h
-#define __spatialindex_point_h
+#pragma once
 
 namespace SpatialIndex
 {
-	class Point : public IObject, public virtual IShape
+	class _spatialindex_exported Point : public IObject, public virtual IShape
 	{
 	public:
 		Point();
@@ -71,10 +70,8 @@ namespace SpatialIndex
 		double* m_pCoords;
 
 		friend class Region;
-		friend std::ostream& operator<<(std::ostream& os, const Point& pt);
+		friend _spatialindex_exported std::ostream& operator<<(std::ostream& os, const Point& pt);
 	}; // Point
 
-	std::ostream& operator<<(std::ostream& os, const Point& pt);
+	_spatialindex_exported std::ostream& operator<<(std::ostream& os, const Point& pt);
 }
-
-#endif /*__spatialindex_point_h*/

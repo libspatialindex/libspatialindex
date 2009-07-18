@@ -19,8 +19,7 @@
 //  Email:
 //    mhadji@gmail.com
 
-#ifndef __spatialindex_tprtree_statistics_h
-#define __spatialindex_tprtree_statistics_h
+#pragma once
 
 namespace SpatialIndex
 {
@@ -92,6 +91,3 @@ namespace SpatialIndex
 		std::ostream& operator<<(std::ostream& os, const Statistics& s);
 	}
 }
-
-#endif /*__spatialindex_tprtree_statistics_h*/
-

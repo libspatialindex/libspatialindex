@@ -28,7 +28,6 @@
 #include <cstring>
 
 using namespace SpatialIndex;
-using namespace std;
 
 MovingRegion::MovingRegion()
 	: TimeRegion(), m_pVLow(0), m_pVHigh(0)
@@ -902,7 +901,7 @@ double MovingRegion::getIntersectingAreaInTime(const IInterval& ivI, const Movin
 
 	MovingRegion x = *this;
 	CrossPoint c;
-	priority_queue<CrossPoint, vector<CrossPoint>, CrossPoint::ascending> pq;
+	std::priority_queue<CrossPoint, std::vector<CrossPoint>, CrossPoint::ascending> pq;
 
 	// find points of intersection in all dimensions.
 	for (size_t i = 0; i < m_dimension; i++)

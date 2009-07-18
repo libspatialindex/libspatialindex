@@ -25,15 +25,13 @@
 #include "Index.h"
 #include "Leaf.h"
 
-typedef SpatialIndex::id_type id_type;
-typedef SpatialIndex::TimeRegion TimeRegion;
 using namespace SpatialIndex::MVRTree;
 
 Leaf::~Leaf()
 {
 }
 
-Leaf::Leaf(MVRTree* pTree, id_type id): Node(pTree, id, 0, pTree->m_leafCapacity)
+Leaf::Leaf(SpatialIndex::MVRTree::MVRTree* pTree, id_type id): Node(pTree, id, 0, pTree->m_leafCapacity)
 {
 }
 

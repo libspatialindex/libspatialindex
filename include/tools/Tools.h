@@ -19,8 +19,7 @@
 //  Email:
 //    mhadji@gmail.com
 
-#ifndef __tools_h
-#define __tools_h
+#pragma once
 
 #ifdef _MSC_VER
    typedef __int8 int8_t;
@@ -31,8 +30,14 @@
    typedef unsigned __int16 uint16_t;
    typedef unsigned __int32 uint32_t;
    typedef unsigned __int64 uint64_t;
+
+	#if defined(SPATIALINDEX_CREATE_DLL)
+		#define _spatialindex_exported __declspec(dllexport)      // creator of dll
+	#else
+		#define _spatialindex_exported __declspec(dllimport)      // user of dll
+	#endif
 #else
-   #include <stdint.h>		
+   #include <stdint.h>
 #endif
 
 #include <assert.h>
@@ -66,7 +71,7 @@ typedef uint8_t byte;
 
 namespace Tools
 {
-	enum IntervalType
+	_spatialindex_exported enum IntervalType
 	{
 		IT_RIGHTOPEN = 0x0,
 		IT_LEFTOPEN,
@@ -74,7 +79,7 @@ namespace Tools
 		IT_CLOSED
 	};
 
-	enum VariantType
+	_spatialindex_exported enum VariantType
 	{
 		VT_LONG = 0x0,
 		VT_BYTE,
@@ -94,17 +99,23 @@ namespace Tools
 		VT_ULONGLONG
 	};
 
+	_spatialindex_exported enum FileMode
+	{
+		APPEND = 0x0,
+		CREATE
+	};
+
 	//
 	// Exceptions
 	//
-	class Exception
+	class _spatialindex_exported Exception
 	{
 	public:
 		virtual std::string what() = 0;
 		virtual ~Exception() {}
 	};
 
-	class IndexOutOfBoundsException : public Exception
+	class _spatialindex_exported IndexOutOfBoundsException : public Exception
 	{
 	public:
 		IndexOutOfBoundsException(size_t i);
@@ -115,7 +126,7 @@ namespace Tools
 		std::string m_error;
 	}; // IndexOutOfBoundsException
 
-	class IllegalArgumentException : public Exception
+	class _spatialindex_exported IllegalArgumentException : public Exception
 	{
 	public:
 		IllegalArgumentException(std::string s);
@@ -126,7 +137,7 @@ namespace Tools
 		std::string m_error;
 	}; // IllegalArgumentException
 
-	class IllegalStateException : public Exception
+	class _spatialindex_exported IllegalStateException : public Exception
 	{
 	public:
 		IllegalStateException(std::string s);
@@ -137,7 +148,7 @@ namespace Tools
 		std::string m_error;
 	}; // IllegalStateException
 
-	class EndOfStreamException : public Exception
+	class _spatialindex_exported EndOfStreamException : public Exception
 	{
 	public:
 		EndOfStreamException(std::string s);
@@ -148,7 +159,7 @@ namespace Tools
 		std::string m_error;
 	}; // EndOfStreamException
 
-	class ResourceLockedException : public Exception
+	class _spatialindex_exported ResourceLockedException : public Exception
 	{
 	public:
 		ResourceLockedException(std::string s);
@@ -159,18 +170,7 @@ namespace Tools
 		std::string m_error;
 	}; // ResourceLockedException
 
-	class InvalidPageException : public Exception
-	{
-	public:
-		InvalidPageException(size_t id);
-		virtual ~InvalidPageException() {}
-		virtual std::string what();
-
-	private:
-		std::string m_error;
-	}; // InvalidPageException
-
-	class NotSupportedException : public Exception
+	class _spatialindex_exported NotSupportedException : public Exception
 	{
 	public:
 		NotSupportedException(std::string s);
@@ -184,12 +184,11 @@ namespace Tools
 	//
 	// Interfaces
 	//
-	interface IInterval
+	interface _spatialindex_exported IInterval
 	{
 	public:
 		virtual ~IInterval() {}
 
-		virtual IInterval& operator=(const IInterval&) = 0;
 		virtual double getLowerBound() const = 0;
 		virtual double getUpperBound() const = 0;
 		virtual void setBounds(double, double) = 0;
@@ -199,7 +198,7 @@ namespace Tools
 		virtual IntervalType getIntervalType() const = 0;
 	}; // IInterval
 
-	interface IObject
+	interface _spatialindex_exported IObject
 	{
 	public:
 		virtual ~IObject() {}
@@ -209,7 +208,7 @@ namespace Tools
 			// IMPORTANT: do not return the this pointer!
 	}; // IObject
 
-	interface ISerializable //: public virtual IObject
+	interface _spatialindex_exported ISerializable
 	{
 	public:
 		virtual ~ISerializable() {}
@@ -222,7 +221,7 @@ namespace Tools
 			// store this object in the byte array.
 	};
 
-	interface IComparable //: public virtual IObject
+	interface _spatialindex_exported IComparable
 	{
 	public:
 		virtual ~IComparable() {}
@@ -232,7 +231,7 @@ namespace Tools
 		virtual bool operator==(const IComparable& o) const = 0;
 	}; //IComparable
 
-	interface IObjectComparator
+	interface _spatialindex_exported IObjectComparator
 	{
 	public:
 		virtual ~IObjectComparator() {}
@@ -240,7 +239,7 @@ namespace Tools
 		virtual int compare(IObject* o1, IObject* o2) = 0;
 	}; // IObjectComparator
 
-	interface IObjectStream
+	interface _spatialindex_exported IObjectStream
 	{
 	public:
 		virtual ~IObjectStream() {}
@@ -263,7 +262,7 @@ namespace Tools
 	// Classes & Functions
 	//
 
-	class Variant
+	class _spatialindex_exported Variant
 	{
 	public:
 		Variant();
@@ -287,11 +286,11 @@ namespace Tools
 			void* pvVal;               // VT_PVOID
 		} m_val;
 	}; // Variant
-	
-	class PropertySet;
-	std::ostream& operator<<(std::ostream& os, const Tools::PropertySet& p);
-	    
-	class PropertySet : public ISerializable
+
+	class _spatialindex_exported PropertySet;
+	_spatialindex_exported std::ostream& operator<<(std::ostream& os, const Tools::PropertySet& p);
+
+	class _spatialindex_exported PropertySet : public ISerializable
 	{
 	public:
 		PropertySet() {}
@@ -309,24 +308,20 @@ namespace Tools
 	private:
 		std::map<std::string, Variant> m_propertySet;
 
-		friend std::ostream& Tools::operator<<(
-			std::ostream& os,
-			const Tools::PropertySet& p
-		);
+		friend _spatialindex_exported std::ostream& Tools::operator<<(std::ostream& os, const Tools::PropertySet& p);
 	}; // PropertySet
 
-
-
 	// does not support degenerate intervals.
-	class Interval : public IInterval
+	class _spatialindex_exported Interval : public IInterval
 	{
 	public:
 		Interval();
 		Interval(IntervalType, double, double);
 		Interval(double, double);
 		Interval(const Interval&);
+		virtual ~Interval() {}
 		virtual IInterval& operator=(const IInterval&);
-		virtual Interval& operator=(const Interval&);
+
 		virtual bool operator==(const Interval&) const;
 		virtual bool operator!=(const Interval&) const;
 		virtual double getLowerBound() const;
@@ -336,16 +331,15 @@ namespace Tools
 		virtual bool intersectsInterval(IntervalType type, const double start, const double end) const;
 		virtual bool containsInterval(const IInterval&) const;
 		virtual IntervalType getIntervalType() const;
-		virtual ~Interval() {}
 
 		IntervalType m_type;
 		double m_low;
 		double m_high;
 	}; // Interval
 
-	std::ostream& operator<<(std::ostream& os, const Tools::Interval& iv);
+	_spatialindex_exported std::ostream& operator<<(std::ostream& os, const Tools::Interval& iv);
 
-	class Random
+	class _spatialindex_exported Random
 	{
 	public:
 		Random();
@@ -384,34 +378,124 @@ namespace Tools
 		uint16_t* m_pBuffer;
 	}; // Random
 
-	class SharedLock
+	class _spatialindex_exported SharedLock
 	{
 	public:
-#if HAVE_PTHREAD_H
+	#if HAVE_PTHREAD_H
 		SharedLock(pthread_rwlock_t* pLock);
 		~SharedLock();
 
 	private:
 		pthread_rwlock_t* m_pLock;
-#endif
+	#endif
 	}; // SharedLock
 
-	class ExclusiveLock
+	class _spatialindex_exported ExclusiveLock
 	{
 	public:
-#if HAVE_PTHREAD_H
+	#if HAVE_PTHREAD_H
 		ExclusiveLock(pthread_rwlock_t* pLock);
 		~ExclusiveLock();
 
 	private:
 		pthread_rwlock_t* m_pLock;
-#endif
+	#endif
 	}; // ExclusiveLock
 
-	IObjectStream* externalSort(IObjectStream& source, size_t bufferSize);
-	IObjectStream* externalSort(IObjectStream& source, IObjectComparator& pComp, size_t bufferSize);
+	class _spatialindex_exported BufferedFile
+	{
+	public:
+		BufferedFile(size_t stBufferSize = 16384);
+		virtual ~BufferedFile();
+
+		virtual void close();
+		virtual bool eof();
+		virtual void rewind() = 0;
+		virtual void seek(std::fstream::off_type offset) = 0;
+
+	protected:
+		std::fstream m_file;
+		char* m_buffer;
+		size_t m_stBufferSize;
+		bool m_bEOF;
+	};
+
+	class _spatialindex_exported BufferedFileReader : public BufferedFile
+	{
+	public:
+		BufferedFileReader();
+		BufferedFileReader(const std::string& sFileName, size_t stBufferSize = 32768);
+		virtual ~BufferedFileReader();
+
+		virtual void open(const std::string& sFileName);
+		virtual void rewind();
+		virtual void seek(std::fstream::off_type offset);
+
+		virtual uint8_t readUInt8();
+		virtual uint16_t readUInt16();
+		virtual uint32_t readUInt32();
+		virtual uint64_t readUInt64();
+		virtual float readFloat();
+		virtual double readDouble();
+		virtual bool readBoolean();
+		virtual std::string readString();
+		virtual void readBytes(uint32_t u32Len, byte** pData);
+	};
+
+	class _spatialindex_exported BufferedFileWriter : public BufferedFile
+	{
+	public:
+		BufferedFileWriter();
+		BufferedFileWriter(const std::string& sFileName, FileMode mode = CREATE, size_t stBufferSize = 32768);
+		virtual ~BufferedFileWriter();
+
+		virtual void open(const std::string& sFileName, FileMode mode = CREATE);
+		virtual void rewind();
+		virtual void seek(std::fstream::off_type offset);
+
+		virtual void write(uint8_t i);
+		virtual void write(uint16_t i);
+		virtual void write(uint32_t i);
+		virtual void write(uint64_t i);
+		virtual void write(float i);
+		virtual void write(double i);
+		virtual void write(bool b);
+		virtual void write(const std::string& s);
+		virtual void write(uint32_t u32Len, byte* pData);
+	};
+
+	class _spatialindex_exported TemporaryFile
+	{
+	public:
+		TemporaryFile();
+		virtual ~TemporaryFile();
+
+		void rewindForReading();
+		void rewindForWriting();
+		bool eof();
+		std::string getFileName() const;
+
+		uint8_t readUInt8();
+		uint16_t readUInt16();
+		uint32_t readUInt32();
+		uint64_t readUInt64();
+		float readFloat();
+		double readDouble();
+		std::string readString();
+		void readBytes(uint32_t u32Len, byte** pData);
+
+		void write(uint8_t i);
+		void write(uint16_t i);
+		void write(uint32_t i);
+		void write(uint64_t i);
+		void write(float i);
+		void write(double i);
+		void write(const std::string& s);
+		void write(uint32_t u32Len, byte* pData);
+
+	private:
+		std::string m_sFile;
+		BufferedFile* m_pFile;
+	};
 }
 
-#include "TemporaryFile.h"
-
-#endif /* __tools_h */

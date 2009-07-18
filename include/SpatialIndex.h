@@ -19,8 +19,7 @@
 //  Email:
 //    mhadji@gmail.com
 
-#ifndef __spatialindex_h
-#define __spatialindex_h
+#pragma once
 
 #include "tools/Tools.h"
 using namespace Tools;
@@ -33,11 +32,6 @@ using namespace Tools;
 	#define M_PI_2 1.57079632679489661922
 #endif
 
-// tons of warnings about inheritence via dominance on msvc
-#ifdef _MSC_VER
-#pragma warning(disable:4250)
-#endif
-
 namespace SpatialIndex
 {
 	class Point;
@@ -45,18 +39,29 @@ namespace SpatialIndex
 
 	typedef int64_t id_type;
 
-	enum CommandType
+	_spatialindex_exported enum CommandType
 	{
 		CT_NODEREAD = 0x0,
 		CT_NODEDELETE,
 		CT_NODEWRITE
 	};
 
+	class _spatialindex_exported InvalidPageException : public Exception
+	{
+	public:
+		InvalidPageException(id_type id);
+		virtual ~InvalidPageException() {}
+		virtual std::string what();
+
+	private:
+		std::string m_error;
+	}; // InvalidPageException
+
 	//
 	// Interfaces
 	//
 
-	interface IShape : public virtual ISerializable
+	interface _spatialindex_exported IShape : public ISerializable
 	{
 	public:
 		virtual bool intersectsShape(const IShape& in) const = 0;
@@ -70,23 +75,23 @@ namespace SpatialIndex
 		virtual ~IShape() {}
 	}; // IShape
 
-	interface ITimeShape : public virtual IShape, public virtual IInterval
+	interface _spatialindex_exported ITimeShape : public Tools::IInterval
 	{
 	public:
 		virtual bool intersectsShapeInTime(const ITimeShape& in) const = 0;
-		virtual bool intersectsShapeInTime(const IInterval& ivI, const ITimeShape& in) const = 0;
+		virtual bool intersectsShapeInTime(const Tools::IInterval& ivI, const ITimeShape& in) const = 0;
 		virtual bool containsShapeInTime(const ITimeShape& in) const = 0;
-		virtual bool containsShapeInTime(const IInterval& ivI, const ITimeShape& in) const = 0;
+		virtual bool containsShapeInTime(const Tools::IInterval& ivI, const ITimeShape& in) const = 0;
 		virtual bool touchesShapeInTime(const ITimeShape& in) const = 0;
-		virtual bool touchesShapeInTime(const IInterval& ivI, const ITimeShape& in) const = 0;
+		virtual bool touchesShapeInTime(const Tools::IInterval& ivI, const ITimeShape& in) const = 0;
 		virtual double getAreaInTime() const = 0;
-		virtual double getAreaInTime(const IInterval& ivI) const = 0;
+		virtual double getAreaInTime(const Tools::IInterval& ivI) const = 0;
 		virtual double getIntersectingAreaInTime(const ITimeShape& r) const = 0;
-		virtual double getIntersectingAreaInTime(const IInterval& ivI, const ITimeShape& r) const = 0;
+		virtual double getIntersectingAreaInTime(const Tools::IInterval& ivI, const ITimeShape& r) const = 0;
 		virtual ~ITimeShape() {}
 	}; // ITimeShape
 
-	interface IEvolvingShape : public virtual IShape
+	interface _spatialindex_exported IEvolvingShape
 	{
 	public:
 		virtual void getVMBR(Region& out) const = 0;
@@ -94,7 +99,7 @@ namespace SpatialIndex
 		virtual ~IEvolvingShape() {}
 	}; // IEvolvingShape
 
-	interface IEntry : public Tools::IObject
+	interface _spatialindex_exported IEntry : public Tools::IObject
 	{
 	public:
 		virtual id_type getIdentifier() const = 0;
@@ -102,12 +107,12 @@ namespace SpatialIndex
 		virtual ~IEntry() {}
 	}; // IEntry
 
-	interface INode : public IEntry, public Tools::ISerializable
+	interface _spatialindex_exported INode : public IEntry, public Tools::ISerializable
 	{
 	public:
 		virtual size_t getChildrenCount() const = 0;
 		virtual id_type getChildIdentifier(size_t index) const = 0;
-                virtual void getChildData(size_t index, size_t& len, byte** data) const = 0;
+		virtual void getChildData(size_t index, size_t& len, byte** data) const = 0;
 		virtual void getChildShape(size_t index, IShape** out) const = 0;
 		virtual size_t getLevel() const = 0;
 		virtual bool isIndex() const = 0;
@@ -115,28 +120,28 @@ namespace SpatialIndex
 		virtual ~INode() {}
 	}; // INode
 
-	interface IData : public IEntry
+	interface _spatialindex_exported IData : public IEntry
 	{
 	public:
 		virtual void getData(size_t& len, byte** data) const = 0;
 		virtual ~IData() {}
 	}; // IData
 
-	interface IDataStream : public Tools::IObjectStream
+	interface _spatialindex_exported IDataStream : public Tools::IObjectStream
 	{
 	public:
 		virtual IData* getNext() = 0;
 		virtual ~IDataStream() {}
 	}; // IDataStream
 
-	interface ICommand
+	interface _spatialindex_exported ICommand
 	{
 	public:
 		virtual void execute(const INode& in) = 0;
 		virtual ~ICommand() {}
 	}; // ICommand
 
-	interface INearestNeighborComparator
+	interface _spatialindex_exported INearestNeighborComparator
 	{
 	public:
 		virtual double getMinimumDistance(const IShape& query, const IShape& entry) = 0;
@@ -144,7 +149,7 @@ namespace SpatialIndex
 		virtual ~INearestNeighborComparator() {}
 	}; // INearestNeighborComparator
 
-	interface IStorageManager
+	interface _spatialindex_exported IStorageManager
 	{
 	public:
 		virtual void loadByteArray(const id_type id, size_t& len, byte** data) = 0;
@@ -153,7 +158,7 @@ namespace SpatialIndex
 		virtual ~IStorageManager() {}
 	}; // IStorageManager
 
-	interface IVisitor
+	interface _spatialindex_exported IVisitor
 	{
 	public:
 		virtual void visitNode(const INode& in) = 0;
@@ -162,14 +167,14 @@ namespace SpatialIndex
 		virtual ~IVisitor() {}
 	}; // IVisitor
 
-	interface IQueryStrategy
+	interface _spatialindex_exported IQueryStrategy
 	{
 	public:
 		virtual void getNextEntry(const IEntry& previouslyFetched, id_type& nextEntryToFetch, bool& bFetchNextEntry) = 0;
 		virtual ~IQueryStrategy() {}
 	}; // IQueryStrategy
 
-	interface IStatistics
+	interface _spatialindex_exported IStatistics
 	{
 	public:
 		virtual size_t getReads() const = 0;
@@ -179,7 +184,7 @@ namespace SpatialIndex
 		virtual ~IStatistics() {}
 	}; // IStatistics
 
-	interface ISpatialIndex
+	interface _spatialindex_exported ISpatialIndex
 	{
 	public:
 		virtual void insertData(size_t len, const byte* pData, const IShape& shape, id_type shapeIdentifier) = 0;
@@ -195,19 +200,19 @@ namespace SpatialIndex
 		virtual void addCommand(ICommand* in, CommandType ct) = 0;
 		virtual bool isIndexValid() = 0;
 		virtual void getStatistics(IStatistics** out) const = 0;
-		virtual ~ISpatialIndex() {}                
+		virtual ~ISpatialIndex() {}
 
 	}; // ISpatialIndex
 
 	namespace StorageManager
 	{
-		enum StorageManagerConstants
+		_spatialindex_exported enum StorageManagerConstants
 		{
 			EmptyPage = -0x1,
 			NewPage = -0x1
 		};
 
-		interface IBuffer : public IStorageManager
+		interface _spatialindex_exported IBuffer : public IStorageManager
 		{
 		public:
 			virtual size_t getHits() = 0;
@@ -215,22 +220,22 @@ namespace SpatialIndex
 			virtual ~IBuffer() {}
 		}; // IBuffer
 
-		extern IStorageManager* returnMemoryStorageManager(Tools::PropertySet& in);
-		extern IStorageManager* createNewMemoryStorageManager();
+		_spatialindex_exported  IStorageManager* returnMemoryStorageManager(Tools::PropertySet& in);
+		_spatialindex_exported  IStorageManager* createNewMemoryStorageManager();
 
-		extern IStorageManager* returnDiskStorageManager(Tools::PropertySet& in);
-		extern IStorageManager* createNewDiskStorageManager(std::string& baseName, size_t pageSize);
-		extern IStorageManager* loadDiskStorageManager(std::string& baseName);
+		_spatialindex_exported  IStorageManager* returnDiskStorageManager(Tools::PropertySet& in);
+		_spatialindex_exported  IStorageManager* createNewDiskStorageManager(std::string& baseName, size_t pageSize);
+		_spatialindex_exported  IStorageManager* loadDiskStorageManager(std::string& baseName);
 
-		extern IBuffer* returnRandomEvictionsBuffer(IStorageManager& ind, Tools::PropertySet& in);
-		extern IBuffer* createNewRandomEvictionsBuffer(IStorageManager& in, size_t capacity, bool bWriteThrough);
+		_spatialindex_exported  IBuffer* returnRandomEvictionsBuffer(IStorageManager& ind, Tools::PropertySet& in);
+		_spatialindex_exported  IBuffer* createNewRandomEvictionsBuffer(IStorageManager& in, size_t capacity, bool bWriteThrough);
 	}
 
 	//
 	// Global functions
 	//
-	extern std::ostream& operator<<(std::ostream&, const ISpatialIndex&);
-	extern std::ostream& operator<<(std::ostream&, const IStatistics&);
+	_spatialindex_exported  std::ostream& operator<<(std::ostream&, const ISpatialIndex&);
+	_spatialindex_exported  std::ostream& operator<<(std::ostream&, const IStatistics&);
 }
 
 #include "Point.h"
@@ -244,4 +249,3 @@ namespace SpatialIndex
 #include "MVRTree.h"
 #include "TPRTree.h"
 
-#endif /*__spatialindex_h*/

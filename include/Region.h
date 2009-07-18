@@ -19,12 +19,11 @@
 //  Email:
 //    mhadji@gmail.com
 
-#ifndef __spatialindex_region_h
-#define __spatialindex_region_h
+#pragma once
 
 namespace SpatialIndex
 {
-	class Region : public IObject, public virtual IShape
+	class _spatialindex_exported Region : public IObject, public virtual IShape
 	{
 	public:
 		Region();
@@ -91,10 +90,8 @@ namespace SpatialIndex
 		double* m_pLow;
 		double* m_pHigh;
 
-		friend std::ostream& operator<<(std::ostream& os, const Region& r);
+		friend _spatialindex_exported std::ostream& operator<<(std::ostream& os, const Region& r);
 	}; // Region
 
-	std::ostream& operator<<(std::ostream& os, const Region& r);
+	_spatialindex_exported std::ostream& operator<<(std::ostream& os, const Region& r);
 }
-
-#endif /*__spatialindex_region_h*/

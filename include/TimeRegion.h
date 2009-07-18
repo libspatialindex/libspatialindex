@@ -19,12 +19,11 @@
 //  Email:
 //    mhadji@gmail.com
 
-#ifndef __spatialindex_timeregion_h
-#define __spatialindex_timeregion_h
+#pragma once
 
 namespace SpatialIndex
 {
-	class TimeRegion : public Region, public ITimeShape
+	class _spatialindex_exported TimeRegion : public Region, public ITimeShape
 	{
 	public:
 		TimeRegion();
@@ -96,10 +95,8 @@ namespace SpatialIndex
 		double m_startTime;
 		double m_endTime;
 
-		friend std::ostream& operator<<(std::ostream& os, const TimeRegion& r);
+		friend _spatialindex_exported std::ostream& operator<<(std::ostream& os, const TimeRegion& r);
 	}; // TimeRegion
 
-	std::ostream& operator<<(std::ostream& os, const TimeRegion& r);
+	_spatialindex_exported std::ostream& operator<<(std::ostream& os, const TimeRegion& r);
 }
-
-#endif /* __spatialindex_timeregion_h */

@@ -27,7 +27,6 @@
 #include <SpatialIndex.h>
 
 using namespace SpatialIndex;
-using namespace std;
 
 #define INSERT 1
 #define DELETE 0
@@ -42,7 +41,7 @@ public:
 
 	void visitData(const IData& d)
 	{
-		cout << d.getIdentifier() << endl;
+		std::cout << d.getIdentifier() << std::endl;
 			// the ID of this data entry is an answer to the query. I will just print it to stdout.
 	}
 
@@ -55,7 +54,7 @@ int main(int argc, char** argv)
 	{
 		if (argc != 5)
 		{
-			cerr << "Usage: " << argv[0] << " input_file tree_file capacity query_type [intersection | 10NN | selfjoin]." << endl;
+			std::cerr << "Usage: " << argv[0] << " input_file tree_file capacity query_type [intersection | 10NN | selfjoin]." << std::endl;
 			return -1;
 		}
 
@@ -66,19 +65,19 @@ int main(int argc, char** argv)
 		else if (strcmp(argv[4], "selfjoin") == 0) queryType = 2;
 		else
 		{
-			cerr << "Unknown query type." << endl;
+			std::cerr << "Unknown query type." << std::endl;
 			return -1;
 		}
 
-		ifstream fin(argv[1]);
+		std::ifstream fin(argv[1]);
 		if (! fin)
 		{
-			cerr << "Cannot open data file " << argv[1] << "." << endl;
+			std::cerr << "Cannot open data file " << argv[1] << "." << std::endl;
 			return -1;
 		}
 
 		// Create a new storage manager with the provided base name and a 4K page size.
-		string baseName = argv[2];
+		std::string baseName = argv[2];
 		IStorageManager* diskfile = StorageManager::createNewDiskStorageManager(baseName, 4096);
 
 		StorageManager::IBuffer* file = StorageManager::createNewRandomEvictionsBuffer(*diskfile, 10, false);
@@ -90,7 +89,6 @@ int main(int argc, char** argv)
 		id_type indexIdentifier;
 		ISpatialIndex* tree = RTree::createNewRTree(*file, 0.7, atoi(argv[3]), atoi(argv[3]), 2, SpatialIndex::RTree::RV_RSTAR, indexIdentifier);
 
-		std::cout << "a" << std::endl;
 		size_t count = 0;
 		id_type id;
 		uint32_t op;
@@ -108,9 +106,9 @@ int main(int argc, char** argv)
 				phigh[0] = x2; phigh[1] = y2;
 				Region r = Region(plow, phigh, 2);
 
-				ostringstream os;
+				std::ostringstream os;
 				os << r;
-				string data = os.str();
+				std::string data = os.str();
 					// associate some data with this region. I will use a string that represents the
 					// region itself, as an example.
 					// NOTE: It is not necessary to associate any data here. A null pointer can be used. In that
@@ -140,8 +138,8 @@ int main(int argc, char** argv)
 
 				if (tree->deleteData(r, id) == false)
 				{
-					cerr << "******ERROR******" << endl;
-					cerr << "Cannot delete id: " << id << " , count: " << count << endl;
+					std::cerr << "******ERROR******" << std::endl;
+					std::cerr << "Cannot delete id: " << id << " , count: " << count << std::endl;
 					return -1;
 				}
 			}
@@ -172,19 +170,19 @@ int main(int argc, char** argv)
 			}
 
 			if ((count % 1000) == 0)
-				cerr << count << endl;
+				std::cerr << count << std::endl;
 
 			count++;
 		}
 
-		cerr << "Operations: " << count << endl;
-		cerr << *tree;
-		cerr << "Buffer hits: " << file->getHits() << endl;
-		cerr << "Index ID: " << indexIdentifier << endl;
+		std::cerr << "Operations: " << count << std::endl;
+		std::cerr << *tree;
+		std::cerr << "Buffer hits: " << file->getHits() << std::endl;
+		std::cerr << "Index ID: " << indexIdentifier << std::endl;
 
 		bool ret = tree->isIndexValid();
-		if (ret == false) cerr << "ERROR: Structure is invalid!" << endl;
-		else cerr << "The stucture seems O.K." << endl;
+		if (ret == false) std::cerr << "ERROR: Structure is invalid!" << std::endl;
+		else std::cerr << "The stucture seems O.K." << std::endl;
 
 		delete tree;
 		delete file;
@@ -194,15 +192,9 @@ int main(int argc, char** argv)
 	}
 	catch (Tools::Exception& e)
 	{
-		cerr << "******ERROR******" << endl;
+		std::cerr << "******ERROR******" << std::endl;
 		std::string s = e.what();
-		cerr << s << endl;
-		return -1;
-	}
-	catch (...)
-	{
-		cerr << "******ERROR******" << endl;
-		cerr << "other exception" << endl;
+		std::cerr << s << std::endl;
 		return -1;
 	}
 

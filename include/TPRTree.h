@@ -19,31 +19,30 @@
 //  Email:
 //    mhadji@gmail.com
 
-#ifndef __spatialindex_tprtree_h
-#define __spatialindex_tprtree_h
+#pragma once
 
 namespace SpatialIndex
 {
 	namespace TPRTree
 	{
-		enum TPRTreeVariant
+		_spatialindex_exported enum TPRTreeVariant
 		{
 			TPRV_RSTAR = 0x0
 		};
 
-		enum PersistenObjectIdentifier
+		_spatialindex_exported enum PersistenObjectIdentifier
 		{
 			PersistentIndex = 0x1,
 			PersistentLeaf = 0x2
 		};
 
-		enum RangeQueryType
+		_spatialindex_exported enum RangeQueryType
 		{
 			ContainmentQuery = 0x1,
 			IntersectionQuery = 0x2
 		};
 
-		class Data : public IData, public Tools::ISerializable
+		class _spatialindex_exported Data : public IData, public Tools::ISerializable
 		{
 		public:
 			Data(size_t len, byte* pData, MovingRegion& r, id_type id);
@@ -63,8 +62,8 @@ namespace SpatialIndex
 			size_t m_dataLength;
 		}; // Data
 
-		extern ISpatialIndex* returnTPRTree(IStorageManager& ind, Tools::PropertySet& in);
-		extern ISpatialIndex* createNewTPRTree(
+		_spatialindex_exported  ISpatialIndex* returnTPRTree(IStorageManager& ind, Tools::PropertySet& in);
+		_spatialindex_exported  ISpatialIndex* createNewTPRTree(
 			IStorageManager& sm,
 			double fillFactor,
 			size_t indexCapacity,
@@ -74,9 +73,6 @@ namespace SpatialIndex
 			double horizon,
 			id_type& indexIdentifier
 		);
-		extern ISpatialIndex* loadTPRTree(IStorageManager& in, id_type indexIdentifier);
+		_spatialindex_exported  ISpatialIndex* loadTPRTree(IStorageManager& in, id_type indexIdentifier);
 	}
 }
-
-#endif /* __spatialindex_tprtree_h */
-

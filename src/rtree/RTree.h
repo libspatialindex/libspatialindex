@@ -19,8 +19,7 @@
 //  Email:
 //    mhadji@gmail.com
 
-#ifndef __spatialindex_rtree_rtree_h
-#define __spatialindex_rtree_rtree_h
+#pragma once
 
 #include "Statistics.h"
 #include "Node.h"
@@ -87,7 +86,7 @@ namespace SpatialIndex
 			bool deleteData_impl(const Region& mbr, id_type id);
 
 			id_type writeNode(Node*);
-			NodePtr readNode(id_type id);
+			NodePtr readNode(id_type page);
 			void deleteNode(Node*);
 
 			void rangeQuery(RangeQueryType type, const IShape& query, IVisitor& v);
@@ -95,8 +94,7 @@ namespace SpatialIndex
 
 			IStorageManager* m_pStorageManager;
 
-			id_type m_rootID;
-			id_type m_headerID;
+			id_type m_rootID, m_headerID;
 
 			RTreeVariant m_treeVariant;
 
@@ -201,8 +199,3 @@ namespace SpatialIndex
 		std::ostream& operator<<(std::ostream& os, const RTree& t);
 	}
 }
-
-
-
-#endif /*__spatialindex_rtree_rtree_h*/
-

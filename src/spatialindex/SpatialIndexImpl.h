@@ -19,14 +19,14 @@
 //  Email:
 //    mhadji@gmail.com
 
-#ifndef __spatialindex__impl_h
-#define __spatialindex__impl_h
+#pragma once
 
 #include "../../include/SpatialIndex.h"
 
-typedef Tools::PoolPointer<SpatialIndex::Region> RegionPtr;
-typedef Tools::PoolPointer<SpatialIndex::Point> PointPtr;
-typedef Tools::PoolPointer<SpatialIndex::TimeRegion> TimeRegionPtr;
-typedef Tools::PoolPointer<SpatialIndex::MovingRegion> MovingRegionPtr;
+using namespace SpatialIndex;
 
-#endif /*__spatialindex_impl_h*/
+typedef Tools::PoolPointer<Region> RegionPtr;
+typedef Tools::PoolPointer<Point> PointPtr;
+typedef Tools::PoolPointer<TimeRegion> TimeRegionPtr;
+typedef Tools::PoolPointer<MovingRegion> MovingRegionPtr;
+

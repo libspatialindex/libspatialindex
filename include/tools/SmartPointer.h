@@ -19,8 +19,7 @@
 //  Email:
 //    mhadji@gmail.com
 
-#ifndef __tools_smart_pointer_h
-#define __tools_smart_pointer_h
+#pragma once
 
 namespace Tools
 {
@@ -77,4 +76,3 @@ namespace Tools
 	};
 }
 
-#endif /* __tools_smart_pointer_h */

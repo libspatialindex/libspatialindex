@@ -9,7 +9,7 @@ DLL_VERSION = 1
 # Set BUILD_DEBUG balue to YES if you want to make debug build
 # and to prepare not optimized binaries.
 !IFNDEF BUILD_DEBUG 
-BUILD_DEBUG = NO
+BUILD_DEBUG = YES
 !ENDIF
 
 
@@ -57,14 +57,14 @@ MSVCVER = 0.0
 # Compilation flags for Release and Debug modes
 
 !IF "$(BUILD_DEBUG)" == "YES"
-OPTFLAGS= /nologo /MDd /EHsc /Z7 /W4 /D_CRT_SECURE_NO_DEPRECATE /D_CRT_NONSTDC_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /DDEBUG /D_DEBUG /DDEBUG /Fd$(SPATIALINDEX_HOME)\spatialindex.pdb
+OPTFLAGS= /nologo /MDd /EHsc /Zi /W4 /DDEBUG /D_DEBUG /D"PACKAGE_BUGREPORT=\"hobu.inc@gmail.com\"" /Fd$(SPATIALINDEX_HOME)\spatialindex.pdb
 LAS_LIB = spatialindex_d.lib
 LAS_DLL = spatialindex_d$(DLL_VERSION).dll
 LAS_LIB_DLL = spatialindex_i.lib
 !ELSE
 
 # You may need to remove /GR if you are statically linking libLAS
-OPTFLAGS=/nologo /MD /EHsc /Ox /GR /W2 /D_CRT_SECURE_NO_DEPRECATE /D_CRT_NONSTDC_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /DNDEBUG /D "PACKAGE_BUGREPORT=\"hobu.inc@gmail.com\""
+OPTFLAGS=/nologo /MD /EHsc /Ox /GR /W2 /D"PACKAGE_BUGREPORT=\"hobu.inc@gmail.com\""
 LAS_LIB = spatialindex.lib
 LAS_DLL = spatialindex$(DLL_VERSION).dll
 LAS_LIB_DLL = spatialindex_i.lib
@@ -75,7 +75,7 @@ LAS_LIB_DLL = spatialindex_i.lib
 MPFLAGS=/MP
 !MESSAGE *** Using /MP flag with number of effective processors
 !ELSE
-MPFLAGS=""
+MPFLAGS=
 !ENDIF
 
 
@@ -120,8 +120,6 @@ OBJS = 	src\mvrtree\Index.obj \
         src\storagemanager\DiskStorageManager.obj \
         src\storagemanager\MemoryStorageManager.obj \
         src\storagemanager\RandomEvictionsBuffer.obj \
-        src\tools\ExternalSort.obj \
-        src\tools\TemporaryFile.obj \
         src\tools\rand48.obj \
         src\tools\Tools.obj \
         src\tprtree\Index.obj \

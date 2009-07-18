@@ -34,332 +34,416 @@
 
 using namespace SpatialIndex::RTree;
 
-BulkLoadSource::BulkLoadSource(
-	Tools::SmartPointer<IObjectStream> spStream, size_t howMany
-) : m_spDataSource(spStream), m_cHowMany(howMany)
+//
+// ExternalSorter::Record
+//
+ExternalSorter::Record::Record() : m_pData(0)
 {
 }
 
-BulkLoadSource::BulkLoadSource(IObjectStream* pStream, size_t howMany)
- : m_spDataSource(pStream), m_cHowMany(howMany)
+ExternalSorter::Record::Record(const Region& r, id_type id, size_t len, byte* pData, size_t s)
+: m_r(r), m_id(id), m_len(len), m_pData(pData), m_s(s)
 {
 }
 
-BulkLoadSource::BulkLoadSource(IObjectStream* pStream)
- : m_spDataSource(pStream),
-   m_cHowMany(std::numeric_limits<size_t>::max())
+ExternalSorter::Record::~Record()
 {
+	delete[] m_pData;
 }
 
-BulkLoadSource::~BulkLoadSource()
+bool ExternalSorter::Record::operator<(const Record& r) const
 {
+	if (m_s != r.m_s)
+		throw Tools::IllegalStateException("ExternalSorter::Record::operator<: Incompatible sorting dimensions.");
+
+	if (m_r.m_pHigh[m_s] + m_r.m_pLow[m_s] < r.m_r.m_pHigh[m_s] + r.m_r.m_pLow[m_s])
+		return true;
+	else
+		return false;
 }
 
-Tools::IObject* BulkLoadSource::getNext()
+void ExternalSorter::Record::storeToFile(Tools::TemporaryFile& f)
 {
-	if (m_cHowMany == 0 || ! m_spDataSource->hasNext()) return 0;
-	m_cHowMany--;
-	return m_spDataSource->getNext();
-}
+	f.write(static_cast<uint64_t>(m_id));
+	f.write(static_cast<uint32_t>(m_r.m_dimension));
+	f.write(static_cast<uint32_t>(m_s));
 
-bool BulkLoadSource::hasNext() throw ()
-{
-	return (m_cHowMany != 0 && m_spDataSource->hasNext());
-}
-
-size_t BulkLoadSource::size() throw (Tools::NotSupportedException)
-{
-	throw Tools::NotSupportedException("SpatialIndex::RTree::BulkLoadSource::size: this should never be called.");
-}
-
-void BulkLoadSource::rewind() throw (Tools::NotSupportedException)
-{
-	throw Tools::NotSupportedException("SpatialIndex::RTree::BulkLoadSource::rewind: this should never be called.");
-}
-
-BulkLoadComparator::BulkLoadComparator(size_t d) : m_compareDimension(d)
-{
-}
-
-BulkLoadComparator::~BulkLoadComparator()
-{
-}
-
-int BulkLoadComparator::compare(Tools::IObject* o1, Tools::IObject* o2)
-{
-	IData* d1 = dynamic_cast<IData*>(o1);
-	IData* d2 = dynamic_cast<IData*>(o2);
-
-	IShape* s1;	d1->getShape(&s1);
-	IShape* s2;	d2->getShape(&s2);
-	Region r1; s1->getMBR(r1);
-	Region r2; s2->getMBR(r2);
-
-	int ret = 0;
-	if (
-		r1.m_pHigh[m_compareDimension] + r1.m_pLow[m_compareDimension] <
-		r2.m_pHigh[m_compareDimension] + r2.m_pLow[m_compareDimension]) ret = -1;
-	else if (
-		r1.m_pHigh[m_compareDimension] + r1.m_pLow[m_compareDimension] >
-		r2.m_pHigh[m_compareDimension] + r2.m_pLow[m_compareDimension]) ret = 1;
-
-	delete s1;
-	delete s2;
-
-	return ret;
-}
-
-BulkLoader::TmpFile::TmpFile() : m_pNext(0)
-{
-}
-
-BulkLoader::TmpFile::~TmpFile()
-{
-	if (m_pNext != 0) delete m_pNext;
-}
-
-void BulkLoader::TmpFile::storeRecord(Region& r, id_type id)
-{
-	size_t len = sizeof(id_type) + sizeof(size_t) + 2 * r.m_dimension * sizeof(double);
-	byte* data = new byte[len];
-	byte* ptr = data;
-
-	memcpy(ptr, &id, sizeof(id_type));
-	ptr += sizeof(id_type);
-	memcpy(ptr, &(r.m_dimension), sizeof(size_t));
-	ptr += sizeof(size_t);
-	memcpy(ptr, r.m_pLow, r.m_dimension * sizeof(double));
-	ptr += r.m_dimension * sizeof(double);
-	memcpy(ptr, r.m_pHigh, r.m_dimension * sizeof(double));
-
-	m_tmpFile.storeNextObject(len, data);
-	delete[] data;
-}
-
-void BulkLoader::TmpFile::loadRecord(Region& r, id_type& id)
-{
-	size_t len;
-	byte* data;
-	m_tmpFile.loadNextObject(&data, len);
-
-	byte* ptr = data;
-	memcpy(&id, ptr, sizeof(id_type));
-	ptr += sizeof(id_type);
-
-	size_t dim;
-	memcpy(&dim, ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
-
-	if (dim != r.m_dimension)
+	for (size_t i = 0; i < m_r.m_dimension; ++i)
 	{
-		delete[] r.m_pLow;
-		delete[] r.m_pHigh;
-		r.m_dimension = dim;
-		r.m_pLow = new double[dim];
-		r.m_pHigh = new double[dim];
+		f.write(m_r.m_pLow[i]);
+		f.write(m_r.m_pHigh[i]);
 	}
 
-	memcpy(r.m_pLow, ptr, dim * sizeof(double));
-	ptr += dim * sizeof(double);
-	memcpy(r.m_pHigh, ptr, dim * sizeof(double));
-
-	delete[] data;
+	f.write(static_cast<uint32_t>(m_len));
+	if (m_len > 0) f.write(m_len, m_pData);
 }
 
-IData* BulkLoader::TmpFile::getNext()
+void ExternalSorter::Record::loadFromFile(Tools::TemporaryFile& f)
 {
-	if (m_pNext == 0) return 0;
+	m_id = static_cast<id_type>(f.readUInt64());
+	uint32_t dim = f.readUInt32();
+	m_s = f.readUInt32();
 
-	IData* ret = m_pNext;
-
-	try
+	if (dim != m_r.m_dimension)
 	{
-		Region r;
-		id_type id;
-		loadRecord(r, id);
-		m_pNext = new Data(0, 0, r, id);
-	}
-	catch (Tools::EndOfStreamException& e)
-	{
-		m_pNext = 0;
-	}
-	catch (...)
-	{
-		m_pNext = 0;
-		throw;
+		delete[] m_r.m_pLow;
+		delete[] m_r.m_pHigh;
+		m_r.m_dimension = dim;
+		m_r.m_pLow = new double[dim];
+		m_r.m_pHigh = new double[dim];
 	}
 
-	return ret;
+	for (size_t i = 0; i < m_r.m_dimension; ++i)
+	{
+		m_r.m_pLow[i] = f.readDouble();
+		m_r.m_pHigh[i] = f.readDouble();
+	}
+	
+	m_len = static_cast<size_t>(f.readUInt32());
+	delete[] m_pData; m_pData = 0;
+	if (m_len > 0) f.readBytes(m_len, &m_pData);
 }
 
-bool BulkLoader::TmpFile::hasNext() throw ()
+//
+// ExternalSorter
+//
+ExternalSorter::ExternalSorter(uint32_t u32PageSize, uint32_t u32BufferPages)
+: m_bInsertionPhase(true), m_u32PageSize(u32PageSize),
+	m_u32BufferPages(u32BufferPages), m_sortedFile(0), m_u64TotalEntries(0), m_stI(0)
 {
-	return (m_pNext != 0);
 }
 
-size_t BulkLoader::TmpFile::size() throw (Tools::NotSupportedException)
+ExternalSorter::~ExternalSorter()
 {
-	throw Tools::NotSupportedException("Not supported yet.");
+	delete m_sortedFile;
+	for (m_stI = 0; m_stI < m_buffer.size(); ++m_stI) delete m_buffer[m_stI];
+
 }
 
-void BulkLoader::TmpFile::rewind()
+void ExternalSorter::insert(Record* r)
 {
-	Region r;
-	id_type id;
+	if (m_bInsertionPhase == false)
+		throw Tools::IllegalStateException("ExternalSorter::insert: Input has already been sorted.");
 
-	if (m_pNext != 0)
-	{
-		delete m_pNext;
-		m_pNext = 0;
-	}
+	m_buffer.push_back(r);
+	++m_u64TotalEntries;
 
-	m_tmpFile.rewindForReading();
-
-	try
+	// this will create the initial, sorted buckets before the
+	// external merge sort.
+	if (m_buffer.size() >= m_u32PageSize * m_u32BufferPages)
 	{
-		loadRecord(r, id);
-		m_pNext = new Data(0, 0, r, id);
-	}
-	catch (Tools::EndOfStreamException& e)
-	{
+		std::sort(m_buffer.begin(), m_buffer.end(), Record::SortAscending());
+		Tools::TemporaryFile* tf = new Tools::TemporaryFile();
+		for (size_t j = 0; j < m_buffer.size(); ++j)
+		{
+			m_buffer[j]->storeToFile(*tf);
+			delete m_buffer[j];
+		}
+		m_buffer.clear();
+		tf->rewindForReading();
+		m_runs.push_back(tf);
 	}
 }
 
+void ExternalSorter::sort()
+{
+	if (m_bInsertionPhase == false)
+		throw Tools::IllegalStateException("ExternalSorter::sort: Input has already been sorted.");
+
+	if (m_runs.empty())
+	{
+		// The data fits in main memory. No need to store to disk.
+		std::sort(m_buffer.begin(), m_buffer.end(), Record::SortAscending());
+		m_bInsertionPhase = false;
+		return;
+	}
+
+	if (m_buffer.size() > 0)
+	{
+		// Whatever remained in the buffer (if not filled) needs to be stored
+		// as the final bucket.
+		std::sort(m_buffer.begin(), m_buffer.end(), Record::SortAscending());
+		Tools::TemporaryFile* tf = new Tools::TemporaryFile();
+		for (size_t j = 0; j < m_buffer.size(); ++j)
+		{
+			m_buffer[j]->storeToFile(*tf);
+			delete m_buffer[j];
+		}
+		m_buffer.clear();
+		tf->rewindForReading();
+		m_runs.push_back(tf);
+	}
+
+	m_sortedFile = m_runs.front();
+
+	Record* r;
+	uint32_t u32Count;
+
+	while (m_runs.size() > 1)
+	{
+		Tools::TemporaryFile* tf = new Tools::TemporaryFile();
+		std::vector<Tools::TemporaryFile*> buckets;
+		std::vector<std::queue<Record*> > buffers;
+		std::priority_queue<PQEntry, std::vector<PQEntry>, PQEntry::SortAscending> pq;
+
+		// initialize buffers and priority queue.
+		std::list<Tools::TemporaryFile*>::iterator it = m_runs.begin();
+		for (uint32_t i = 0; i < (std::min)(m_runs.size(), static_cast<size_t>(m_u32BufferPages)); ++i)
+		{
+			buckets.push_back(*it);
+			buffers.push_back(std::queue<Record*>());
+
+			r = new Record();
+			r->loadFromFile(*buckets.back());
+				// a run cannot be empty initially, so this should never fail.
+			pq.push(PQEntry(r, i));
+
+			for (uint32_t j = 0; j < m_u32PageSize - 1; ++j)
+			{
+				// fill the buffer with the rest of the page of records.
+				try
+				{
+					r = new Record();
+					r->loadFromFile(*buckets.back());
+					buffers.back().push(r);
+				}
+				catch (Tools::EndOfStreamException)
+				{
+					delete r;
+					break;
+				}
+			}
+			++it;
+		}
+
+		// exhaust buckets, buffers, and priority queue.
+		while (! pq.empty())
+		{
+			PQEntry e = pq.top(); pq.pop();
+			e.m_r->storeToFile(*tf);
+			delete e.m_r;
+
+			if (! buckets[e.m_u32Index]->eof() && buffers[e.m_u32Index].empty())
+			{
+				for (uint32_t j = 0; j < m_u32PageSize; ++j)
+				{
+					try
+					{
+						r = new Record();
+						r->loadFromFile(*buckets[e.m_u32Index]);
+						buffers[e.m_u32Index].push(r);
+					}
+					catch (Tools::EndOfStreamException)
+					{
+						delete r;
+						break;
+					}
+				}
+			}
+
+			if (! buffers[e.m_u32Index].empty())
+			{
+				e.m_r = buffers[e.m_u32Index].front();
+				buffers[e.m_u32Index].pop();
+				pq.push(e);
+			}
+		}
+
+		tf->rewindForReading();
+
+		// check if another pass is needed.
+		u32Count = m_runs.size();
+		for (uint32_t i = 0; i < (std::min)(u32Count, m_u32BufferPages); ++i)
+		{
+			delete m_runs.front();
+			m_runs.pop_front();
+		}
+
+		if (m_runs.size() == 0)
+		{
+			m_sortedFile = tf;
+			break;
+		}
+		else
+		{
+			m_runs.push_back(tf);
+		}
+	}
+
+	m_bInsertionPhase = false;
+}
+
+void ExternalSorter::getNextRecord(Record& r)
+{
+	if (m_bInsertionPhase == true) throw Tools::IllegalStateException("ExternalSorter::getNextRecord: Input has not been sorted yet.");
+
+	if (m_sortedFile == 0)
+	{
+		if (m_stI < m_buffer.size())
+			r = *(m_buffer[m_stI++]);
+		else
+			throw Tools::EndOfStreamException("");
+	}
+	else
+		r.loadFromFile(*m_sortedFile);
+}
+
+void ExternalSorter::rewind()
+{
+	if (m_bInsertionPhase == true)
+		throw Tools::IllegalStateException("ExternalSorter::rewind: Input has not been sorted yet.");
+
+	if (m_sortedFile != 0) m_sortedFile->rewindForReading();
+	else m_stI = 0;
+}
+
+inline uint64_t ExternalSorter::getTotalEntries() const
+{
+	return m_u64TotalEntries;
+}
+
+//
+// BulkLoader
+//
 void BulkLoader::bulkLoadUsingSTR(
 	SpatialIndex::RTree::RTree* pTree,
 	IDataStream& stream,
 	size_t bindex,
 	size_t bleaf,
-	size_t bufferSize)
-{
+	size_t pageSize,
+	size_t numberOfPages
+) {
 	NodePtr n = pTree->readNode(pTree->m_rootID);
 	pTree->deleteNode(n.get());
 
-	// create the leaf level first.
-	TmpFile* tmpFile = new TmpFile();
-	size_t cNodes = 0;
-	size_t cTotalData = 0;
+	#ifndef NDEBUG
+	std::cerr << "RTree::BulkLoader: Sorting data." << std::endl;
+	#endif
 
-#ifdef DEBUG
-	std::cerr << "RTree::BulkLoader: Building level 0" << std::endl;
-#endif
+	Tools::SmartPointer<ExternalSorter> es = Tools::SmartPointer<ExternalSorter>(new ExternalSorter(pageSize, numberOfPages));
 
-	createLevel(pTree, stream, pTree->m_dimension, pTree->m_dimension, bleaf, 0, bufferSize, *tmpFile, cNodes, cTotalData);
-
-	pTree->m_stats.m_data = cTotalData;
-
-	// create index levels afterwards.
-	size_t level = 1;
-	tmpFile->rewind();
-	BulkLoadSource* bs = new BulkLoadSource(tmpFile);
-
-	while (cNodes > 1)
+	while (stream.hasNext())
 	{
-		cNodes = 0;
-		TmpFile* pTF = new TmpFile();
+		IData* d = stream.getNext();
 
+		IShape* s; d->getShape(&s);
+		Region r; s->getMBR(r);
+		delete s;
+
+		byte* pData;
+		size_t len;
+		d->getData(len, &pData);
+
+		es->insert(new ExternalSorter::Record(r, d->getIdentifier(), len, pData, 0));
+
+		delete d;
+	}
+	es->sort();
+
+	pTree->m_stats.m_data = es->getTotalEntries();
+
+	// create index levels.
+	size_t level = 0;
+
+	while (true)
+	{
 		#ifndef NDEBUG
 		std::cerr << "RTree::BulkLoader: Building level " << level << std::endl;
 		#endif
+
 		pTree->m_stats.m_nodesInLevel.push_back(0);
 
-		createLevel(pTree, *bs, pTree->m_dimension, pTree->m_dimension, bindex, level, bufferSize, *pTF, cNodes, cTotalData);
-		delete bs;
+		Tools::SmartPointer<ExternalSorter> es2 = Tools::SmartPointer<ExternalSorter>(new ExternalSorter(800, 2000));
+		createLevel(pTree, es, 0, bleaf, bindex, level++, es2, pageSize, numberOfPages);
 
-		level++;
-		pTF->rewind();
-		bs = new BulkLoadSource(pTF);
+		es = es2;
+
+		if (es->getTotalEntries() == 1) break;
+		es->sort();
 	}
 
 	pTree->m_stats.m_treeHeight = level;
-
-	delete bs;
-
 	pTree->storeHeader();
 }
 
 void BulkLoader::createLevel(
 	SpatialIndex::RTree::RTree* pTree,
-	Tools::IObjectStream& stream,
+	Tools::SmartPointer<ExternalSorter> es,
 	size_t dimension,
-	size_t k,
-	size_t b,
+	size_t bleaf,
+	size_t bindex,
 	size_t level,
-	size_t bufferSize,
-	BulkLoader::TmpFile& tmpFile,
-	size_t& numberOfNodes,
-	size_t& totalData)
-{
-	BulkLoadComparator bc(dimension - k);
-	Tools::SmartPointer<Tools::IObjectStream> es(Tools::externalSort(stream, bc, bufferSize));
-	size_t r = es->size();
-	totalData = r;
+	Tools::SmartPointer<ExternalSorter> es2,
+	size_t pageSize,
+	size_t numberOfPages
+) {
+	size_t b = (level == 0) ? bleaf : bindex;
+	size_t P = static_cast<size_t>(std::ceil(static_cast<double>(es->getTotalEntries()) / static_cast<double>(b)));
+	size_t S = static_cast<size_t>(std::ceil(std::sqrt(static_cast<double>(P))));
 
-	if (k == dimension - 1)
+	if (S == 1 || dimension == pTree->m_dimension - 1)
 	{
 		// store new pages in storage manager and page information in temporary file.
-
-		std::vector<Tools::SmartPointer<IData> > entries;
-
-		while (es->hasNext())
+		std::vector<ExternalSorter::Record> node;
+		ExternalSorter::Record r;
+		
+		while (true)
 		{
-			entries.push_back(Tools::SmartPointer<IData>(static_cast<IData*>(es->getNext())));
+			try { es->getNextRecord(r); } catch (Tools::EndOfStreamException) { break; }
+			node.push_back(r);
 
-			if (entries.size() == b)
+			if (node.size() == b)
 			{
-				Node* n = createNode(pTree, entries, level);
+				Node* n = createNode(pTree, node, level);
 				pTree->writeNode(n);
-				if (r <= b) pTree->m_rootID = n->m_identifier;
-				numberOfNodes++;
-				tmpFile.storeRecord(n->m_nodeMBR, n->m_identifier);
-				entries.clear();
+				es2->insert(new ExternalSorter::Record(n->m_nodeMBR, n->m_identifier, 0, 0, 0));
+				pTree->m_rootID = n->m_identifier;
+					// special case when the root has exactly bindex entries.
+				node.clear();
 				delete n;
 			}
 		}
 
-		if (! entries.empty())
+		if (! node.empty())
 		{
-			Node* n = createNode(pTree, entries, level);
+			Node* n = createNode(pTree, node, level);
 			pTree->writeNode(n);
-			if (r <= b) pTree->m_rootID = n->m_identifier;
-			numberOfNodes++;
-			tmpFile.storeRecord(n->m_nodeMBR, n->m_identifier);
-			entries.clear();
+			es2->insert(new ExternalSorter::Record(n->m_nodeMBR, n->m_identifier, 0, 0, 0));
+			pTree->m_rootID = n->m_identifier;
 			delete n;
 		}
 	}
 	else
 	{
-		size_t P = static_cast<size_t>(std::ceil(static_cast<double>(r) / static_cast<double>(b)));
-		size_t D = static_cast<size_t>(std::ceil(std::pow(static_cast<double>(P), static_cast<double>(k - 1) / static_cast<double>(k))));
+		bool bMore = true;
 
-		while (es->hasNext()) // this will happen S = ceil[P^(1 / k)] times
+		while (bMore)
 		{
-			BulkLoadSource bs(es, D * b);
-			size_t cTotalData;
-			createLevel(pTree, bs, dimension, k - 1, b, level, bufferSize, tmpFile, numberOfNodes, cTotalData);
+			Tools::SmartPointer<ExternalSorter> es3 = Tools::SmartPointer<ExternalSorter>(new ExternalSorter(pageSize, numberOfPages));
+			for (size_t i = 0; i < S * b; ++i)
+			{
+				ExternalSorter::Record* pR = new ExternalSorter::Record();
+				try { es->getNextRecord(*pR); } catch (Tools::EndOfStreamException) { bMore = false; break; }
+				pR->m_s = dimension + 1;
+				es3->insert(pR);
+			}
+			es3->sort();
+			createLevel(pTree, es3, dimension + 1, bindex, bleaf, level, es2, pageSize, numberOfPages);
 		}
 	}
 }
 
-Node* BulkLoader::createNode(SpatialIndex::RTree::RTree* pTree, std::vector<Tools::SmartPointer<IData> >& e, size_t level)
+Node* BulkLoader::createNode(SpatialIndex::RTree::RTree* pTree, std::vector<ExternalSorter::Record>& e, size_t level)
 {
 	Node* n;
 
 	if (level == 0) n = new Leaf(pTree, -1);
 	else n = new Index(pTree, -1, level);
 
-	for (size_t cChild = 0; cChild < e.size(); cChild++)
+	for (size_t cChild = 0; cChild < e.size(); ++cChild)
 	{
-		size_t len;
-		byte* data;
-		e[cChild]->getData(len, &data);
-		IShape* s; e[cChild]->getShape(&s);
-		RegionPtr mbr = pTree->m_regionPool.acquire();
-		s->getMBR(*mbr);
-		delete s;
-		id_type id = e[cChild]->getIdentifier();
-		n->insertEntry(len, data, *mbr, id);
+		n->insertEntry(e[cChild].m_len, e[cChild].m_pData, e[cChild].m_r, e[cChild].m_id);
+		e[cChild].m_pData = 0;
 	}
 
 	return n;

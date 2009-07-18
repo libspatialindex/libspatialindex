@@ -49,17 +49,17 @@ MemoryStorageManager::~MemoryStorageManager()
 	for (std::vector<Entry*>::iterator it = m_buffer.begin(); it != m_buffer.end(); it++) delete *it;
 }
 
-void MemoryStorageManager::loadByteArray(const id_type id, size_t& len, byte** data)
+void MemoryStorageManager::loadByteArray(const id_type page, size_t& len, byte** data)
 {
 	Entry* e;
 	try
 	{
-		e = m_buffer.at(id);
-		if (e == 0) throw Tools::InvalidPageException(id);
+		e = m_buffer.at(page);
+		if (e == 0) throw InvalidPageException(page);
 	}
 	catch (std::out_of_range)
 	{
-		throw Tools::InvalidPageException(id);
+		throw InvalidPageException(page);
 	}
 
 	len = e->m_length;
@@ -68,21 +68,21 @@ void MemoryStorageManager::loadByteArray(const id_type id, size_t& len, byte** d
 	memcpy(*data, e->m_pData, len);
 }
 
-void MemoryStorageManager::storeByteArray(id_type& id, const size_t len, const byte* const data)
+void MemoryStorageManager::storeByteArray(id_type& page, const size_t len, const byte* const data)
 {
-	if (id == NewPage)
+	if (page == NewPage)
 	{
 		Entry* e = new Entry(len, data);
 
 		if (m_emptyPages.empty())
 		{
 			m_buffer.push_back(e);
-			id = m_buffer.size() - 1;
+			page = m_buffer.size() - 1;
 		}
 		else
 		{
-			id = m_emptyPages.top(); m_emptyPages.pop();
-			m_buffer[id] = e;
+			page = m_emptyPages.top(); m_emptyPages.pop();
+			m_buffer[page] = e;
 		}
 	}
 	else
@@ -90,36 +90,36 @@ void MemoryStorageManager::storeByteArray(id_type& id, const size_t len, const b
 		Entry* e_old;
 		try
 		{
-			e_old = m_buffer.at(id);
-			if (e_old == 0) throw Tools::InvalidPageException(id);
+			e_old = m_buffer.at(page);
+			if (e_old == 0) throw InvalidPageException(page);
 		}
 		catch (std::out_of_range)
 		{
-			throw Tools::InvalidPageException(id);
+			throw InvalidPageException(page);
 		}
 
 		Entry* e = new Entry(len, data);
 
 		delete e_old;
-		m_buffer[id] = e;
+		m_buffer[page] = e;
 	}
 }
 
-void MemoryStorageManager::deleteByteArray(const id_type id)
+void MemoryStorageManager::deleteByteArray(const id_type page)
 {
 	Entry* e;
 	try
 	{
-		e = m_buffer.at(id);
-		if (e == 0) throw Tools::InvalidPageException(id);
+		e = m_buffer.at(page);
+		if (e == 0) throw InvalidPageException(page);
 	}
 	catch (std::out_of_range)
 	{
-		throw Tools::InvalidPageException(id);
+		throw InvalidPageException(page);
 	}
 
-	m_buffer[id] = 0;
-	m_emptyPages.push(id);
+	m_buffer[page] = 0;
+	m_emptyPages.push(page);
 
 	delete e;
 }

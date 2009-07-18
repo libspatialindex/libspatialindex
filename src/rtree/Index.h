@@ -19,8 +19,7 @@
 //  Email:
 //    mhadji@gmail.com
 
-#ifndef __spatialindex_rtree_index_h
-#define __spatialindex_rtree_index_h
+#pragma once
 
 namespace SpatialIndex
 {
@@ -31,7 +30,7 @@ namespace SpatialIndex
 		public:
 			virtual ~Index();
 
-		private:
+		protected:
 			Index(RTree* pTree, id_type id, size_t level);
 
 			virtual NodePtr chooseSubtree(const Region& mbr, size_t level, std::stack<id_type>& pathBuffer);
@@ -72,6 +71,3 @@ namespace SpatialIndex
 		}; // Index
 	}
 }
-
-#endif /*__spatialindex_rtree_index_h*/
-

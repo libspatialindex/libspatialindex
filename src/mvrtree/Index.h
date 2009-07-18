@@ -19,8 +19,7 @@
 //  Email:
 //    mhadji@gmail.com
 
-#ifndef __spatialindex_mvrtree_index_h
-#define __spatialindex_mvrtree_index_h
+#pragma once
 
 namespace SpatialIndex
 {
@@ -74,4 +73,3 @@ namespace SpatialIndex
 	}
 }
 
-#endif /*__spatialindex_mvrtree_index_h*/

@@ -19,12 +19,9 @@
 //  Email:
 //    mhadji@gmail.com
 
-#ifndef __spatialindex_tprtree_pointer_pool_node_h
-#define __spatialindex_tprtree_pointer_pool_node_h
+#pragma once
 
 #include "Node.h"
-
-using namespace SpatialIndex;
 
 namespace Tools
 {
@@ -134,4 +131,3 @@ namespace Tools
 	};
 }
 
-#endif /*__spatialindex_tprtree_pointer_pool_node_h*/

@@ -19,10 +19,12 @@
 //  Email:
 //    mhadji@gmail.com
 
+#pragma once
+
 #include <cstring>
 
-#ifndef __storagemanager_buffer_h
-#define __storagemanager_buffer_h
+using namespace SpatialIndex;
+using namespace SpatialIndex::StorageManager;
 
 namespace SpatialIndex
 {
@@ -39,9 +41,9 @@ namespace SpatialIndex
 
 			virtual ~Buffer();
 
-			virtual void loadByteArray(const id_type id, size_t& len, byte** data);
-			virtual void storeByteArray(id_type& id, const size_t len, const byte* const data);
-			virtual void deleteByteArray(const id_type id);
+			virtual void loadByteArray(const id_type page, size_t& len, byte** data);
+			virtual void storeByteArray(id_type& page, const size_t len, const byte* const data);
+			virtual void deleteByteArray(const id_type page);
 
 			virtual void clear();
 			virtual size_t getHits();
@@ -63,7 +65,7 @@ namespace SpatialIndex
 				bool m_bDirty;
 			}; // Entry
 
-			virtual void addEntry(id_type id, Entry* pEntry) = 0;
+			virtual void addEntry(id_type page, Entry* pEntry) = 0;
 			virtual void removeEntry() = 0;
 
 			size_t m_capacity;
@@ -74,5 +76,3 @@ namespace SpatialIndex
 		}; // Buffer
 	}
 }
-
-#endif /*__storagemanager_buffer_h*/

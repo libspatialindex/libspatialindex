@@ -19,12 +19,11 @@
 //  Email:
 //    mhadji@gmail.com
 
-#ifndef __spatialindex_movingpoint_h
-#define __spatialindex_movingpoint_h
+#pragma once
 
 namespace SpatialIndex
 {
-	class MovingPoint : public TimePoint, public IEvolvingShape
+	class _spatialindex_exported MovingPoint : public TimePoint, public IEvolvingShape
 	{
 	public:
 		MovingPoint();
@@ -72,10 +71,9 @@ namespace SpatialIndex
 	public:
 		double* m_pVCoords;
 
-		friend std::ostream& operator<<(std::ostream& os, const MovingPoint& pt);
+		friend _spatialindex_exported std::ostream& operator<<(std::ostream& os, const MovingPoint& pt);
 	}; // MovingPoint
 
-	std::ostream& operator<<(std::ostream& os, const MovingPoint& pt);
+	_spatialindex_exported std::ostream& operator<<(std::ostream& os, const MovingPoint& pt);
 }
 
-#endif /*__spatialindex_movingpoint_h*/

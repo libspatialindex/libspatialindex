@@ -28,9 +28,6 @@
 #include <cstring>
 
 using namespace SpatialIndex::MVRTree;
-typedef SpatialIndex::IShape IShape;
-typedef SpatialIndex::id_type id_type;
-typedef SpatialIndex::TimeRegion TimeRegion;
 
 //
 // Tools::IObject interface
@@ -254,7 +251,7 @@ Node::Node() :
 {
 }
 
-Node::Node(MVRTree* pTree, id_type id, size_t level, size_t capacity) :
+	Node::Node(SpatialIndex::MVRTree::MVRTree* pTree, id_type id, size_t level, size_t capacity) :
 	m_pTree(pTree),
 	m_level(level),
 	m_identifier(id),

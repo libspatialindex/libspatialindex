@@ -20,14 +20,8 @@
 //    mhadji@gmail.com
 
 #include <cstring>
-
 #include "../spatialindex/SpatialIndexImpl.h"
 #include "Buffer.h"
-
-using namespace SpatialIndex::StorageManager;
-using std::map;
-typedef SpatialIndex::id_type id_type;
-typedef SpatialIndex::TimeRegion TimeRegion;
     
 Buffer::Buffer(IStorageManager& sm, Tools::PropertySet& ps) :
 	m_capacity(10),
@@ -52,88 +46,87 @@ Buffer::Buffer(IStorageManager& sm, Tools::PropertySet& ps) :
 
 Buffer::~Buffer()
 {
-	for (map<id_type, Entry*>::iterator it = m_buffer.begin(); it != m_buffer.end(); it++)
+	for (std::map<id_type, Entry*>::iterator it = m_buffer.begin(); it != m_buffer.end(); it++)
 	{
-		Entry* e = (*it).second;
-		id_type id = (*it).first;
-		if (e->m_bDirty) m_pStorageManager->storeByteArray(id, e->m_length, e->m_pData);
-		delete e;
+		if ((*it).second->m_bDirty)
+		{
+			id_type page = (*it).first;
+			m_pStorageManager->storeByteArray(page, (*it).second->m_length, (*it).second->m_pData);
+		}
+		delete (*it).second;
 	}
 }
 
-void Buffer::loadByteArray(const id_type id, size_t& len, byte** data)
+void Buffer::loadByteArray(const id_type page, size_t& len, byte** data)
 {
-	map<id_type, Entry*>::iterator it = m_buffer.find(id);
+	std::map<id_type, Entry*>::iterator it = m_buffer.find(page);
 
 	if (it != m_buffer.end())
 	{
-		m_hits++;
-		Entry* e = (*it).second;
-		len = e->m_length;
+		++m_hits;
+		len = (*it).second->m_length;
 		*data = new byte[len];
-		memcpy(*data, e->m_pData, len);
+		memcpy(*data, (*it).second->m_pData, len);
 	}
 	else
 	{
-		m_pStorageManager->loadByteArray(id, len, data);
-		Entry* e = new Entry(len, (const byte *) *data);
-		addEntry(id, e);
+		m_pStorageManager->loadByteArray(page, len, data);
+		addEntry(page, new Entry(len, static_cast<const byte*>(*data)));
 	}
 }
 
-void Buffer::storeByteArray(id_type& id, const size_t len, const byte* const data)
+void Buffer::storeByteArray(id_type& page, const size_t len, const byte* const data)
 {
-	if (id == NewPage)
+	if (page == NewPage)
 	{
-		m_pStorageManager->storeByteArray(id, len, data);
-		assert(m_buffer.find(id) == m_buffer.end());
-		Entry* e = new Entry(len, data);
-		addEntry(id, e);
+		m_pStorageManager->storeByteArray(page, len, data);
+		assert(m_buffer.find(page) == m_buffer.end());
+		addEntry(page, new Entry(len, data));
 	}
 	else
 	{
 		if (m_bWriteThrough)
 		{
-			m_pStorageManager->storeByteArray(id, len, data);
+			m_pStorageManager->storeByteArray(page, len, data);
 		}
 
 		Entry* e = new Entry(len, data);
 		if (m_bWriteThrough == false) e->m_bDirty = true;
 
-		map<id_type, Entry*>::iterator it = m_buffer.find(id);
+		std::map<id_type, Entry*>::iterator it = m_buffer.find(page);
 		if (it != m_buffer.end())
 		{
 			delete (*it).second;
 			(*it).second = e;
-			if (m_bWriteThrough == false) m_hits++;
+			if (m_bWriteThrough == false) ++m_hits;
 		}
 		else
 		{
-			addEntry(id, e);
+			addEntry(page, e);
 		}
 	}
 }
 
-void Buffer::deleteByteArray(const id_type id)
+void Buffer::deleteByteArray(const id_type page)
 {
-	map<id_type, Entry*>::iterator it = m_buffer.find(id);
+	std::map<id_type, Entry*>::iterator it = m_buffer.find(page);
 	if (it != m_buffer.end())
 	{
 		delete (*it).second;
 		m_buffer.erase(it);
 	}
 
-	m_pStorageManager->deleteByteArray(id);
+	m_pStorageManager->deleteByteArray(page);
 }
 
 void Buffer::clear()
 {
-	for (map<id_type, Entry*>::iterator it = m_buffer.begin(); it != m_buffer.end(); it++)
+	for (std::map<id_type, Entry*>::iterator it = m_buffer.begin(); it != m_buffer.end(); ++it)
 	{
 		if ((*it).second->m_bDirty)
 		{
-			id_type id = (*it).first;
-			m_pStorageManager->storeByteArray(id, ((*it).second)->m_length, (const byte *) ((*it).second)->m_pData);
+			id_type page = (*it).first;
+			m_pStorageManager->storeByteArray(page, ((*it).second)->m_length, static_cast<const byte*>(((*it).second)->m_pData));
 		}
 
 		delete (*it).second;

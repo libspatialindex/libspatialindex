@@ -25,7 +25,6 @@
 #include <SpatialIndex.h>
 
 using namespace SpatialIndex;
-using namespace std;
 
 #define INSERT 1
 #define DELETE 0
@@ -34,7 +33,7 @@ using namespace std;
 class MyDataStream : public IDataStream
 {
 public:
-	MyDataStream(string inputFile) : m_pNext(0)
+	MyDataStream(std::string inputFile) : m_pNext(0)
 	{
 		m_fin.open(inputFile.c_str());
 
@@ -134,19 +133,20 @@ public:
 
 int main(int argc, char** argv)
 {
-	//try
+	try
 	{
 		if (argc != 5)
 		{
-			cerr << "Usage: " << argv[0] << " input_file tree_file capacity utilization." << endl;
+			std::cerr << "Usage: " << argv[0] << " input_file tree_file capacity utilization." << std::endl;
 			return -1;
 		}
 
-		string baseName = argv[2];
+		std::string baseName = argv[2];
 		double utilization = atof(argv[4]);
 
-		// Create a new storage manager with the provided base name and a 4K page size.
 		IStorageManager* diskfile = StorageManager::createNewDiskStorageManager(baseName, 4096);
+			// Create a new storage manager with the provided base name and a 4K page size.
+
 		StorageManager::IBuffer* file = StorageManager::createNewRandomEvictionsBuffer(*diskfile, 10, false);
 			// applies a main memory random buffer on top of the persistent storage manager
 			// (LRU buffer, etc can be created the same way).
@@ -159,13 +159,13 @@ int main(int argc, char** argv)
 		ISpatialIndex* tree = RTree::createAndBulkLoadNewRTree(
 			RTree::BLM_STR, stream, *file, utilization, atoi(argv[3]), atoi(argv[3]), 2, SpatialIndex::RTree::RV_RSTAR, indexIdentifier);
 
-		cerr << *tree;
-		cerr << "Buffer hits: " << file->getHits() << endl;
-		cerr << "Index ID: " << indexIdentifier << endl;
+		std::cerr << *tree;
+		std::cerr << "Buffer hits: " << file->getHits() << std::endl;
+		std::cerr << "Index ID: " << indexIdentifier << std::endl;
 
 		bool ret = tree->isIndexValid();
-		if (ret == false) cerr << "ERROR: Structure is invalid!" << endl;
-		else cerr << "The stucture seems O.K." << endl;
+		if (ret == false) std::cerr << "ERROR: Structure is invalid!" << std::endl;
+		else std::cerr << "The stucture seems O.K." << std::endl;
 
 		delete tree;
 		delete file;
@@ -173,20 +173,13 @@ int main(int argc, char** argv)
 			// delete the buffer first, then the storage manager
 			// (otherwise the the buffer will fail trying to write the dirty entries).
 	}
-/*
 	catch (Tools::Exception& e)
 	{
-		cerr << "******ERROR******" << endl;
+		std::cerr << "******ERROR******" << std::endl;
 		std::string s = e.what();
-		cerr << s << endl;
+		std::cerr << s << std::endl;
 		return -1;
 	}
-	catch (...)
-	{
-		cerr << "******ERROR******" << endl;
-		cerr << "other exception" << endl;
-		return -1;
-	}
-*/
+
 	return 0;
 }

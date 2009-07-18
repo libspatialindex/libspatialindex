@@ -19,8 +19,7 @@
 //  Email:
 //    mhadji@gmail.com
 
-#ifndef __spatialindex_tprtree_tprtree_h
-#define __spatialindex_tprtree_tprtree_h
+#pragma once
 
 #include "Statistics.h"
 #include "Node.h"
@@ -93,8 +92,7 @@ namespace SpatialIndex
 
 			IStorageManager* m_pStorageManager;
 
-			id_type m_rootID;
-			id_type m_headerID;
+			id_type m_rootID, m_headerID;
 
 			TPRTreeVariant m_treeVariant;
 
@@ -199,5 +197,3 @@ namespace SpatialIndex
 		std::ostream& operator<<(std::ostream& os, const TPRTree& t);
 	}
 }
-
-#endif /*__spatialindex_tprtree_tprtree_h*/

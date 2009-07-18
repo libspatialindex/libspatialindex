@@ -19,8 +19,7 @@
 //  Email:
 //    mhadji@gmail.com
 
-#ifndef __spatialindex_mvrtree_mvrtree_h
-#define __spatialindex_mvrtree_mvrtree_h
+#pragma once
 
 #include "Statistics.h"
 #include "Node.h"
@@ -221,4 +220,3 @@ namespace SpatialIndex
 	}
 }
 
-#endif /*__spatialindex_mvrtree_mvrtree_h*/

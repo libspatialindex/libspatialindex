@@ -19,8 +19,7 @@
 //  Email:
 //    mhadji@gmail.com
 
-#ifndef __tools_pool_pointer_h
-#define __tools_pool_pointer_h
+#pragma once
 
 #include "PointerPool.h"
 
@@ -95,4 +94,3 @@ namespace Tools
 	};
 }
 
-#endif /* __tools_pool_pointer_h */

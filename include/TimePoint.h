@@ -19,12 +19,11 @@
 //  Email:
 //    mhadji@gmail.com
 
-#ifndef __spatialindex_timepoint_h
-#define __spatialindex_timepoint_h
+#pragma once
 
 namespace SpatialIndex
 {
-	class TimePoint : public Point, public ITimeShape
+	class _spatialindex_exported TimePoint : public Point, public ITimeShape
 	{
 	public:
 		TimePoint();
@@ -83,10 +82,8 @@ namespace SpatialIndex
 		double m_startTime;
 		double m_endTime;
 
-		friend std::ostream& operator<<(std::ostream& os, const TimePoint& pt);
+		friend _spatialindex_exported std::ostream& operator<<(std::ostream& os, const TimePoint& pt);
 	}; // TimePoint
 
-	std::ostream& operator<<(std::ostream& os, const TimePoint& pt);
+	_spatialindex_exported std::ostream& operator<<(std::ostream& os, const TimePoint& pt);
 }
-
-#endif /*__spatialindex_timepoint_h*/

@@ -53,20 +53,20 @@ IBuffer* SpatialIndex::StorageManager::createNewRandomEvictionsBuffer(IStorageMa
 
 RandomEvictionsBuffer::RandomEvictionsBuffer(IStorageManager& sm, Tools::PropertySet& ps) : Buffer(sm, ps)
 {
-	srand48(time(NULL));
+	srand48(time(0));
 }
 
 RandomEvictionsBuffer::~RandomEvictionsBuffer()
 {
 }
 
-void RandomEvictionsBuffer::addEntry(id_type id, Entry* e)
+void RandomEvictionsBuffer::addEntry(id_type page, Entry* e)
 {
 	assert(m_buffer.size() <= m_capacity);
 
 	if (m_buffer.size() == m_capacity) removeEntry();
-	assert(m_buffer.find(id) == m_buffer.end());
-	m_buffer.insert(std::pair<id_type, Entry*>(id, e));
+	assert(m_buffer.find(page) == m_buffer.end());
+	m_buffer.insert(std::pair<id_type, Entry*>(page, e));
 }
 
 void RandomEvictionsBuffer::removeEntry()
@@ -75,17 +75,17 @@ void RandomEvictionsBuffer::removeEntry()
 
     double random;
 
-    random =  drand48();
+    random = drand48();
 
 	size_t entry = static_cast<size_t>(floor(((double) m_buffer.size()) * random));
 
 	std::map<id_type, Entry*>::iterator it = m_buffer.begin();
-	for (size_t cIndex = 0; cIndex < entry; cIndex++) it++;
+	for (size_t cIndex = 0; cIndex < entry; cIndex++) ++it;
 
 	if ((*it).second->m_bDirty)
 	{
-		id_type id = (*it).first;
-		m_pStorageManager->storeByteArray(id, ((*it).second)->m_length, (const byte *) ((*it).second)->m_pData);
+		id_type page = (*it).first;
+		m_pStorageManager->storeByteArray(page, ((*it).second)->m_length, (const byte *) ((*it).second)->m_pData);
 	}
 
 	delete (*it).second;

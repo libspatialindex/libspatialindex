@@ -19,12 +19,11 @@
 //  Email:
 //    mhadji@gmail.com
 
-#ifndef __spatialindex_linesegment_h
-#define __spatialindex_linesegment_h
+#pragma once
 
 namespace SpatialIndex
 {
-	class LineSegment : public IObject, public virtual IShape
+	class _spatialindex_exported LineSegment : public IObject, public virtual IShape
 	{
 	public:
 		LineSegment();
@@ -76,10 +75,9 @@ namespace SpatialIndex
 
 		friend class Region;
 		friend class Point;
-		friend std::ostream& operator<<(std::ostream& os, const LineSegment& pt);
+		friend _spatialindex_exported std::ostream& operator<<(std::ostream& os, const LineSegment& pt);
 	}; // Point
 
-	std::ostream& operator<<(std::ostream& os, const LineSegment& pt);
+	_spatialindex_exported std::ostream& operator<<(std::ostream& os, const LineSegment& pt);
 }
 
-#endif /*__spatialindex_linesegment_h*/

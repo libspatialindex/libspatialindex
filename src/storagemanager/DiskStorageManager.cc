@@ -166,7 +166,7 @@ DiskStorageManager::DiskStorageManager(Tools::PropertySet& ps) : m_pageSize(0), 
 	if (bOverwrite == false)
 	{
 		size_t count;
-		id_type id, page;
+		id_type page, id;
 
 		// load empty pages in memory.
 		m_indexFile.read(reinterpret_cast<char*>(&count), sizeof(size_t));
@@ -241,7 +241,7 @@ void DiskStorageManager::flush()
 		throw Tools::IllegalStateException("SpatialIndex::DiskStorageManager: Corrupted storage manager index file.");
 
 	size_t count = m_emptyPages.size();
-	id_type id, page;
+	id_type page, id;
 
 	m_indexFile.write(reinterpret_cast<const char*>(&count), sizeof(size_t));
 	if (m_indexFile.fail())
@@ -293,12 +293,12 @@ void DiskStorageManager::flush()
 	m_dataFile.flush();
 }
 
-void DiskStorageManager::loadByteArray(const id_type id, size_t& len, byte** data)
+void DiskStorageManager::loadByteArray(const id_type page, size_t& len, byte** data)
 {
-	std::map<id_type, Entry*>::iterator it = m_pageIndex.find(id);
+	std::map<id_type, Entry*>::iterator it = m_pageIndex.find(page);
 
 	if (it == m_pageIndex.end())
-		throw Tools::InvalidPageException(id);
+		throw InvalidPageException(page);
 
 	std::vector<id_type>& pages = (*it).second->m_pages;
 	size_t cNext = 0;
@@ -331,9 +331,9 @@ void DiskStorageManager::loadByteArray(const id_type id, size_t& len, byte** dat
 	while (cNext < cTotal);
 }
 
-void DiskStorageManager::storeByteArray(id_type& id, const size_t len, const byte* const data)
+void DiskStorageManager::storeByteArray(id_type& page, const size_t len, const byte* const data)
 {
-	if (id == NewPage)
+	if (page == NewPage)
 	{
 		Entry* e = new Entry();
 		e->m_length = len;
@@ -371,17 +371,17 @@ void DiskStorageManager::storeByteArray(id_type& id, const size_t len, const byt
 			e->m_pages.push_back(cPage);
 		}
 
-		id = e->m_pages[0];
-		m_pageIndex.insert(std::pair<id_type, Entry*>(id, e));
+		page = e->m_pages[0];
+		m_pageIndex.insert(std::pair<id_type, Entry*>(page, e));
 	}
 	else
 	{
 		// find the entry.
-		std::map<id_type, Entry*>::iterator it = m_pageIndex.find(id);
+		std::map<id_type, Entry*>::iterator it = m_pageIndex.find(page);
 
 		// check if it exists.
 		if (it == m_pageIndex.end())
-			throw Tools::IndexOutOfBoundsException(id);
+			throw InvalidPageException(page);
 
 		Entry* oldEntry = (*it).second;
 
@@ -400,7 +400,7 @@ void DiskStorageManager::storeByteArray(id_type& id, const size_t len, const byt
 			if (cNext < oldEntry->m_pages.size())
 			{
 				cPage = oldEntry->m_pages[cNext];
-				cNext++;
+				++cNext;
 			}
 			else if (! m_emptyPages.empty())
 			{
@@ -434,17 +434,17 @@ void DiskStorageManager::storeByteArray(id_type& id, const size_t len, const byt
 			++cNext;
 		}
 
-		m_pageIndex.insert(std::pair<id_type, Entry*>(id, e));
+		m_pageIndex.insert(std::pair<id_type, Entry*>(page, e));
 		delete oldEntry;
 	}
 }
 
-void DiskStorageManager::deleteByteArray(const id_type id)
+void DiskStorageManager::deleteByteArray(const id_type page)
 {
-	std::map<id_type, Entry*>::iterator it = m_pageIndex.find(id);
+	std::map<id_type, Entry*>::iterator it = m_pageIndex.find(page);
 
 	if (it == m_pageIndex.end())
-		throw Tools::InvalidPageException(id);
+		throw InvalidPageException(page);
 
 	for (size_t cIndex = 0; cIndex < (*it).second->m_pages.size(); ++cIndex)
 	{

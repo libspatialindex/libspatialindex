@@ -19,8 +19,7 @@
 //  Email:
 //    mhadji@gmail.com
 
-#ifndef __storagemanager_randomevictionsbuffer_h
-#define __storagemanager_randomevictionsbuffer_h
+#pragma once
 
 #include "Buffer.h"
 
@@ -36,11 +35,8 @@ namespace SpatialIndex
 
 			virtual ~RandomEvictionsBuffer();
 
-			virtual void addEntry(id_type id, Buffer::Entry* pEntry);
+			virtual void addEntry(id_type page, Buffer::Entry* pEntry);
 			virtual void removeEntry();
 		}; // RandomEvictionsBuffer
 	}
 }
-
-#endif /*__storagemanager_randomevictionsbuffer_h*/
-

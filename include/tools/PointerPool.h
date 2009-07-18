@@ -19,8 +19,7 @@
 //  Email:
 //    mhadji@gmail.com
 
-#ifndef __tools_pointer_pool_h
-#define __tools_pointer_pool_h
+#pragma once
 
 #include "PoolPointer.h"
 
@@ -28,8 +27,6 @@ namespace Tools
 {
 	template <class X> class PointerPool
 	{
-//		class PoolPointer<X>;
-
 	public:
 		explicit PointerPool(size_t capacity) : m_capacity(capacity)
 		{
@@ -118,4 +115,3 @@ namespace Tools
 	};
 }
 
-#endif /* __tools_pointer_pool_h */

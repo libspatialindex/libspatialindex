@@ -1,6 +1,4 @@
-
-#ifndef __rand48_h
-#define __rand48_h
+#pragma once
 
 extern void srand48(long seed);
 extern unsigned short *seed48(unsigned short xseed[3]);
@@ -11,6 +9,3 @@ extern void lcong48(unsigned short p[7]);
 extern long jrand48(unsigned short xseed[3]);
 extern double erand48(unsigned short xseed[3]);
 extern double drand48(void);
-
-#endif
-

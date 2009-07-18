@@ -19,15 +19,17 @@
 //  Email:
 //    mhadji@gmail.com
 
-#include <cstring>
-
 #include "../spatialindex/SpatialIndexImpl.h"
 #include "Node.h"
 #include "Leaf.h"
 #include "Index.h"
 #include "TPRTree.h"
 
-TPRTree::Data::Data(size_t len, byte* pData, MovingRegion& r, id_type id)
+#include <cstring>
+
+using namespace SpatialIndex::TPRTree;
+
+SpatialIndex::TPRTree::Data::Data(size_t len, byte* pData, MovingRegion& r, id_type id)
 	: m_id(id), m_region(r), m_pData(0), m_dataLength(len)
 {
 	if (m_dataLength > 0)
@@ -37,27 +39,27 @@ TPRTree::Data::Data(size_t len, byte* pData, MovingRegion& r, id_type id)
 	}
 }
 
-TPRTree::Data::~Data()
+SpatialIndex::TPRTree::Data::~Data()
 {
 	delete[] m_pData;
 }
 
-TPRTree::Data* TPRTree::Data::clone()
+SpatialIndex::TPRTree::Data* SpatialIndex::TPRTree::Data::clone()
 {
 	return new Data(m_dataLength, m_pData, m_region, m_id);
 }
 
-id_type TPRTree::Data::getIdentifier() const
+SpatialIndex::id_type SpatialIndex::TPRTree::Data::getIdentifier() const
 {
 	return m_id;
 }
 
-void TPRTree::Data::getShape(IShape** out) const
+void SpatialIndex::TPRTree::Data::getShape(IShape** out) const
 {
 	*out = new MovingRegion(m_region);
 }
 
-void TPRTree::Data::getData(size_t& len, byte** data) const
+void SpatialIndex::TPRTree::Data::getData(size_t& len, byte** data) const
 {
 	len = m_dataLength;
 	*data = 0;
@@ -69,7 +71,7 @@ void TPRTree::Data::getData(size_t& len, byte** data) const
 	}
 }
 
-size_t TPRTree::Data::getByteArraySize()
+size_t SpatialIndex::TPRTree::Data::getByteArraySize()
 {
 	return
 		sizeof(id_type) +
@@ -78,7 +80,7 @@ size_t TPRTree::Data::getByteArraySize()
 		m_region.getByteArraySize();
 }
 
-void TPRTree::Data::loadFromByteArray(const byte* ptr)
+void SpatialIndex::TPRTree::Data::loadFromByteArray(const byte* ptr)
 {
 	memcpy(&m_id, ptr, sizeof(id_type));
 	ptr += sizeof(id_type);
@@ -99,7 +101,7 @@ void TPRTree::Data::loadFromByteArray(const byte* ptr)
 	m_region.loadFromByteArray(ptr);
 }
 
-void TPRTree::Data::storeToByteArray(byte** data, size_t& len)
+void SpatialIndex::TPRTree::Data::storeToByteArray(byte** data, size_t& len)
 {
 	// it is thread safe this way.
 	size_t regionsize;
@@ -172,8 +174,9 @@ SpatialIndex::ISpatialIndex* SpatialIndex::TPRTree::createNewTPRTree(
 
 	ISpatialIndex* ret = returnTPRTree(sm, ps);
 
+	var.m_varType = Tools::VT_LONGLONG;
 	var = ps.getProperty("IndexIdentifier");
-	indexIdentifier = var.m_val.lVal;
+	indexIdentifier = var.m_val.llVal;
 
 	return ret;
 }
@@ -183,8 +186,8 @@ SpatialIndex::ISpatialIndex* SpatialIndex::TPRTree::loadTPRTree(IStorageManager&
 	Tools::Variant var;
 	Tools::PropertySet ps;
 
-	var.m_varType = Tools::VT_LONG;
-	var.m_val.lVal = indexIdentifier;
+	var.m_varType = Tools::VT_LONGLONG;
+	var.m_val.llVal = indexIdentifier;
 	ps.setProperty("IndexIdentifier", var);
 
 	return returnTPRTree(sm, ps);
@@ -219,15 +222,15 @@ SpatialIndex::TPRTree::TPRTree::TPRTree(IStorageManager& sm, Tools::PropertySet&
 	Tools::Variant var = ps.getProperty("IndexIdentifier");
 	if (var.m_varType != Tools::VT_EMPTY)
 	{
-		if (var.m_varType != Tools::VT_LONG) throw Tools::IllegalArgumentException("TPRTree: Property IndexIdentifier must be Tools::VT_LONG");
-		m_headerID = var.m_val.lVal;
+		if (var.m_varType != Tools::VT_LONGLONG) throw Tools::IllegalArgumentException("TPRTree: Property IndexIdentifier must be Tools::VT_LONGLONG");
+		m_headerID = var.m_val.llVal;
 		initOld(ps);
 	}
 	else
 	{
 		initNew(ps);
-		var.m_varType = Tools::VT_LONG;
-		var.m_val.lVal = m_headerID;
+		var.m_varType = Tools::VT_LONGLONG;
+		var.m_val.llVal = m_headerID;
 		ps.setProperty("IndexIdentifier", var);
 	}
 }
@@ -265,7 +268,7 @@ void SpatialIndex::TPRTree::TPRTree::insertData(size_t len, const byte* pData, c
 	try
 	{
 		Region mbr;
-		es->getMBR(mbr);
+		shape.getMBR(mbr);
 		Region vbr;
 		es->getVMBR(vbr);
 		assert(mbr.m_dimension == vbr.m_dimension);
@@ -325,7 +328,7 @@ bool SpatialIndex::TPRTree::TPRTree::deleteData(const IShape& shape, id_type id)
 	try
 	{
 		Region mbr;
-		es->getMBR(mbr);
+		shape.getMBR(mbr);
 		Region vbr;
 		es->getVMBR(vbr);
 		assert(mbr.m_dimension == vbr.m_dimension);
@@ -923,22 +926,22 @@ void SpatialIndex::TPRTree::TPRTree::initOld(Tools::PropertySet& ps)
 void SpatialIndex::TPRTree::TPRTree::storeHeader()
 {
 	const size_t headerSize =
-		sizeof(id_type) +                                // m_rootID
-		sizeof(TPRTreeVariant) +                                // m_treeVariant
-		sizeof(double) +                              // m_fillFactor
-		sizeof(size_t) +                       // m_indexCapacity
-		sizeof(size_t) +                       // m_leafCapacity
-		sizeof(size_t) +                       // m_nearMinimumOverlapFactor
-		sizeof(double) +                              // m_splitDistributionFactor
-		sizeof(double) +                              // m_reinsertFactor
-		sizeof(size_t) +                       // m_dimension
-		sizeof(char) +                                // m_bTightMBRs
-		sizeof(size_t) +                       // m_stats.m_nodes
-		sizeof(size_t) +                       // m_stats.m_data
-		sizeof(double) +                              // m_currentTime
-		sizeof(double) +                              // m_horizon
-		sizeof(size_t) +                       // m_stats.m_treeHeight
-		m_stats.m_treeHeight * sizeof(size_t); // m_stats.m_nodesInLevel
+		sizeof(id_type) +						// m_rootID
+		sizeof(TPRTreeVariant) +				// m_treeVariant
+		sizeof(double) +						// m_fillFactor
+		sizeof(size_t) +						// m_indexCapacity
+		sizeof(size_t) +						// m_leafCapacity
+		sizeof(size_t) +						// m_nearMinimumOverlapFactor
+		sizeof(double) +						// m_splitDistributionFactor
+		sizeof(double) +						// m_reinsertFactor
+		sizeof(size_t) +						// m_dimension
+		sizeof(char) +							// m_bTightMBRs
+		sizeof(size_t) +						// m_stats.m_nodes
+		sizeof(size_t) +						// m_stats.m_data
+		sizeof(double) +						// m_currentTime
+		sizeof(double) +						// m_horizon
+		sizeof(size_t) +						// m_stats.m_treeHeight
+		m_stats.m_treeHeight * sizeof(size_t);	// m_stats.m_nodesInLevel
 
 	byte* header = new byte[headerSize];
 	byte* ptr = header;
@@ -1014,7 +1017,7 @@ void SpatialIndex::TPRTree::TPRTree::loadHeader()
 	ptr += sizeof(size_t);
 	char c;
 	memcpy(&c, ptr, sizeof(char));
-	m_bTightMBRs = (bool) c;
+	m_bTightMBRs = (c != 0);
 	ptr += sizeof(char);
 	memcpy(&(m_stats.m_nodes), ptr, sizeof(size_t));
 	ptr += sizeof(size_t);
@@ -1129,7 +1132,7 @@ id_type SpatialIndex::TPRTree::TPRTree::writeNode(Node* n)
 		m_pStorageManager->storeByteArray(page, dataLength, buffer);
 		delete[] buffer;
 	}
-	catch (Tools::InvalidPageException& e)
+	catch (InvalidPageException& e)
 	{
 		delete[] buffer;
 		std::cerr << e.what() << std::endl;
@@ -1175,7 +1178,7 @@ SpatialIndex::TPRTree::NodePtr SpatialIndex::TPRTree::TPRTree::readNode(id_type 
 	{
 		m_pStorageManager->loadByteArray(id, dataLength, &buffer);
 	}
-	catch (Tools::InvalidPageException& e)
+	catch (InvalidPageException& e)
 	{
 		std::cerr << e.what() << std::endl;
 		//std::cerr << *this << std::endl;
@@ -1226,7 +1229,7 @@ void SpatialIndex::TPRTree::TPRTree::deleteNode(Node* n)
 	{
 		m_pStorageManager->deleteByteArray(n->m_identifier);
 	}
-	catch (Tools::InvalidPageException& e)
+	catch (InvalidPageException& e)
 	{
 		std::cerr << e.what() << std::endl;
 		//std::cerr << *this << std::endl;
@@ -1311,35 +1314,33 @@ void SpatialIndex::TPRTree::TPRTree::rangeQuery(RangeQueryType type, const IShap
 
 std::ostream& SpatialIndex::TPRTree::operator<<(std::ostream& os, const TPRTree& t)
 {
-	using std::endl;
-
-	os	<< "Dimension: " << t.m_dimension << endl
-		<< "Fill factor: " << t.m_fillFactor << endl
-		<< "Horizon: " << t.m_horizon << endl
-		<< "Index capacity: " << t.m_indexCapacity << endl
-		<< "Leaf capacity: " << t.m_leafCapacity << endl
-		<< "Tight MBRs: " << ((t.m_bTightMBRs) ? "enabled" : "disabled") << endl;
+	os	<< "Dimension: " << t.m_dimension << std::endl
+		<< "Fill factor: " << t.m_fillFactor << std::endl
+		<< "Horizon: " << t.m_horizon << std::endl
+		<< "Index capacity: " << t.m_indexCapacity << std::endl
+		<< "Leaf capacity: " << t.m_leafCapacity << std::endl
+		<< "Tight MBRs: " << ((t.m_bTightMBRs) ? "enabled" : "disabled") << std::endl;
 
 	if (t.m_treeVariant == TPRV_RSTAR)
 	{
-		os	<< "Near minimum overlap factor: " << t.m_nearMinimumOverlapFactor << endl
-			<< "Reinsert factor: " << t.m_reinsertFactor << endl
-			<< "Split distribution factor: " << t.m_splitDistributionFactor << endl;
+		os	<< "Near minimum overlap factor: " << t.m_nearMinimumOverlapFactor << std::endl
+			<< "Reinsert factor: " << t.m_reinsertFactor << std::endl
+			<< "Split distribution factor: " << t.m_splitDistributionFactor << std::endl;
 	}
 
 	if (t.m_stats.getNumberOfNodesInLevel(0) > 0)
-		os	<< "Utilization: " << 100 * t.m_stats.getNumberOfData() / (t.m_stats.getNumberOfNodesInLevel(0) * t.m_leafCapacity) << "%" << endl
+		os	<< "Utilization: " << 100 * t.m_stats.getNumberOfData() / (t.m_stats.getNumberOfNodesInLevel(0) * t.m_leafCapacity) << "%" << std::endl
 			<< t.m_stats;
 
 	#ifndef NDEBUG
-	os	<< "Leaf pool hits: " << t.m_leafPool.m_hits << endl
-		<< "Leaf pool misses: " << t.m_leafPool.m_misses << endl
-		<< "Index pool hits: " << t.m_indexPool.m_hits << endl
-		<< "Index pool misses: " << t.m_indexPool.m_misses << endl
-		<< "Region pool hits: " << t.m_regionPool.m_hits << endl
-		<< "Region pool misses: " << t.m_regionPool.m_misses << endl
-		<< "Point pool hits: " << t.m_pointPool.m_hits << endl
-		<< "Point pool misses: " << t.m_pointPool.m_misses << endl;
+	os	<< "Leaf pool hits: " << t.m_leafPool.m_hits << std::endl
+		<< "Leaf pool misses: " << t.m_leafPool.m_misses << std::endl
+		<< "Index pool hits: " << t.m_indexPool.m_hits << std::endl
+		<< "Index pool misses: " << t.m_indexPool.m_misses << std::endl
+		<< "Region pool hits: " << t.m_regionPool.m_hits << std::endl
+		<< "Region pool misses: " << t.m_regionPool.m_misses << std::endl
+		<< "Point pool hits: " << t.m_pointPool.m_hits << std::endl
+		<< "Point pool misses: " << t.m_pointPool.m_misses << std::endl;
 	#endif
 
 	return os;

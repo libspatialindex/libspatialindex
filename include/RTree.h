@@ -19,38 +19,37 @@
 //  Email:
 //    mhadji@gmail.com
 
-#ifndef __spatialindex_rtree_h
-#define __spatialindex_rtree_h
+#pragma once
 
 namespace SpatialIndex
 {
 	namespace RTree
 	{
-		enum RTreeVariant
+		_spatialindex_exported enum RTreeVariant
 		{
 			RV_LINEAR = 0x0,
 			RV_QUADRATIC,
 			RV_RSTAR
 		};
 
-		enum BulkLoadMethod
+		_spatialindex_exported enum BulkLoadMethod
 		{
 			BLM_STR = 0x0
 		};
 
-		enum PersistenObjectIdentifier
+		_spatialindex_exported enum PersistenObjectIdentifier
 		{
 			PersistentIndex = 0x1,
 			PersistentLeaf = 0x2
 		};
 
-		enum RangeQueryType
+		_spatialindex_exported enum RangeQueryType
 		{
 			ContainmentQuery = 0x1,
 			IntersectionQuery = 0x2
 		};
 
-		class Data : public IData, public Tools::ISerializable
+		class _spatialindex_exported Data : public IData, public Tools::ISerializable
 		{
 		public:
 			Data(size_t len, byte* pData, Region& r, id_type id);
@@ -70,8 +69,8 @@ namespace SpatialIndex
 			size_t m_dataLength;
 		}; // Data
 
-		extern ISpatialIndex* returnRTree(IStorageManager& ind, Tools::PropertySet& in);
-		extern ISpatialIndex* createNewRTree(
+		_spatialindex_exported  ISpatialIndex* returnRTree(IStorageManager& ind, Tools::PropertySet& in);
+		_spatialindex_exported  ISpatialIndex* createNewRTree(
 			IStorageManager& sm,
 			double fillFactor,
 			size_t indexCapacity,
@@ -80,7 +79,7 @@ namespace SpatialIndex
 			RTreeVariant rv,
 			id_type& indexIdentifier
 		);
-		extern ISpatialIndex* createAndBulkLoadNewRTree(
+		_spatialindex_exported  ISpatialIndex* createAndBulkLoadNewRTree(
 			BulkLoadMethod m,
 			IDataStream& stream,
 			IStorageManager& sm,
@@ -91,8 +90,6 @@ namespace SpatialIndex
 			RTreeVariant rv,
 			id_type& indexIdentifier
 		);
-		extern ISpatialIndex* loadRTree(IStorageManager& in, id_type indexIdentifier);
+		_spatialindex_exported  ISpatialIndex* loadRTree(IStorageManager& in, id_type indexIdentifier);
 	}
 }
-
-#endif /* __spatialindex_rtree_h */

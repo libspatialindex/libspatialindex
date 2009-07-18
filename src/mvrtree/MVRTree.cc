@@ -27,6 +27,8 @@
 
 #include <cstring>
 
+using namespace SpatialIndex::MVRTree;
+
 SpatialIndex::MVRTree::Data::Data(size_t len, byte* pData, TimeRegion& r, id_type id)
 	: m_id(id), m_region(r), m_pData(0), m_dataLength(len)
 {
@@ -162,8 +164,9 @@ SpatialIndex::ISpatialIndex* SpatialIndex::MVRTree::createNewMVRTree(
 
 	ISpatialIndex* ret = returnMVRTree(sm, ps);
 
+	var.m_varType = Tools::VT_LONGLONG;
 	var = ps.getProperty("IndexIdentifier");
-	indexIdentifier = var.m_val.lVal;
+	indexIdentifier = var.m_val.llVal;
 
 	return ret;
 }
@@ -173,8 +176,8 @@ SpatialIndex::ISpatialIndex* SpatialIndex::MVRTree::loadMVRTree(IStorageManager&
 	Tools::Variant var;
 	Tools::PropertySet ps;
 
-	var.m_varType = Tools::VT_LONG;
-	var.m_val.lVal = indexIdentifier;
+	var.m_varType = Tools::VT_LONGLONG;
+	var.m_val.llVal = indexIdentifier;
 	ps.setProperty("IndexIdentifier", var);
 
 	return returnMVRTree(sm, ps);
@@ -211,15 +214,15 @@ SpatialIndex::MVRTree::MVRTree::MVRTree(IStorageManager& sm, Tools::PropertySet&
 	Tools::Variant var = ps.getProperty("IndexIdentifier");
 	if (var.m_varType != Tools::VT_EMPTY)
 	{
-		if (var.m_varType != Tools::VT_LONG) throw Tools::IllegalArgumentException("MVRTree: Property IndexIdentifier must be Tools::VT_LONG");
-		m_headerID = var.m_val.lVal;
+		if (var.m_varType != Tools::VT_LONGLONG) throw Tools::IllegalArgumentException("MVRTree: Property IndexIdentifier must be Tools::VT_LONGLONG");
+		m_headerID = var.m_val.llVal;
 		initOld(ps);
 	}
 	else
 	{
 		initNew(ps);
-		var.m_varType = Tools::VT_LONG;
-		var.m_val.lVal = m_headerID;
+		var.m_varType = Tools::VT_LONGLONG;
+		var.m_val.llVal = m_headerID;
 		ps.setProperty("IndexIdentifier", var);
 	}
 }
@@ -1031,7 +1034,7 @@ void SpatialIndex::MVRTree::MVRTree::loadHeader()
 	ptr += sizeof(size_t);
 	byte c;
 	memcpy(&c, ptr, sizeof(byte));
-	m_bTightMBRs = (bool) c;
+	m_bTightMBRs = (c != 0);
 	ptr += sizeof(byte);
 	memcpy(&(m_stats.m_nodes), ptr, sizeof(size_t));
 	ptr += sizeof(size_t);
@@ -1162,7 +1165,7 @@ SpatialIndex::id_type SpatialIndex::MVRTree::MVRTree::writeNode(Node* n)
 		m_pStorageManager->storeByteArray(page, dataLength, buffer);
 		delete[] buffer;
 	}
-	catch (Tools::InvalidPageException& e)
+	catch (InvalidPageException& e)
 	{
 		delete[] buffer;
 		std::cerr << e.what() << std::endl;
@@ -1195,7 +1198,7 @@ SpatialIndex::MVRTree::NodePtr SpatialIndex::MVRTree::MVRTree::readNode(id_type 
 	{
 		m_pStorageManager->loadByteArray(id, dataLength, &buffer);
 	}
-	catch (Tools::InvalidPageException& e)
+	catch (InvalidPageException& e)
 	{
 		std::cerr << e.what() << std::endl;
 		//std::cerr << *this << std::endl;
@@ -1246,7 +1249,7 @@ void SpatialIndex::MVRTree::MVRTree::deleteNode(Node* n)
 	{
 		m_pStorageManager->deleteByteArray(n->m_identifier);
 	}
-	catch (Tools::InvalidPageException& e)
+	catch (InvalidPageException& e)
 	{
 		std::cerr << e.what() << std::endl;
 		//std::cerr << *this << std::endl;
@@ -1373,39 +1376,37 @@ std::string SpatialIndex::MVRTree::MVRTree::printRootInfo() const
 
 std::ostream& SpatialIndex::MVRTree::operator<<(std::ostream& os, const MVRTree& t)
 {
-	using std::endl;
-
-	os 	<< "Dimension: " << t.m_dimension << endl
-		<< "Fill factor: " << t.m_fillFactor << endl
-		<< "Index capacity: " << t.m_indexCapacity << endl
-		<< "Leaf capacity: " << t.m_leafCapacity << endl
-		<< "Tight MBRs: " << ((t.m_bTightMBRs) ? "enabled" : "disabled") << endl;
+	os 	<< "Dimension: " << t.m_dimension << std::endl
+		<< "Fill factor: " << t.m_fillFactor << std::endl
+		<< "Index capacity: " << t.m_indexCapacity << std::endl
+		<< "Leaf capacity: " << t.m_leafCapacity << std::endl
+		<< "Tight MBRs: " << ((t.m_bTightMBRs) ? "enabled" : "disabled") << std::endl;
 
 	if (t.m_treeVariant == RV_RSTAR)
 	{
-		os 	<< "Near minimum overlap factor: " << t.m_nearMinimumOverlapFactor << endl
-			<< "Reinsert factor: " << t.m_reinsertFactor << endl
-			<< "Split distribution factor: " << t.m_splitDistributionFactor << endl
-			<< "Strong version overflow: " << t.m_strongVersionOverflow << endl
-			//<< "Strong version underflow: " << t.m_strongVersionUnderflow << endl
-			<< "Weak version underflow: " << t.m_versionUnderflow << endl;
+		os 	<< "Near minimum overlap factor: " << t.m_nearMinimumOverlapFactor << std::endl
+			<< "Reinsert factor: " << t.m_reinsertFactor << std::endl
+			<< "Split distribution factor: " << t.m_splitDistributionFactor << std::endl
+			<< "Strong version overflow: " << t.m_strongVersionOverflow << std::endl
+			//<< "Strong version underflow: " << t.m_strongVersionUnderflow << std::endl
+			<< "Weak version underflow: " << t.m_versionUnderflow << std::endl;
 	}
 
 	// it is difficult to count utilization
-	//os << "Utilization: " << 100 * t.m_stats.m_totalData / (t.m_stats.getNumberOfNodesInLevel(0) * t.m_leafCapacity) << "%" << endl
+	//os << "Utilization: " << 100 * t.m_stats.m_totalData / (t.m_stats.getNumberOfNodesInLevel(0) * t.m_leafCapacity) << "%" << std::endl
 
 	os << t.m_stats;
 	os << t.printRootInfo();
 
 	#ifndef NDEBUG
-	os 	<< "Leaf pool hits: " << t.m_leafPool.m_hits << endl
-		<< "Leaf pool misses: " << t.m_leafPool.m_misses << endl
-		<< "Index pool hits: " << t.m_indexPool.m_hits << endl
-		<< "Index pool misses: " << t.m_indexPool.m_misses << endl
-		<< "Region pool hits: " << t.m_regionPool.m_hits << endl
-		<< "Region pool misses: " << t.m_regionPool.m_misses << endl
-		<< "Point pool hits: " << t.m_pointPool.m_hits << endl
-		<< "Point pool misses: " << t.m_pointPool.m_misses << endl;
+	os 	<< "Leaf pool hits: " << t.m_leafPool.m_hits << std::endl
+		<< "Leaf pool misses: " << t.m_leafPool.m_misses << std::endl
+		<< "Index pool hits: " << t.m_indexPool.m_hits << std::endl
+		<< "Index pool misses: " << t.m_indexPool.m_misses << std::endl
+		<< "Region pool hits: " << t.m_regionPool.m_hits << std::endl
+		<< "Region pool misses: " << t.m_regionPool.m_misses << std::endl
+		<< "Point pool hits: " << t.m_pointPool.m_hits << std::endl
+		<< "Point pool misses: " << t.m_pointPool.m_misses << std::endl;
 	#endif
 
 	return os;

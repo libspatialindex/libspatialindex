@@ -23,8 +23,6 @@
 
 #include <set>
 
-using namespace std;
-
 #define INSERT 1
 #define DELETE 0
 #define QUERY 2
@@ -47,13 +45,13 @@ int main(int argc, char** argv)
 {
 	if (argc != 3)
 	{
-		cerr << "Usage: " << argv[0] << " number_of_data time_instants." << endl;
+		std::cerr << "Usage: " << argv[0] << " number_of_data time_instants." << std::endl;
 		return -1;
 	}
 
 	size_t simulationLength = atol(argv[2]);
 	size_t numberOfObjects = atol(argv[1]);
-	map<size_t, Region> data;
+	std::map<size_t, Region> data;
 	Tools::Random rnd;
 
 	for (size_t i = 0; i < numberOfObjects; i++)
@@ -64,10 +62,10 @@ int main(int argc, char** argv)
 		double dy = rnd.nextUniformDouble(0.0001, 0.1);
 		Region r = Region(x, y, x + dx, y + dy);
 
-		data.insert(pair<size_t, Region>(i, r));
+		data.insert(std::pair<size_t, Region>(i, r));
 
-		cout << INSERT << " " << i << " " << r.m_xmin << " " << r.m_ymin << " "
-			<< r.m_xmax << " " << r.m_ymax << endl;
+		std::cout << INSERT << " " << i << " " << r.m_xmin << " " << r.m_ymin << " "
+			<< r.m_xmax << " " << r.m_ymax << std::endl;
 	}
 
 	if (simulationLength == 0)
@@ -76,7 +74,7 @@ int main(int argc, char** argv)
 		{
 			double stx = rnd.nextUniformDouble();
 			double sty = rnd.nextUniformDouble();
-			cout << QUERY << " 9999999 " << stx << " " << sty << " " << (stx + 0.01) << " " << (sty + 0.01) << endl;
+			std::cout << QUERY << " 9999999 " << stx << " " << sty << " " << (stx + 0.01) << " " << (sty + 0.01) << std::endl;
 		}
 	}
 
@@ -84,14 +82,14 @@ int main(int argc, char** argv)
 
 	for (size_t T = 1; T <= simulationLength; T++)
 	{
-		cerr << (simulationLength + 1 - T) << endl;
-		set<size_t> examined;
+		std::cerr << (simulationLength + 1 - T) << std::endl;
+		std::set<size_t> examined;
 
 		for (size_t a = 0; a < A; a++)
 		{
 			// find an id that is not yet examined.
 			size_t id = static_cast<size_t>(rnd.nextUniformLong(0, numberOfObjects));
-			set<size_t>::iterator itSet = examined.find(id);
+			std::set<size_t>::iterator itSet = examined.find(id);
 
 			while (itSet != examined.end())
 			{
@@ -100,11 +98,11 @@ int main(int argc, char** argv)
 			}
 			examined.insert(id);
 
-			map<size_t, Region>::iterator itMap = data.find(id);
+			std::map<size_t, Region>::iterator itMap = data.find(id);
 			assert(itMap != data.end());
 
-			cout << DELETE << " " << id << " " << (*itMap).second.m_xmin << " " << (*itMap).second.m_ymin << " "
-				<< (*itMap).second.m_xmax << " " << (*itMap).second.m_ymax << endl;
+			std::cout << DELETE << " " << id << " " << (*itMap).second.m_xmin << " " << (*itMap).second.m_ymin << " "
+				<< (*itMap).second.m_xmax << " " << (*itMap).second.m_ymax << std::endl;
 
 			double x = rnd.nextUniformDouble();
 			double dx = rnd.nextUniformDouble(0.0001, 0.1);
@@ -115,13 +113,13 @@ int main(int argc, char** argv)
 			(*itMap).second.m_ymin = y;
 			(*itMap).second.m_ymax = y + dy;
 
-			cout << INSERT << " " << id << " " << (*itMap).second.m_xmin << " " << (*itMap).second.m_ymin << " "
-				<< (*itMap).second.m_xmax << " " << (*itMap).second.m_ymax << endl;
+			std::cout << INSERT << " " << id << " " << (*itMap).second.m_xmin << " " << (*itMap).second.m_ymin << " "
+				<< (*itMap).second.m_xmax << " " << (*itMap).second.m_ymax << std::endl;
 		}
 
 		double stx = rnd.nextUniformDouble();
 		double sty = rnd.nextUniformDouble();
-		cout << QUERY << " 9999999 " << stx << " " << sty << " " << (stx + 0.01) << " " << (sty + 0.01) << endl;
+		std::cout << QUERY << " 9999999 " << stx << " " << sty << " " << (stx + 0.01) << " " << (sty + 0.01) << std::endl;
 	}
 
 	return 0;

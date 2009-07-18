@@ -19,41 +19,82 @@
 //  Email:
 //    mhadji@gmail.com
 
-#ifndef __spatialindex_rtree_bulk_loader_h
-#define __spatialindex_rtree_bulk_loader_h
+#pragma once
 
 namespace SpatialIndex
 {
 	namespace RTree
 	{
-		class BulkLoadSource : public Tools::IObjectStream
+		class ExternalSorter
 		{
 		public:
-			BulkLoadSource(
-				Tools::SmartPointer<IObjectStream> spSstream,
-				size_t howMany);
-			BulkLoadSource(IObjectStream* pStream, size_t howMany);
-			BulkLoadSource(IObjectStream* pStream);
-			virtual ~BulkLoadSource();
+			class Record
+			{
+			public:
+				Record();
+				Record(const Region& r, id_type id, size_t len, byte* pData, size_t s);
+				~Record();
 
-			virtual Tools::IObject* getNext();
-			virtual bool hasNext() throw ();
-			virtual size_t size() throw (Tools::NotSupportedException);
-			virtual void rewind() throw (Tools::NotSupportedException);
+				bool operator<(const Record& r) const;
 
-			Tools::SmartPointer<IObjectStream> m_spDataSource;
-			size_t m_cHowMany;
-		}; // BulkLoadSource
+				void storeToFile(Tools::TemporaryFile& f);
+				void loadFromFile(Tools::TemporaryFile& f);
 
-		class BulkLoadComparator : public Tools::IObjectComparator
-		{
+				struct SortAscending : public std::binary_function<Record* const, Record* const, bool>
+				{
+					bool operator()(Record* const r1, Record* const r2)
+					{
+						if (*r1 < *r2) return true;
+						else return false;
+					}
+				};
+
+			public:
+				Region m_r;
+				id_type m_id;
+				byte* m_pData;
+				size_t m_len;
+				size_t m_s;
+			};
+
 		public:
-			BulkLoadComparator(size_t d);
-			virtual ~BulkLoadComparator();
+			ExternalSorter(uint32_t u32PageSize, uint32_t u32BufferPages);
+			virtual ~ExternalSorter();
 
-			virtual int compare(Tools::IObject* o1, Tools::IObject* o2);
+			void insert(Record* r);
+			void sort();
+			void getNextRecord(Record& r);
+			void rewind();
+			uint64_t getTotalEntries() const;
 
-			size_t m_compareDimension;
+		private:
+			class PQEntry
+			{
+			public:
+				PQEntry(Record* r, uint32_t u32Index) : m_r(r), m_u32Index(u32Index) {}
+
+				struct SortAscending : public std::binary_function<const PQEntry&, const PQEntry&, bool>
+				{
+					bool operator()(const PQEntry& e1, const PQEntry& e2)
+					{
+						if (*(e1.m_r) < *(e2.m_r)) return true;
+						else return false;
+					}
+				};
+
+				Record* m_r;
+				uint32_t m_u32Index;
+			};
+
+		private:
+			bool m_bInsertionPhase;
+			uint32_t m_u32PageSize;
+			uint32_t m_u32BufferPages;
+			Tools::TemporaryFile* m_sortedFile;
+			std::list<Tools::TemporaryFile*> m_runs;
+			std::vector<Record*> m_buffer;
+			uint64_t m_u64TotalEntries;
+			size_t m_stI;
 		};
 
 		class BulkLoader
@@ -64,49 +105,28 @@ namespace SpatialIndex
 				IDataStream& stream,
 				size_t bindex,
 				size_t bleaf,
-				size_t bufferSize);
+				size_t pageSize, // The number of node entries per page.
+				size_t numberOfPages // The total number of pages to use.
+			);
 
 		protected:
-			class TmpFile : public IDataStream
-			{
-			public:
-				TmpFile();
-				virtual ~TmpFile();
-
-				void storeRecord(Region& r, id_type id);
-				void loadRecord(Region& r, id_type& id);
-
-				virtual IData* getNext();
-				virtual bool hasNext() throw ();
-				virtual size_t size()
-					throw (Tools::NotSupportedException);
-				virtual void rewind();
-
-				Tools::TemporaryFile m_tmpFile;
-				IData* m_pNext;
-			};
-
 			void createLevel(
 				RTree* pTree,
-				Tools::IObjectStream& es,
+				Tools::SmartPointer<ExternalSorter> es,
 				size_t dimension,
-				size_t k,
-				size_t b,
+				size_t indexSize,
+				size_t leafSize,
 				size_t level,
-				size_t bufferSize,
-				TmpFile& tmpFile,
-				size_t& numberOfNodes,
-				size_t& totalData);
+				Tools::SmartPointer<ExternalSorter> es2,
+				size_t pageSize,
+				size_t numberOfPages
+			);
 
 			Node* createNode(
 				RTree* pTree,
-				std::vector<Tools::SmartPointer<IData> >& e,
-				size_t level);
-
-			friend class BulkLoadSource;
+				std::vector<ExternalSorter::Record>& e,
+				size_t level
+			);
 		};
 	}
 }
-
-#endif /* __spatialindex_rtree_bulk_loader_h */
-

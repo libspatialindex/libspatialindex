@@ -19,10 +19,9 @@
 //  Email:
 //    mhadji@gmail.com
 
-#include <cstring>
+#pragma once
 
-#ifndef __storagemanager_memorystoragemanager_h
-#define __storagemanager_memorystoragemanager_h
+#include <cstring>
 
 namespace SpatialIndex
 {
@@ -35,9 +34,9 @@ namespace SpatialIndex
 
 			virtual ~MemoryStorageManager();
 
-			virtual void loadByteArray(const id_type id, size_t& len, byte** data);
-			virtual void storeByteArray(id_type& id, const size_t len, const byte* const data);
-			virtual void deleteByteArray(const id_type id);
+			virtual void loadByteArray(const id_type page, size_t& len, byte** data);
+			virtual void storeByteArray(id_type& page, const size_t len, const byte* const data);
+			virtual void deleteByteArray(const id_type page);
 
 		private:
 			class Entry
@@ -60,5 +59,3 @@ namespace SpatialIndex
 		}; // MemoryStorageManager
 	}
 }
-
-#endif /*__storagemanager_memorystoragemanager_h*/

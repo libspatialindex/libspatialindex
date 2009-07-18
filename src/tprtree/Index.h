@@ -19,8 +19,7 @@
 //  Email:
 //    mhadji@gmail.com
 
-#ifndef __spatialindex_tprtree_index_h
-#define __spatialindex_tprtree_index_h
+#pragma once
 
 namespace SpatialIndex
 {
@@ -72,5 +71,3 @@ namespace SpatialIndex
 		}; // Index
 	}
 }
-
-#endif /*__spatialindex_tprtree_index_h*/

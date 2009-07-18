@@ -19,8 +19,7 @@
 //  Email:
 //    mhadji@gmail.com
 
-#ifndef __spatialindex_mvrtree_pointer_pool_node_h
-#define __spatialindex_mvrtree_pointer_pool_node_h
+#pragma once
 
 #include "Node.h"
 
@@ -132,4 +131,3 @@ namespace Tools
 	};
 }
 
-#endif /* __spatialindex_mvrtree_pointer_pool_node_h */

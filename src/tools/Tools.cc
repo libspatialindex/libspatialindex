@@ -23,7 +23,6 @@
 #include "../../include/tools/Tools.h"
 #include "../../include/tools/rand48.h"
 
-#include "ExternalSort.h"
 #include <cstring>
 
 Tools::IndexOutOfBoundsException::IndexOutOfBoundsException(size_t i)
@@ -53,7 +52,7 @@ Tools::IllegalStateException::IllegalStateException(std::string s) : m_error(s)
 
 std::string Tools::IllegalStateException::what()
 {
-	return "IllegalStateException: " + m_error + "\nPlease contact " + PACKAGE_BUGREPORT;
+	return "IllegalStateException: " + m_error;
 }
 
 Tools::EndOfStreamException::EndOfStreamException(std::string s) : m_error(s)
@@ -72,18 +71,6 @@ Tools::ResourceLockedException::ResourceLockedException(std::string s) : m_error
 std::string Tools::ResourceLockedException::what()
 {
 	return "ResourceLockedException: " + m_error;
-}
-
-Tools::InvalidPageException::InvalidPageException(size_t id)
-{
-	std::ostringstream s;
-	s << "Unknown page id " << id;
-	m_error = s.str();
-}
-
-std::string Tools::InvalidPageException::what()
-{
-	return "InvalidPageException: " + m_error;
 }
 
 Tools::NotSupportedException::NotSupportedException(std::string s) : m_error(s)
@@ -187,7 +174,7 @@ void Tools::PropertySet::loadFromByteArray(const byte* ptr)
 			byte bl;
 			memcpy(&bl, ptr, sizeof(byte));
 			ptr += sizeof(byte);
-			v.m_val.blVal = static_cast<bool>(bl);
+			v.m_val.blVal = (bl != 0);
 			break;
 		default:
 			throw IllegalStateException(
@@ -351,17 +338,6 @@ void Tools::PropertySet::removeProperty(std::string property)
 	if (it != m_propertySet.end()) m_propertySet.erase(it);
 }
 
-Tools::IObjectStream* Tools::externalSort(IObjectStream& source, size_t bufferSize)
-{
-	return new ExternalSort(source, bufferSize);
-
-}
-
-Tools::IObjectStream* Tools::externalSort(IObjectStream& source, IObjectComparator& comp, size_t bufferSize)
-{
-	return new ExternalSort(source, comp, bufferSize);
-}
-
 Tools::Interval::Interval() : m_type(IT_RIGHTOPEN), m_low(0.0), m_high(0.0)
 {
 }
@@ -383,7 +359,7 @@ Tools::Interval::Interval(const Interval& iv)
 	m_type = iv.m_type;
 }
 
-Tools::IInterval& Tools::Interval::operator=(const IInterval& iv)
+Tools::IInterval& Tools::Interval::operator=(const Tools::IInterval& iv)
 {
 	if (this != &iv)
 	{
@@ -392,12 +368,6 @@ Tools::IInterval& Tools::Interval::operator=(const IInterval& iv)
 		m_type = iv.getIntervalType();
 	}
 
-	return *this;
-}
-
-Tools::Interval& Tools::Interval::operator=(const Interval& iv)
-{
-	*this = *(static_cast<const IInterval*>(&iv));
 	return *this;
 }
 
@@ -732,4 +702,560 @@ std::ostream& Tools::operator<<(std::ostream& os, const Tools::Interval& iv)
 {
 	os << iv.m_type << " " << iv.m_low << " " << iv.m_high;
 	return os;
+}
+
+//
+// BufferedFile
+//
+Tools::BufferedFile::BufferedFile(size_t stBufferSize)
+: m_buffer(new char[stBufferSize]), m_stBufferSize(stBufferSize), m_bEOF(true)
+{
+}
+
+Tools::BufferedFile::~BufferedFile()
+{
+	m_file.close();
+	delete[] m_buffer;
+}
+
+void Tools::BufferedFile::close()
+{
+	m_file.close();
+}
+
+bool Tools::BufferedFile::eof()
+{
+	return m_bEOF;
+}
+
+//
+// BufferedFileReader
+//
+Tools::BufferedFileReader::BufferedFileReader()
+{
+}
+
+Tools::BufferedFileReader::BufferedFileReader(const std::string& sFileName, size_t stBufferSize)
+: BufferedFile(stBufferSize)
+{
+	open(sFileName);
+}
+
+void Tools::BufferedFileReader::open(const std::string& sFileName)
+{
+	m_bEOF = false;
+	m_file.close(); m_file.clear();
+
+
+	m_file.open(sFileName.c_str(), std::ios_base::in | std::ios_base::binary);
+	if (! m_file.good())
+		throw std::ios_base::failure("Tools::BufferedFileReader::BufferedFileReader: Cannot open file.");
+
+	m_file.rdbuf()->pubsetbuf(m_buffer, m_stBufferSize);
+}
+
+Tools::BufferedFileReader::~BufferedFileReader()
+{
+}
+
+void Tools::BufferedFileReader::rewind()
+{
+	m_file.clear();
+	m_file.seekg(0, std::ios_base::beg);
+	if (! m_file.good())
+		throw std::ios_base::failure("Tools::BufferedFileReader::rewind: seek failed.");
+
+	m_bEOF = false;
+}
+
+void Tools::BufferedFileReader::seek(std::fstream::off_type offset)
+{
+	m_bEOF = false;
+	m_file.clear();
+	m_file.seekg(offset, std::ios_base::beg);
+	if (! m_file.good())
+		throw std::ios_base::failure("Tools::BufferedFileReader::seek: seek failed.");
+}
+
+uint8_t Tools::BufferedFileReader::readUInt8()
+{
+	if (m_bEOF) throw Tools::EndOfStreamException("");
+
+	uint8_t ret;
+	m_file.read(reinterpret_cast<char*>(&ret), sizeof(uint8_t));
+	if (! m_file.good())
+	{
+		m_bEOF = true;
+		throw Tools::EndOfStreamException("");
+	}
+	return ret;
+}
+
+uint16_t Tools::BufferedFileReader::readUInt16()
+{
+	if (m_bEOF) throw Tools::EndOfStreamException("");
+
+	uint16_t ret;
+	m_file.read(reinterpret_cast<char*>(&ret), sizeof(uint16_t));
+	if (! m_file.good())
+	{
+		m_bEOF = true;
+		throw Tools::EndOfStreamException("");
+	}
+	return ret;
+}
+
+uint32_t Tools::BufferedFileReader::readUInt32()
+{
+	if (m_bEOF) throw Tools::EndOfStreamException("");
+
+	uint32_t ret;
+	m_file.read(reinterpret_cast<char*>(&ret), sizeof(uint32_t));
+	if (! m_file.good())
+	{
+		m_bEOF = true;
+		throw Tools::EndOfStreamException("");
+	}
+	return ret;
+}
+
+uint64_t Tools::BufferedFileReader::readUInt64()
+{
+	if (m_bEOF) throw Tools::EndOfStreamException("");
+
+	uint64_t ret;
+	m_file.read(reinterpret_cast<char*>(&ret), sizeof(uint64_t));
+	if (! m_file.good())
+	{
+		m_bEOF = true;
+		throw Tools::EndOfStreamException("");
+	}
+	return ret;
+}
+
+float Tools::BufferedFileReader::readFloat()
+{
+	if (m_bEOF) throw Tools::EndOfStreamException("");
+
+	float ret;
+	m_file.read(reinterpret_cast<char*>(&ret), sizeof(float));
+	if (! m_file.good())
+	{
+		m_bEOF = true;
+		throw Tools::EndOfStreamException("");
+	}
+	return ret;
+}
+
+double Tools::BufferedFileReader::readDouble()
+{
+	if (m_bEOF) throw Tools::EndOfStreamException("");
+
+	double ret;
+	m_file.read(reinterpret_cast<char*>(&ret), sizeof(double));
+	if (! m_file.good())
+	{
+		m_bEOF = true;
+		throw Tools::EndOfStreamException("");
+	}
+	return ret;
+}
+
+bool Tools::BufferedFileReader::readBoolean()
+{
+	if (m_bEOF) throw Tools::EndOfStreamException("");
+
+	bool ret;
+	m_file.read(reinterpret_cast<char*>(&ret), sizeof(bool));
+	if (! m_file.good())
+	{
+		m_bEOF = true;
+		throw Tools::EndOfStreamException("");
+	}
+	return ret;
+}
+
+std::string Tools::BufferedFileReader::readString()
+{
+	if (m_bEOF) throw Tools::EndOfStreamException("");
+
+	std::string::size_type len;
+	m_file.read(reinterpret_cast<char*>(&len), sizeof(std::string::size_type));
+	if (! m_file.good())
+	{
+		m_bEOF = true;
+		throw Tools::EndOfStreamException("");
+	}
+
+	std::string::value_type* buf = new std::string::value_type[len];
+	m_file.read(reinterpret_cast<char*>(buf), len * sizeof(std::string::value_type));
+	if (! m_file.good())
+	{
+		delete[] buf;
+		m_bEOF = true;
+		throw Tools::EndOfStreamException("");
+	}
+
+	std::string ret(buf, len);
+	delete[] buf;
+
+	return ret;
+}
+
+void Tools::BufferedFileReader::readBytes(uint32_t u32Len, byte** pData)
+{
+	if (m_bEOF) throw Tools::EndOfStreamException("");
+
+	*pData = new byte[u32Len];
+	m_file.read(reinterpret_cast<char*>(*pData), u32Len);
+	if (! m_file.good())
+	{
+		delete[] *pData;
+		m_bEOF = true;
+		throw Tools::EndOfStreamException("");
+	}
+}
+
+//
+// BufferedFileWriter
+//
+Tools::BufferedFileWriter::BufferedFileWriter()
+{
+	open("");
+}
+
+Tools::BufferedFileWriter::BufferedFileWriter(const std::string& sFileName, FileMode mode, size_t stBufferSize)
+: BufferedFile(stBufferSize)
+{
+	open(sFileName, mode);
+}
+
+Tools::BufferedFileWriter::~BufferedFileWriter()
+{
+	m_file.flush();
+}
+
+void Tools::BufferedFileWriter::open(const std::string& sFileName, FileMode mode)
+{
+	m_bEOF = false;
+	m_file.close(); m_file.clear();
+
+	if (mode == CREATE)
+	{
+		m_file.open(sFileName.c_str(), std::ios_base::out | std::ios_base::binary | std::ios_base::trunc);
+		if (! m_file.good())
+			throw std::ios_base::failure("Tools::BufferedFileWriter::open: Cannot open file.");
+	}
+	else if (mode == APPEND)
+	{
+		// Idiotic fstream::open truncates an existing file anyway, if it is only opened
+		// for output (no ios_base::in flag)!! On the other hand, if a file does not exist
+		// and the ios_base::in flag is specified, then the open fails!!
+
+		m_file.open(sFileName.c_str(), std::ios_base::in | std::ios_base::out | std::ios_base::binary);
+		if (! m_file.good())
+		{
+			m_file.clear();
+			m_file.open(sFileName.c_str(), std::ios_base::out | std::ios_base::binary);
+			if (! m_file.good())
+				throw std::ios_base::failure("Tools::BufferedFileWriter::open: Cannot open file.");
+		}
+		else
+		{
+			m_file.seekp(0, std::ios_base::end);
+			if (! m_file.good())
+				throw std::ios_base::failure("Tools::BufferedFileWriter::open: Cannot open file.");
+		}
+	}
+	else
+		throw Tools::IllegalArgumentException("Tools::BufferedFileWriter::open: Unknown mode.");
+}
+
+void Tools::BufferedFileWriter::rewind()
+{
+	m_bEOF = false;
+	m_file.clear();
+	m_file.seekp(0, std::ios_base::beg);
+	if (! m_file.good())
+		throw std::ios_base::failure("Tools::BufferedFileWriter::rewind: seek failed.");
+}
+
+void Tools::BufferedFileWriter::seek(std::fstream::off_type offset)
+{
+	m_bEOF = false;
+	m_file.clear();
+	m_file.seekp(offset, std::ios_base::beg);
+	if (! m_file.good())
+		throw std::ios_base::failure("Tools::BufferedFileWriter::seek: seek failed.");
+}
+
+void Tools::BufferedFileWriter::write(uint8_t i)
+{
+	m_file.write(reinterpret_cast<const char*>(&i), sizeof(uint8_t));
+	if (! m_file.good()) throw std::ios_base::failure("");
+}
+
+void Tools::BufferedFileWriter::write(uint16_t i)
+{
+	m_file.write(reinterpret_cast<const char*>(&i), sizeof(uint16_t));
+	if (! m_file.good()) throw std::ios_base::failure("");
+}
+
+void Tools::BufferedFileWriter::write(uint32_t i)
+{
+	m_file.write(reinterpret_cast<const char*>(&i), sizeof(uint32_t));
+	if (! m_file.good()) throw std::ios_base::failure("");
+}
+
+void Tools::BufferedFileWriter::write(uint64_t i)
+{
+	m_file.write(reinterpret_cast<const char*>(&i), sizeof(uint64_t));
+	if (! m_file.good()) throw std::ios_base::failure("");
+}
+
+void Tools::BufferedFileWriter::write(float i)
+{
+	m_file.write(reinterpret_cast<const char*>(&i), sizeof(float));
+	if (! m_file.good()) throw std::ios_base::failure("");
+}
+
+void Tools::BufferedFileWriter::write(double i)
+{
+	m_file.write(reinterpret_cast<const char*>(&i), sizeof(double));
+	if (! m_file.good()) throw std::ios_base::failure("");
+}
+
+void Tools::BufferedFileWriter::write(bool b)
+{
+	m_file.write(reinterpret_cast<const char*>(&b), sizeof(bool));
+	if (! m_file.good()) throw std::ios_base::failure("");
+}
+
+void Tools::BufferedFileWriter::write(const std::string& s)
+{
+	std::string::size_type len = s.size();
+	m_file.write(reinterpret_cast<const char*>(&len), sizeof(std::string::size_type));
+	if (! m_file.good()) throw std::ios_base::failure("");
+	m_file.write(reinterpret_cast<const char*>(s.c_str()), len * sizeof(std::string::value_type));
+	if (! m_file.good()) throw std::ios_base::failure("");
+}
+
+void Tools::BufferedFileWriter::write(uint32_t u32Len, byte* pData)
+{
+	m_file.write(reinterpret_cast<const char*>(pData), u32Len);
+	if (! m_file.good()) throw std::ios_base::failure("");
+}
+
+//
+// TemporaryFile
+//
+Tools::TemporaryFile::TemporaryFile()
+{
+#ifdef _MSC_VER
+	char tmpName[L_tmpnam_s];
+	errno_t err = tmpnam_s(tmpName, L_tmpnam_s);
+	if (err)
+		throw std::ios_base::failure("Tools::TemporaryFile: Cannot create temporary file name.");
+
+	if (tmpName[0] == '\\')
+		m_sFile = std::string(tmpName + 1);
+	else
+		m_sFile = std::string(tmpName);
+#else
+	char tmpName[7] = "XXXXXX";
+	if (mktemp(tmpName) == 0)
+		throw std::ios_base::failure("Tools::TemporaryFile: Cannot create temporary file name.");
+	m_sFile = tmpName;
+#endif
+
+	m_pFile = new Tools::BufferedFileWriter(m_sFile, Tools::CREATE);
+}
+
+Tools::TemporaryFile::~TemporaryFile()
+{
+	delete m_pFile;
+
+#ifdef _MSC_VER
+	_unlink(m_sFile.c_str());
+#else
+	std::remove(m_sFile.c_str());
+#endif
+}
+
+void Tools::TemporaryFile::rewindForReading()
+{
+	Tools::BufferedFileReader* br = dynamic_cast<Tools::BufferedFileReader*>(m_pFile);
+	if (br != 0)
+		m_pFile->rewind();
+	else
+	{
+		delete m_pFile;
+		m_pFile = new Tools::BufferedFileReader(m_sFile);
+	}
+}
+
+void Tools::TemporaryFile::rewindForWriting()
+{
+	Tools::BufferedFileWriter* bw = dynamic_cast<Tools::BufferedFileWriter*>(m_pFile);
+	if (bw != 0)
+		m_pFile->rewind();
+	else
+	{
+		delete m_pFile;
+		m_pFile = new Tools::BufferedFileWriter(m_sFile);
+	}
+}
+
+bool Tools::TemporaryFile::eof()
+{
+	return m_pFile->eof();
+}
+
+std::string Tools::TemporaryFile::getFileName() const
+{
+	return m_sFile;
+}
+
+uint8_t Tools::TemporaryFile::readUInt8()
+{
+	Tools::BufferedFileReader* br = dynamic_cast<Tools::BufferedFileReader*>(m_pFile);
+	if (br == 0)
+		throw std::ios_base::failure("Tools::TemporaryFile::readUInt8: file not open for reading.");
+
+	return br->readUInt8();
+}
+
+uint16_t Tools::TemporaryFile::readUInt16()
+{
+	Tools::BufferedFileReader* br = dynamic_cast<Tools::BufferedFileReader*>(m_pFile);
+	if (br == 0)
+		throw std::ios_base::failure("Tools::TemporaryFile::readUInt16: file not open for reading.");
+
+	return br->readUInt16();
+}
+
+uint32_t Tools::TemporaryFile::readUInt32()
+{
+	Tools::BufferedFileReader* br = dynamic_cast<Tools::BufferedFileReader*>(m_pFile);
+	if (br == 0)
+		throw std::ios_base::failure("Tools::TemporaryFile::readUInt32: file not open for reading.");
+
+	return br->readUInt32();
+}
+
+uint64_t Tools::TemporaryFile::readUInt64()
+{
+	Tools::BufferedFileReader* br = dynamic_cast<Tools::BufferedFileReader*>(m_pFile);
+	if (br == 0)
+		throw std::ios_base::failure("Tools::TemporaryFile::readUInt64: file not open for reading.");
+
+	return br->readUInt64();
+}
+
+float Tools::TemporaryFile::readFloat()
+{
+	Tools::BufferedFileReader* br = dynamic_cast<Tools::BufferedFileReader*>(m_pFile);
+	if (br == 0)
+		throw std::ios_base::failure("Tools::TemporaryFile::readFloat: file not open for reading.");
+
+	return br->readFloat();
+}
+
+double Tools::TemporaryFile::readDouble()
+{
+	Tools::BufferedFileReader* br = dynamic_cast<Tools::BufferedFileReader*>(m_pFile);
+	if (br == 0)
+		throw std::ios_base::failure("Tools::TemporaryFile::readDouble: file not open for reading.");
+
+	return br->readDouble();
+}
+
+std::string Tools::TemporaryFile::readString()
+{
+	Tools::BufferedFileReader* br = dynamic_cast<Tools::BufferedFileReader*>(m_pFile);
+	if (br == 0)
+		throw std::ios_base::failure("Tools::TemporaryFile::readString: file not open for reading.");
+
+	return br->readString();
+}
+
+void Tools::TemporaryFile::readBytes(uint32_t u32Len, byte** pData)
+{
+	Tools::BufferedFileReader* br = dynamic_cast<Tools::BufferedFileReader*>(m_pFile);
+	if (br == 0)
+		throw std::ios_base::failure("Tools::TemporaryFile::readString: file not open for reading.");
+
+	return br->readBytes(u32Len, pData);
+}
+
+void Tools::TemporaryFile::write(uint8_t i)
+{
+	Tools::BufferedFileWriter* bw = dynamic_cast<Tools::BufferedFileWriter*>(m_pFile);
+	if (bw == 0)
+		throw std::ios_base::failure("Tools::TemporaryFile::write: file not open for writing.");
+
+	return bw->write(i);
+}
+
+void Tools::TemporaryFile::write(uint16_t i)
+{
+	Tools::BufferedFileWriter* bw = dynamic_cast<Tools::BufferedFileWriter*>(m_pFile);
+	if (bw == 0)
+		throw std::ios_base::failure("Tools::TemporaryFile::write: file not open for writing.");
+
+	return bw->write(i);
+}
+
+void Tools::TemporaryFile::write(uint32_t i)
+{
+	Tools::BufferedFileWriter* bw = dynamic_cast<Tools::BufferedFileWriter*>(m_pFile);
+	if (bw == 0)
+		throw std::ios_base::failure("Tools::TemporaryFile::write: file not open for writing.");
+
+	return bw->write(i);
+}
+
+void Tools::TemporaryFile::write(uint64_t i)
+{
+	Tools::BufferedFileWriter* bw = dynamic_cast<Tools::BufferedFileWriter*>(m_pFile);
+	if (bw == 0)
+		throw std::ios_base::failure("Tools::TemporaryFile::write: file not open for writing.");
+
+	return bw->write(i);
+}
+
+void Tools::TemporaryFile::write(float i)
+{
+	Tools::BufferedFileWriter* bw = dynamic_cast<Tools::BufferedFileWriter*>(m_pFile);
+	if (bw == 0)
+		throw std::ios_base::failure("Tools::TemporaryFile::write: file not open for writing.");
+
+	return bw->write(i);
+}
+
+void Tools::TemporaryFile::write(double i)
+{
+	Tools::BufferedFileWriter* bw = dynamic_cast<Tools::BufferedFileWriter*>(m_pFile);
+	if (bw == 0)
+		throw std::ios_base::failure("Tools::TemporaryFile::write: file not open for writing.");
+
+	return bw->write(i);
+}
+
+void Tools::TemporaryFile::write(const std::string& s)
+{
+	Tools::BufferedFileWriter* bw = dynamic_cast<Tools::BufferedFileWriter*>(m_pFile);
+	if (bw == 0)
+		throw std::ios_base::failure("Tools::TemporaryFile::write: file not open for writing.");
+
+	return bw->write(s);
+}
+
+void Tools::TemporaryFile::write(uint32_t u32Len, byte* pData)
+{
+	Tools::BufferedFileWriter* bw = dynamic_cast<Tools::BufferedFileWriter*>(m_pFile);
+	if (bw == 0)
+		throw std::ios_base::failure("Tools::TemporaryFile::write: file not open for writing.");
+
+	return bw->write(u32Len, pData);
 }

@@ -19,12 +19,11 @@
 //  Email:
 //    mhadji@gmail.com
 
-#ifndef __spatialindex_movingregion_h
-#define __spatialindex_movingregion_h
+#pragma once
 
 namespace SpatialIndex
 {
-	class MovingRegion : public TimeRegion, public IEvolvingShape
+	class _spatialindex_exported MovingRegion : public TimeRegion, public IEvolvingShape
 	{
 	public:
 		MovingRegion();
@@ -44,7 +43,7 @@ namespace SpatialIndex
 			const Point& low, const Point& high,
 			const Point& vlow, const Point& vhigh,
 			double tStart, double tEnd);
-		MovingRegion(const Region& mbr, const Region& vbr, const IInterval& ivI);
+		MovingRegion(const Region& mbr, const Region& vbr, const Tools::IInterval& ivI);
 		MovingRegion(const Region& mbr, const Region& vbr, double tStart, double tEnd);
 		MovingRegion(const MovingPoint& low, const MovingPoint& high);
 		MovingRegion(const MovingRegion& in);
@@ -70,10 +69,10 @@ namespace SpatialIndex
 		virtual bool containsRegionAfterTime(double t, const MovingRegion& r) const;
 
 		virtual double getProjectedSurfaceAreaInTime() const;
-		virtual double getProjectedSurfaceAreaInTime(const IInterval& ivI) const;
+		virtual double getProjectedSurfaceAreaInTime(const Tools::IInterval& ivI) const;
 
 		virtual double getCenterDistanceInTime(const MovingRegion& r) const;
-		virtual double getCenterDistanceInTime(const IInterval& ivI, const MovingRegion& r) const;
+		virtual double getCenterDistanceInTime(const Tools::IInterval& ivI, const MovingRegion& r) const;
 
 		virtual bool intersectsRegionAtTime(double t, const MovingRegion& r) const;
 		virtual bool containsRegionAtTime(double t, const MovingRegion& r) const;
@@ -93,7 +92,7 @@ namespace SpatialIndex
 		virtual void getCombinedRegionAfterTime(double t, MovingRegion& out, const MovingRegion& in) const;
 
 		virtual double getIntersectingAreaInTime(const MovingRegion& r) const;
-		virtual double getIntersectingAreaInTime(const IInterval& ivI, const MovingRegion& r) const;
+		virtual double getIntersectingAreaInTime(const Tools::IInterval& ivI, const MovingRegion& r) const;
 
 		//
 		// IObject interface
@@ -117,9 +116,9 @@ namespace SpatialIndex
 		// ITimeShape interface
 		//
 		virtual double getAreaInTime() const;
-		virtual double getAreaInTime(const IInterval& ivI) const;
+		virtual double getAreaInTime(const Tools::IInterval& ivI) const;
 		virtual double getIntersectingAreaInTime(const ITimeShape& r) const;
-		virtual double getIntersectingAreaInTime(const IInterval& ivI, const ITimeShape& r) const;
+		virtual double getIntersectingAreaInTime(const Tools::IInterval& ivI, const ITimeShape& r) const;
 
 		virtual void makeInfinite(size_t dimension);
 		virtual void makeDimension(size_t dimension);
@@ -149,10 +148,8 @@ namespace SpatialIndex
 		double* m_pVLow;
 		double* m_pVHigh;
 
-		friend std::ostream& operator<<(std::ostream& os, const MovingRegion& r);
+		friend _spatialindex_exported std::ostream& operator<<(std::ostream& os, const MovingRegion& r);
 	}; // MovingRegion
 
-	std::ostream& operator<<(std::ostream& os, const MovingRegion& r);
+	_spatialindex_exported std::ostream& operator<<(std::ostream& os, const MovingRegion& r);
 }
-
-#endif /* __spatialindex_movingregion_h */

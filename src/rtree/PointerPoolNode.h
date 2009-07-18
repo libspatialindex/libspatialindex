@@ -24,8 +24,6 @@
 
 #include "Node.h"
 
-using namespace SpatialIndex;
-
 namespace Tools
 {
 	template<> class PointerPool<RTree::Node>
