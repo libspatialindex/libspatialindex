@@ -23,7 +23,7 @@
 
 namespace SpatialIndex
 {
-	class _spatialindex_exported Region : public IObject, public virtual IShape
+	class SIDX_DLL Region : public IObject, public virtual IShape
 	{
 	public:
 		Region();
@@ -90,8 +90,8 @@ namespace SpatialIndex
 		double* m_pLow;
 		double* m_pHigh;
 
-		friend _spatialindex_exported std::ostream& operator<<(std::ostream& os, const Region& r);
+		friend SIDX_DLL std::ostream& operator<<(std::ostream& os, const Region& r);
 	}; // Region
 
-	_spatialindex_exported std::ostream& operator<<(std::ostream& os, const Region& r);
+	SIDX_DLL std::ostream& operator<<(std::ostream& os, const Region& r);
 }

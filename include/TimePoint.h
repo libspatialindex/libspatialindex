@@ -23,7 +23,7 @@
 
 namespace SpatialIndex
 {
-	class _spatialindex_exported TimePoint : public Point, public ITimeShape
+	class SIDX_DLL TimePoint : public Point, public ITimeShape
 	{
 	public:
 		TimePoint();
@@ -82,8 +82,8 @@ namespace SpatialIndex
 		double m_startTime;
 		double m_endTime;
 
-		friend _spatialindex_exported std::ostream& operator<<(std::ostream& os, const TimePoint& pt);
+		friend SIDX_DLL std::ostream& operator<<(std::ostream& os, const TimePoint& pt);
 	}; // TimePoint
 
-	_spatialindex_exported std::ostream& operator<<(std::ostream& os, const TimePoint& pt);
+	SIDX_DLL std::ostream& operator<<(std::ostream& os, const TimePoint& pt);
 }

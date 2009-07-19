@@ -23,7 +23,7 @@
 
 namespace SpatialIndex
 {
-	class _spatialindex_exported MovingRegion : public TimeRegion, public IEvolvingShape
+	class SIDX_DLL MovingRegion : public TimeRegion, public IEvolvingShape
 	{
 	public:
 		MovingRegion();
@@ -148,8 +148,8 @@ namespace SpatialIndex
 		double* m_pVLow;
 		double* m_pVHigh;
 
-		friend _spatialindex_exported std::ostream& operator<<(std::ostream& os, const MovingRegion& r);
+		friend SIDX_DLL std::ostream& operator<<(std::ostream& os, const MovingRegion& r);
 	}; // MovingRegion
 
-	_spatialindex_exported std::ostream& operator<<(std::ostream& os, const MovingRegion& r);
+	SIDX_DLL std::ostream& operator<<(std::ostream& os, const MovingRegion& r);
 }

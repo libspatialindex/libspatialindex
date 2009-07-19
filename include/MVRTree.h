@@ -25,26 +25,26 @@ namespace SpatialIndex
 {
 	namespace MVRTree
 	{
-		_spatialindex_exported enum MVRTreeVariant
+		SIDX_DLL enum MVRTreeVariant
 		{
 			RV_LINEAR = 0x0,
 			RV_QUADRATIC,
 			RV_RSTAR
 		};
 
-		_spatialindex_exported enum PersistenObjectIdentifier
+		SIDX_DLL enum PersistenObjectIdentifier
 		{
 			PersistentIndex = 0x1,
 			PersistentLeaf = 0x2
 		};
 
-		_spatialindex_exported enum RangeQueryType
+		SIDX_DLL enum RangeQueryType
 		{
 			ContainmentQuery = 0x1,
 			IntersectionQuery = 0x2
 		};
 
-		class _spatialindex_exported Data : public IData, public Tools::ISerializable
+		class SIDX_DLL Data : public IData, public Tools::ISerializable
 		{
 		public:
 			Data(size_t len, byte* pData, TimeRegion& r, id_type id);
@@ -64,8 +64,8 @@ namespace SpatialIndex
 			size_t m_dataLength;
 		}; // Data
 
-		_spatialindex_exported  ISpatialIndex* returnMVRTree(IStorageManager& ind, Tools::PropertySet& in);
-		_spatialindex_exported  ISpatialIndex* createNewMVRTree(
+		SIDX_DLL ISpatialIndex* returnMVRTree(IStorageManager& ind, Tools::PropertySet& in);
+		SIDX_DLL ISpatialIndex* createNewMVRTree(
 			IStorageManager& in,
 			double fillFactor,
 			size_t indexCapacity,
@@ -74,7 +74,7 @@ namespace SpatialIndex
 			MVRTreeVariant rv,
 			id_type& out_indexIdentifier
 		);
-		_spatialindex_exported  ISpatialIndex* loadMVRTree(
+		SIDX_DLL ISpatialIndex* loadMVRTree(
 			IStorageManager& in,
 			id_type indexIdentifier
 		);

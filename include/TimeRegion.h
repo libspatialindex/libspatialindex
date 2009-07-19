@@ -23,7 +23,7 @@
 
 namespace SpatialIndex
 {
-	class _spatialindex_exported TimeRegion : public Region, public ITimeShape
+	class SIDX_DLL TimeRegion : public Region, public ITimeShape
 	{
 	public:
 		TimeRegion();
@@ -95,8 +95,8 @@ namespace SpatialIndex
 		double m_startTime;
 		double m_endTime;
 
-		friend _spatialindex_exported std::ostream& operator<<(std::ostream& os, const TimeRegion& r);
+		friend SIDX_DLL std::ostream& operator<<(std::ostream& os, const TimeRegion& r);
 	}; // TimeRegion
 
-	_spatialindex_exported std::ostream& operator<<(std::ostream& os, const TimeRegion& r);
+	SIDX_DLL std::ostream& operator<<(std::ostream& os, const TimeRegion& r);
 }

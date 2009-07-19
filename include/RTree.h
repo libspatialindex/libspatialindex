@@ -25,31 +25,31 @@ namespace SpatialIndex
 {
 	namespace RTree
 	{
-		_spatialindex_exported enum RTreeVariant
+		SIDX_DLL enum RTreeVariant
 		{
 			RV_LINEAR = 0x0,
 			RV_QUADRATIC,
 			RV_RSTAR
 		};
 
-		_spatialindex_exported enum BulkLoadMethod
+		SIDX_DLL enum BulkLoadMethod
 		{
 			BLM_STR = 0x0
 		};
 
-		_spatialindex_exported enum PersistenObjectIdentifier
+		SIDX_DLL enum PersistenObjectIdentifier
 		{
 			PersistentIndex = 0x1,
 			PersistentLeaf = 0x2
 		};
 
-		_spatialindex_exported enum RangeQueryType
+		SIDX_DLL enum RangeQueryType
 		{
 			ContainmentQuery = 0x1,
 			IntersectionQuery = 0x2
 		};
 
-		class _spatialindex_exported Data : public IData, public Tools::ISerializable
+		class SIDX_DLL Data : public IData, public Tools::ISerializable
 		{
 		public:
 			Data(size_t len, byte* pData, Region& r, id_type id);
@@ -69,8 +69,8 @@ namespace SpatialIndex
 			size_t m_dataLength;
 		}; // Data
 
-		_spatialindex_exported  ISpatialIndex* returnRTree(IStorageManager& ind, Tools::PropertySet& in);
-		_spatialindex_exported  ISpatialIndex* createNewRTree(
+		SIDX_DLL ISpatialIndex* returnRTree(IStorageManager& ind, Tools::PropertySet& in);
+		SIDX_DLL ISpatialIndex* createNewRTree(
 			IStorageManager& sm,
 			double fillFactor,
 			size_t indexCapacity,
@@ -79,7 +79,7 @@ namespace SpatialIndex
 			RTreeVariant rv,
 			id_type& indexIdentifier
 		);
-		_spatialindex_exported  ISpatialIndex* createAndBulkLoadNewRTree(
+		SIDX_DLL ISpatialIndex* createAndBulkLoadNewRTree(
 			BulkLoadMethod m,
 			IDataStream& stream,
 			IStorageManager& sm,
@@ -90,6 +90,6 @@ namespace SpatialIndex
 			RTreeVariant rv,
 			id_type& indexIdentifier
 		);
-		_spatialindex_exported  ISpatialIndex* loadRTree(IStorageManager& in, id_type indexIdentifier);
+		SIDX_DLL ISpatialIndex* loadRTree(IStorageManager& in, id_type indexIdentifier);
 	}
 }

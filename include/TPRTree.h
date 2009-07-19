@@ -25,24 +25,24 @@ namespace SpatialIndex
 {
 	namespace TPRTree
 	{
-		_spatialindex_exported enum TPRTreeVariant
+		SIDX_DLL enum TPRTreeVariant
 		{
 			TPRV_RSTAR = 0x0
 		};
 
-		_spatialindex_exported enum PersistenObjectIdentifier
+		SIDX_DLL enum PersistenObjectIdentifier
 		{
 			PersistentIndex = 0x1,
 			PersistentLeaf = 0x2
 		};
 
-		_spatialindex_exported enum RangeQueryType
+		SIDX_DLL enum RangeQueryType
 		{
 			ContainmentQuery = 0x1,
 			IntersectionQuery = 0x2
 		};
 
-		class _spatialindex_exported Data : public IData, public Tools::ISerializable
+		class SIDX_DLL Data : public IData, public Tools::ISerializable
 		{
 		public:
 			Data(size_t len, byte* pData, MovingRegion& r, id_type id);
@@ -62,8 +62,8 @@ namespace SpatialIndex
 			size_t m_dataLength;
 		}; // Data
 
-		_spatialindex_exported  ISpatialIndex* returnTPRTree(IStorageManager& ind, Tools::PropertySet& in);
-		_spatialindex_exported  ISpatialIndex* createNewTPRTree(
+		SIDX_DLL ISpatialIndex* returnTPRTree(IStorageManager& ind, Tools::PropertySet& in);
+		SIDX_DLL ISpatialIndex* createNewTPRTree(
 			IStorageManager& sm,
 			double fillFactor,
 			size_t indexCapacity,
@@ -73,6 +73,6 @@ namespace SpatialIndex
 			double horizon,
 			id_type& indexIdentifier
 		);
-		_spatialindex_exported  ISpatialIndex* loadTPRTree(IStorageManager& in, id_type indexIdentifier);
+		SIDX_DLL ISpatialIndex* loadTPRTree(IStorageManager& in, id_type indexIdentifier);
 	}
 }

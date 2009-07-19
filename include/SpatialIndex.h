@@ -39,14 +39,14 @@ namespace SpatialIndex
 
 	typedef int64_t id_type;
 
-	_spatialindex_exported enum CommandType
+	SIDX_DLL enum CommandType
 	{
 		CT_NODEREAD = 0x0,
 		CT_NODEDELETE,
 		CT_NODEWRITE
 	};
 
-	class _spatialindex_exported InvalidPageException : public Exception
+	class SIDX_DLL InvalidPageException : public Exception
 	{
 	public:
 		InvalidPageException(id_type id);
@@ -61,7 +61,7 @@ namespace SpatialIndex
 	// Interfaces
 	//
 
-	interface _spatialindex_exported IShape : public ISerializable
+	interface SIDX_DLL IShape : public ISerializable
 	{
 	public:
 		virtual bool intersectsShape(const IShape& in) const = 0;
@@ -75,7 +75,7 @@ namespace SpatialIndex
 		virtual ~IShape() {}
 	}; // IShape
 
-	interface _spatialindex_exported ITimeShape : public Tools::IInterval
+	interface SIDX_DLL ITimeShape : public Tools::IInterval
 	{
 	public:
 		virtual bool intersectsShapeInTime(const ITimeShape& in) const = 0;
@@ -91,7 +91,7 @@ namespace SpatialIndex
 		virtual ~ITimeShape() {}
 	}; // ITimeShape
 
-	interface _spatialindex_exported IEvolvingShape
+	interface SIDX_DLL IEvolvingShape
 	{
 	public:
 		virtual void getVMBR(Region& out) const = 0;
@@ -99,7 +99,7 @@ namespace SpatialIndex
 		virtual ~IEvolvingShape() {}
 	}; // IEvolvingShape
 
-	interface _spatialindex_exported IEntry : public Tools::IObject
+	interface SIDX_DLL IEntry : public Tools::IObject
 	{
 	public:
 		virtual id_type getIdentifier() const = 0;
@@ -107,7 +107,7 @@ namespace SpatialIndex
 		virtual ~IEntry() {}
 	}; // IEntry
 
-	interface _spatialindex_exported INode : public IEntry, public Tools::ISerializable
+	interface SIDX_DLL INode : public IEntry, public Tools::ISerializable
 	{
 	public:
 		virtual size_t getChildrenCount() const = 0;
@@ -120,28 +120,28 @@ namespace SpatialIndex
 		virtual ~INode() {}
 	}; // INode
 
-	interface _spatialindex_exported IData : public IEntry
+	interface SIDX_DLL IData : public IEntry
 	{
 	public:
 		virtual void getData(size_t& len, byte** data) const = 0;
 		virtual ~IData() {}
 	}; // IData
 
-	interface _spatialindex_exported IDataStream : public Tools::IObjectStream
+	interface SIDX_DLL IDataStream : public Tools::IObjectStream
 	{
 	public:
 		virtual IData* getNext() = 0;
 		virtual ~IDataStream() {}
 	}; // IDataStream
 
-	interface _spatialindex_exported ICommand
+	interface SIDX_DLL ICommand
 	{
 	public:
 		virtual void execute(const INode& in) = 0;
 		virtual ~ICommand() {}
 	}; // ICommand
 
-	interface _spatialindex_exported INearestNeighborComparator
+	interface SIDX_DLL INearestNeighborComparator
 	{
 	public:
 		virtual double getMinimumDistance(const IShape& query, const IShape& entry) = 0;
@@ -149,7 +149,7 @@ namespace SpatialIndex
 		virtual ~INearestNeighborComparator() {}
 	}; // INearestNeighborComparator
 
-	interface _spatialindex_exported IStorageManager
+	interface SIDX_DLL IStorageManager
 	{
 	public:
 		virtual void loadByteArray(const id_type id, size_t& len, byte** data) = 0;
@@ -158,7 +158,7 @@ namespace SpatialIndex
 		virtual ~IStorageManager() {}
 	}; // IStorageManager
 
-	interface _spatialindex_exported IVisitor
+	interface SIDX_DLL IVisitor
 	{
 	public:
 		virtual void visitNode(const INode& in) = 0;
@@ -167,14 +167,14 @@ namespace SpatialIndex
 		virtual ~IVisitor() {}
 	}; // IVisitor
 
-	interface _spatialindex_exported IQueryStrategy
+	interface SIDX_DLL IQueryStrategy
 	{
 	public:
 		virtual void getNextEntry(const IEntry& previouslyFetched, id_type& nextEntryToFetch, bool& bFetchNextEntry) = 0;
 		virtual ~IQueryStrategy() {}
 	}; // IQueryStrategy
 
-	interface _spatialindex_exported IStatistics
+	interface SIDX_DLL IStatistics
 	{
 	public:
 		virtual size_t getReads() const = 0;
@@ -184,7 +184,7 @@ namespace SpatialIndex
 		virtual ~IStatistics() {}
 	}; // IStatistics
 
-	interface _spatialindex_exported ISpatialIndex
+	interface SIDX_DLL ISpatialIndex
 	{
 	public:
 		virtual void insertData(size_t len, const byte* pData, const IShape& shape, id_type shapeIdentifier) = 0;
@@ -206,13 +206,13 @@ namespace SpatialIndex
 
 	namespace StorageManager
 	{
-		_spatialindex_exported enum StorageManagerConstants
+		SIDX_DLL enum StorageManagerConstants
 		{
 			EmptyPage = -0x1,
 			NewPage = -0x1
 		};
 
-		interface _spatialindex_exported IBuffer : public IStorageManager
+		interface SIDX_DLL IBuffer : public IStorageManager
 		{
 		public:
 			virtual size_t getHits() = 0;
@@ -220,22 +220,22 @@ namespace SpatialIndex
 			virtual ~IBuffer() {}
 		}; // IBuffer
 
-		_spatialindex_exported  IStorageManager* returnMemoryStorageManager(Tools::PropertySet& in);
-		_spatialindex_exported  IStorageManager* createNewMemoryStorageManager();
+		SIDX_DLL  IStorageManager* returnMemoryStorageManager(Tools::PropertySet& in);
+		SIDX_DLL  IStorageManager* createNewMemoryStorageManager();
 
-		_spatialindex_exported  IStorageManager* returnDiskStorageManager(Tools::PropertySet& in);
-		_spatialindex_exported  IStorageManager* createNewDiskStorageManager(std::string& baseName, size_t pageSize);
-		_spatialindex_exported  IStorageManager* loadDiskStorageManager(std::string& baseName);
+		SIDX_DLL  IStorageManager* returnDiskStorageManager(Tools::PropertySet& in);
+		SIDX_DLL  IStorageManager* createNewDiskStorageManager(std::string& baseName, size_t pageSize);
+		SIDX_DLL  IStorageManager* loadDiskStorageManager(std::string& baseName);
 
-		_spatialindex_exported  IBuffer* returnRandomEvictionsBuffer(IStorageManager& ind, Tools::PropertySet& in);
-		_spatialindex_exported  IBuffer* createNewRandomEvictionsBuffer(IStorageManager& in, size_t capacity, bool bWriteThrough);
+		SIDX_DLL  IBuffer* returnRandomEvictionsBuffer(IStorageManager& ind, Tools::PropertySet& in);
+		SIDX_DLL  IBuffer* createNewRandomEvictionsBuffer(IStorageManager& in, size_t capacity, bool bWriteThrough);
 	}
 
 	//
 	// Global functions
 	//
-	_spatialindex_exported  std::ostream& operator<<(std::ostream&, const ISpatialIndex&);
-	_spatialindex_exported  std::ostream& operator<<(std::ostream&, const IStatistics&);
+	SIDX_DLL  std::ostream& operator<<(std::ostream&, const ISpatialIndex&);
+	SIDX_DLL  std::ostream& operator<<(std::ostream&, const IStatistics&);
 }
 
 #include "Point.h"

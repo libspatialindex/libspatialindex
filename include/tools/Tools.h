@@ -21,24 +21,27 @@
 
 #pragma once
 
-#ifdef _MSC_VER
-typedef __int8 int8_t;
-typedef __int16 int16_t;
-typedef __int32 int32_t;
-typedef __int64 int64_t;
-typedef unsigned __int8 uint8_t;
-typedef unsigned __int16 uint16_t;
-typedef unsigned __int32 uint32_t;
-typedef unsigned __int64 uint64_t;
-
-#if defined(SPATIALINDEX_CREATE_DLL)
-#define _spatialindex_exported __declspec(dllexport)      // creator of dll
+#if defined _WIN32 || defined _WIN64 || defined WIN32 || defined WIN64
+  typedef __int8 int8_t;
+  typedef __int16 int16_t;
+  typedef __int32 int32_t;
+  typedef __int64 int64_t;
+  typedef unsigned __int8 uint8_t;
+  typedef unsigned __int16 uint16_t;
+  typedef unsigned __int32 uint32_t;
+  typedef unsigned __int64 uint64_t;
 #else
-#define _spatialindex_exported __declspec(dllimport)      // user of dll
+  #include <stdint.h>
 #endif
+
+#if defined _WIN32 || defined _WIN64 || defined WIN32 || defined WIN64
+  #ifdef SPATIALINDEX_CREATE_DLL
+    #define SIDX_DLL __declspec(dllexport)
+  #else
+    #define SIDX_DLL __declspec(dllimport)
+  #endif
 #else
-#include <stdint.h>
-#define _spatialindex_exported
+  #define SIDX_DLL
 #endif
 
 #include <assert.h>
@@ -60,7 +63,7 @@ typedef unsigned __int64 uint64_t;
 #include <climits>
 
 #if HAVE_PTHREAD_H
-#include <pthread.h>
+  #include <pthread.h>
 #endif
 
 #include "SmartPointer.h"
@@ -72,7 +75,7 @@ typedef uint8_t byte;
 
 namespace Tools
 {
-	_spatialindex_exported enum IntervalType
+	SIDX_DLL enum IntervalType
 	{
 		IT_RIGHTOPEN = 0x0,
 		IT_LEFTOPEN,
@@ -80,7 +83,7 @@ namespace Tools
 		IT_CLOSED
 	};
 
-	_spatialindex_exported enum VariantType
+	SIDX_DLL enum VariantType
 	{
 		VT_LONG = 0x0,
 		VT_BYTE,
@@ -100,7 +103,7 @@ namespace Tools
 		VT_ULONGLONG
 	};
 
-	_spatialindex_exported enum FileMode
+	SIDX_DLL enum FileMode
 	{
 		APPEND = 0x0,
 		CREATE
@@ -109,14 +112,14 @@ namespace Tools
 	//
 	// Exceptions
 	//
-	class _spatialindex_exported Exception
+	class SIDX_DLL Exception
 	{
 	public:
 		virtual std::string what() = 0;
 		virtual ~Exception() {}
 	};
 
-	class _spatialindex_exported IndexOutOfBoundsException : public Exception
+	class SIDX_DLL IndexOutOfBoundsException : public Exception
 	{
 	public:
 		IndexOutOfBoundsException(size_t i);
@@ -127,7 +130,7 @@ namespace Tools
 		std::string m_error;
 	}; // IndexOutOfBoundsException
 
-	class _spatialindex_exported IllegalArgumentException : public Exception
+	class SIDX_DLL IllegalArgumentException : public Exception
 	{
 	public:
 		IllegalArgumentException(std::string s);
@@ -138,7 +141,7 @@ namespace Tools
 		std::string m_error;
 	}; // IllegalArgumentException
 
-	class _spatialindex_exported IllegalStateException : public Exception
+	class SIDX_DLL IllegalStateException : public Exception
 	{
 	public:
 		IllegalStateException(std::string s);
@@ -149,7 +152,7 @@ namespace Tools
 		std::string m_error;
 	}; // IllegalStateException
 
-	class _spatialindex_exported EndOfStreamException : public Exception
+	class SIDX_DLL EndOfStreamException : public Exception
 	{
 	public:
 		EndOfStreamException(std::string s);
@@ -160,7 +163,7 @@ namespace Tools
 		std::string m_error;
 	}; // EndOfStreamException
 
-	class _spatialindex_exported ResourceLockedException : public Exception
+	class SIDX_DLL ResourceLockedException : public Exception
 	{
 	public:
 		ResourceLockedException(std::string s);
@@ -171,7 +174,7 @@ namespace Tools
 		std::string m_error;
 	}; // ResourceLockedException
 
-	class _spatialindex_exported NotSupportedException : public Exception
+	class SIDX_DLL NotSupportedException : public Exception
 	{
 	public:
 		NotSupportedException(std::string s);
@@ -185,7 +188,7 @@ namespace Tools
 	//
 	// Interfaces
 	//
-	interface _spatialindex_exported IInterval
+	interface SIDX_DLL IInterval
 	{
 	public:
 		virtual ~IInterval() {}
@@ -199,7 +202,7 @@ namespace Tools
 		virtual IntervalType getIntervalType() const = 0;
 	}; // IInterval
 
-	interface _spatialindex_exported IObject
+	interface SIDX_DLL IObject
 	{
 	public:
 		virtual ~IObject() {}
@@ -209,7 +212,7 @@ namespace Tools
 			// IMPORTANT: do not return the this pointer!
 	}; // IObject
 
-	interface _spatialindex_exported ISerializable
+	interface SIDX_DLL ISerializable
 	{
 	public:
 		virtual ~ISerializable() {}
@@ -222,7 +225,7 @@ namespace Tools
 			// store this object in the byte array.
 	};
 
-	interface _spatialindex_exported IComparable
+	interface SIDX_DLL IComparable
 	{
 	public:
 		virtual ~IComparable() {}
@@ -232,7 +235,7 @@ namespace Tools
 		virtual bool operator==(const IComparable& o) const = 0;
 	}; //IComparable
 
-	interface _spatialindex_exported IObjectComparator
+	interface SIDX_DLL IObjectComparator
 	{
 	public:
 		virtual ~IObjectComparator() {}
@@ -240,7 +243,7 @@ namespace Tools
 		virtual int compare(IObject* o1, IObject* o2) = 0;
 	}; // IObjectComparator
 
-	interface _spatialindex_exported IObjectStream
+	interface SIDX_DLL IObjectStream
 	{
 	public:
 		virtual ~IObjectStream() {}
@@ -263,7 +266,7 @@ namespace Tools
 	// Classes & Functions
 	//
 
-	class _spatialindex_exported Variant
+	class SIDX_DLL Variant
 	{
 	public:
 		Variant();
@@ -288,10 +291,10 @@ namespace Tools
 		} m_val;
 	}; // Variant
 
-	class _spatialindex_exported PropertySet;
-	_spatialindex_exported std::ostream& operator<<(std::ostream& os, const Tools::PropertySet& p);
+	class SIDX_DLL PropertySet;
+	SIDX_DLL std::ostream& operator<<(std::ostream& os, const Tools::PropertySet& p);
 
-	class _spatialindex_exported PropertySet : public ISerializable
+	class SIDX_DLL PropertySet : public ISerializable
 	{
 	public:
 		PropertySet() {}
@@ -309,11 +312,11 @@ namespace Tools
 	private:
 		std::map<std::string, Variant> m_propertySet;
 
-		friend _spatialindex_exported std::ostream& Tools::operator<<(std::ostream& os, const Tools::PropertySet& p);
+		friend SIDX_DLL std::ostream& Tools::operator<<(std::ostream& os, const Tools::PropertySet& p);
 	}; // PropertySet
 
 	// does not support degenerate intervals.
-	class _spatialindex_exported Interval : public IInterval
+	class SIDX_DLL Interval : public IInterval
 	{
 	public:
 		Interval();
@@ -338,9 +341,9 @@ namespace Tools
 		double m_high;
 	}; // Interval
 
-	_spatialindex_exported std::ostream& operator<<(std::ostream& os, const Tools::Interval& iv);
+	SIDX_DLL std::ostream& operator<<(std::ostream& os, const Tools::Interval& iv);
 
-	class _spatialindex_exported Random
+	class SIDX_DLL Random
 	{
 	public:
 		Random();
@@ -379,7 +382,7 @@ namespace Tools
 		uint16_t* m_pBuffer;
 	}; // Random
 
-	class _spatialindex_exported SharedLock
+	class SIDX_DLL SharedLock
 	{
 	public:
 	#if HAVE_PTHREAD_H
@@ -391,7 +394,7 @@ namespace Tools
 	#endif
 	}; // SharedLock
 
-	class _spatialindex_exported ExclusiveLock
+	class SIDX_DLL ExclusiveLock
 	{
 	public:
 	#if HAVE_PTHREAD_H
@@ -403,7 +406,7 @@ namespace Tools
 	#endif
 	}; // ExclusiveLock
 
-	class _spatialindex_exported BufferedFile
+	class SIDX_DLL BufferedFile
 	{
 	public:
 		BufferedFile(size_t stBufferSize = 16384);
@@ -421,7 +424,7 @@ namespace Tools
 		bool m_bEOF;
 	};
 
-	class _spatialindex_exported BufferedFileReader : public BufferedFile
+	class SIDX_DLL BufferedFileReader : public BufferedFile
 	{
 	public:
 		BufferedFileReader();
@@ -443,7 +446,7 @@ namespace Tools
 		virtual void readBytes(uint32_t u32Len, byte** pData);
 	};
 
-	class _spatialindex_exported BufferedFileWriter : public BufferedFile
+	class SIDX_DLL BufferedFileWriter : public BufferedFile
 	{
 	public:
 		BufferedFileWriter();
@@ -465,7 +468,7 @@ namespace Tools
 		virtual void write(uint32_t u32Len, byte* pData);
 	};
 
-	class _spatialindex_exported TemporaryFile
+	class SIDX_DLL TemporaryFile
 	{
 	public:
 		TemporaryFile();

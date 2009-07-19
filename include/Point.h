@@ -23,7 +23,7 @@
 
 namespace SpatialIndex
 {
-	class _spatialindex_exported Point : public IObject, public virtual IShape
+	class SIDX_DLL Point : public IObject, public virtual IShape
 	{
 	public:
 		Point();
@@ -70,8 +70,8 @@ namespace SpatialIndex
 		double* m_pCoords;
 
 		friend class Region;
-		friend _spatialindex_exported std::ostream& operator<<(std::ostream& os, const Point& pt);
+		friend SIDX_DLL std::ostream& operator<<(std::ostream& os, const Point& pt);
 	}; // Point
 
-	_spatialindex_exported std::ostream& operator<<(std::ostream& os, const Point& pt);
+	SIDX_DLL std::ostream& operator<<(std::ostream& os, const Point& pt);
 }
