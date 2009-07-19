@@ -1,6 +1,6 @@
 #! /bin/bash
 
-export PATH=$PATH:../../../release:../../../debug
+export PATH=$PATH:../../..
 
 echo Generating 10 million entries. This might take a while
 echo Generating dataset

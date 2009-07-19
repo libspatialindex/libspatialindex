@@ -1,0 +1,25 @@
+To compile the library using a GUI:
+Load spatialindex.sln using the Visual Studio IDE.
+
+To compile the library from the command prompt:
+
+To create 32bit DLL:
+1. Open a Visual Studio command prompt (or open any command prompt
+   and run vcvars32.bat).
+
+2a. Release build:
+    Run vcbuild.exe /useenv spatialindex.sln "Release|Win32"
+2b. Debug build:
+    Run vcbuild.exe /useenv spatialindex.sln "Debug|Win32"
+
+To create 64bit DLL:
+1. Open a Visual Studio x64 command prompt (or open any command prompt
+   and run vcvarsall.bat x64).
+
+2a. Release build:
+    Run vcbuild.exe /useenv spatialindex.sln "Release|x64"
+2b. Debug build:
+    Run vcbuild.exe /useenv spatialindex.sln "Debug|x64"
+
+Enjoy!
+
