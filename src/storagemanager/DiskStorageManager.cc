@@ -97,8 +97,18 @@ DiskStorageManager::DiskStorageManager(Tools::PropertySet& ps) : m_pageSize(0), 
 
 		size_t cLen = strlen(var.m_val.pcVal);
 
-		std::string sIndexFile = std::string(var.m_val.pcVal) + ".idx";
-		std::string sDataFile = std::string(var.m_val.pcVal) + ".dat";
+		Tools::Variant idx_name;
+		Tools::Variant dat_name;
+		
+		std::string idx("idx");
+		std::string dat("dat");
+		idx_name = ps.getProperty("FileNameIdx");
+		if (idx_name.m_varType != Tools::VT_EMPTY) idx = std::string(idx_name.m_val.pcVal);
+
+		dat_name = ps.getProperty("FileNameDat");
+		if (dat_name.m_varType != Tools::VT_EMPTY) dat = std::string(dat_name.m_val.pcVal);
+		std::string sIndexFile = std::string(var.m_val.pcVal) + "." + idx;
+		std::string sDataFile = std::string(var.m_val.pcVal) + "." + dat;
 
 		// check if file exists.
 		bool bFileExists = true;
