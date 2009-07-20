@@ -172,7 +172,7 @@ SpatialIndex::ISpatialIndex* SpatialIndex::RTree::createNewRTree(
 
 	var.m_varType = Tools::VT_LONGLONG;
 	var = ps.getProperty("IndexIdentifier");
-	indexIdentifier = var.m_val.lVal;
+	indexIdentifier = var.m_val.llVal;
 
 	return ret;
 }
@@ -247,8 +247,11 @@ SpatialIndex::RTree::RTree::RTree(IStorageManager& sm, Tools::PropertySet& ps) :
 	Tools::Variant var = ps.getProperty("IndexIdentifier");
 	if (var.m_varType != Tools::VT_EMPTY)
 	{
-		if (var.m_varType != Tools::VT_LONGLONG) throw Tools::IllegalArgumentException("RTree: Property IndexIdentifier must be Tools::VT_LONGLONG");
-		m_headerID = var.m_val.llVal;
+		if (var.m_varType == Tools::VT_LONGLONG) m_headerID = var.m_val.llVal;
+		else if (var.m_varType == Tools::VT_LONG) m_headerID = var.m_val.lVal;
+			// for backward compatibility only.
+		else throw Tools::IllegalArgumentException("RTree: Property IndexIdentifier must be Tools::VT_LONGLONG");
+
 		initOld(ps);
 	}
 	else

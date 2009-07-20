@@ -214,8 +214,11 @@ SpatialIndex::MVRTree::MVRTree::MVRTree(IStorageManager& sm, Tools::PropertySet&
 	Tools::Variant var = ps.getProperty("IndexIdentifier");
 	if (var.m_varType != Tools::VT_EMPTY)
 	{
-		if (var.m_varType != Tools::VT_LONGLONG) throw Tools::IllegalArgumentException("MVRTree: Property IndexIdentifier must be Tools::VT_LONGLONG");
-		m_headerID = var.m_val.llVal;
+		if (var.m_varType == Tools::VT_LONGLONG) m_headerID = var.m_val.llVal;
+		else if (var.m_varType == Tools::VT_LONG) m_headerID = var.m_val.lVal;
+			// for backward compatibility only.
+		else throw Tools::IllegalArgumentException("MVRTree: Property IndexIdentifier must be Tools::VT_LONGLONG");
+
 		initOld(ps);
 	}
 	else
