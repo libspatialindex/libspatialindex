@@ -323,13 +323,25 @@ void Tools::PropertySet::storeToByteArray(byte** data, size_t& length)
 Tools::Variant Tools::PropertySet::getProperty(std::string property)
 {
 	std::map<std::string, Variant>::iterator it = m_propertySet.find(property);
+
 	if (it != m_propertySet.end()) return (*it).second;
 	else return Variant();
 }
 
 void Tools::PropertySet::setProperty(std::string property, Variant& v)
 {
-	m_propertySet.insert(std::pair<std::string, Variant>(property, v));
+
+	std::pair<std::map<std::string, Variant>::iterator, bool> ret;
+	std::map<std::string, Variant>::iterator it;
+	
+	ret = m_propertySet.insert(std::pair<std::string, Variant>(property, v));
+	
+	// If we weren't able to insert because it is already in the map
+	// update our existing value
+	if (ret.second == false) {
+		it	= m_propertySet.find(property);
+		(*it).second = v;
+	}
 }
 
 void Tools::PropertySet::removeProperty(std::string property)
