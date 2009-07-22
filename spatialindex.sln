@@ -4,14 +4,29 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "spatialindex-vc", "spatialindex-vc\spatialindex.vcproj", "{38FBBD59-8344-4D8E-B728-3D51763B6A70}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RTreeBulkLoad", "regressiontest\rtree\RTreeBulkLoad.vcproj", "{7D9C8655-0155-4EE3-B04C-6D831E2982CE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{38FBBD59-8344-4D8E-B728-3D51763B6A70} = {38FBBD59-8344-4D8E-B728-3D51763B6A70}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RTreeGenerator", "regressiontest\rtree\RTreeGenerator.vcproj", "{03504DB7-ACF3-40CF-A8A7-310E80666DC0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{38FBBD59-8344-4D8E-B728-3D51763B6A70} = {38FBBD59-8344-4D8E-B728-3D51763B6A70}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RTreeLoad", "regressiontest\rtree\RTreeLoad.vcproj", "{551D683C-E5DC-4713-9D9F-F629D15BE5DA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{38FBBD59-8344-4D8E-B728-3D51763B6A70} = {38FBBD59-8344-4D8E-B728-3D51763B6A70}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RTreeQuery", "regressiontest\rtree\RTreeQuery.vcproj", "{1FBCCD7B-2641-4B93-9CF0-44E1EE8D55B9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{38FBBD59-8344-4D8E-B728-3D51763B6A70} = {38FBBD59-8344-4D8E-B728-3D51763B6A70}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RTreeExhaustive", "regressiontest\rtree\RTreeExhaustive.vcproj", "{D2C6947B-5527-4D6A-88CB-842DDCCFB2FF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{38FBBD59-8344-4D8E-B728-3D51763B6A70} = {38FBBD59-8344-4D8E-B728-3D51763B6A70}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
