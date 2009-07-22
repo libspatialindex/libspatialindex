@@ -20,6 +20,7 @@
 //    mhadji@gmail.com
 
 #include <tools/Tools.h>
+#include <cstring>
 
 #define INSERT 1
 #define DELETE 0
