@@ -56,15 +56,19 @@ void Region::initialize(const double* pLow, const double* pHigh, size_t dimensio
 	m_dimension = dimension;
 
 #ifndef NDEBUG
-	for (size_t cDim = 0; cDim < m_dimension; cDim++)
-	{
-		if (pLow[cDim] > pHigh[cDim])
-		{
-			throw Tools::IllegalArgumentException(
-				"Region::initialize: Low point has larger coordinates than High point."
-			);
-		}
-	}
+    // FIXME: this needs to be fixed for the case when both pHigh and pLow are
+    // at their numeric limits, when high can be negative infinity and low can
+    // be positive infinity
+    for (size_t cDim = 0; cDim < m_dimension; cDim++)
+    {
+     if (pLow[cDim] > pHigh[cDim])
+     {
+         throw Tools::IllegalArgumentException(
+             "Region::initialize: Low point has larger coordinates than High point. FIXME:"
+             " This produces false positives for +- infinity"
+         );
+     }
+    }
 #endif
 
 	try
