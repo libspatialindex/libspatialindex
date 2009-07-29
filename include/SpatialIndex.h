@@ -248,4 +248,4 @@ namespace SpatialIndex
 #include "RTree.h"
 #include "MVRTree.h"
 #include "TPRTree.h"
-
+#include "Version.h"
