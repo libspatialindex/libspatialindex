@@ -21,6 +21,9 @@
 
 #pragma once
 
+// Nuke this annoying warning.  See http://www.unknownroad.com/rtfm/VisualStudio/warningC4251.html
+#pragma warning( disable: 4251 )
+
 #if defined _WIN32 || defined _WIN64 || defined WIN32 || defined WIN64
   typedef __int8 int8_t;
   typedef __int16 int16_t;
