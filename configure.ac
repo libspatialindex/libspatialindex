@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT(spatialindex, 1.3.2, mhadji@gmail.com)
+AC_INIT(spatialindex, 1.4.0, mhadji@gmail.com)
 AC_CANONICAL_BUILD
 
 debug_default="no"

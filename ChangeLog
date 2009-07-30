@@ -1,3 +1,438 @@
+2009-07-22 19:29  hobu
+
+	* src/spatialindex/Region.cc: a note about the debugging lint that
+	  is incorrect when the bounds are infinity
+
+2009-07-22 19:24  hobu
+
+	* regressiontest/rtree/Exhaustive.cc: make sure to #include
+	  <cstring> to satisfy gcc 4.3+
+
+2009-07-22 15:23  mhadji
+
+	* regressiontest/rtree/RTreeBulkLoad.vcproj,
+	  regressiontest/rtree/RTreeExhaustive.vcproj,
+	  regressiontest/rtree/RTreeGenerator.vcproj,
+	  regressiontest/rtree/RTreeLoad.vcproj,
+	  regressiontest/rtree/RTreeQuery.vcproj,
+	  spatialindex-vc/spatialindex.vcproj, spatialindex.suo:
+
+2009-07-22 15:18  mhadji
+
+	* spatialindex.sln, spatialindex.suo:
+
+2009-07-21 13:11  mhadji
+
+	* src/tools/Tools.cc:
+
+2009-07-20 20:32  hobu
+
+	* src/storagemanager/DiskStorageManager.cc: attempt to fix #8 and
+	  allow users to specify extensions for the dat and idx files of
+	  the diskstorage manager
+
+2009-07-20 17:35  hobu
+
+	* src/tools/Tools.cc: make sure to update existing values in
+	  setProperties instead of assuming it doesn't exist in the map
+
+2009-07-20 15:01  mhadji
+
+	* spatialindex.suo, src/mvrtree/MVRTree.cc, src/rtree/RTree.cc,
+	  src/tprtree/TPRTree.cc:
+
+2009-07-19 14:51  mhadji
+
+	* include/LineSegment.h, include/MVRTree.h, include/MovingPoint.h,
+	  include/MovingRegion.h, include/Point.h, include/RTree.h,
+	  include/Region.h, include/SpatialIndex.h, include/TPRTree.h,
+	  include/TimePoint.h, include/TimeRegion.h, include/tools/Tools.h,
+	  spatialindex.suo:
+
+2009-07-19 01:26  mhadji
+
+	* INSTALL.WIN:
+
+2009-07-19 01:15  mhadji
+
+	* spatialindex-vc/spatialindex.vcproj, spatialindex.suo:
+
+2009-07-19 01:13  mhadji
+
+	* spatialindex.suo:
+
+2009-07-19 01:09  mhadji
+
+	* makefile.vc, regressiontest/rtree/RTreeBulkLoad.vcproj,
+	  spatialindex.suo:
+
+2009-07-19 01:02  mhadji
+
+	* INSTALL.WIN, regressiontest/rtree/RTreeBulkLoad.vcproj,
+	  regressiontest/rtree/RTreeExhaustive.vcproj,
+	  regressiontest/rtree/RTreeGenerator.vcproj,
+	  regressiontest/rtree/RTreeLoad.vcproj,
+	  regressiontest/rtree/RTreeQuery.vcproj,
+	  regressiontest/rtree/test3/run,
+	  spatialindex-vc/spatialindex.vcproj, spatialindex.sln,
+	  spatialindex.suo:
+
+2009-07-18 22:52  mhadji
+
+	* include/SpatialIndex.h, include/tools/Tools.h:
+
+2009-07-18 22:19  mhadji
+
+	* spatialindex-vc/spatialindex.vcproj.RESEARCH.marioh.user:
+
+2009-07-18 22:19  mhadji
+
+	* include/LineSegment.h, include/MVRTree.h, include/MovingPoint.h,
+	  include/MovingRegion.h, include/Point.h, include/RTree.h,
+	  include/Region.h, include/SpatialIndex.h, include/TPRTree.h,
+	  include/TimePoint.h, include/TimeRegion.h,
+	  include/tools/Makefile.am, include/tools/PointerPool.h,
+	  include/tools/PoolPointer.h, include/tools/SmartPointer.h,
+	  include/tools/TemporaryFile.h, include/tools/Tools.h,
+	  include/tools/rand48.h, makefile.vc,
+	  regressiontest/rtree/Exhaustive.cc,
+	  regressiontest/rtree/Generator.cc,
+	  regressiontest/rtree/RTreeBulkLoad.cc,
+	  regressiontest/rtree/RTreeBulkLoad.vcproj,
+	  regressiontest/rtree/RTreeExhaustive.vcproj,
+	  regressiontest/rtree/RTreeGenerator.vcproj,
+	  regressiontest/rtree/RTreeLoad.cc,
+	  regressiontest/rtree/RTreeLoad.vcproj,
+	  regressiontest/rtree/RTreeQuery.vcproj,
+	  regressiontest/rtree/test3/run, spatialindex-vc,
+	  spatialindex-vc/spatialindex.vcproj,
+	  spatialindex-vc/spatialindex.vcproj.RESEARCH.marioh.user,
+	  src/mvrtree/Index.cc, src/mvrtree/Index.h, src/mvrtree/Leaf.cc,
+	  src/mvrtree/Leaf.h, src/mvrtree/MVRTree.cc,
+	  src/mvrtree/MVRTree.h, src/mvrtree/Node.cc, src/mvrtree/Node.h,
+	  src/mvrtree/PointerPoolNode.h, src/mvrtree/Statistics.h,
+	  src/rtree/BulkLoader.cc, src/rtree/BulkLoader.h,
+	  src/rtree/Index.h, src/rtree/Leaf.h, src/rtree/Node.h,
+	  src/rtree/PointerPoolNode.h, src/rtree/RTree.cc,
+	  src/rtree/RTree.h, src/rtree/Statistics.h,
+	  src/spatialindex/MovingRegion.cc,
+	  src/spatialindex/SpatialIndexImpl.cc,
+	  src/spatialindex/SpatialIndexImpl.h,
+	  src/storagemanager/Buffer.cc, src/storagemanager/Buffer.h,
+	  src/storagemanager/DiskStorageManager.cc,
+	  src/storagemanager/DiskStorageManager.h,
+	  src/storagemanager/MemoryStorageManager.cc,
+	  src/storagemanager/MemoryStorageManager.h,
+	  src/storagemanager/RandomEvictionsBuffer.cc,
+	  src/storagemanager/RandomEvictionsBuffer.h,
+	  src/tools/ExternalSort.cc, src/tools/ExternalSort.h,
+	  src/tools/Makefile.am, src/tools/TemporaryFile.cc,
+	  src/tools/Tools.cc, src/tprtree/Index.h, src/tprtree/Leaf.h,
+	  src/tprtree/Node.h, src/tprtree/PointerPoolNode.h,
+	  src/tprtree/Statistics.h, src/tprtree/TPRTree.cc,
+	  src/tprtree/TPRTree.h:
+
+2009-07-15 14:39  hobu
+
+	* include/SpatialIndex.h, src/mvrtree/Node.cc, src/mvrtree/Node.h,
+	  src/rtree/Node.cc, src/rtree/Node.h, src/rtree/RTree.cc,
+	  src/rtree/RTree.h, src/tprtree/Node.cc, src/tprtree/Node.h: apply
+	  Willem's patch for #14
+
+2009-07-06 22:23  hobu
+
+	* src/rtree/RTree.cc: more descriptive and separate exception
+	  descriptions for FillFactor inconsistencies
+
+2009-07-06 14:38  hobu
+
+	* include/SpatialIndex.h, ltmain.sh: silence warnings about windows
+	  compiler complaints on non-windows systems
+
+2009-05-28 17:52  hobu
+
+	* makefile.vc: rename dlls to not have lib* in front of them
+
+2009-05-28 16:31  hobu
+
+	* makefile.vc: A much improved windows makefile based in libLAS'
+
+2009-05-28 16:31  hobu
+
+	* include/SpatialIndex.h: On MSVC, just about every class complains
+	  about 4250, inheritance by dominance. We'll just shut that up for
+	  now.
+
+2009-05-14 18:26  hobu
+
+	* src/tools/TemporaryFile.cc: apply Patrick Mézard's patch for the
+	  inverted use of mktemp on windows #13
+
+2009-05-14 18:21  hobu
+
+	* src/tools/Tools.cc: Fix #12, add time.h so msvc9 works
+
+2009-05-04 17:10  hobu
+
+	* regressiontest/mvrtree/Exhaustive.cc,
+	  regressiontest/mvrtree/MVRTreeLoad.cc,
+	  regressiontest/mvrtree/MVRTreeQuery.cc,
+	  regressiontest/rtree/Exhaustive.cc,
+	  regressiontest/rtree/RTreeLoad.cc,
+	  regressiontest/rtree/RTreeQuery.cc,
+	  regressiontest/tprtree/Generator.cc, src/mvrtree/MVRTree.cc,
+	  src/mvrtree/Node.cc, src/rtree/BulkLoader.cc, src/rtree/Leaf.cc,
+	  src/rtree/Node.cc, src/rtree/RTree.cc,
+	  src/spatialindex/LineSegment.cc, src/spatialindex/MovingPoint.cc,
+	  src/spatialindex/MovingRegion.cc, src/spatialindex/Point.cc,
+	  src/spatialindex/Region.cc, src/spatialindex/TimePoint.cc,
+	  src/spatialindex/TimeRegion.cc, src/storagemanager/Buffer.cc,
+	  src/storagemanager/Buffer.h,
+	  src/storagemanager/DiskStorageManager.cc,
+	  src/storagemanager/MemoryStorageManager.cc,
+	  src/storagemanager/MemoryStorageManager.h, src/tools/Tools.cc,
+	  src/tprtree/Leaf.cc, src/tprtree/Node.cc, src/tprtree/TPRTree.cc:
+	  apply the patch for #11 - cstring and limits includes so gcc 4.3+
+	  works
+
+2008-05-30 19:42  mhadji
+
+	* src/tools/Makefile.am, src/tools/Tools.cc:
+
+2008-05-23 18:27  mhadji
+
+	* makefile.vc:
+
+2008-05-23 17:55  mhadji
+
+	* configure.ac:
+
+2008-05-23 17:28  mhadji
+
+	* regressiontest/rtree/RTreeLoad.cc,
+	  src/storagemanager/DiskStorageManager.cc,
+	  src/storagemanager/DiskStorageManager.h:
+
+2008-05-18 12:35  mhadji
+
+	* ltmain.sh:
+
+2008-04-30 05:39  hobu
+
+	* .: propset to ignore aclocal.m4
+
+2008-04-30 05:39  hobu
+
+	* aclocal.m4: aclocal.m4 is autogenerated. removing
+
+2008-04-30 05:35  hobu
+
+	* ., include, include/tools, regressiontest,
+	  regressiontest/mvrtree, regressiontest/rtree,
+	  regressiontest/tprtree, src, src/mvrtree, src/rtree,
+	  src/spatialindex, src/storagemanager, src/tools, src/tprtree: set
+	  svn:ignore properties for autogenerated files and automake cruft
+
+2008-04-30 05:27  hobu
+
+	* Makefile.in, include/Makefile.in, include/tools/Makefile.in,
+	  regressiontest/Makefile.in, regressiontest/mvrtree/Makefile.in,
+	  regressiontest/rtree/Makefile.in,
+	  regressiontest/tprtree/Makefile.in, src/Makefile.in,
+	  src/mvrtree/Makefile.in, src/rtree/Makefile.in,
+	  src/spatialindex/Makefile.in, src/storagemanager/Makefile.in,
+	  src/tools/Makefile.in, src/tprtree/Makefile.in: delete
+	  Makefile.in's from source tree. Use autogen.sh to remake them if
+	  building from svn source yourself
+
+2008-04-30 05:26  hobu
+
+	* include/tools/Makefile.am: add rand48.h to dist target
+
+2008-04-29 19:47  mhadji
+
+	* regressiontest/rtree/test1/data,
+	  regressiontest/rtree/test1/queries:
+
+2008-04-29 18:17  mhadji
+
+	* include/tools/rand48.hpp:
+
+2008-04-29 18:06  mhadji
+
+	* include/tools/rand48.h:
+
+2008-04-29 18:03  mhadji
+
+	* INSTALL, Makefile.in, aclocal.m4, configure.ac, mkinstalldirs,
+	  regressiontest/Makefile.in, regressiontest/mvrtree/Makefile.in,
+	  regressiontest/rtree/Makefile.in,
+	  regressiontest/tprtree/Makefile.in,
+	  src/storagemanager/RandomEvictionsBuffer.cc,
+	  src/tools/ExternalSort.cc, src/tools/ExternalSort.h,
+	  src/tools/TemporaryFile.cc, src/tools/Tools.cc:
+
+2008-04-29 16:36  mhadji
+
+	* makefile.vc:
+
+2008-04-29 16:36  mhadji
+
+	* include/Makefile.in, include/SpatialIndex.h,
+	  include/tools/Makefile.in, include/tools/Tools.h:
+
+2008-04-29 16:36  mhadji
+
+	* src/Makefile.in, src/mvrtree/Makefile.in, src/mvrtree/Node.cc,
+	  src/rtree/Makefile.in, src/spatialindex/LineSegment.cc,
+	  src/spatialindex/Makefile.in, src/spatialindex/MovingRegion.cc,
+	  src/storagemanager/Makefile.in,
+	  src/storagemanager/RandomEvictionsBuffer.cc,
+	  src/tools/Makefile.in, src/tprtree/Makefile.in:
+
+2008-04-29 15:40  mhadji
+
+	* src/spatialindex/MovingRegion.cc: Fixex malloc memory leak.
+
+2008-04-29 15:40  mhadji
+
+	* src/spatialindex/LineSegment.cc: Fixed malloc memory leak
+
+2008-02-26 16:15  hobu
+
+	* src/tools/rand48.cc: oops. Add missing file
+
+2008-02-26 16:14  hobu
+
+	* include/tools/rand48.hpp: oops. Add missing file
+
+2008-01-25 19:43  hobu
+
+	* include/MVRTree.h, include/RTree.h, include/SpatialIndex.h,
+	  include/TPRTree.h, include/tools/Tools.h, makefile.vc,
+	  src/mvrtree/Index.cc, src/mvrtree/Leaf.cc, src/mvrtree/Node.cc,
+	  src/rtree/BulkLoader.cc, src/rtree/Index.cc, src/rtree/Leaf.cc,
+	  src/rtree/Node.cc, src/spatialindex/LineSegment.cc,
+	  src/spatialindex/MovingRegion.cc, src/storagemanager/Buffer.cc,
+	  src/storagemanager/DiskStorageManager.cc,
+	  src/storagemanager/RandomEvictionsBuffer.cc,
+	  src/tools/ExternalSort.cc, src/tools/ExternalSort.h,
+	  src/tools/TemporaryFile.cc, src/tools/Tools.cc,
+	  src/tprtree/Index.cc, src/tprtree/Leaf.cc, src/tprtree/Node.cc:
+	  Initial push of windows patches
+
+2008-01-23 16:25  mhadji
+
+	* INSTALL:
+
+2008-01-21 14:19  mhadji
+
+	* README, regressiontest/rtree/test3/run:
+
+2008-01-19 20:51  hobu
+
+	* configure.ac, makefile.vc: bump version to 1.3
+
+2008-01-19 18:42  hobu
+
+	* ChangeLog: Add an auto-generated ChangeLog
+
+2008-01-19 18:37  hobu
+
+	* AUTHORS: add myself and some notes
+
+2008-01-19 18:36  hobu
+
+	* INSTALL: update to ReST
+
+2008-01-19 18:09  hobu
+
+	* README: update ReST
+
+2008-01-19 18:09  hobu
+
+	* README: update ReST
+
+2008-01-19 18:03  hobu
+
+	* README: update ReST
+
+2008-01-19 18:02  hobu
+
+	* README: update ReST
+
+2008-01-19 18:02  hobu
+
+	* README: update ReST
+
+2008-01-19 18:01  hobu
+
+	* README: update ReST
+
+2008-01-19 17:59  hobu
+
+	* README: update ReST
+
+2008-01-19 17:59  hobu
+
+	* README: update ReST
+
+2008-01-19 17:58  hobu
+
+	* README: update ReST
+
+2008-01-19 17:58  hobu
+
+	* README: update ReST
+
+2008-01-19 17:56  hobu
+
+	* README: update ReST
+
+2008-01-19 17:55  hobu
+
+	* README: update ReST
+
+2008-01-19 17:29  hobu
+
+	* README: update ReST
+
+2008-01-19 17:26  hobu
+
+	* README: update to ReST
+
+2008-01-19 17:02  hobu
+
+	* README: set mimetype to reStructured text so Trac will render it
+	  for us in the browser
+
+2008-01-17 23:34  hobu
+
+	* regressiontest/tprtree/Makefile.am,
+	  regressiontest/tprtree/Makefile.in, src/mvrtree/Makefile.am,
+	  src/mvrtree/Makefile.in, src/rtree/Makefile.am,
+	  src/rtree/Makefile.in, src/spatialindex/Makefile.am,
+	  src/spatialindex/Makefile.in, src/storagemanager/Makefile.am,
+	  src/storagemanager/Makefile.in, src/tprtree/Makefile.am,
+	  src/tprtree/Makefile.in: add internal headers to the _SOURCES
+	  targets so they get included in make dist
+
+2008-01-17 17:06  hobu
+
+	* Makefile.in, aclocal.m4, autogen.sh, include/Makefile.in,
+	  include/tools/Makefile.in, ltmain.sh, regressiontest/Makefile.in,
+	  regressiontest/mvrtree/Makefile.in,
+	  regressiontest/rtree/Makefile.in,
+	  regressiontest/tprtree/Makefile.in, src/Makefile.in,
+	  src/mvrtree/Makefile.in, src/rtree/Makefile.in,
+	  src/spatialindex/Makefile.in, src/storagemanager/Makefile.in,
+	  src/tools/Makefile.in, src/tprtree/Makefile.in: add autogen.sh to
+	  simplify auto stuff
+
+2008-01-17 17:04  hobu
+
+	* debian: move debian packaging stuff out of trunk
+
 2008-01-15 19:33  hobu
 
 	* makefile.vc: add nmake makefile
