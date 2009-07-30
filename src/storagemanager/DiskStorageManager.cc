@@ -22,12 +22,54 @@
 #include <fstream>
 #include <cstring>
 
+// For checking if a file exists - hobu
+#include <sys/stat.h>
+
 #include "../spatialindex/SpatialIndexImpl.h"
 #include "DiskStorageManager.h"
 
 using namespace SpatialIndex;
 using namespace SpatialIndex::StorageManager;
 
+bool CheckFilesExists(Tools::PropertySet& ps)
+{
+	bool bExists = false;
+	
+	std::string filename("");
+	std::string idx("idx");
+	std::string dat("dat");
+
+	Tools::Variant idx_name;
+	Tools::Variant dat_name;
+	Tools::Variant fn;
+
+	idx_name = ps.getProperty("FileNameIdx");
+	dat_name = ps.getProperty("FileNameDat");
+	fn = ps.getProperty("FileName");
+
+	if (idx_name.m_varType != Tools::VT_EMPTY) dat = std::string(idx_name.m_val.pcVal);
+	if (dat_name.m_varType != Tools::VT_EMPTY) idx = std::string(dat_name.m_val.pcVal);
+	if (fn.m_varType != Tools::VT_EMPTY) filename = std::string(fn.m_val.pcVal);
+	
+	struct stat stats;
+	
+	std::ostringstream os;
+	int ret;
+	os << filename <<"."<<dat;
+	std::string data_name = os.str();
+	ret = stat(data_name.c_str(), &stats);
+	
+	if (ret == 0) bExists = true;
+	
+	os.str("");
+	os << filename <<"."<<idx;
+	std::string index_name = os.str();
+	ret = stat(index_name.c_str(), &stats);
+	
+	if ((ret == 0) && (bExists == true)) bExists = true;
+	
+	return bExists;
+}
 SpatialIndex::IStorageManager* SpatialIndex::StorageManager::returnDiskStorageManager(Tools::PropertySet& ps)
 {
 	IStorageManager* sm = new DiskStorageManager(ps);
@@ -111,11 +153,7 @@ DiskStorageManager::DiskStorageManager(Tools::PropertySet& ps) : m_pageSize(0), 
 		std::string sDataFile = std::string(var.m_val.pcVal) + "." + dat;
 
 		// check if file exists.
-		bool bFileExists = true;
-		std::ifstream fin1(sIndexFile.c_str(), std::ios::in | std::ios::binary);
-		std::ifstream fin2(sDataFile.c_str(), std::ios::in | std::ios::binary);
-		if (fin1.fail() || fin2.fail()) bFileExists = false;
-		fin1.close(); fin2.close();
+		bool bFileExists = CheckFilesExists(ps);
 
 		// check if file can be read/written.
 		if (bFileExists == true && bOverwrite == false)
