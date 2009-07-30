@@ -2,7 +2,14 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT(spatialindex, 1.4.0, mhadji@gmail.com)
+
+m4_define([sidx_version_major], [1])
+m4_define([sidx_version_minor], [4])
+m4_define([sidx_version_micro], [0])
+m4_define([sidx_version],
+          [sidx_version_major.sidx_version_minor.sidx_version_micro])
+          
+AC_INIT(spatialindex, [sidx_version], mhadji@gmail.com)
 AC_CANONICAL_BUILD
 
 debug_default="no"

@@ -14,3 +14,4 @@ libspatialindex_la_LIBADD = \
 
 libspatialindex_la_LDFLAGS = -version-info 1:0:0 
 
+EXTRA_DIST = makefile.vc INSTALL.WIN
