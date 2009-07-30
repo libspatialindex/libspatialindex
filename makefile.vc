@@ -64,7 +64,7 @@ LAS_LIB_DLL = spatialindex_i.lib
 !ELSE
 
 # You may need to remove /GR if you are statically linking libLAS
-OPTFLAGS=/nologo /MD /EHsc /Ox /GR /W2 /D_CRT_SECURE_NO_DEPRECATE /D_CRT_NONSTDC_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /DNDEBUG /D "PACKAGE_BUGREPORT=\"hobu.inc@gmail.com\""
+OPTFLAGS=/nologo /MD /EHsc /Ox /GR /W2 /D_CRT_SECURE_NO_DEPRECATE /D_CRT_NONSTDC_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /DNDEBUG /D "PACKAGE_BUGREPORT=\"hobu.inc@gmail.com\"" /DSPATIALINDEX_CREATE_DLL=1
 LAS_LIB = spatialindex.lib
 LAS_DLL = spatialindex$(DLL_VERSION).dll
 LAS_LIB_DLL = spatialindex_i.lib
@@ -120,8 +120,6 @@ OBJS = 	src\mvrtree\Index.obj \
         src\storagemanager\DiskStorageManager.obj \
         src\storagemanager\MemoryStorageManager.obj \
         src\storagemanager\RandomEvictionsBuffer.obj \
-        src\tools\ExternalSort.obj \
-        src\tools\TemporaryFile.obj \
         src\tools\rand48.obj \
         src\tools\Tools.obj \
         src\tprtree\Index.obj \
