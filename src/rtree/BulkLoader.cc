@@ -48,8 +48,8 @@ ExternalSorter::Record::Record(const Region& r, id_type id, size_t len, byte* pD
 
 ExternalSorter::Record::~Record()
 {
-	if (m_pData != 0)
-		delete[] m_pData;
+    // if (m_pData != 0)
+    //  delete[] m_pData;
 }
 
 bool ExternalSorter::Record::operator<(const Record& r) const
