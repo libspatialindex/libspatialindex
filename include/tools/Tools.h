@@ -74,7 +74,10 @@
 #include "PointerPool.h"
 #include "PoolPointer.h"
 
+#ifndef interface
 #define interface class
+#endif
+
 typedef uint8_t byte;
 
 namespace Tools
