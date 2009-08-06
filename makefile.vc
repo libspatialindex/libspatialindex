@@ -1,8 +1,11 @@
 
 .SUFFIXES: .cc
 
-SPATIALINDEX_HOME=.
+SPATIALINDEX_HOME=c:\cvs\buildkit\spatialindex
 DLL_VERSION = 1
+
+BINDIR=$(SPATIALINDEX_HOME)\bin
+OSGEO4W_DIR = $(SPATIALINDEX_HOME)\osgeo4w
 
 
 ###############################################################################
@@ -78,6 +81,7 @@ MPFLAGS=/MP
 MPFLAGS=""
 !ENDIF
 
+PACKAGE_VERSION=1.4.0
 
 INCLUDES=-I$(SPATIALINDEX_HOME)/include
 CFLAGS= $(MPFLAGS) $(OPTFLAGS) $(INCLUDES) 
@@ -144,7 +148,28 @@ $(LAS_DLL):	$(LAS_LIB) $(RES)
             /out:$(LAS_DLL) /implib:$(LAS_LIB_DLL)
     if exist $(LAS_DLL).manifest mt -manifest $(LAS_DLL).manifest -outputresource:$(LAS_DLL);2   
 
-   
+
+install: default
+    -mkdir $(BINDIR)
+    -mkdir $(SPATIALINDEX_HOME)\packages
+    -mkdir $(BINDIR)\lib
+    -mkdir $(BINDIR)\include\spatialindex
+    -mkdir $(OSGEO4W_DIR)
+    -mkdir $(OSGEO4W_DIR)\lib
+    -mkdir $(OSGEO4W_DIR)\devel
+    -mkdir $(OSGEO4W_DIR)\lib\bin
+    -mkdir $(OSGEO4W_DIR)\devel\include
+    -mkdir $(OSGEO4W_DIR)\devel\include\spatialindex
+    -mkdir $(OSGEO4W_DIR)\devel\lib
+    xcopy /y /r /d /f spatialindex_i.lib $(BINDIR)\lib
+    xcopy /y /r /d /f spatialindex_i.lib $(OSGEO4W_DIR)\devel\lib
+    xcopy /y /r /d /f spatialindex.lib $(BINDIR)\lib
+    xcopy /y /r /d /f spatialindex.lib $(OSGEO4W_DIR)\devel\lib
+    xcopy /y /r /d /f /s include\* $(BINDIR)\include\spatialindex
+    xcopy /y /r /d /f /s include\* $(OSGEO4W_DIR)\devel\include\spatialindex
+    xcopy /y /r /d /f $(LAS_DLL) $(BINDIR)
+    xcopy /y /r /d /f $(LAS_DLL) $(OSGEO4W_DIR)\lib\bin
+
 .cc.obj:                          
 	$(CC) $(CFLAGS) /c $*.cc /Fo$@
 
@@ -161,3 +186,14 @@ clean:
 	for %d in ( $(LAS_DIRLIST) ) do \
 		del %d\*.obj 	
 
+package: install
+    cd $(SPATIALINDEX_HOME)/osgeo4w/lib
+    C:\cygwin\bin\tar.exe cvf ../../packages/libspatialindex-$(PACKAGE_VERSION).tar *
+    c:\cygwin\bin\bzip2.exe -f /cygdrive/c/cvs/buildkit/spatialindex/packages/libspatialindex-$(PACKAGE_VERSION).tar
+    cd $(SPATIALINDEX_HOME)/osgeo4w/
+    cd $(SPATIALINDEX_HOME)/osgeo4w/devel
+    C:\cygwin\bin\tar.exe cvf ../../packages/libspatialindex-devel-$(PACKAGE_VERSION).tar *
+    c:\cygwin\bin\bzip2.exe -f /cygdrive/c/cvs/buildkit/spatialindex/packages/libspatialindex-devel-$(PACKAGE_VERSION).tar
+    cd $(SPATIALINDEX_HOME)/osgeo4w/
+    cd $(SPATIALINDEX_HOME)/
+    c:\cygwin\bin\zip.exe -r packages/libspatialindex-$(PACKAGE_VERSION)-win32.zip bin
