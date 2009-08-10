@@ -74,10 +74,6 @@
 #include "PointerPool.h"
 #include "PoolPointer.h"
 
-#ifndef interface
-#define interface class
-#endif
-
 typedef uint8_t byte;
 
 namespace Tools
@@ -195,7 +191,7 @@ namespace Tools
 	//
 	// Interfaces
 	//
-	interface SIDX_DLL IInterval
+	class SIDX_DLL IInterval
 	{
 	public:
 		virtual ~IInterval() {}
@@ -209,7 +205,7 @@ namespace Tools
 		virtual IntervalType getIntervalType() const = 0;
 	}; // IInterval
 
-	interface SIDX_DLL IObject
+	class SIDX_DLL IObject
 	{
 	public:
 		virtual ~IObject() {}
@@ -219,7 +215,7 @@ namespace Tools
 			// IMPORTANT: do not return the this pointer!
 	}; // IObject
 
-	interface SIDX_DLL ISerializable
+	class SIDX_DLL ISerializable
 	{
 	public:
 		virtual ~ISerializable() {}
@@ -232,7 +228,7 @@ namespace Tools
 			// store this object in the byte array.
 	};
 
-	interface SIDX_DLL IComparable
+	class SIDX_DLL IComparable
 	{
 	public:
 		virtual ~IComparable() {}
@@ -242,7 +238,7 @@ namespace Tools
 		virtual bool operator==(const IComparable& o) const = 0;
 	}; //IComparable
 
-	interface SIDX_DLL IObjectComparator
+	class SIDX_DLL IObjectComparator
 	{
 	public:
 		virtual ~IObjectComparator() {}
@@ -250,7 +246,7 @@ namespace Tools
 		virtual int compare(IObject* o1, IObject* o2) = 0;
 	}; // IObjectComparator
 
-	interface SIDX_DLL IObjectStream
+	class SIDX_DLL IObjectStream
 	{
 	public:
 		virtual ~IObjectStream() {}

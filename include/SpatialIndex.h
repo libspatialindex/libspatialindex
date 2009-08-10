@@ -61,7 +61,7 @@ namespace SpatialIndex
 	// Interfaces
 	//
 
-	interface SIDX_DLL IShape : public ISerializable
+	class SIDX_DLL IShape : public ISerializable
 	{
 	public:
 		virtual bool intersectsShape(const IShape& in) const = 0;
@@ -75,7 +75,7 @@ namespace SpatialIndex
 		virtual ~IShape() {}
 	}; // IShape
 
-	interface SIDX_DLL ITimeShape : public Tools::IInterval
+	class SIDX_DLL ITimeShape : public Tools::IInterval
 	{
 	public:
 		virtual bool intersectsShapeInTime(const ITimeShape& in) const = 0;
@@ -91,7 +91,7 @@ namespace SpatialIndex
 		virtual ~ITimeShape() {}
 	}; // ITimeShape
 
-	interface SIDX_DLL IEvolvingShape
+	class SIDX_DLL IEvolvingShape
 	{
 	public:
 		virtual void getVMBR(Region& out) const = 0;
@@ -99,7 +99,7 @@ namespace SpatialIndex
 		virtual ~IEvolvingShape() {}
 	}; // IEvolvingShape
 
-	interface SIDX_DLL IEntry : public Tools::IObject
+	class SIDX_DLL IEntry : public Tools::IObject
 	{
 	public:
 		virtual id_type getIdentifier() const = 0;
@@ -107,7 +107,7 @@ namespace SpatialIndex
 		virtual ~IEntry() {}
 	}; // IEntry
 
-	interface SIDX_DLL INode : public IEntry, public Tools::ISerializable
+	class SIDX_DLL INode : public IEntry, public Tools::ISerializable
 	{
 	public:
 		virtual size_t getChildrenCount() const = 0;
@@ -120,28 +120,28 @@ namespace SpatialIndex
 		virtual ~INode() {}
 	}; // INode
 
-	interface SIDX_DLL IData : public IEntry
+	class SIDX_DLL IData : public IEntry
 	{
 	public:
 		virtual void getData(size_t& len, byte** data) const = 0;
 		virtual ~IData() {}
 	}; // IData
 
-	interface SIDX_DLL IDataStream : public Tools::IObjectStream
+	class SIDX_DLL IDataStream : public Tools::IObjectStream
 	{
 	public:
 		virtual IData* getNext() = 0;
 		virtual ~IDataStream() {}
 	}; // IDataStream
 
-	interface SIDX_DLL ICommand
+	class SIDX_DLL ICommand
 	{
 	public:
 		virtual void execute(const INode& in) = 0;
 		virtual ~ICommand() {}
 	}; // ICommand
 
-	interface SIDX_DLL INearestNeighborComparator
+	class SIDX_DLL INearestNeighborComparator
 	{
 	public:
 		virtual double getMinimumDistance(const IShape& query, const IShape& entry) = 0;
@@ -149,7 +149,7 @@ namespace SpatialIndex
 		virtual ~INearestNeighborComparator() {}
 	}; // INearestNeighborComparator
 
-	interface SIDX_DLL IStorageManager
+	class SIDX_DLL IStorageManager
 	{
 	public:
 		virtual void loadByteArray(const id_type id, size_t& len, byte** data) = 0;
@@ -158,7 +158,7 @@ namespace SpatialIndex
 		virtual ~IStorageManager() {}
 	}; // IStorageManager
 
-	interface SIDX_DLL IVisitor
+	class SIDX_DLL IVisitor
 	{
 	public:
 		virtual void visitNode(const INode& in) = 0;
@@ -167,14 +167,14 @@ namespace SpatialIndex
 		virtual ~IVisitor() {}
 	}; // IVisitor
 
-	interface SIDX_DLL IQueryStrategy
+	class SIDX_DLL IQueryStrategy
 	{
 	public:
 		virtual void getNextEntry(const IEntry& previouslyFetched, id_type& nextEntryToFetch, bool& bFetchNextEntry) = 0;
 		virtual ~IQueryStrategy() {}
 	}; // IQueryStrategy
 
-	interface SIDX_DLL IStatistics
+	class SIDX_DLL IStatistics
 	{
 	public:
 		virtual size_t getReads() const = 0;
@@ -184,7 +184,7 @@ namespace SpatialIndex
 		virtual ~IStatistics() {}
 	}; // IStatistics
 
-	interface SIDX_DLL ISpatialIndex
+	class SIDX_DLL ISpatialIndex
 	{
 	public:
 		virtual void insertData(size_t len, const byte* pData, const IShape& shape, id_type shapeIdentifier) = 0;
@@ -212,7 +212,7 @@ namespace SpatialIndex
 			NewPage = -0x1
 		};
 
-		interface SIDX_DLL IBuffer : public IStorageManager
+		class SIDX_DLL IBuffer : public IStorageManager
 		{
 		public:
 			virtual size_t getHits() = 0;
