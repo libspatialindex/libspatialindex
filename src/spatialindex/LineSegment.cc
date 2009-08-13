@@ -30,7 +30,7 @@ LineSegment::LineSegment()
 {
 }
 
-LineSegment::LineSegment(const double* pStartPoint, const double* pEndPoint, size_t dimension)
+LineSegment::LineSegment(const double* pStartPoint, const double* pEndPoint, uint32_t dimension)
 	: m_dimension(dimension)
 {
 	// no need to initialize arrays to 0 since if a bad_alloc is raised the destructor will not be called.
@@ -93,7 +93,7 @@ bool LineSegment::operator==(const LineSegment& l) const
 			"LineSegment::operator==: LineSegments have different number of dimensions."
 		);
 
-	for (size_t i = 0; i < m_dimension; i++)
+	for (uint32_t i = 0; i < m_dimension; ++i)
 	{
 		if (
 			m_pStartPoint[i] < l.m_pStartPoint[i] - std::numeric_limits<double>::epsilon() ||
@@ -118,16 +118,16 @@ LineSegment* LineSegment::clone()
 //
 // ISerializable interface
 //
-size_t LineSegment::getByteArraySize()
+uint32_t LineSegment::getByteArraySize()
 {
-	return (sizeof(size_t) + m_dimension * sizeof(double) * 2);
+	return (sizeof(uint32_t) + m_dimension * sizeof(double) * 2);
 }
 
 void LineSegment::loadFromByteArray(const byte* ptr)
 {
-	size_t dimension;
-	memcpy(&dimension, ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
+	uint32_t dimension;
+	memcpy(&dimension, ptr, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 
 	makeDimension(dimension);
 	memcpy(m_pStartPoint, ptr, m_dimension * sizeof(double));
@@ -136,14 +136,14 @@ void LineSegment::loadFromByteArray(const byte* ptr)
 	//ptr += m_dimension * sizeof(double);
 }
 
-void LineSegment::storeToByteArray(byte** data, size_t& len)
+void LineSegment::storeToByteArray(byte** data, uint32_t& len)
 {
 	len = getByteArraySize();
 	*data = new byte[len];
 	byte* ptr = *data;
 
-	memcpy(ptr, &m_dimension, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(ptr, &m_dimension, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 	memcpy(ptr, m_pStartPoint, m_dimension * sizeof(double));
 	ptr += m_dimension * sizeof(double);
 	memcpy(ptr, m_pEndPoint, m_dimension * sizeof(double));
@@ -175,7 +175,7 @@ bool LineSegment::touchesShape(const IShape& s) const
 void LineSegment::getCenter(Point& out) const
 {
 	double* coords = new double[m_dimension];
-	for (size_t cDim = 0; cDim < m_dimension; cDim++)
+	for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
 	{
 		coords[cDim] =
 			(std::abs(m_pStartPoint[cDim] - m_pEndPoint[cDim]) / 2.0) +
@@ -186,7 +186,7 @@ void LineSegment::getCenter(Point& out) const
 	delete[] coords;
 }
 
-size_t LineSegment::getDimension() const
+uint32_t LineSegment::getDimension() const
 {
 	return m_dimension;
 }
@@ -195,7 +195,7 @@ void LineSegment::getMBR(Region& out) const
 {
 	double* low = new double[m_dimension];
 	double* high = new double[m_dimension];
-	for (size_t cDim = 0; cDim < m_dimension; cDim++)
+	for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
 	{
 		low[cDim] = std::min(m_pStartPoint[cDim], m_pEndPoint[cDim]);
 		high[cDim] = std::max(m_pStartPoint[cDim], m_pEndPoint[cDim]);
@@ -347,17 +347,17 @@ double LineSegment::getAngleOfPerpendicularRay()
 	return std::atan(-(m_pStartPoint[0] - m_pEndPoint[0]) / (m_pStartPoint[1] - m_pEndPoint[1]));
 }
 
-void LineSegment::makeInfinite(size_t dimension)
+void LineSegment::makeInfinite(uint32_t dimension)
 {
 	makeDimension(dimension);
-	for (size_t cIndex = 0; cIndex < m_dimension; cIndex++)
+	for (uint32_t cIndex = 0; cIndex < m_dimension; ++cIndex)
 	{
 		m_pStartPoint[cIndex] = std::numeric_limits<double>::max();
 		m_pEndPoint[cIndex] = std::numeric_limits<double>::max();
 	}
 }
 
-void LineSegment::makeDimension(size_t dimension)
+void LineSegment::makeDimension(uint32_t dimension)
 {
 	if (m_dimension != dimension)
 	{
@@ -377,7 +377,7 @@ void LineSegment::makeDimension(size_t dimension)
 
 std::ostream& operator<<(std::ostream& os, const LineSegment& l)
 {
-	for (size_t cDim = 0; cDim < l.m_dimension; cDim++)
+	for (uint32_t cDim = 0; cDim < l.m_dimension; ++cDim)
 	{
 		os << l.m_pStartPoint[cDim] << ", " << l.m_pEndPoint[cDim] << " ";
 	}

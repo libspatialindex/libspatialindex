@@ -28,7 +28,7 @@ namespace Tools
 	template<> class PointerPool<TPRTree::Node>
 	{
 	public:
-		explicit PointerPool(size_t capacity) : m_capacity(capacity)
+		explicit PointerPool(uint32_t capacity) : m_capacity(capacity)
 		{
 			#ifndef NDEBUG
 			m_hits = 0;
@@ -45,7 +45,7 @@ namespace Tools
 			{
 				TPRTree::Node* x = m_pool.top(); m_pool.pop();
 				#ifndef NDEBUG
-				m_pointerCount--;
+				--m_pointerCount;
 				#endif
 				delete x;
 			}
@@ -61,7 +61,7 @@ namespace Tools
 			{
 				TPRTree::Node* p = m_pool.top(); m_pool.pop();
 				#ifndef NDEBUG
-				m_hits++;
+				++m_hits;
 				#endif
 
 				return PoolPointer<TPRTree::Node>(p, this);
@@ -70,8 +70,8 @@ namespace Tools
 			else
 			{
 				// fixme: well sort of...
-				m_pointerCount++;
-				m_misses++;
+				++m_pointerCount;
+				++m_misses;
 			}
 			#endif
 
@@ -86,7 +86,7 @@ namespace Tools
 				{
 					if (p->m_pData != 0)
 					{
-						for (size_t cChild = 0; cChild < p->m_children; cChild++)
+						for (uint32_t cChild = 0; cChild < p->m_children; ++cChild)
 						{
 							if (p->m_pData[cChild] != 0) delete[] p->m_pData[cChild];
 						}
@@ -102,7 +102,7 @@ namespace Tools
 				else
 				{
 					#ifndef NDEBUG
-					m_pointerCount--;
+					--m_pointerCount;
 					#endif
 					delete p;
 				}
@@ -111,22 +111,22 @@ namespace Tools
 			}
 		}
 
-		size_t getCapacity() const { return m_capacity; }
-		void setCapacity(size_t c)
+		uint32_t getCapacity() const { return m_capacity; }
+		void setCapacity(uint32_t c)
 		{
 			assert (c >= 0);
 			m_capacity = c;
 		}
 
 	protected:
-		size_t m_capacity;
+		uint32_t m_capacity;
 		std::stack<TPRTree::Node*> m_pool;
 
 	#ifndef NDEBUG
 	public:
-		size_t m_hits;
-		size_t m_misses;
-		size_t m_pointerCount;
+		uint64_t m_hits;
+		uint64_t m_misses;
+		uint64_t m_pointerCount;
 	#endif
 	};
 }

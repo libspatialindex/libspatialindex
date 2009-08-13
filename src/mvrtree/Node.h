@@ -45,9 +45,9 @@ namespace SpatialIndex
 			//
 			// Tools::ISerializable interface
 			//
-			virtual size_t getByteArraySize();
+			virtual uint32_t getByteArraySize();
 			virtual void loadFromByteArray(const byte* data);
-			virtual void storeToByteArray(byte** data, size_t& len);
+			virtual void storeToByteArray(byte** data, uint32_t& len);
 
 			//
 			// SpatialIndex::IEntry interface
@@ -58,60 +58,60 @@ namespace SpatialIndex
 			//
 			// SpatialIndex::INode interface
 			//
-			virtual size_t getChildrenCount() const;
-			virtual id_type getChildIdentifier(size_t index)  const;
-			virtual void getChildShape(size_t index, IShape** out)  const;
-                        virtual void getChildData(size_t index, size_t& length, byte** data) const;
-			virtual size_t getLevel() const;
+			virtual uint32_t getChildrenCount() const;
+			virtual id_type getChildIdentifier(uint32_t index)  const;
+			virtual void getChildShape(uint32_t index, IShape** out)  const;
+                        virtual void getChildData(uint32_t index, uint32_t& length, byte** data) const;
+			virtual uint32_t getLevel() const;
 			virtual bool isIndex() const;
 			virtual bool isLeaf() const;
 
 		private:
 			Node();
-			Node(MVRTree* pTree, id_type id, size_t level, size_t capacity);
+			Node(MVRTree* pTree, id_type id, uint32_t level, uint32_t capacity);
 
 			virtual Node& operator=(const Node&);
 
-			virtual void insertEntry(size_t dataLength, byte* pData, TimeRegion& mbr, id_type id);
-			virtual bool deleteEntry(size_t index);
+			virtual void insertEntry(uint32_t dataLength, byte* pData, TimeRegion& mbr, id_type id);
+			virtual bool deleteEntry(uint32_t index);
 
 			virtual bool insertData(
-				size_t dataLength, byte* pData, TimeRegion& mbr, id_type id, std::stack<id_type>& pathBuffer,
+				uint32_t dataLength, byte* pData, TimeRegion& mbr, id_type id, std::stack<id_type>& pathBuffer,
 				TimeRegion& mbr2, id_type id2, bool bInsertMbr2 = false, bool forceAdjust = false);
 			virtual void insertData(TimeRegion& mbr1, id_type id1, TimeRegion& mbr2, id_type id2, Node* oldVersion, std::stack<id_type>& pathBuffer);
 			virtual bool deleteData(id_type id, double delTime, std::stack<id_type>& pathBuffer, bool adjustMBR = false);
 
 			virtual void rtreeSplit(
-				size_t dataLength, byte* pData, TimeRegion& mbr, id_type id, std::vector<size_t>& group1, std::vector<size_t>& group2,
+				uint32_t dataLength, byte* pData, TimeRegion& mbr, id_type id, std::vector<uint32_t>& group1, std::vector<uint32_t>& group2,
 				TimeRegion& mbr2, id_type id2, bool bInsertMbr2 = false);
 			virtual void rstarSplit(
-				size_t dataLength, byte* pData, TimeRegion& mbr, id_type id, std::vector<size_t>& group1, std::vector<size_t>& group2,
+				uint32_t dataLength, byte* pData, TimeRegion& mbr, id_type id, std::vector<uint32_t>& group1, std::vector<uint32_t>& group2,
 				TimeRegion& mbr2, id_type id2, bool bInsertMbr2 = false);
 
-			virtual void pickSeeds(size_t& index1, size_t& index2, size_t total);
+			virtual void pickSeeds(uint32_t& index1, uint32_t& index2, uint32_t total);
 
-			virtual NodePtr chooseSubtree(const TimeRegion& mbr, size_t level, std::stack<id_type>& pathBuffer) = 0;
+			virtual NodePtr chooseSubtree(const TimeRegion& mbr, uint32_t level, std::stack<id_type>& pathBuffer) = 0;
 			virtual NodePtr findLeaf(const TimeRegion& mbr, id_type id, std::stack<id_type>& pathBuffer) = 0;
 			virtual NodePtr findNode(const TimeRegion& mbr, id_type id, std::stack<id_type>& pathBuffer);
 
 			virtual void split(
-				size_t dataLength, byte* pData, TimeRegion& mbr, id_type id, NodePtr& left, NodePtr& right,
+				uint32_t dataLength, byte* pData, TimeRegion& mbr, id_type id, NodePtr& left, NodePtr& right,
 				TimeRegion& mbr2, id_type id2, bool bInsertMbr2 = false) = 0;
 
 			MVRTree* m_pTree;
 				// Parent of all nodes.
 
-			size_t m_level;
+			uint32_t m_level;
 				// The level of the node in the tree.
 				// Leaves are always at level 0.
 
 			id_type m_identifier;
 				// The unique ID of this node.
 
-			size_t m_children;
+			uint32_t m_children;
 				// The number of children pointed by this node.
 
-			size_t m_capacity;
+			uint32_t m_capacity;
 				// Specifies the node capacity.
 
 			TimeRegion m_nodeMBR;
@@ -126,14 +126,14 @@ namespace SpatialIndex
 			id_type* m_pIdentifier;
 				// The corresponding data identifiers.
 
-			size_t* m_pDataLength;
+			uint32_t* m_pDataLength;
 
-			size_t m_totalDataLength;
+			uint32_t m_totalDataLength;
 
 			class RstarSplitEntry
 			{
 			public:
-				RstarSplitEntry(TimeRegion* pr, size_t index, size_t dimension) :
+				RstarSplitEntry(TimeRegion* pr, uint32_t index, uint32_t dimension) :
 					m_pRegion(pr), m_index(index), m_sortDim(dimension) {}
 
 				static int compareLow(const void* pv1, const void* pv2)
@@ -157,18 +157,18 @@ namespace SpatialIndex
 				}
 
 				TimeRegion* m_pRegion;
-				size_t m_index;
-				size_t m_sortDim;
+				uint32_t m_index;
+				uint32_t m_sortDim;
 			}; // RstarSplitEntry
 
 			class DeleteDataEntry
 			{
 			public:
-				DeleteDataEntry(size_t index, double d) : m_index(index), m_increase(d) {}
+				DeleteDataEntry(uint32_t index, double d) : m_index(index), m_increase(d) {}
 
 				static bool compare(DeleteDataEntry e1, DeleteDataEntry e2) { return e1.m_increase < e2.m_increase; }
 
-				size_t m_index;
+				uint32_t m_index;
 				double m_increase;
 			}; // DeleteDataEntry
 

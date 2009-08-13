@@ -29,12 +29,12 @@ MovingPoint::MovingPoint()
 {
 }
 
-MovingPoint::MovingPoint(const double* pCoords, const double* pVCoords, const IInterval& ti, size_t dimension)
+MovingPoint::MovingPoint(const double* pCoords, const double* pVCoords, const IInterval& ti, uint32_t dimension)
 {
 	initialize(pCoords, pVCoords, ti.getLowerBound(), ti.getUpperBound(), dimension);
 }
 
-MovingPoint::MovingPoint(const double* pCoords, const double* pVCoords, double tStart, double tEnd, size_t dimension)
+MovingPoint::MovingPoint(const double* pCoords, const double* pVCoords, double tStart, double tEnd, uint32_t dimension)
 {
 	initialize(pCoords, pVCoords, tStart, tEnd, dimension);
 }
@@ -83,7 +83,7 @@ MovingPoint::~MovingPoint()
 
 void MovingPoint::initialize(
 	const double* pCoords, const double* pVCoords,
-	double tStart, double tEnd, size_t dimension)
+	double tStart, double tEnd, uint32_t dimension)
 {
 	m_dimension = dimension;
 	m_startTime = tStart;
@@ -132,7 +132,7 @@ bool MovingPoint::operator==(const MovingPoint& p) const
 		m_endTime > p.m_endTime + std::numeric_limits<double>::epsilon())
 		return false;
 
-	for (size_t cDim = 0; cDim < 2 * m_dimension; cDim++)
+	for (uint32_t cDim = 0; cDim < 2 * m_dimension; ++cDim)
 	{
 		if (
 			m_pCoords[cDim] < p.m_pCoords[cDim] - std::numeric_limits<double>::epsilon() ||
@@ -145,7 +145,7 @@ bool MovingPoint::operator==(const MovingPoint& p) const
 	return true;
 }
 
-double MovingPoint::getCoord(size_t d, double t) const
+double MovingPoint::getCoord(uint32_t d, double t) const
 {
 	if (d < 0 && d >= m_dimension) throw Tools::IndexOutOfBoundsException(d);
 
@@ -154,14 +154,14 @@ double MovingPoint::getCoord(size_t d, double t) const
 	else return m_pCoords[d] + m_pVCoords[d] * (t - m_startTime);
 }
 
-double MovingPoint::getProjectedCoord(size_t d, double t) const
+double MovingPoint::getProjectedCoord(uint32_t d, double t) const
 {
 	if (d < 0 && d >= m_dimension) throw Tools::IndexOutOfBoundsException(d);
 
 	return m_pCoords[d] + m_pVCoords[d] * (t - m_startTime);
 }
 
-double MovingPoint::getVCoord(size_t d) const
+double MovingPoint::getVCoord(uint32_t d) const
 {
 	if (d < 0 && d >= m_dimension) throw Tools::IndexOutOfBoundsException(d);
 
@@ -171,7 +171,7 @@ double MovingPoint::getVCoord(size_t d) const
 void MovingPoint::getPointAtTime(double t, Point& out) const
 {
 	out.makeDimension(m_dimension);
-	for (size_t cDim = 0; cDim < m_dimension; cDim++)
+	for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
 	{
 		out.m_pCoords[cDim] = getCoord(cDim, t);
 	}
@@ -188,16 +188,16 @@ MovingPoint* MovingPoint::clone()
 //
 // ISerializable interface
 //
-size_t MovingPoint::getByteArraySize()
+uint32_t MovingPoint::getByteArraySize()
 {
-	return (sizeof(size_t) + 2 * sizeof(double) + 2 * m_dimension * sizeof(double));
+	return (sizeof(uint32_t) + 2 * sizeof(double) + 2 * m_dimension * sizeof(double));
 }
 
 void MovingPoint::loadFromByteArray(const byte* ptr)
 {
-	size_t dimension;
-	memcpy(&dimension, ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
+	uint32_t dimension;
+	memcpy(&dimension, ptr, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 	memcpy(&m_startTime, ptr, sizeof(double));
 	ptr += sizeof(double);
 	memcpy(&m_endTime, ptr, sizeof(double));
@@ -210,14 +210,14 @@ void MovingPoint::loadFromByteArray(const byte* ptr)
 	//ptr += m_dimension * sizeof(double);
 }
 
-void MovingPoint::storeToByteArray(byte** data, size_t& len)
+void MovingPoint::storeToByteArray(byte** data, uint32_t& len)
 {
 	len = getByteArraySize();
 	*data = new byte[len];
 	byte* ptr = *data;
 
-	memcpy(ptr, &m_dimension, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(ptr, &m_dimension, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 	memcpy(ptr, &m_startTime, sizeof(double));
 	ptr += sizeof(double);
 	memcpy(ptr, &m_endTime, sizeof(double));
@@ -241,17 +241,17 @@ void MovingPoint::getVMBR(Region& out) const
 void MovingPoint::getMBRAtTime(double t, Region& out) const
 {
 	out.makeDimension(m_dimension);
-	for (size_t cDim = 0; cDim < m_dimension; cDim++)
+	for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
 	{
 		out.m_pLow[cDim] = getCoord(cDim, t);
 		out.m_pHigh[cDim] = getCoord(cDim, t);
 	}
 }
 
-void MovingPoint::makeInfinite(size_t dimension)
+void MovingPoint::makeInfinite(uint32_t dimension)
 {
 	makeDimension(dimension);
-	for (size_t cIndex = 0; cIndex < m_dimension; cIndex++)
+	for (uint32_t cIndex = 0; cIndex < m_dimension; ++cIndex)
 	{
 		m_pCoords[cIndex] = std::numeric_limits<double>::max();
 		m_pVCoords[cIndex] = -std::numeric_limits<double>::max();
@@ -261,7 +261,7 @@ void MovingPoint::makeInfinite(size_t dimension)
 	m_endTime = -std::numeric_limits<double>::max();
 }
 
-void MovingPoint::makeDimension(size_t dimension)
+void MovingPoint::makeDimension(uint32_t dimension)
 {
 	if (m_dimension != dimension)
 	{
@@ -277,16 +277,16 @@ void MovingPoint::makeDimension(size_t dimension)
 
 std::ostream& SpatialIndex::operator<<(std::ostream& os, const MovingPoint& pt)
 {
-	size_t i;
+	uint32_t i;
 
 	os << "Coords: ";
-	for (i = 0; i < pt.m_dimension; i++)
+	for (i = 0; i < pt.m_dimension; ++i)
 	{
 		os << pt.m_pCoords[i] << " ";
 	}
 
 	os << "VCoords: ";
-	for (i = 0; i < pt.m_dimension; i++)
+	for (i = 0; i < pt.m_dimension; ++i)
 	{
 		os << pt.m_pVCoords[i] << " ";
 	}

@@ -27,8 +27,8 @@ namespace SpatialIndex
 	{
 	public:
 		TimeRegion();
-		TimeRegion(const double* pLow, const double* pHigh, const Tools::IInterval& ti, size_t dimension);
-		TimeRegion(const double* pLow, const double* pHigh, double tStart, double tEnd, size_t dimension);
+		TimeRegion(const double* pLow, const double* pHigh, const Tools::IInterval& ti, uint32_t dimension);
+		TimeRegion(const double* pLow, const double* pHigh, double tStart, double tEnd, uint32_t dimension);
 		TimeRegion(const Point& low, const Point& high, const Tools::IInterval& ti);
 		TimeRegion(const Point& low, const Point& high, double tStart, double tEnd);
 		TimeRegion(const Region& in, const Tools::IInterval& ti);
@@ -58,9 +58,9 @@ namespace SpatialIndex
 		//
 		// ISerializable interface
 		//
-		virtual size_t getByteArraySize();
+		virtual uint32_t getByteArraySize();
 		virtual void loadFromByteArray(const byte* data);
-		virtual void storeToByteArray(byte** data, size_t& len);
+		virtual void storeToByteArray(byte** data, uint32_t& len);
 
 		//
 		// ITimeShape interface
@@ -88,8 +88,8 @@ namespace SpatialIndex
 		virtual bool containsInterval(const Tools::IInterval& ti) const;
 		virtual Tools::IntervalType getIntervalType() const;
 
-		virtual void makeInfinite(size_t dimension);
-		virtual void makeDimension(size_t dimension);
+		virtual void makeInfinite(uint32_t dimension);
+		virtual void makeDimension(uint32_t dimension);
 
 	public:
 		double m_startTime;

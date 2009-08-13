@@ -34,8 +34,8 @@ namespace SpatialIndex
 
 			virtual ~MemoryStorageManager();
 
-			virtual void loadByteArray(const id_type page, size_t& len, byte** data);
-			virtual void storeByteArray(id_type& page, const size_t len, const byte* const data);
+			virtual void loadByteArray(const id_type page, uint32_t& len, byte** data);
+			virtual void storeByteArray(id_type& page, const uint32_t len, const byte* const data);
 			virtual void deleteByteArray(const id_type page);
 
 		private:
@@ -43,9 +43,9 @@ namespace SpatialIndex
 			{
 			public:
 				byte* m_pData;
-				size_t m_length;
+				uint32_t m_length;
 
-				Entry(size_t l, const byte* const d) : m_pData(0), m_length(l)
+				Entry(uint32_t l, const byte* const d) : m_pData(0), m_length(l)
 				{
 					m_pData = new byte[m_length];
 					memcpy(m_pData, d, m_length);

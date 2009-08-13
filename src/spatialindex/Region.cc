@@ -30,7 +30,7 @@ Region::Region()
 {
 }
 
-Region::Region(const double* pLow, const double* pHigh, size_t dimension)
+Region::Region(const double* pLow, const double* pHigh, uint32_t dimension)
 {
 	initialize(pLow, pHigh, dimension);
 }
@@ -50,7 +50,7 @@ Region::Region(const Region& r)
 	initialize(r.m_pLow, r.m_pHigh, r.m_dimension);
 }
 
-void Region::initialize(const double* pLow, const double* pHigh, size_t dimension)
+void Region::initialize(const double* pLow, const double* pHigh, uint32_t dimension)
 {
 	m_pLow = 0;
 	m_dimension = dimension;
@@ -59,7 +59,7 @@ void Region::initialize(const double* pLow, const double* pHigh, size_t dimensio
     // FIXME: this needs to be fixed for the case when both pHigh and pLow are
     // at their numeric limits, when high can be negative infinity and low can
     // be positive infinity
-    for (size_t cDim = 0; cDim < m_dimension; cDim++)
+    for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
     {
      if (pLow[cDim] > pHigh[cDim])
      {
@@ -111,7 +111,7 @@ bool Region::operator==(const Region& r) const
 			"Region::operator==: Regions have different number of dimensions."
 		);
 
-	for (size_t i = 0; i < m_dimension; i++)
+	for (uint32_t i = 0; i < m_dimension; ++i)
 	{
 		if (
 			m_pLow[i] < r.m_pLow[i] - std::numeric_limits<double>::epsilon() ||
@@ -134,16 +134,16 @@ Region* Region::clone()
 //
 // ISerializable interface
 //
-size_t Region::getByteArraySize()
+uint32_t Region::getByteArraySize()
 {
-	return (sizeof(size_t) + 2 * m_dimension * sizeof(double));
+	return (sizeof(uint32_t) + 2 * m_dimension * sizeof(double));
 }
 
 void Region::loadFromByteArray(const byte* ptr)
 {
-	size_t dimension;
-	memcpy(&dimension, ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
+	uint32_t dimension;
+	memcpy(&dimension, ptr, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 
 	makeDimension(dimension);
 	memcpy(m_pLow, ptr, m_dimension * sizeof(double));
@@ -152,14 +152,14 @@ void Region::loadFromByteArray(const byte* ptr)
 	//ptr += m_dimension * sizeof(double);
 }
 
-void Region::storeToByteArray(byte** data, size_t& len)
+void Region::storeToByteArray(byte** data, uint32_t& len)
 {
 	len = getByteArraySize();
 	*data = new byte[len];
 	byte* ptr = *data;
 
-	memcpy(ptr, &m_dimension, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(ptr, &m_dimension, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 	memcpy(ptr, m_pLow, m_dimension * sizeof(double));
 	ptr += m_dimension * sizeof(double);
 	memcpy(ptr, m_pHigh, m_dimension * sizeof(double));
@@ -211,13 +211,13 @@ bool Region::touchesShape(const IShape& s) const
 void Region::getCenter(Point& out) const
 {
 	out.makeDimension(m_dimension);
-	for (size_t i = 0; i < m_dimension; i++)
+	for (uint32_t i = 0; i < m_dimension; ++i)
 	{
 		out.m_pCoords[i] = (m_pLow[i] + m_pHigh[i]) / 2.0;
 	}
 }
 
-size_t Region::getDimension() const
+uint32_t Region::getDimension() const
 {
 	return m_dimension;
 }
@@ -231,7 +231,7 @@ double Region::getArea() const
 {
 	double area = 1.0;
 
-	for (size_t i = 0; i < m_dimension; i++)
+	for (uint32_t i = 0; i < m_dimension; ++i)
 	{
 		area *= m_pHigh[i] - m_pLow[i];
 	}
@@ -259,7 +259,7 @@ bool Region::intersectsRegion(const Region& r) const
 			"Region::intersectsRegion: Regions have different number of dimensions."
 		);
 
-	for (size_t i = 0; i < m_dimension; i++)
+	for (uint32_t i = 0; i < m_dimension; ++i)
 	{
 		if (m_pLow[i] > r.m_pHigh[i] || m_pHigh[i] < r.m_pLow[i]) return false;
 	}
@@ -273,7 +273,7 @@ bool Region::containsRegion(const Region& r) const
 			"Region::containsRegion: Regions have different number of dimensions."
 		);
 
-	for (size_t i = 0; i < m_dimension; i++)
+	for (uint32_t i = 0; i < m_dimension; ++i)
 	{
 		if (m_pLow[i] > r.m_pLow[i] || m_pHigh[i] < r.m_pHigh[i]) return false;
 	}
@@ -287,7 +287,7 @@ bool Region::touchesRegion(const Region& r) const
 			"Region::touchesRegion: Regions have different number of dimensions."
 		);
 
-	for (size_t i = 0; i < m_dimension; i++)
+	for (uint32_t i = 0; i < m_dimension; ++i)
 	{
 		if (
 			(m_pLow[i] >= r.m_pLow[i] - std::numeric_limits<double>::epsilon() &&
@@ -308,7 +308,7 @@ double Region::getMinimumDistance(const Region& r) const
 
 	double ret = 0.0;
 
-	for (size_t i = 0; i < m_dimension; i++)
+	for (uint32_t i = 0; i < m_dimension; ++i)
 	{
 		double x = 0.0;
 
@@ -334,7 +334,7 @@ bool Region::containsPoint(const Point& p) const
 			"Region::containsPoint: Point has different number of dimensions."
 		);
 
-	for (size_t i = 0; i < m_dimension; i++)
+	for (uint32_t i = 0; i < m_dimension; ++i)
 	{
 		if (m_pLow[i] > p.getCoordinate(i) || m_pHigh[i] < p.getCoordinate(i)) return false;
 	}
@@ -348,7 +348,7 @@ bool Region::touchesPoint(const Point& p) const
 			"Region::touchesPoint: Point has different number of dimensions."
 		);
 
-	for (size_t i = 0; i < m_dimension; i++)
+	for (uint32_t i = 0; i < m_dimension; ++i)
 	{
 		if (
 			(m_pLow[i] >= p.getCoordinate(i) - std::numeric_limits<double>::epsilon() &&
@@ -369,7 +369,7 @@ double Region::getMinimumDistance(const Point& p) const
 
 	double ret = 0.0;
 
-	for (size_t i = 0; i < m_dimension; i++)
+	for (uint32_t i = 0; i < m_dimension; ++i)
 	{
 		if (p.getCoordinate(i) < m_pLow[i])
 		{
@@ -396,12 +396,12 @@ Region Region::getIntersectingRegion(const Region& r) const
 
 	// check for intersection.
 	// marioh: avoid function call since this is called billions of times.
-	for (size_t cDim = 0; cDim < m_dimension; cDim++)
+	for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
 	{
 		if (m_pLow[cDim] > r.m_pHigh[cDim] || m_pHigh[cDim] < r.m_pLow[cDim]) return ret;
 	}
 
-	for (size_t cDim = 0; cDim < m_dimension; cDim++)
+	for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
 	{
 		ret.m_pLow[cDim] = std::max(m_pLow[cDim], r.m_pLow[cDim]);
 		ret.m_pHigh[cDim] = std::min(m_pHigh[cDim], r.m_pHigh[cDim]);
@@ -420,7 +420,7 @@ double Region::getIntersectingArea(const Region& r) const
 	double ret = 1.0;
 	double f1, f2;
 
-	for (size_t cDim = 0; cDim < m_dimension; cDim++)
+	for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
 	{
 		if (m_pLow[cDim] > r.m_pHigh[cDim] || m_pHigh[cDim] < r.m_pLow[cDim]) return 0.0;
 
@@ -441,7 +441,7 @@ double Region::getMargin() const
 	double mul = std::pow(2.0, static_cast<double>(m_dimension) - 1.0);
 	double margin = 0.0;
 
-	for (size_t i = 0; i < m_dimension; i++)
+	for (uint32_t i = 0; i < m_dimension; ++i)
 	{
 		margin += (m_pHigh[i] - m_pLow[i]) * mul;
 	}
@@ -456,7 +456,7 @@ void Region::combineRegion(const Region& r)
 			"Region::combineRegion: Region has different number of dimensions."
 		);
 
-	for (size_t cDim = 0; cDim < m_dimension; cDim++)
+	for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
 	{
 		m_pLow[cDim] = std::min(m_pLow[cDim], r.m_pLow[cDim]);
 		m_pHigh[cDim] = std::max(m_pHigh[cDim], r.m_pHigh[cDim]);
@@ -470,7 +470,7 @@ void Region::combinePoint(const Point& p)
 			"Region::combinePoint: Point has different number of dimensions."
 		);
 
-	for (size_t cDim = 0; cDim < m_dimension; cDim++)
+	for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
 	{
 		m_pLow[cDim] = std::min(m_pLow[cDim], p.m_pCoords[cDim]);
 		m_pHigh[cDim] = std::max(m_pHigh[cDim], p.m_pCoords[cDim]);
@@ -488,7 +488,7 @@ void Region::getCombinedRegion(Region& out, const Region& in) const
 	out.combineRegion(in);
 }
 
-double Region::getLow(size_t index) const
+double Region::getLow(uint32_t index) const
 {
 	if (index < 0 || index >= m_dimension)
 		throw IndexOutOfBoundsException(index);
@@ -496,7 +496,7 @@ double Region::getLow(size_t index) const
 	return m_pLow[index];
 }
 
-double Region::getHigh(size_t index) const
+double Region::getHigh(uint32_t index) const
 {
 	if (index < 0 || index >= m_dimension)
 		throw IndexOutOfBoundsException(index);
@@ -504,17 +504,17 @@ double Region::getHigh(size_t index) const
 	return m_pHigh[index];
 }
 
-void Region::makeInfinite(size_t dimension)
+void Region::makeInfinite(uint32_t dimension)
 {
 	makeDimension(dimension);
-	for (size_t cIndex = 0; cIndex < m_dimension; cIndex++)
+	for (uint32_t cIndex = 0; cIndex < m_dimension; ++cIndex)
 	{
 		m_pLow[cIndex] = std::numeric_limits<double>::max();
 		m_pHigh[cIndex] = -std::numeric_limits<double>::max();
 	}
 }
 
-void Region::makeDimension(size_t dimension)
+void Region::makeDimension(uint32_t dimension)
 {
 	if (m_dimension != dimension)
 	{
@@ -533,17 +533,17 @@ void Region::makeDimension(size_t dimension)
 
 std::ostream& SpatialIndex::operator<<(std::ostream& os, const Region& r)
 {
-	size_t i;
+	uint32_t i;
 
 	os << "Low: ";
-	for (i = 0; i < r.m_dimension; i++)
+	for (i = 0; i < r.m_dimension; ++i)
 	{
 		os << r.m_pLow[i] << " ";
 	}
 
 	os << ", High: ";
 
-	for (i = 0; i < r.m_dimension; i++)
+	for (i = 0; i < r.m_dimension; ++i)
 	{
 		os << r.m_pHigh[i] << " ";
 	}

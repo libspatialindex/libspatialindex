@@ -68,7 +68,7 @@ namespace SpatialIndex
 		virtual bool containsShape(const IShape& in) const = 0;
 		virtual bool touchesShape(const IShape& in) const = 0;
 		virtual void getCenter(Point& out) const = 0;
-		virtual size_t getDimension() const = 0;
+		virtual uint32_t getDimension() const = 0;
 		virtual void getMBR(Region& out) const = 0;
 		virtual double getArea() const = 0;
 		virtual double getMinimumDistance(const IShape& in) const = 0;
@@ -110,11 +110,11 @@ namespace SpatialIndex
 	class SIDX_DLL INode : public IEntry, public Tools::ISerializable
 	{
 	public:
-		virtual size_t getChildrenCount() const = 0;
-		virtual id_type getChildIdentifier(size_t index) const = 0;
-		virtual void getChildData(size_t index, size_t& len, byte** data) const = 0;
-		virtual void getChildShape(size_t index, IShape** out) const = 0;
-		virtual size_t getLevel() const = 0;
+		virtual uint32_t getChildrenCount() const = 0;
+		virtual id_type getChildIdentifier(uint32_t index) const = 0;
+		virtual void getChildData(uint32_t index, uint32_t& len, byte** data) const = 0;
+		virtual void getChildShape(uint32_t index, IShape** out) const = 0;
+		virtual uint32_t getLevel() const = 0;
 		virtual bool isIndex() const = 0;
 		virtual bool isLeaf() const = 0;
 		virtual ~INode() {}
@@ -123,7 +123,7 @@ namespace SpatialIndex
 	class SIDX_DLL IData : public IEntry
 	{
 	public:
-		virtual void getData(size_t& len, byte** data) const = 0;
+		virtual void getData(uint32_t& len, byte** data) const = 0;
 		virtual ~IData() {}
 	}; // IData
 
@@ -152,8 +152,8 @@ namespace SpatialIndex
 	class SIDX_DLL IStorageManager
 	{
 	public:
-		virtual void loadByteArray(const id_type id, size_t& len, byte** data) = 0;
-		virtual void storeByteArray(id_type& id, const size_t len, const byte* const data) = 0;
+		virtual void loadByteArray(const id_type id, uint32_t& len, byte** data) = 0;
+		virtual void storeByteArray(id_type& id, const uint32_t len, const byte* const data) = 0;
 		virtual void deleteByteArray(const id_type id) = 0;
 		virtual ~IStorageManager() {}
 	}; // IStorageManager
@@ -177,17 +177,17 @@ namespace SpatialIndex
 	class SIDX_DLL IStatistics
 	{
 	public:
-		virtual size_t getReads() const = 0;
-		virtual size_t getWrites() const = 0;
-		virtual size_t getNumberOfNodes() const = 0;
-		virtual size_t getNumberOfData() const = 0;
+		virtual uint64_t getReads() const = 0;
+		virtual uint64_t getWrites() const = 0;
+		virtual uint32_t getNumberOfNodes() const = 0;
+		virtual uint64_t getNumberOfData() const = 0;
 		virtual ~IStatistics() {}
 	}; // IStatistics
 
 	class SIDX_DLL ISpatialIndex
 	{
 	public:
-		virtual void insertData(size_t len, const byte* pData, const IShape& shape, id_type shapeIdentifier) = 0;
+		virtual void insertData(uint32_t len, const byte* pData, const IShape& shape, id_type shapeIdentifier) = 0;
 		virtual bool deleteData(const IShape& shape, id_type shapeIdentifier) = 0;
 		virtual void containsWhatQuery(const IShape& query, IVisitor& v)  = 0;
 		virtual void intersectsWithQuery(const IShape& query, IVisitor& v) = 0;
@@ -215,7 +215,7 @@ namespace SpatialIndex
 		class SIDX_DLL IBuffer : public IStorageManager
 		{
 		public:
-			virtual size_t getHits() = 0;
+			virtual uint64_t getHits() = 0;
 			virtual void clear() = 0;
 			virtual ~IBuffer() {}
 		}; // IBuffer
@@ -224,11 +224,11 @@ namespace SpatialIndex
 		SIDX_DLL  IStorageManager* createNewMemoryStorageManager();
 
 		SIDX_DLL  IStorageManager* returnDiskStorageManager(Tools::PropertySet& in);
-		SIDX_DLL  IStorageManager* createNewDiskStorageManager(std::string& baseName, size_t pageSize);
+		SIDX_DLL  IStorageManager* createNewDiskStorageManager(std::string& baseName, uint32_t pageSize);
 		SIDX_DLL  IStorageManager* loadDiskStorageManager(std::string& baseName);
 
 		SIDX_DLL  IBuffer* returnRandomEvictionsBuffer(IStorageManager& ind, Tools::PropertySet& in);
-		SIDX_DLL  IBuffer* createNewRandomEvictionsBuffer(IStorageManager& in, size_t capacity, bool bWriteThrough);
+		SIDX_DLL  IBuffer* createNewRandomEvictionsBuffer(IStorageManager& in, uint32_t capacity, bool bWriteThrough);
 	}
 
 	//

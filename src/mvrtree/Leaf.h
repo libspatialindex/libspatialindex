@@ -33,11 +33,11 @@ namespace SpatialIndex
 		private:
 			Leaf(MVRTree* pTree, id_type id);
 
-			virtual NodePtr chooseSubtree(const TimeRegion& mbr, size_t level, std::stack<id_type>& pathBuffer);
+			virtual NodePtr chooseSubtree(const TimeRegion& mbr, uint32_t level, std::stack<id_type>& pathBuffer);
 			virtual NodePtr findLeaf(const TimeRegion& mbr, id_type id, std::stack<id_type>& pathBuffer);
 
 			virtual void split(
-				size_t dataLength, byte* pData, TimeRegion& mbr, id_type id, NodePtr& left, NodePtr& right,
+				uint32_t dataLength, byte* pData, TimeRegion& mbr, id_type id, NodePtr& left, NodePtr& right,
 				TimeRegion& mbr2, id_type id2, bool bInsertMbr2 = false);
 
 			friend class MVRTree;

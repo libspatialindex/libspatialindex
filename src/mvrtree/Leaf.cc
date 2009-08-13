@@ -35,7 +35,7 @@ Leaf::Leaf(SpatialIndex::MVRTree::MVRTree* pTree, id_type id): Node(pTree, id, 0
 {
 }
 
-NodePtr Leaf::chooseSubtree(const TimeRegion& mbr, size_t level, std::stack<id_type>& pathBuffer)
+NodePtr Leaf::chooseSubtree(const TimeRegion& mbr, uint32_t level, std::stack<id_type>& pathBuffer)
 {
 	// should make sure to relinquish other PoolPointer lists that might be pointing to the
 	// same leaf.
@@ -44,7 +44,7 @@ NodePtr Leaf::chooseSubtree(const TimeRegion& mbr, size_t level, std::stack<id_t
 
 NodePtr Leaf::findLeaf(const TimeRegion& mbr, id_type id, std::stack<id_type>& pathBuffer)
 {
-	for (size_t cChild = 0; cChild < m_children; cChild++)
+	for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 	{
 		// should make sure to relinquish other PoolPointer lists that might be pointing to the
 		// same leaf.
@@ -56,12 +56,12 @@ NodePtr Leaf::findLeaf(const TimeRegion& mbr, id_type id, std::stack<id_type>& p
 }
 
 void Leaf::split(
-	size_t dataLength, byte* pData, TimeRegion& mbr, id_type id, NodePtr& pLeft, NodePtr& pRight,
+	uint32_t dataLength, byte* pData, TimeRegion& mbr, id_type id, NodePtr& pLeft, NodePtr& pRight,
 	TimeRegion& mbr2, id_type id2, bool bInsertMbr2)
 {
-	m_pTree->m_stats.m_splits++;
+	++(m_pTree->m_stats.m_u64Splits);
 
-	std::vector<size_t> g1, g2;
+	std::vector<uint32_t> g1, g2;
 
 	switch (m_pTree->m_treeVariant)
 	{
@@ -85,16 +85,16 @@ void Leaf::split(
 	pLeft->m_nodeMBR = m_pTree->m_infiniteRegion;
 	pRight->m_nodeMBR = m_pTree->m_infiniteRegion;
 
-	size_t cIndex;
+	uint32_t cIndex;
 
-	for (cIndex = 0; cIndex < g1.size(); cIndex++)
+	for (cIndex = 0; cIndex < g1.size(); ++cIndex)
 	{
 		pLeft->insertEntry(m_pDataLength[g1[cIndex]], m_pData[g1[cIndex]], *(m_ptrMBR[g1[cIndex]]), m_pIdentifier[g1[cIndex]]);
 		// we don't want to delete the data array from this node's destructor!
 		m_pData[g1[cIndex]] = 0;
 	}
 
-	for (cIndex = 0; cIndex < g2.size(); cIndex++)
+	for (cIndex = 0; cIndex < g2.size(); ++cIndex)
 	{
 		pRight->insertEntry(m_pDataLength[g2[cIndex]], m_pData[g2[cIndex]], *(m_ptrMBR[g2[cIndex]]), m_pIdentifier[g2[cIndex]]);
 		// we don't want to delete the data array from this node's destructor!

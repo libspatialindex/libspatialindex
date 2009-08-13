@@ -29,7 +29,7 @@
 
 using namespace SpatialIndex::TPRTree;
 
-SpatialIndex::TPRTree::Data::Data(size_t len, byte* pData, MovingRegion& r, id_type id)
+SpatialIndex::TPRTree::Data::Data(uint32_t len, byte* pData, MovingRegion& r, id_type id)
 	: m_id(id), m_region(r), m_pData(0), m_dataLength(len)
 {
 	if (m_dataLength > 0)
@@ -59,7 +59,7 @@ void SpatialIndex::TPRTree::Data::getShape(IShape** out) const
 	*out = new MovingRegion(m_region);
 }
 
-void SpatialIndex::TPRTree::Data::getData(size_t& len, byte** data) const
+void SpatialIndex::TPRTree::Data::getData(uint32_t& len, byte** data) const
 {
 	len = m_dataLength;
 	*data = 0;
@@ -71,11 +71,11 @@ void SpatialIndex::TPRTree::Data::getData(size_t& len, byte** data) const
 	}
 }
 
-size_t SpatialIndex::TPRTree::Data::getByteArraySize()
+uint32_t SpatialIndex::TPRTree::Data::getByteArraySize()
 {
 	return
 		sizeof(id_type) +
-		sizeof(size_t) +
+		sizeof(uint32_t) +
 		m_dataLength +
 		m_region.getByteArraySize();
 }
@@ -88,8 +88,8 @@ void SpatialIndex::TPRTree::Data::loadFromByteArray(const byte* ptr)
 	delete[] m_pData;
 	m_pData = 0;
 
-	memcpy(&m_dataLength, ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(&m_dataLength, ptr, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 
 	if (m_dataLength > 0)
 	{
@@ -101,22 +101,22 @@ void SpatialIndex::TPRTree::Data::loadFromByteArray(const byte* ptr)
 	m_region.loadFromByteArray(ptr);
 }
 
-void SpatialIndex::TPRTree::Data::storeToByteArray(byte** data, size_t& len)
+void SpatialIndex::TPRTree::Data::storeToByteArray(byte** data, uint32_t& len)
 {
 	// it is thread safe this way.
-	size_t regionsize;
+	uint32_t regionsize;
 	byte* regiondata = 0;
 	m_region.storeToByteArray(&regiondata, regionsize);
 
-	len = sizeof(id_type) + sizeof(size_t) + m_dataLength + regionsize;
+	len = sizeof(id_type) + sizeof(uint32_t) + m_dataLength + regionsize;
 
 	*data = new byte[len];
 	byte* ptr = *data;
 
 	memcpy(ptr, &m_id, sizeof(id_type));
 	ptr += sizeof(id_type);
-	memcpy(ptr, &m_dataLength, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(ptr, &m_dataLength, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 
 	if (m_dataLength > 0)
 	{
@@ -138,9 +138,9 @@ SpatialIndex::ISpatialIndex* SpatialIndex::TPRTree::returnTPRTree(SpatialIndex::
 SpatialIndex::ISpatialIndex* SpatialIndex::TPRTree::createNewTPRTree(
 	SpatialIndex::IStorageManager& sm,
 	double fillFactor,
-	size_t indexCapacity,
-	size_t leafCapacity,
-	size_t dimension,
+	uint32_t indexCapacity,
+	uint32_t leafCapacity,
+	uint32_t dimension,
 	TPRTreeVariant rv,
 	double horizon,
 	id_type& indexIdentifier)
@@ -251,7 +251,7 @@ SpatialIndex::TPRTree::TPRTree::~TPRTree()
 // ISpatialIndex interface
 //
 
-void SpatialIndex::TPRTree::TPRTree::insertData(size_t len, const byte* pData, const IShape& shape, id_type id)
+void SpatialIndex::TPRTree::TPRTree::insertData(uint32_t len, const byte* pData, const IShape& shape, id_type id)
 {
 	if (shape.getDimension() != m_dimension) throw Tools::IllegalArgumentException("insertData: Shape has the wrong number of dimensions.");
 	const IEvolvingShape* es = dynamic_cast<const IEvolvingShape*>(&shape);
@@ -537,8 +537,8 @@ bool SpatialIndex::TPRTree::TPRTree::isIndexValid()
 		return false;
 	}
 
-	std::map<size_t, size_t> nodesInLevel;
-	nodesInLevel.insert(std::pair<size_t, size_t>(root->m_level, 1));
+	std::map<uint32_t, uint32_t> nodesInLevel;
+	nodesInLevel.insert(std::pair<uint32_t, uint32_t>(root->m_level, 1));
 
 	ValidateEntry e(root->m_nodeMBR, root);
 	st.push(e);
@@ -555,14 +555,14 @@ bool SpatialIndex::TPRTree::TPRTree::isIndexValid()
 		// a split).
 		tmpRegion.m_startTime = e.m_parentMBR.m_startTime;
 
-		for (size_t cDim = 0; cDim < tmpRegion.m_dimension; cDim++)
+		for (uint32_t cDim = 0; cDim < tmpRegion.m_dimension; ++cDim)
 		{
 			tmpRegion.m_pLow[cDim] = std::numeric_limits<double>::max();
 			tmpRegion.m_pHigh[cDim] = -std::numeric_limits<double>::max();
 			tmpRegion.m_pVLow[cDim] = std::numeric_limits<double>::max();
 			tmpRegion.m_pVHigh[cDim] = -std::numeric_limits<double>::max();
 
-			for (size_t cChild = 0; cChild < e.m_pNode->m_children; cChild++)
+			for (uint32_t cChild = 0; cChild < e.m_pNode->m_children; ++cChild)
 			{
 				tmpRegion.m_pLow[cDim] = std::min(tmpRegion.m_pLow[cDim], e.m_pNode->m_ptrMBR[cChild]->getExtrapolatedLow(cDim, tmpRegion.m_startTime));
 				tmpRegion.m_pHigh[cDim] = std::max(tmpRegion.m_pHigh[cDim], e.m_pNode->m_ptrMBR[cChild]->getExtrapolatedHigh(cDim, tmpRegion.m_startTime));
@@ -586,16 +586,16 @@ bool SpatialIndex::TPRTree::TPRTree::isIndexValid()
 
 		if (e.m_pNode->m_level != 0)
 		{
-			for (size_t cChild = 0; cChild < e.m_pNode->m_children; cChild++)
+			for (uint32_t cChild = 0; cChild < e.m_pNode->m_children; ++cChild)
 			{
 				NodePtr ptrN = readNode(e.m_pNode->m_pIdentifier[cChild]);
 				ValidateEntry tmpEntry(*(e.m_pNode->m_ptrMBR[cChild]), ptrN);
 
-				std::map<size_t, size_t>::iterator itNodes = nodesInLevel.find(tmpEntry.m_pNode->m_level);
+				std::map<uint32_t, uint32_t>::iterator itNodes = nodesInLevel.find(tmpEntry.m_pNode->m_level);
 
 				if (itNodes == nodesInLevel.end())
 				{
-					nodesInLevel.insert(std::pair<size_t, size_t>(tmpEntry.m_pNode->m_level, 1l));
+					nodesInLevel.insert(std::pair<uint32_t, uint32_t>(tmpEntry.m_pNode->m_level, 1l));
 				}
 				else
 				{
@@ -607,8 +607,8 @@ bool SpatialIndex::TPRTree::TPRTree::isIndexValid()
 		}
 	}
 
-	size_t nodes = 0;
-	for (size_t cLevel = 0; cLevel < m_stats.m_treeHeight; cLevel++)
+	uint32_t nodes = 0;
+	for (uint32_t cLevel = 0; cLevel < m_stats.m_treeHeight; ++cLevel)
 	{
 		if (nodesInLevel[cLevel] != m_stats.m_nodesInLevel[cLevel])
 		{
@@ -928,23 +928,23 @@ void SpatialIndex::TPRTree::TPRTree::initOld(Tools::PropertySet& ps)
 
 void SpatialIndex::TPRTree::TPRTree::storeHeader()
 {
-	const size_t headerSize =
+	const uint32_t headerSize =
 		sizeof(id_type) +						// m_rootID
 		sizeof(TPRTreeVariant) +				// m_treeVariant
 		sizeof(double) +						// m_fillFactor
-		sizeof(size_t) +						// m_indexCapacity
-		sizeof(size_t) +						// m_leafCapacity
-		sizeof(size_t) +						// m_nearMinimumOverlapFactor
+		sizeof(uint32_t) +						// m_indexCapacity
+		sizeof(uint32_t) +						// m_leafCapacity
+		sizeof(uint32_t) +						// m_nearMinimumOverlapFactor
 		sizeof(double) +						// m_splitDistributionFactor
 		sizeof(double) +						// m_reinsertFactor
-		sizeof(size_t) +						// m_dimension
+		sizeof(uint32_t) +						// m_dimension
 		sizeof(char) +							// m_bTightMBRs
-		sizeof(size_t) +						// m_stats.m_nodes
-		sizeof(size_t) +						// m_stats.m_data
+		sizeof(uint32_t) +						// m_stats.m_nodes
+		sizeof(uint64_t) +						// m_stats.m_data
 		sizeof(double) +						// m_currentTime
 		sizeof(double) +						// m_horizon
-		sizeof(size_t) +						// m_stats.m_treeHeight
-		m_stats.m_treeHeight * sizeof(size_t);	// m_stats.m_nodesInLevel
+		sizeof(uint32_t) +						// m_stats.m_treeHeight
+		m_stats.m_treeHeight * sizeof(uint32_t);// m_stats.m_nodesInLevel
 
 	byte* header = new byte[headerSize];
 	byte* ptr = header;
@@ -955,36 +955,36 @@ void SpatialIndex::TPRTree::TPRTree::storeHeader()
 	ptr += sizeof(TPRTreeVariant);
 	memcpy(ptr, &m_fillFactor, sizeof(double));
 	ptr += sizeof(double);
-	memcpy(ptr, &m_indexCapacity, sizeof(size_t));
-	ptr += sizeof(size_t);
-	memcpy(ptr, &m_leafCapacity, sizeof(size_t));
-	ptr += sizeof(size_t);
-	memcpy(ptr, &m_nearMinimumOverlapFactor, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(ptr, &m_indexCapacity, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
+	memcpy(ptr, &m_leafCapacity, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
+	memcpy(ptr, &m_nearMinimumOverlapFactor, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 	memcpy(ptr, &m_splitDistributionFactor, sizeof(double));
 	ptr += sizeof(double);
 	memcpy(ptr, &m_reinsertFactor, sizeof(double));
 	ptr += sizeof(double);
-	memcpy(ptr, &m_dimension, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(ptr, &m_dimension, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 	char c = (char) m_bTightMBRs;
 	memcpy(ptr, &c, sizeof(char));
 	ptr += sizeof(char);
-	memcpy(ptr, &(m_stats.m_nodes), sizeof(size_t));
-	ptr += sizeof(size_t);
-	memcpy(ptr, &(m_stats.m_data), sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(ptr, &(m_stats.m_nodes), sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
+	memcpy(ptr, &(m_stats.m_data), sizeof(uint64_t));
+	ptr += sizeof(uint64_t);
 	memcpy(ptr, &m_currentTime, sizeof(double));
 	ptr += sizeof(double);
 	memcpy(ptr, &m_horizon, sizeof(double));
 	ptr += sizeof(double);
-	memcpy(ptr, &(m_stats.m_treeHeight), sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(ptr, &(m_stats.m_treeHeight), sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 
-	for (size_t cLevel = 0; cLevel < m_stats.m_treeHeight; cLevel++)
+	for (uint32_t cLevel = 0; cLevel < m_stats.m_treeHeight; ++cLevel)
 	{
-		memcpy(ptr, &(m_stats.m_nodesInLevel[cLevel]), sizeof(size_t));
-		ptr += sizeof(size_t);
+		memcpy(ptr, &(m_stats.m_nodesInLevel[cLevel]), sizeof(uint32_t));
+		ptr += sizeof(uint32_t);
 	}
 
 	m_pStorageManager->storeByteArray(m_headerID, headerSize, header);
@@ -994,7 +994,7 @@ void SpatialIndex::TPRTree::TPRTree::storeHeader()
 
 void SpatialIndex::TPRTree::TPRTree::loadHeader()
 {
-	size_t headerSize;
+	uint32_t headerSize;
 	byte* header = 0;
 	m_pStorageManager->loadByteArray(m_headerID, headerSize, &header);
 
@@ -1006,45 +1006,45 @@ void SpatialIndex::TPRTree::TPRTree::loadHeader()
 	ptr += sizeof(TPRTreeVariant);
 	memcpy(&m_fillFactor, ptr, sizeof(double));
 	ptr += sizeof(double);
-	memcpy(&m_indexCapacity, ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
-	memcpy(&m_leafCapacity, ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
-	memcpy(&m_nearMinimumOverlapFactor, ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(&m_indexCapacity, ptr, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
+	memcpy(&m_leafCapacity, ptr, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
+	memcpy(&m_nearMinimumOverlapFactor, ptr, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 	memcpy(&m_splitDistributionFactor, ptr, sizeof(double));
 	ptr += sizeof(double);
 	memcpy(&m_reinsertFactor, ptr, sizeof(double));
 	ptr += sizeof(double);
-	memcpy(&m_dimension, ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(&m_dimension, ptr, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 	char c;
 	memcpy(&c, ptr, sizeof(char));
 	m_bTightMBRs = (c != 0);
 	ptr += sizeof(char);
-	memcpy(&(m_stats.m_nodes), ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
-	memcpy(&(m_stats.m_data), ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(&(m_stats.m_nodes), ptr, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
+	memcpy(&(m_stats.m_data), ptr, sizeof(uint64_t));
+	ptr += sizeof(uint64_t);
 	memcpy(&m_currentTime, ptr, sizeof(double));
 	ptr += sizeof(double);
 	memcpy(&m_horizon, ptr, sizeof(double));
 	ptr += sizeof(double);
-	memcpy(&(m_stats.m_treeHeight), ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(&(m_stats.m_treeHeight), ptr, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 
-	for (size_t cLevel = 0; cLevel < m_stats.m_treeHeight; cLevel++)
+	for (uint32_t cLevel = 0; cLevel < m_stats.m_treeHeight; ++cLevel)
 	{
-		size_t cNodes;
-		memcpy(&cNodes, ptr, sizeof(size_t));
-		ptr += sizeof(size_t);
+		uint32_t cNodes;
+		memcpy(&cNodes, ptr, sizeof(uint32_t));
+		ptr += sizeof(uint32_t);
 		m_stats.m_nodesInLevel.push_back(cNodes);
 	}
 
 	delete[] header;
 }
 
-void SpatialIndex::TPRTree::TPRTree::insertData_impl(size_t dataLength, byte* pData, MovingRegion& mr, id_type id)
+void SpatialIndex::TPRTree::TPRTree::insertData_impl(uint32_t dataLength, byte* pData, MovingRegion& mr, id_type id)
 {
 	assert(mr.getDimension() == m_dimension);
 	assert(m_currentTime <= mr.m_startTime);
@@ -1068,7 +1068,7 @@ void SpatialIndex::TPRTree::TPRTree::insertData_impl(size_t dataLength, byte* pD
 		l->insertData(dataLength, pData, mr, id, pathBuffer, overflowTable);
 
 		delete[] overflowTable;
-		m_stats.m_data++;
+		++(m_stats.m_data);
 	}
 	catch (...)
 	{
@@ -1077,7 +1077,7 @@ void SpatialIndex::TPRTree::TPRTree::insertData_impl(size_t dataLength, byte* pD
 	}
 }
 
-void SpatialIndex::TPRTree::TPRTree::insertData_impl(size_t dataLength, byte* pData, MovingRegion& mr, id_type id, size_t level, byte* overflowTable)
+void SpatialIndex::TPRTree::TPRTree::insertData_impl(uint32_t dataLength, byte* pData, MovingRegion& mr, id_type id, uint32_t level, byte* overflowTable)
 {
 	assert(mr.getDimension() == m_dimension);
 
@@ -1113,7 +1113,7 @@ bool SpatialIndex::TPRTree::TPRTree::deleteData_impl(const MovingRegion& mr, id_
 	{
 		Leaf* pL = static_cast<Leaf*>(l.get());
 		pL->deleteData(id, pathBuffer);
-		m_stats.m_data--;
+		--(m_stats.m_data);
 		return true;
 	}
 
@@ -1123,7 +1123,7 @@ bool SpatialIndex::TPRTree::TPRTree::deleteData_impl(const MovingRegion& mr, id_
 id_type SpatialIndex::TPRTree::TPRTree::writeNode(Node* n)
 {
 	byte* buffer;
-	size_t dataLength;
+	uint32_t dataLength;
 	n->storeToByteArray(&buffer, dataLength);
 
 	id_type page;
@@ -1146,7 +1146,7 @@ id_type SpatialIndex::TPRTree::TPRTree::writeNode(Node* n)
 	if (n->m_identifier < 0)
 	{
 		n->m_identifier = page;
-		m_stats.m_nodes++;
+		++(m_stats.m_nodes);
 
 #ifndef NDEBUG
 		try
@@ -1162,9 +1162,9 @@ id_type SpatialIndex::TPRTree::TPRTree::writeNode(Node* n)
 #endif
 	}
 
-	m_stats.m_writes++;
+	++(m_stats.m_writes);
 
-	for (size_t cIndex = 0; cIndex < m_writeNodeCommands.size(); cIndex++)
+	for (size_t cIndex = 0; cIndex < m_writeNodeCommands.size(); ++cIndex)
 	{
 		m_writeNodeCommands[cIndex]->execute(*n);
 	}
@@ -1174,7 +1174,7 @@ id_type SpatialIndex::TPRTree::TPRTree::writeNode(Node* n)
 
 SpatialIndex::TPRTree::NodePtr SpatialIndex::TPRTree::TPRTree::readNode(id_type id)
 {
-	size_t dataLength;
+	uint32_t dataLength;
 	byte* buffer;
 
 	try
@@ -1190,8 +1190,8 @@ SpatialIndex::TPRTree::NodePtr SpatialIndex::TPRTree::TPRTree::readNode(id_type 
 
 	try
 	{
-		size_t nodeType;
-		memcpy(&nodeType, buffer, sizeof(size_t));
+		uint32_t nodeType;
+		memcpy(&nodeType, buffer, sizeof(uint32_t));
 
 		NodePtr n;
 
@@ -1209,9 +1209,9 @@ SpatialIndex::TPRTree::NodePtr SpatialIndex::TPRTree::TPRTree::readNode(id_type 
 		n->m_identifier = id;
 		n->loadFromByteArray(buffer);
 
-		m_stats.m_reads++;
+		++(m_stats.m_reads);
 
-		for (size_t cIndex = 0; cIndex < m_readNodeCommands.size(); cIndex++)
+		for (size_t cIndex = 0; cIndex < m_readNodeCommands.size(); ++cIndex)
 		{
 			m_readNodeCommands[cIndex]->execute(*n);
 		}
@@ -1239,10 +1239,10 @@ void SpatialIndex::TPRTree::TPRTree::deleteNode(Node* n)
 		throw Tools::IllegalStateException("deleteNode: failed with Tools::InvalidPageException");
 	}
 
-	m_stats.m_nodes--;
+	--(m_stats.m_nodes);
 	m_stats.m_nodesInLevel[n->m_level] = m_stats.m_nodesInLevel[n->m_level] - 1;
 
-	for (size_t cIndex = 0; cIndex < m_deleteNodeCommands.size(); cIndex++)
+	for (size_t cIndex = 0; cIndex < m_deleteNodeCommands.size(); ++cIndex)
 	{
 		m_deleteNodeCommands[cIndex]->execute(*n);
 	}
@@ -1277,7 +1277,7 @@ void SpatialIndex::TPRTree::TPRTree::rangeQuery(RangeQueryType type, const IShap
 			{
 				v.visitNode(*n);
 
-				for (size_t cChild = 0; cChild < n->m_children; cChild++)
+				for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
 				{
 					bool b;
 					if (type == ContainmentQuery) b = mr->containsRegionInTime(*(n->m_ptrMBR[cChild]));
@@ -1287,7 +1287,7 @@ void SpatialIndex::TPRTree::TPRTree::rangeQuery(RangeQueryType type, const IShap
 					{
 						Data data = Data(n->m_pDataLength[cChild], n->m_pData[cChild], *(n->m_ptrMBR[cChild]), n->m_pIdentifier[cChild]);
 						v.visitData(data);
-						m_stats.m_queryResults++;
+						++(m_stats.m_queryResults);
 					}
 				}
 			}
@@ -1295,7 +1295,7 @@ void SpatialIndex::TPRTree::TPRTree::rangeQuery(RangeQueryType type, const IShap
 			{
 				v.visitNode(*n);
 
-				for (size_t cChild = 0; cChild < n->m_children; cChild++)
+				for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
 				{
 					if (mr->intersectsRegionInTime(*(n->m_ptrMBR[cChild]))) st.push(readNode(n->m_pIdentifier[cChild]));
 				}

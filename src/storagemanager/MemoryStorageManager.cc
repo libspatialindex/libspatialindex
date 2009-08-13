@@ -46,10 +46,10 @@ MemoryStorageManager::MemoryStorageManager(Tools::PropertySet& ps)
 
 MemoryStorageManager::~MemoryStorageManager()
 {
-	for (std::vector<Entry*>::iterator it = m_buffer.begin(); it != m_buffer.end(); it++) delete *it;
+	for (std::vector<Entry*>::iterator it = m_buffer.begin(); it != m_buffer.end(); ++it) delete *it;
 }
 
-void MemoryStorageManager::loadByteArray(const id_type page, size_t& len, byte** data)
+void MemoryStorageManager::loadByteArray(const id_type page, uint32_t& len, byte** data)
 {
 	Entry* e;
 	try
@@ -68,7 +68,7 @@ void MemoryStorageManager::loadByteArray(const id_type page, size_t& len, byte**
 	memcpy(*data, e->m_pData, len);
 }
 
-void MemoryStorageManager::storeByteArray(id_type& page, const size_t len, const byte* const data)
+void MemoryStorageManager::storeByteArray(id_type& page, const uint32_t len, const byte* const data)
 {
 	if (page == NewPage)
 	{

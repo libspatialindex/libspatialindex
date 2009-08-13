@@ -1,7 +1,7 @@
 #! /bin/bash
 
 echo Generating dataset
-../Generator 1000 100 > mix
+../Generator 10000 100 > mix
 
 echo Creating new R-Tree and Querying
 ../RTreeLoad mix tree 20 intersection > res

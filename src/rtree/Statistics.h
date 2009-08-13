@@ -41,43 +41,43 @@ namespace SpatialIndex
 			//
 			// IStatistics interface
 			//
-			virtual size_t getReads() const;
-			virtual size_t getWrites() const;
-			virtual size_t getNumberOfNodes() const;
-			virtual size_t getNumberOfData() const;
+			virtual uint64_t getReads() const;
+			virtual uint64_t getWrites() const;
+			virtual uint32_t getNumberOfNodes() const;
+			virtual uint64_t getNumberOfData() const;
 
-			virtual size_t getSplits() const;
-			virtual size_t getHits() const;
-			virtual size_t getMisses() const;
-			virtual size_t getAdjustments() const;
-			virtual size_t getQueryResults() const;
-			virtual size_t getTreeHeight() const;
-			virtual size_t getNumberOfNodesInLevel(size_t l) const;
+			virtual uint64_t getSplits() const;
+			virtual uint64_t getHits() const;
+			virtual uint64_t getMisses() const;
+			virtual uint64_t getAdjustments() const;
+			virtual uint64_t getQueryResults() const;
+			virtual uint32_t getTreeHeight() const;
+			virtual uint32_t getNumberOfNodesInLevel(uint32_t l) const;
 
 		private:
 			void reset();
 
-			size_t m_reads;
+			uint64_t m_u64Reads;
 
-			size_t m_writes;
+			uint64_t m_u64Writes;
 
-			size_t m_splits;
+			uint64_t m_u64Splits;
 
-			size_t m_hits;
+			uint64_t m_u64Hits;
 
-			size_t m_misses;
+			uint64_t m_u64Misses;
 
-			size_t m_nodes;
+			uint32_t m_u32Nodes;
 
-			size_t m_adjustments;
+			uint64_t m_u64Adjustments;
 
-			size_t m_queryResults;
+			uint64_t m_u64QueryResults;
 
-			size_t m_data;
+			uint64_t m_u64Data;
 
-			size_t m_treeHeight;
+			uint32_t m_u32TreeHeight;
 
-			std::vector<size_t> m_nodesInLevel;
+			std::vector<uint32_t> m_nodesInLevel;
 
 			friend class RTree;
 			friend class Node;

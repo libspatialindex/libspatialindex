@@ -27,7 +27,7 @@ Buffer::Buffer(IStorageManager& sm, Tools::PropertySet& ps) :
 	m_capacity(10),
 	m_bWriteThrough(false),
 	m_pStorageManager(&sm),
-	m_hits(0)
+	m_u64Hits(0)
 {
 	Tools::Variant var = ps.getProperty("Capacity");
 	if (var.m_varType != Tools::VT_EMPTY)
@@ -46,7 +46,7 @@ Buffer::Buffer(IStorageManager& sm, Tools::PropertySet& ps) :
 
 Buffer::~Buffer()
 {
-	for (std::map<id_type, Entry*>::iterator it = m_buffer.begin(); it != m_buffer.end(); it++)
+	for (std::map<id_type, Entry*>::iterator it = m_buffer.begin(); it != m_buffer.end(); ++it)
 	{
 		if ((*it).second->m_bDirty)
 		{
@@ -57,13 +57,13 @@ Buffer::~Buffer()
 	}
 }
 
-void Buffer::loadByteArray(const id_type page, size_t& len, byte** data)
+void Buffer::loadByteArray(const id_type page, uint32_t& len, byte** data)
 {
 	std::map<id_type, Entry*>::iterator it = m_buffer.find(page);
 
 	if (it != m_buffer.end())
 	{
-		++m_hits;
+		++m_u64Hits;
 		len = (*it).second->m_length;
 		*data = new byte[len];
 		memcpy(*data, (*it).second->m_pData, len);
@@ -75,7 +75,7 @@ void Buffer::loadByteArray(const id_type page, size_t& len, byte** data)
 	}
 }
 
-void Buffer::storeByteArray(id_type& page, const size_t len, const byte* const data)
+void Buffer::storeByteArray(id_type& page, const uint32_t len, const byte* const data)
 {
 	if (page == NewPage)
 	{
@@ -98,7 +98,7 @@ void Buffer::storeByteArray(id_type& page, const size_t len, const byte* const d
 		{
 			delete (*it).second;
 			(*it).second = e;
-			if (m_bWriteThrough == false) ++m_hits;
+			if (m_bWriteThrough == false) ++m_u64Hits;
 		}
 		else
 		{
@@ -133,10 +133,10 @@ void Buffer::clear()
 	}
 
 	m_buffer.clear();
-	m_hits = 0;
+	m_u64Hits = 0;
 }
 
-size_t Buffer::getHits()
+uint64_t Buffer::getHits()
 {
-	return m_hits;
+	return m_u64Hits;
 }

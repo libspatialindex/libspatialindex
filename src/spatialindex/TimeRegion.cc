@@ -30,12 +30,12 @@ TimeRegion::TimeRegion()
 {
 }
 
-TimeRegion::TimeRegion(const double* pLow, const double* pHigh, const IInterval& ti, size_t dimension)
+TimeRegion::TimeRegion(const double* pLow, const double* pHigh, const IInterval& ti, uint32_t dimension)
 	: Region(pLow, pHigh, dimension), m_startTime(ti.getLowerBound()), m_endTime(ti.getUpperBound())
 {
 }
 
-TimeRegion::TimeRegion(const double* pLow, const double* pHigh, double tStart, double tEnd, size_t dimension)
+TimeRegion::TimeRegion(const double* pLow, const double* pHigh, double tStart, double tEnd, uint32_t dimension)
 	: Region(pLow, pHigh, dimension), m_startTime(tStart), m_endTime(tEnd)
 {
 }
@@ -113,7 +113,7 @@ bool TimeRegion::operator==(const TimeRegion& r) const
 		m_endTime > r.m_endTime + std::numeric_limits<double>::epsilon())
 		return false;
 
-	for (size_t i = 0; i < m_dimension; i++)
+	for (uint32_t i = 0; i < m_dimension; ++i)
 	{
 		if (
 			m_pLow[i] < r.m_pLow[i] - std::numeric_limits<double>::epsilon() ||
@@ -199,17 +199,17 @@ TimeRegion* TimeRegion::clone()
 //
 // ISerializable interface
 //
-size_t TimeRegion::getByteArraySize()
+uint32_t TimeRegion::getByteArraySize()
 {
-	return (sizeof(size_t) + 2 * sizeof(double) + 2 * m_dimension * sizeof(double));
+	return (sizeof(uint32_t) + 2 * sizeof(double) + 2 * m_dimension * sizeof(double));
 }
 
 void TimeRegion::loadFromByteArray(const byte* ptr)
 {
-	size_t dimension;
+	uint32_t dimension;
 
-	memcpy(&dimension, ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(&dimension, ptr, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 	memcpy(&m_startTime, ptr, sizeof(double));
 	ptr += sizeof(double);
 	memcpy(&m_endTime, ptr, sizeof(double));
@@ -222,14 +222,14 @@ void TimeRegion::loadFromByteArray(const byte* ptr)
 	//ptr += m_dimension * sizeof(double);
 }
 
-void TimeRegion::storeToByteArray(byte** data, size_t& len)
+void TimeRegion::storeToByteArray(byte** data, uint32_t& len)
 {
 	len = getByteArraySize();
 	*data = new byte[len];
 	byte* ptr = *data;
 
-	memcpy(ptr, &m_dimension, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(ptr, &m_dimension, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 	memcpy(ptr, &m_startTime, sizeof(double));
 	ptr += sizeof(double);
 	memcpy(ptr, &m_endTime, sizeof(double));
@@ -367,10 +367,10 @@ Tools::IntervalType TimeRegion::getIntervalType() const
 	return Tools::IT_RIGHTOPEN;
 }
 
-void TimeRegion::makeInfinite(size_t dimension)
+void TimeRegion::makeInfinite(uint32_t dimension)
 {
 	makeDimension(dimension);
-	for (size_t cIndex = 0; cIndex < m_dimension; cIndex++)
+	for (uint32_t cIndex = 0; cIndex < m_dimension; ++cIndex)
 	{
 		m_pLow[cIndex] = std::numeric_limits<double>::max();
 		m_pHigh[cIndex] = -std::numeric_limits<double>::max();
@@ -380,7 +380,7 @@ void TimeRegion::makeInfinite(size_t dimension)
 	m_endTime = -std::numeric_limits<double>::max();
 }
 
-void TimeRegion::makeDimension(size_t dimension)
+void TimeRegion::makeDimension(uint32_t dimension)
 {
 	if (m_dimension != dimension)
 	{
@@ -397,17 +397,17 @@ void TimeRegion::makeDimension(size_t dimension)
 
 std::ostream& SpatialIndex::operator<<(std::ostream& os, const TimeRegion& r)
 {
-	size_t i;
+	uint32_t i;
 
 	os << "Low: ";
-	for (i = 0; i < r.m_dimension; i++)
+	for (i = 0; i < r.m_dimension; ++i)
 	{
 		os << r.m_pLow[i] << " ";
 	}
 
 	os << ", High: ";
 
-	for (i = 0; i < r.m_dimension; i++)
+	for (i = 0; i < r.m_dimension; ++i)
 	{
 		os << r.m_pHigh[i] << " ";
 	}

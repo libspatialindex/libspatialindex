@@ -1,7 +1,7 @@
 #! /bin/bash
 
 echo Generating dataset
-../Generator 1000 100 > d
+../Generator 10000 100 > d
 awk '{if ($1 != 2) print $0}' < d > data
 awk '{if ($1 == 2) print $0}' < d > queries
 rm -rf d

@@ -30,7 +30,7 @@ Point::Point()
 {
 }
 
-Point::Point(const double* pCoords, size_t dimension)
+Point::Point(const double* pCoords, uint32_t dimension)
 	: m_dimension(dimension)
 {
 	// no need to initialize m_pCoords to 0 since if a bad_alloc is raised the destructor will not be called.
@@ -71,7 +71,7 @@ bool Point::operator==(const Point& p) const
 			"Point::operator==: Points have different number of dimensions."
 		);
 
-	for (size_t i = 0; i < m_dimension; i++)
+	for (uint32_t i = 0; i < m_dimension; ++i)
 	{
 		if (
 			m_pCoords[i] < p.m_pCoords[i] - std::numeric_limits<double>::epsilon() ||
@@ -92,30 +92,30 @@ Point* Point::clone()
 //
 // ISerializable interface
 //
-size_t Point::getByteArraySize()
+uint32_t Point::getByteArraySize()
 {
-	return (sizeof(size_t) + m_dimension * sizeof(double));
+	return (sizeof(uint32_t) + m_dimension * sizeof(double));
 }
 
 void Point::loadFromByteArray(const byte* ptr)
 {
-	size_t dimension;
-	memcpy(&dimension, ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
+	uint32_t dimension;
+	memcpy(&dimension, ptr, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 
 	makeDimension(dimension);
 	memcpy(m_pCoords, ptr, m_dimension * sizeof(double));
 	//ptr += m_dimension * sizeof(double);
 }
 
-void Point::storeToByteArray(byte** data, size_t& len)
+void Point::storeToByteArray(byte** data, uint32_t& len)
 {
 	len = getByteArraySize();
 	*data = new byte[len];
 	byte* ptr = *data;
 
-	memcpy(ptr, &m_dimension, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(ptr, &m_dimension, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 	memcpy(ptr, m_pCoords, m_dimension * sizeof(double));
 	//ptr += m_dimension * sizeof(double);
 }
@@ -166,7 +166,7 @@ void Point::getCenter(Point& out) const
 	out = *this;
 }
 
-size_t Point::getDimension() const
+uint32_t Point::getDimension() const
 {
 	return m_dimension;
 }
@@ -209,7 +209,7 @@ double Point::getMinimumDistance(const Point& p) const
 
 	double ret = 0.0;
 
-	for (size_t cDim = 0; cDim < m_dimension; cDim++)
+	for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
 	{
 		ret += std::pow(m_pCoords[cDim] - p.m_pCoords[cDim], 2.0);
 	}
@@ -217,7 +217,7 @@ double Point::getMinimumDistance(const Point& p) const
 	return std::sqrt(ret);
 }
 
-double Point::getCoordinate(size_t index) const
+double Point::getCoordinate(uint32_t index) const
 {
 	if (index < 0 || index >= m_dimension)
 		throw IndexOutOfBoundsException(index);
@@ -225,16 +225,16 @@ double Point::getCoordinate(size_t index) const
 	return m_pCoords[index];
 }
 
-void Point::makeInfinite(size_t dimension)
+void Point::makeInfinite(uint32_t dimension)
 {
 	makeDimension(dimension);
-	for (size_t cIndex = 0; cIndex < m_dimension; cIndex++)
+	for (uint32_t cIndex = 0; cIndex < m_dimension; ++cIndex)
 	{
 		m_pCoords[cIndex] = std::numeric_limits<double>::max();
 	}
 }
 
-void Point::makeDimension(size_t dimension)
+void Point::makeDimension(uint32_t dimension)
 {
 	if (m_dimension != dimension)
 	{
@@ -251,7 +251,7 @@ void Point::makeDimension(size_t dimension)
 
 std::ostream& SpatialIndex::operator<<(std::ostream& os, const Point& pt)
 {
-	for (size_t cDim = 0; cDim < pt.m_dimension; cDim++)
+	for (uint32_t cDim = 0; cDim < pt.m_dimension; ++cDim)
 	{
 		os << pt.m_pCoords[cDim] << " ";
 	}

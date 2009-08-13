@@ -31,18 +31,18 @@ Statistics::Statistics()
 
 Statistics::Statistics(const Statistics& s)
 {
-	m_reads  = s.m_reads;
-	m_writes = s.m_writes;
-	m_splits = s.m_splits;
-	m_hits   = s.m_hits;
-	m_misses = s.m_misses;
-	m_nodes  = s.m_nodes;
-	m_deadIndexNodes = s.m_deadIndexNodes;
-	m_deadLeafNodes = s.m_deadLeafNodes;
-	m_adjustments = s.m_adjustments;
-	m_queryResults = s.m_queryResults;
-	m_data = s.m_data;
-	m_totalData = s.m_totalData;
+	m_u64Reads  = s.m_u64Reads;
+	m_u64Writes = s.m_u64Writes;
+	m_u64Splits = s.m_u64Splits;
+	m_u64Hits   = s.m_u64Hits;
+	m_u64Misses = s.m_u64Misses;
+	m_u32Nodes  = s.m_u32Nodes;
+	m_u32DeadIndexNodes = s.m_u32DeadIndexNodes;
+	m_u32DeadLeafNodes = s.m_u32DeadLeafNodes;
+	m_u64Adjustments = s.m_u64Adjustments;
+	m_u64QueryResults = s.m_u64QueryResults;
+	m_u64Data = s.m_u64Data;
+	m_u64TotalData = s.m_u64TotalData;
 	m_treeHeight = s.m_treeHeight;
 	m_nodesInLevel = s.m_nodesInLevel;
 }
@@ -55,18 +55,18 @@ Statistics& Statistics::operator=(const Statistics& s)
 {
 	if (this != &s)
 	{
-		m_reads  = s.m_reads;
-		m_writes = s.m_writes;
-		m_splits = s.m_splits;
-		m_hits   = s.m_hits;
-		m_misses = s.m_misses;
-		m_nodes  = s.m_nodes;
-		m_deadIndexNodes = s.m_deadIndexNodes;
-		m_deadLeafNodes = s.m_deadLeafNodes;
-		m_adjustments = s.m_adjustments;
-		m_queryResults = s.m_queryResults;
-		m_data = s.m_data;
-		m_totalData = s.m_totalData;
+		m_u64Reads  = s.m_u64Reads;
+		m_u64Writes = s.m_u64Writes;
+		m_u64Splits = s.m_u64Splits;
+		m_u64Hits   = s.m_u64Hits;
+		m_u64Misses = s.m_u64Misses;
+		m_u32Nodes  = s.m_u32Nodes;
+		m_u32DeadIndexNodes = s.m_u32DeadIndexNodes;
+		m_u32DeadLeafNodes = s.m_u32DeadLeafNodes;
+		m_u64Adjustments = s.m_u64Adjustments;
+		m_u64QueryResults = s.m_u64QueryResults;
+		m_u64Data = s.m_u64Data;
+		m_u64TotalData = s.m_u64TotalData;
 		m_treeHeight = s.m_treeHeight;
 		m_nodesInLevel = s.m_nodesInLevel;
 	}
@@ -74,56 +74,56 @@ Statistics& Statistics::operator=(const Statistics& s)
 	return *this;
 }
 
-size_t Statistics::getReads() const
+uint64_t Statistics::getReads() const
 {
-	return m_reads;
+	return m_u64Reads;
 }
 
-size_t Statistics::getWrites() const
+uint64_t Statistics::getWrites() const
 {
-	return m_writes;
+	return m_u64Writes;
 }
 
-size_t Statistics::getNumberOfNodes() const
+uint32_t Statistics::getNumberOfNodes() const
 {
-	return m_nodes;
+	return m_u32Nodes;
 }
 
-size_t Statistics::getNumberOfData() const
+uint64_t Statistics::getNumberOfData() const
 {
-	return m_data;
+	return m_u64Data;
 }
 
-size_t Statistics::getSplits() const
+uint64_t Statistics::getSplits() const
 {
-	return m_splits;
+	return m_u64Splits;
 }
 
-size_t Statistics::getHits() const
+uint64_t Statistics::getHits() const
 {
-	return m_hits;
+	return m_u64Hits;
 }
 
-size_t Statistics::getMisses() const
+uint64_t Statistics::getMisses() const
 {
-	return m_misses;
+	return m_u64Misses;
 }
 
-size_t Statistics::getAdjustments() const
+uint64_t Statistics::getAdjustments() const
 {
-	return m_adjustments;
+	return m_u64Adjustments;
 }
 
-size_t Statistics::getQueryResults() const
+uint64_t Statistics::getQueryResults() const
 {
-	return m_queryResults;
+	return m_u64QueryResults;
 }
 
-size_t Statistics::getTreeHeight() const
+uint32_t Statistics::getTreeHeight() const
 {
-	size_t ret = 0;
+	uint32_t ret = 0;
 
-	for (size_t cIndex = 0; cIndex < m_treeHeight.size(); cIndex++)
+	for (size_t cIndex = 0; cIndex < m_treeHeight.size(); ++cIndex)
 	{
 		ret = std::max(ret, m_treeHeight[cIndex]);
 	}
@@ -131,7 +131,7 @@ size_t Statistics::getTreeHeight() const
 	return ret;
 }
 
-size_t Statistics::getNumberOfNodesInLevel(size_t l) const
+uint32_t Statistics::getNumberOfNodesInLevel(uint32_t l) const
 {
 	try
 	{
@@ -145,47 +145,47 @@ size_t Statistics::getNumberOfNodesInLevel(size_t l) const
 
 void Statistics::reset()
 {
-	m_reads = 0;
-	m_writes = 0;
-	m_splits = 0;
-	m_hits = 0;
-	m_misses = 0;
-	m_nodes = 0;
-	m_deadIndexNodes = 0;
-	m_deadLeafNodes = 0;
-	m_adjustments = 0;
-	m_queryResults = 0;
-	m_data = 0;
-	m_totalData = 0;
+	m_u64Reads = 0;
+	m_u64Writes = 0;
+	m_u64Splits = 0;
+	m_u64Hits = 0;
+	m_u64Misses = 0;
+	m_u32Nodes = 0;
+	m_u32DeadIndexNodes = 0;
+	m_u32DeadLeafNodes = 0;
+	m_u64Adjustments = 0;
+	m_u64QueryResults = 0;
+	m_u64Data = 0;
+	m_u64TotalData = 0;
 	m_treeHeight.clear();
 	m_nodesInLevel.clear();
 }
 
 std::ostream& SpatialIndex::MVRTree::operator<<(std::ostream& os, const Statistics& s)
 {
-	os	<< "Reads: " << s.m_reads << std::endl
-		<< "Writes: " << s.m_writes << std::endl
-		<< "Hits: " << s.m_hits << std::endl
-		<< "Misses: " << s.m_misses << std::endl
-		<< "Number of live data: " << s.m_data << std::endl
-		<< "Total number of data: " << s.m_totalData << std::endl
-		<< "Number of nodes: " << s.m_nodes << std::endl
-		<< "Numer of dead index nodes: " << s.m_deadIndexNodes << std::endl
-		<< "Numer of dead leaf nodes: " << s.m_deadLeafNodes << std::endl;
+	os	<< "Reads: " << s.m_u64Reads << std::endl
+		<< "Writes: " << s.m_u64Writes << std::endl
+		<< "Hits: " << s.m_u64Hits << std::endl
+		<< "Misses: " << s.m_u64Misses << std::endl
+		<< "Number of live data: " << s.m_u64Data << std::endl
+		<< "Total number of data: " << s.m_u64TotalData << std::endl
+		<< "Number of nodes: " << s.m_u32Nodes << std::endl
+		<< "Numer of dead index nodes: " << s.m_u32DeadIndexNodes << std::endl
+		<< "Numer of dead leaf nodes: " << s.m_u32DeadLeafNodes << std::endl;
 
-	for (size_t cTree = 0; cTree < s.m_treeHeight.size(); cTree++)
+	for (size_t cTree = 0; cTree < s.m_treeHeight.size(); ++cTree)
 	{
 		os << "Tree " << cTree << ", Height " << s.m_treeHeight[cTree] << std::endl;
 	}
 
-	for (size_t cLevel = 0; cLevel < s.m_nodesInLevel.size(); cLevel++)
+	for (size_t cLevel = 0; cLevel < s.m_nodesInLevel.size(); ++cLevel)
 	{
 		os << "Level " << cLevel << " pages: " << s.m_nodesInLevel[cLevel] << std::endl;
 	}
 
-	os	<< "Splits: " << s.m_splits << std::endl
-		<< "Adjustments: " << s.m_adjustments << std::endl
-		<< "Query results: " << s.m_queryResults << std::endl;
+	os	<< "Splits: " << s.m_u64Splits << std::endl
+		<< "Adjustments: " << s.m_u64Adjustments << std::endl
+		<< "Query results: " << s.m_u64QueryResults << std::endl;
 
 	return os;
 }

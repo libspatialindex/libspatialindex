@@ -29,7 +29,7 @@
 
 using namespace SpatialIndex::MVRTree;
 
-SpatialIndex::MVRTree::Data::Data(size_t len, byte* pData, TimeRegion& r, id_type id)
+SpatialIndex::MVRTree::Data::Data(uint32_t len, byte* pData, TimeRegion& r, id_type id)
 	: m_id(id), m_region(r), m_pData(0), m_dataLength(len)
 {
 	if (m_dataLength > 0)
@@ -59,7 +59,7 @@ void SpatialIndex::MVRTree::Data::getShape(IShape** out) const
 	*out = new TimeRegion(m_region);
 }
 
-void SpatialIndex::MVRTree::Data::getData(size_t& len, byte** data) const
+void SpatialIndex::MVRTree::Data::getData(uint32_t& len, byte** data) const
 {
 	len = m_dataLength;
 	*data = 0;
@@ -71,11 +71,11 @@ void SpatialIndex::MVRTree::Data::getData(size_t& len, byte** data) const
 	}
 }
 
-size_t SpatialIndex::MVRTree::Data::getByteArraySize()
+uint32_t SpatialIndex::MVRTree::Data::getByteArraySize()
 {
 	return
 		sizeof(id_type) +
-		sizeof(size_t) +
+		sizeof(uint32_t) +
 		m_dataLength +
 		m_region.getByteArraySize();
 }
@@ -88,8 +88,8 @@ void SpatialIndex::MVRTree::Data::loadFromByteArray(const byte* ptr)
 	delete[] m_pData;
 	m_pData = 0;
 
-	memcpy(&m_dataLength, ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(&m_dataLength, ptr, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 
 	if (m_dataLength > 0)
 	{
@@ -101,22 +101,22 @@ void SpatialIndex::MVRTree::Data::loadFromByteArray(const byte* ptr)
 	m_region.loadFromByteArray(ptr);
 }
 
-void SpatialIndex::MVRTree::Data::storeToByteArray(byte** data, size_t& len)
+void SpatialIndex::MVRTree::Data::storeToByteArray(byte** data, uint32_t& len)
 {
 	// it is thread safe this way.
-	size_t regionsize;
+	uint32_t regionsize;
 	byte* regiondata = 0;
 	m_region.storeToByteArray(&regiondata, regionsize);
 
-	len = sizeof(id_type) + sizeof(size_t) + m_dataLength + regionsize;
+	len = sizeof(id_type) + sizeof(uint32_t) + m_dataLength + regionsize;
 
 	*data = new byte[len];
 	byte* ptr = *data;
 
 	memcpy(ptr, &m_id, sizeof(id_type));
 	ptr += sizeof(id_type);
-	memcpy(ptr, &m_dataLength, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(ptr, &m_dataLength, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 
 	if (m_dataLength > 0)
 	{
@@ -136,8 +136,13 @@ SpatialIndex::ISpatialIndex* SpatialIndex::MVRTree::returnMVRTree(SpatialIndex::
 }
 
 SpatialIndex::ISpatialIndex* SpatialIndex::MVRTree::createNewMVRTree(
-	SpatialIndex::IStorageManager& sm, double fillFactor, size_t indexCapacity,
-	size_t leafCapacity, size_t dimension, MVRTreeVariant rv, id_type& indexIdentifier)
+	SpatialIndex::IStorageManager& sm,
+	double fillFactor,
+	uint32_t indexCapacity,
+	uint32_t leafCapacity,
+	uint32_t dimension,
+	MVRTreeVariant rv,
+	id_type& indexIdentifier)
 {
 	Tools::Variant var;
 	Tools::PropertySet ps;
@@ -243,7 +248,7 @@ SpatialIndex::MVRTree::MVRTree::~MVRTree()
 // ISpatialIndex interface
 //
 
-void SpatialIndex::MVRTree::MVRTree::insertData(size_t len, const byte* pData, const IShape& shape, id_type id)
+void SpatialIndex::MVRTree::MVRTree::insertData(uint32_t len, const byte* pData, const IShape& shape, id_type id)
 {
 	if (shape.getDimension() != m_dimension) throw Tools::IllegalArgumentException("insertData: Shape has the wrong number of dimensions.");
 	const Tools::IInterval* ti = dynamic_cast<const Tools::IInterval*>(&shape);
@@ -515,9 +520,9 @@ bool SpatialIndex::MVRTree::MVRTree::isIndexValid()
 	bool ret = true;
 	std::stack<ValidateEntry> st;
 	std::set<id_type> visitedEntries;
-	size_t degenerateEntries = 0;
+	uint32_t degenerateEntries = 0;
 
-	for (size_t cRoot = 0; cRoot < m_roots.size(); cRoot++)
+	for (uint32_t cRoot = 0; cRoot < m_roots.size(); ++cRoot)
 	{
 		NodePtr root = readNode(m_roots[cRoot].m_id);
 
@@ -540,15 +545,15 @@ bool SpatialIndex::MVRTree::MVRTree::isIndexValid()
 		if (itSet == visitedEntries.end())
 		{
 			visitedEntries.insert(e.m_pNode->m_identifier);
-			if (e.m_pNode->m_nodeMBR.m_startTime == e.m_pNode->m_nodeMBR.m_endTime) degenerateEntries++;
+			if (e.m_pNode->m_nodeMBR.m_startTime == e.m_pNode->m_nodeMBR.m_endTime) ++degenerateEntries;
 		}
 
 		TimeRegion tmpRegion;
 		tmpRegion = m_infiniteRegion;
 
-		for (size_t cDim = 0; cDim < tmpRegion.m_dimension; cDim++)
+		for (uint32_t cDim = 0; cDim < tmpRegion.m_dimension; ++cDim)
 		{
-			for (size_t cChild = 0; cChild < e.m_pNode->m_children; cChild++)
+			for (uint32_t cChild = 0; cChild < e.m_pNode->m_children; ++cChild)
 			{
 				tmpRegion.m_pLow[cDim] = std::min(tmpRegion.m_pLow[cDim], e.m_pNode->m_ptrMBR[cChild]->m_pLow[cDim]);
 				tmpRegion.m_pHigh[cDim] = std::max(tmpRegion.m_pHigh[cDim], e.m_pNode->m_ptrMBR[cChild]->m_pHigh[cDim]);
@@ -576,7 +581,7 @@ bool SpatialIndex::MVRTree::MVRTree::isIndexValid()
 
 		if (e.m_pNode->m_level != 0)
 		{
-			for (size_t cChild = 0; cChild < e.m_pNode->m_children; cChild++)
+			for (uint32_t cChild = 0; cChild < e.m_pNode->m_children; ++cChild)
 			{
 				NodePtr ptrN = readNode(e.m_pNode->m_pIdentifier[cChild]);
 
@@ -884,41 +889,43 @@ void SpatialIndex::MVRTree::MVRTree::initOld(Tools::PropertySet& ps)
 
 void SpatialIndex::MVRTree::MVRTree::storeHeader()
 {
-	const size_t headerSize = 
-		sizeof(size_t) +                                // size of m_roots
-		m_roots.size() *
-		(sizeof(id_type) + 2 * sizeof(double)) +        // m_roots
-		sizeof(MVRTreeVariant) +                        // m_treeVariant
-		sizeof(double)+                                 // m_fillFactor
-		sizeof(size_t) +                                // m_indexCapacity
-		sizeof(size_t) +                                // m_leafCapacity
-		sizeof(size_t) +                                // m_nearMinimumOverlapFactor
-		sizeof(double) +                                // m_splitDistributionFactor
-		sizeof(double) +                                // m_reinsertFactor
-		sizeof(size_t) +                                // m_dimension
-		sizeof(byte) +                                  // m_bTightMBRs
-		sizeof(size_t) +                                // m_stats.m_nodes
-		sizeof(size_t) +                                // m_stats.m_totalData
-		sizeof(size_t) +                                // m_stats.m_deadIndexNodes
-		sizeof(size_t) +                                // m_stats.m_deadLeafNodes
-		sizeof(size_t) +                                // m_stats.m_data
-		sizeof(size_t) +                                // size of m_stats.m_treeHeight
-		m_stats.m_treeHeight.size() * sizeof(size_t) +  // m_stats.m_treeHeight
-		sizeof(double) +                                // m_strongVersionOverflow
-		//sizeof(double) +                              // m_strongVersionUnderflow
-		sizeof(double) +                                // m_versionUnderflow
-		sizeof(double) +                                // m_currentTime
-		sizeof(size_t) +                                // m_nodesInLevel size
-		m_stats.m_nodesInLevel.size() * sizeof(size_t); // m_nodesInLevel values
+	const uint32_t headerSize = 
+		sizeof(uint32_t) +											// size of m_roots
+		static_cast<uint32_t>(m_roots.size())
+		* (sizeof(id_type) + 2 * sizeof(double)) +					// m_roots
+		sizeof(MVRTreeVariant) +									// m_treeVariant
+		sizeof(double)+												// m_fillFactor
+		sizeof(uint32_t) +											// m_indexCapacity
+		sizeof(uint32_t) +											// m_leafCapacity
+		sizeof(uint32_t) +											// m_nearMinimumOverlapFactor
+		sizeof(double) +											// m_splitDistributionFactor
+		sizeof(double) +											// m_reinsertFactor
+		sizeof(uint32_t) +											// m_dimension
+		sizeof(byte) +												// m_bTightMBRs
+		sizeof(uint32_t) +											// m_stats.m_nodes
+		sizeof(uint64_t) +											// m_stats.m_totalData
+		sizeof(uint32_t) +											// m_stats.m_deadIndexNodes
+		sizeof(uint32_t) +											// m_stats.m_deadLeafNodes
+		sizeof(uint64_t) +											// m_stats.m_data
+		sizeof(uint32_t) +											// size of m_stats.m_treeHeight
+		static_cast<uint32_t>(m_stats.m_treeHeight.size())
+		* sizeof(uint32_t) +										// m_stats.m_treeHeight
+		sizeof(double) +											// m_strongVersionOverflow
+		//sizeof(double) +											// m_strongVersionUnderflow
+		sizeof(double) +											// m_versionUnderflow
+		sizeof(double) +											// m_currentTime
+		sizeof(uint32_t) +											// m_nodesInLevel size
+		static_cast<uint32_t>(m_stats.m_nodesInLevel.size())
+		* sizeof(uint32_t);											// m_nodesInLevel values
 
 	byte* header = new byte[headerSize];
 	byte* ptr = header;
 
-	size_t ul = m_roots.size();
-	memcpy(ptr, &ul, sizeof(size_t));
-	ptr += sizeof(size_t);
+	uint32_t u32I = static_cast<uint32_t>(m_roots.size());
+	memcpy(ptr, &u32I, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 
-	for (size_t cIndex = 0; cIndex < m_roots.size(); cIndex++)
+	for (size_t cIndex = 0; cIndex < m_roots.size(); ++cIndex)
 	{
 		RootEntry& e = m_roots[cIndex];
 		memcpy(ptr, &(e.m_id), sizeof(id_type));
@@ -933,41 +940,41 @@ void SpatialIndex::MVRTree::MVRTree::storeHeader()
 	ptr += sizeof(MVRTreeVariant);
 	memcpy(ptr, &m_fillFactor, sizeof(double));
 	ptr += sizeof(double);
-	memcpy(ptr, &m_indexCapacity, sizeof(size_t));
-	ptr += sizeof(size_t);
-	memcpy(ptr, &m_leafCapacity, sizeof(size_t));
-	ptr += sizeof(size_t);
-	memcpy(ptr, &m_nearMinimumOverlapFactor, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(ptr, &m_indexCapacity, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
+	memcpy(ptr, &m_leafCapacity, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
+	memcpy(ptr, &m_nearMinimumOverlapFactor, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 	memcpy(ptr, &m_splitDistributionFactor, sizeof(double));
 	ptr += sizeof(double);
 	memcpy(ptr, &m_reinsertFactor, sizeof(double));
 	ptr += sizeof(double);
-	memcpy(ptr, &m_dimension, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(ptr, &m_dimension, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 	byte c = (byte) m_bTightMBRs;
 	memcpy(ptr, &c, sizeof(byte));
 	ptr += sizeof(byte);
-	memcpy(ptr, &(m_stats.m_nodes), sizeof(size_t));
-	ptr += sizeof(size_t);
-	memcpy(ptr, &(m_stats.m_totalData), sizeof(size_t));
-	ptr += sizeof(size_t);
-	memcpy(ptr, &(m_stats.m_deadIndexNodes), sizeof(size_t));
-	ptr += sizeof(size_t);
-	memcpy(ptr, &(m_stats.m_deadLeafNodes), sizeof(size_t));
-	ptr += sizeof(size_t);
-	memcpy(ptr, &(m_stats.m_data), sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(ptr, &(m_stats.m_u32Nodes), sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
+	memcpy(ptr, &(m_stats.m_u64TotalData), sizeof(uint64_t));
+	ptr += sizeof(uint64_t);
+	memcpy(ptr, &(m_stats.m_u32DeadIndexNodes), sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
+	memcpy(ptr, &(m_stats.m_u32DeadLeafNodes), sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
+	memcpy(ptr, &(m_stats.m_u64Data), sizeof(uint64_t));
+	ptr += sizeof(uint64_t);
 
-	ul = m_stats.m_treeHeight.size();
-	memcpy(ptr, &ul, sizeof(size_t));
-	ptr += sizeof(size_t);
+	u32I = static_cast<uint32_t>(m_stats.m_treeHeight.size());
+	memcpy(ptr, &u32I, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 
-	for (size_t cIndex = 0; cIndex < m_stats.m_treeHeight.size(); cIndex++)
+	for (size_t cIndex = 0; cIndex < m_stats.m_treeHeight.size(); ++cIndex)
 	{
-		ul = m_stats.m_treeHeight[cIndex];
-		memcpy(ptr, &ul, sizeof(size_t));
-		ptr += sizeof(size_t);
+		u32I = m_stats.m_treeHeight[cIndex];
+		memcpy(ptr, &u32I, sizeof(uint32_t));
+		ptr += sizeof(uint32_t);
 	}
 
 	memcpy(ptr, &m_strongVersionOverflow, sizeof(double));
@@ -979,15 +986,15 @@ void SpatialIndex::MVRTree::MVRTree::storeHeader()
 	memcpy(ptr, &m_currentTime, sizeof(double));
 	ptr += sizeof(double);
 
-	ul = m_stats.m_nodesInLevel.size();
-	memcpy(ptr, &ul, sizeof(size_t));
-	ptr += sizeof(size_t);
+	u32I = static_cast<uint32_t>(m_stats.m_nodesInLevel.size());
+	memcpy(ptr, &u32I, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 
-	for (size_t cLevel = 0; cLevel < m_stats.m_nodesInLevel.size(); cLevel++)
+	for (size_t cLevel = 0; cLevel < m_stats.m_nodesInLevel.size(); ++cLevel)
 	{
-		ul = m_stats.m_nodesInLevel[cLevel];
-		memcpy(ptr, &ul, sizeof(size_t));
-		ptr += sizeof(size_t);
+		u32I = m_stats.m_nodesInLevel[cLevel];
+		memcpy(ptr, &u32I, sizeof(uint32_t));
+		ptr += sizeof(uint32_t);
 	}
 
 	m_pStorageManager->storeByteArray(m_headerID, headerSize, header);
@@ -997,17 +1004,17 @@ void SpatialIndex::MVRTree::MVRTree::storeHeader()
 
 void SpatialIndex::MVRTree::MVRTree::loadHeader()
 {
-	size_t headerSize;
+	uint32_t headerSize;
 	byte* header = 0;
 	m_pStorageManager->loadByteArray(m_headerID, headerSize, &header);
 
 	byte* ptr = header;
 
-	size_t rootsSize;
-	memcpy(&rootsSize, ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
+	uint32_t rootsSize;
+	memcpy(&rootsSize, ptr, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 
-	for (size_t cIndex = 0; cIndex < rootsSize; cIndex++)
+	for (uint32_t cIndex = 0; cIndex < rootsSize; ++cIndex)
 	{
 		RootEntry e;
 		memcpy(&(e.m_id), ptr, sizeof(id_type));
@@ -1023,43 +1030,43 @@ void SpatialIndex::MVRTree::MVRTree::loadHeader()
 	ptr += sizeof(MVRTreeVariant);
 	memcpy(&m_fillFactor, ptr, sizeof(double));
 	ptr += sizeof(double);
-	memcpy(&m_indexCapacity, ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
-	memcpy(&m_leafCapacity, ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
-	memcpy(&m_nearMinimumOverlapFactor, ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(&m_indexCapacity, ptr, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
+	memcpy(&m_leafCapacity, ptr, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
+	memcpy(&m_nearMinimumOverlapFactor, ptr, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 	memcpy(&m_splitDistributionFactor, ptr, sizeof(double));
 	ptr += sizeof(double);
 	memcpy(&m_reinsertFactor, ptr, sizeof(double));
 	ptr += sizeof(double);
-	memcpy(&m_dimension, ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(&m_dimension, ptr, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 	byte c;
 	memcpy(&c, ptr, sizeof(byte));
 	m_bTightMBRs = (c != 0);
 	ptr += sizeof(byte);
-	memcpy(&(m_stats.m_nodes), ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
-	memcpy(&(m_stats.m_totalData), ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
-	memcpy(&(m_stats.m_deadIndexNodes), ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
-	memcpy(&(m_stats.m_deadLeafNodes), ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
-	memcpy(&(m_stats.m_data), ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(&(m_stats.m_u32Nodes), ptr, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
+	memcpy(&(m_stats.m_u64TotalData), ptr, sizeof(uint64_t));
+	ptr += sizeof(uint64_t);
+	memcpy(&(m_stats.m_u32DeadIndexNodes), ptr, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
+	memcpy(&(m_stats.m_u32DeadLeafNodes), ptr, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
+	memcpy(&(m_stats.m_u64Data), ptr, sizeof(uint64_t));
+	ptr += sizeof(uint64_t);
 
-	size_t treeHeightSize;
-	memcpy(&treeHeightSize, ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
+	uint32_t treeHeightSize;
+	memcpy(&treeHeightSize, ptr, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 
-	for (size_t cIndex = 0; cIndex < treeHeightSize; cIndex++)
+	for (uint32_t cIndex = 0; cIndex < treeHeightSize; ++cIndex)
 	{
-		size_t ul;
-		memcpy(&ul, ptr, sizeof(size_t));
-		m_stats.m_treeHeight.push_back(ul);
-		ptr += sizeof(size_t);
+		uint32_t u32I;
+		memcpy(&u32I, ptr, sizeof(uint32_t));
+		m_stats.m_treeHeight.push_back(u32I);
+		ptr += sizeof(uint32_t);
 	}
 
 	memcpy(&m_strongVersionOverflow, ptr, sizeof(double));
@@ -1071,22 +1078,22 @@ void SpatialIndex::MVRTree::MVRTree::loadHeader()
 	memcpy(&m_currentTime, ptr, sizeof(double));
 	ptr += sizeof(double);
 
-	size_t nodesInLevelSize;
-	memcpy(&nodesInLevelSize, ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
+	uint32_t nodesInLevelSize;
+	memcpy(&nodesInLevelSize, ptr, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 
-	for (size_t cLevel = 0; cLevel < nodesInLevelSize; cLevel++)
+	for (uint32_t cLevel = 0; cLevel < nodesInLevelSize; ++cLevel)
 	{
-		size_t ul;
-		memcpy(&ul, ptr, sizeof(size_t));
-		ptr += sizeof(size_t);
-		m_stats.m_nodesInLevel.push_back(ul);
+		uint32_t u32I;
+		memcpy(&u32I, ptr, sizeof(uint32_t));
+		ptr += sizeof(uint32_t);
+		m_stats.m_nodesInLevel.push_back(u32I);
 	}
 
 	delete[] header;
 }
 
-void SpatialIndex::MVRTree::MVRTree::insertData_impl(size_t dataLength, byte* pData, TimeRegion& mbr, id_type id)
+void SpatialIndex::MVRTree::MVRTree::insertData_impl(uint32_t dataLength, byte* pData, TimeRegion& mbr, id_type id)
 {
 	assert(mbr.getDimension() == m_dimension);
 	assert(m_currentTime <= mbr.m_startTime);
@@ -1104,11 +1111,11 @@ void SpatialIndex::MVRTree::MVRTree::insertData_impl(size_t dataLength, byte* pD
 	}
 	l->insertData(dataLength, pData, mbr, id, pathBuffer, m_infiniteRegion, -1, false);
 
-	m_stats.m_data++;
-	m_stats.m_totalData++;
+	++(m_stats.m_u64Data);
+	++(m_stats.m_u64TotalData);
 }
 
-void SpatialIndex::MVRTree::MVRTree::insertData_impl(size_t dataLength, byte* pData, TimeRegion& mbr, id_type id, size_t level)
+void SpatialIndex::MVRTree::MVRTree::insertData_impl(uint32_t dataLength, byte* pData, TimeRegion& mbr, id_type id, uint32_t level)
 {
 	assert(mbr.getDimension() == m_dimension);
 
@@ -1146,7 +1153,7 @@ bool SpatialIndex::MVRTree::MVRTree::deleteData_impl(const TimeRegion& mbr, id_t
 	if (l.get() != 0)
 	{
 		l->deleteData(id, mbr.m_endTime, pathBuffer);
-		m_stats.m_data--;
+		--(m_stats.m_u64Data);
 		return true;
 	}
 
@@ -1156,7 +1163,7 @@ bool SpatialIndex::MVRTree::MVRTree::deleteData_impl(const TimeRegion& mbr, id_t
 SpatialIndex::id_type SpatialIndex::MVRTree::MVRTree::writeNode(Node* n)
 {
 	byte* buffer;
-	size_t dataLength;
+	uint32_t dataLength;
 	n->storeToByteArray(&buffer, dataLength);
 
 	id_type page;
@@ -1179,12 +1186,12 @@ SpatialIndex::id_type SpatialIndex::MVRTree::MVRTree::writeNode(Node* n)
 	if (n->m_identifier < 0)
 	{
 		n->m_identifier = page;
-		m_stats.m_nodes++;
+		++(m_stats.m_u32Nodes);
 	}
 
-	m_stats.m_writes++;
+	++(m_stats.m_u64Writes);
 
-	for (size_t cIndex = 0; cIndex < m_writeNodeCommands.size(); cIndex++)
+	for (size_t cIndex = 0; cIndex < m_writeNodeCommands.size(); ++cIndex)
 	{
 		m_writeNodeCommands[cIndex]->execute(*n);
 	}
@@ -1194,7 +1201,7 @@ SpatialIndex::id_type SpatialIndex::MVRTree::MVRTree::writeNode(Node* n)
 
 SpatialIndex::MVRTree::NodePtr SpatialIndex::MVRTree::MVRTree::readNode(id_type id)
 {
-	size_t dataLength;
+	uint32_t dataLength;
 	byte* buffer;
 
 	try
@@ -1210,8 +1217,8 @@ SpatialIndex::MVRTree::NodePtr SpatialIndex::MVRTree::MVRTree::readNode(id_type 
 
 	try
 	{
-		size_t nodeType;
-		memcpy(&nodeType, buffer, sizeof(size_t));
+		uint32_t nodeType;
+		memcpy(&nodeType, buffer, sizeof(uint32_t));
 
 		NodePtr n;
 
@@ -1229,9 +1236,9 @@ SpatialIndex::MVRTree::NodePtr SpatialIndex::MVRTree::MVRTree::readNode(id_type 
 		n->m_identifier = id;
 		n->loadFromByteArray(buffer);
 
-		m_stats.m_reads++;
+		++(m_stats.m_u64Reads);
 
-		for (size_t cIndex = 0; cIndex < m_readNodeCommands.size(); cIndex++)
+		for (size_t cIndex = 0; cIndex < m_readNodeCommands.size(); ++cIndex)
 		{
 			m_readNodeCommands[cIndex]->execute(*n);
 		}
@@ -1259,11 +1266,9 @@ void SpatialIndex::MVRTree::MVRTree::deleteNode(Node* n)
 		throw Tools::IllegalStateException("deleteNode: failed with Tools::InvalidPageException");
 	}
 
-	m_stats.m_nodes--;
-	//size_t ul = m_stats.m_nodesInLevel.size() - 1;
-	//m_stats.m_nodesInLevel[ul][n->m_level] = m_stats.m_nodesInLevel[ul][n->m_level] - 1;
+	--(m_stats.m_u32Nodes);
 
-	for (size_t cIndex = 0; cIndex < m_deleteNodeCommands.size(); cIndex++)
+	for (size_t cIndex = 0; cIndex < m_deleteNodeCommands.size(); ++cIndex)
 	{
 		m_deleteNodeCommands[cIndex]->execute(*n);
 	}
@@ -1292,7 +1297,7 @@ void SpatialIndex::MVRTree::MVRTree::rangeQuery(RangeQueryType type, const IShap
 		std::vector<id_type> ids;
 		findRootIdentifiers(*ti, ids);
 
-		for (size_t cRoot = 0; cRoot < ids.size(); cRoot++)
+		for (size_t cRoot = 0; cRoot < ids.size(); ++cRoot)
 		{
 			NodePtr root = readNode(ids[cRoot]);
 			if (root->m_children > 0 && query.intersectsShape(root->m_nodeMBR)) st.push(root);
@@ -1307,7 +1312,7 @@ void SpatialIndex::MVRTree::MVRTree::rangeQuery(RangeQueryType type, const IShap
 			{
 				v.visitNode(*n);
 
-				for (size_t cChild = 0; cChild < n->m_children; cChild++)
+				for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
 				{
 					if (visitedData.find(n->m_pIdentifier[cChild]) != visitedData.end()) continue;
 
@@ -1320,7 +1325,7 @@ void SpatialIndex::MVRTree::MVRTree::rangeQuery(RangeQueryType type, const IShap
 						visitedData.insert(n->m_pIdentifier[cChild]);
 						Data data = Data(n->m_pDataLength[cChild], n->m_pData[cChild], *(n->m_ptrMBR[cChild]), n->m_pIdentifier[cChild]);
 						v.visitData(data);
-						m_stats.m_queryResults++;
+						++(m_stats.m_u64QueryResults);
 					}
 				}
 			}
@@ -1328,7 +1333,7 @@ void SpatialIndex::MVRTree::MVRTree::rangeQuery(RangeQueryType type, const IShap
 			{
 				v.visitNode(*n);
 
-				for (size_t cChild = 0; cChild < n->m_children; cChild++)
+				for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
 				{
 					if (	
 						visitedNodes.find(n->m_pIdentifier[cChild]) == visitedNodes.end() &&
@@ -1356,7 +1361,7 @@ void SpatialIndex::MVRTree::MVRTree::findRootIdentifiers(const Tools::IInterval&
 {
 	ids.clear();
 
-	for (size_t cRoot = 0; cRoot < m_roots.size(); cRoot++)
+	for (size_t cRoot = 0; cRoot < m_roots.size(); ++cRoot)
 	{
 		RootEntry& e = m_roots[cRoot];
 		if (ti.intersectsInterval(Tools::IT_RIGHTOPEN, e.m_startTime, e.m_endTime)) ids.push_back(e.m_id);
@@ -1367,7 +1372,7 @@ std::string SpatialIndex::MVRTree::MVRTree::printRootInfo() const
 {
 	std::ostringstream s;
 
-	for (size_t cRoot = 0; cRoot < m_roots.size(); cRoot++)
+	for (size_t cRoot = 0; cRoot < m_roots.size(); ++cRoot)
 	{
 		const RootEntry& e = m_roots[cRoot];
 

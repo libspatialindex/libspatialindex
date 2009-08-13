@@ -33,21 +33,21 @@ namespace SpatialIndex
 
 			void flush();
 
-			virtual void loadByteArray(const id_type page, size_t& len, byte** data);
-			virtual void storeByteArray(id_type& page, const size_t len, const byte* const data);
+			virtual void loadByteArray(const id_type page, uint32_t& len, byte** data);
+			virtual void storeByteArray(id_type& page, const uint32_t len, const byte* const data);
 			virtual void deleteByteArray(const id_type page);
 
 		private:
 			class Entry
 			{
 			public:
-				size_t m_length;
+				uint32_t m_length;
 				std::vector<id_type> m_pages;
 			};
 
 			std::fstream m_dataFile;
 			std::fstream m_indexFile;
-			size_t m_pageSize;
+			uint32_t m_pageSize;
 			id_type m_nextPage;
 			std::priority_queue<id_type, std::vector<id_type>, std::greater<id_type> > m_emptyPages;
 			std::map<id_type, Entry*> m_pageIndex;

@@ -37,7 +37,7 @@ MovingRegion::MovingRegion()
 MovingRegion::MovingRegion(
 	const double* pLow, const double* pHigh,
 	const double* pVLow, const double* pVHigh,
-	const IInterval& ivT, size_t dimension)
+	const IInterval& ivT, uint32_t dimension)
 {
 	initialize(pLow, pHigh, pVLow, pVHigh, ivT.getLowerBound(), ivT.getUpperBound(), dimension);
 }
@@ -45,7 +45,7 @@ MovingRegion::MovingRegion(
 MovingRegion::MovingRegion(
 	const double* pLow, const double* pHigh,
 	const double* pVLow, const double* pVHigh,
-	double tStart, double tEnd, size_t dimension)
+	double tStart, double tEnd, uint32_t dimension)
 {
 	initialize(pLow, pHigh, pVLow, pVHigh, tStart, tEnd, dimension);
 }
@@ -163,7 +163,7 @@ MovingRegion::MovingRegion(const MovingRegion& r)
 void MovingRegion::initialize(
 	const double* pLow, const double* pHigh,
 	const double* pVLow, const double* pVHigh,
-	double tStart, double tEnd, size_t dimension)
+	double tStart, double tEnd, uint32_t dimension)
 {
 	m_startTime = tStart;
 	m_endTime = tEnd;
@@ -174,7 +174,7 @@ void MovingRegion::initialize(
 	if (m_endTime <= m_startTime) throw Tools::IllegalArgumentException("MovingRegion: Cannot support degenerate time intervals.");
 
 #ifndef NDEBUG
-	for (size_t cDim = 0; cDim < m_dimension; cDim++)
+	for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
 	{
 		if (pLow[cDim] > pHigh[cDim]) throw Tools::IllegalArgumentException("MovingRegion: Low point has larger coordinates than High point.");
 	}
@@ -236,7 +236,7 @@ bool MovingRegion::operator==(const MovingRegion& r) const
 		m_endTime > r.m_endTime + std::numeric_limits<double>::epsilon())
 		return false;
 
-	for (size_t i = 0; i < m_dimension; i++)
+	for (uint32_t i = 0; i < m_dimension; ++i)
 	{
 		if (
 			m_pLow[i] < r.m_pLow[i] - std::numeric_limits<double>::epsilon() ||
@@ -254,7 +254,7 @@ bool MovingRegion::operator==(const MovingRegion& r) const
 
 bool MovingRegion::isShrinking() const
 {
-	for (size_t cDim = 0; cDim < m_dimension; cDim++)
+	for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
 	{
 		if (m_pVHigh[cDim] < m_pVLow[cDim]) return true;
 	}
@@ -262,7 +262,7 @@ bool MovingRegion::isShrinking() const
 }
 
 // assumes that the region is not moving before and after start and end time.
-double MovingRegion::getLow(size_t d, double t) const
+double MovingRegion::getLow(uint32_t d, double t) const
 {
 	if (d < 0 || d >= m_dimension) throw Tools::IndexOutOfBoundsException(d);
 
@@ -272,7 +272,7 @@ double MovingRegion::getLow(size_t d, double t) const
 }
 
 // assumes that the region is not moving before and after start and end time.
-double MovingRegion::getHigh(size_t d, double t) const
+double MovingRegion::getHigh(uint32_t d, double t) const
 {
 	if (d < 0 || d >= m_dimension) throw Tools::IndexOutOfBoundsException(d);
 
@@ -282,7 +282,7 @@ double MovingRegion::getHigh(size_t d, double t) const
 }
 
 // assuming that the region kept moving.
-double MovingRegion::getExtrapolatedLow(size_t d, double t) const
+double MovingRegion::getExtrapolatedLow(uint32_t d, double t) const
 {
 	if (d < 0 || d >= m_dimension) throw Tools::IndexOutOfBoundsException(d);
 
@@ -290,21 +290,21 @@ double MovingRegion::getExtrapolatedLow(size_t d, double t) const
 }
 
 // assuming that the region kept moving.
-double MovingRegion::getExtrapolatedHigh(size_t d, double t) const
+double MovingRegion::getExtrapolatedHigh(uint32_t d, double t) const
 {
 	if (d < 0 || d >= m_dimension) throw Tools::IndexOutOfBoundsException(d);
 
 	return m_pHigh[d] + m_pVHigh[d] * (t - m_startTime);
 }
 
-double MovingRegion::getVLow(size_t d) const
+double MovingRegion::getVLow(uint32_t d) const
 {
 	if (d < 0 || d >= m_dimension) throw Tools::IndexOutOfBoundsException(d);
 
 	return m_pVLow[d];
 }
 
-double MovingRegion::getVHigh(size_t d) const
+double MovingRegion::getVHigh(uint32_t d) const
 {
 	if (d < 0 || d >= m_dimension) throw Tools::IndexOutOfBoundsException(d);
 
@@ -369,7 +369,7 @@ bool MovingRegion::intersectsRegionInTime(const IInterval& ivPeriod, const Movin
 	// I use projected low and high because they are faster and it does not matter.
 	// The are also necessary for calculating the intersection point with reference time instant 0.0.
 
-	for (size_t cDim = 0; cDim < m_dimension; cDim++)
+	for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
 	{
 	assert(
 		tmin >= ivPeriod.getLowerBound() && tmax <= ivPeriod.getUpperBound() &&
@@ -454,7 +454,7 @@ bool MovingRegion::containsRegionInTime(const IInterval& ivPeriod, const MovingR
 		tmin >= m_startTime && tmax <= m_endTime &&
 		tmin >= r.m_startTime && tmax <= r.m_endTime);
 
-	for (size_t cDim = 0; cDim < m_dimension; cDim++)
+	for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
 	{
 		// it should be contained at start time.
 		if (r.getExtrapolatedHigh(cDim, tmin) > getExtrapolatedHigh(cDim, tmin) ||
@@ -585,7 +585,7 @@ double MovingRegion::getCenterDistanceInTime(const IInterval& ivI, const MovingR
 	double* dv = new double[m_dimension];
 	double a = 0.0, b = 0.0, c = 0.0, f = 0.0, l = 0.0, m = 0.0, n = 0.0;
 
-	for (size_t cDim = 0; cDim < m_dimension; cDim++)
+	for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
 	{
 		dx[cDim] =
 			(r.getExtrapolatedLow(cDim, tmin) + r.getExtrapolatedHigh(cDim, tmin)) / 2.0 -
@@ -595,7 +595,7 @@ double MovingRegion::getCenterDistanceInTime(const IInterval& ivI, const MovingR
 			(getVLow(cDim) + getVHigh(cDim)) / 2.0;
 	}
 
-	for (size_t cDim = 0; cDim < m_dimension; cDim++)
+	for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
 	{
 		a += dv[cDim] * dv[cDim];
 		b += 2.0 * dx[cDim] * dv[cDim];
@@ -626,7 +626,7 @@ bool MovingRegion::intersectsRegionAtTime(double t, const MovingRegion& r) const
 	if (! (m_startTime <= t && t < m_endTime && r.m_startTime <= t && t < r.m_endTime)) return false;
 
 	// do they intersect at that time instant?
-	for (size_t i = 0; i < m_dimension; i++)
+	for (uint32_t i = 0; i < m_dimension; ++i)
 	{
 		if (getExtrapolatedLow(i, t) > r.getExtrapolatedHigh(i, t) || getExtrapolatedHigh(i, t) < r.getExtrapolatedLow(i, t)) return false;
 	}
@@ -641,7 +641,7 @@ bool MovingRegion::containsRegionAtTime(double t, const MovingRegion& r) const
 	// do they contain the time instant?
 	if (! (m_startTime <= t && t < m_endTime && r.m_startTime <= t && t < r.m_endTime)) return false;
 
-	for (size_t cDim = 0; cDim < m_dimension; cDim++)
+	for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
 	{
 		if (getExtrapolatedLow(cDim, t) > r.getExtrapolatedLow(cDim, t) || getExtrapolatedHigh(cDim, t) < getExtrapolatedHigh(cDim, t)) return false;
 	}
@@ -696,7 +696,7 @@ bool MovingRegion::intersectsPointInTime(const IInterval& ivPeriod, const Moving
 	assert(tmax < std::numeric_limits<double>::max());
 	assert(tmin > -std::numeric_limits<double>::max());
 
-	for (size_t cDim = 0; cDim < m_dimension; cDim++)
+	for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
 	{
 		assert(
 			tmin >= ivPeriod.getLowerBound() && tmax <= ivPeriod.getUpperBound() &&
@@ -770,7 +770,7 @@ bool MovingRegion::containsPointInTime(const IInterval& ivPeriod, const MovingPo
 		tmin >= m_startTime && tmax <= m_endTime &&
 		tmin >= p.m_startTime && tmax <= p.m_endTime);
 
-	for (size_t cDim = 0; cDim < m_dimension; cDim++)
+	for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
 	{
 		// it should be contained at start time.
 		if (p.getProjectedCoord(cDim, tmin) > getExtrapolatedHigh(cDim, tmin) ||
@@ -800,7 +800,7 @@ void MovingRegion::combineRegionInTime(const MovingRegion& r)
 {
 	if (m_dimension != r.m_dimension) throw Tools::IllegalArgumentException("combineRegionInTime: MovingRegions have different number of dimensions.");
 
-	for (size_t cDim = 0; cDim < m_dimension; cDim++)
+	for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
 	{
 		m_pLow[cDim] = std::min(getExtrapolatedLow(cDim, m_startTime), r.getExtrapolatedLow(cDim, m_startTime));
 		m_pHigh[cDim] = std::max(getExtrapolatedHigh(cDim, m_startTime), r.getExtrapolatedHigh(cDim, m_startTime));
@@ -826,7 +826,7 @@ void MovingRegion::combineRegionAfterTime(double t, const MovingRegion& r)
 {
 	if (m_dimension != r.m_dimension) throw Tools::IllegalArgumentException("combineRegionInTime: MovingRegions have different number of dimensions.");
 
-	for (size_t cDim = 0; cDim < m_dimension; cDim++)
+	for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
 	{
 		m_pLow[cDim] = std::min(getExtrapolatedLow(cDim, t), r.getExtrapolatedLow(cDim, t));
 		m_pHigh[cDim] = std::max(getExtrapolatedHigh(cDim, t), r.getExtrapolatedHigh(cDim, t));
@@ -904,7 +904,7 @@ double MovingRegion::getIntersectingAreaInTime(const IInterval& ivI, const Movin
 	std::priority_queue<CrossPoint, std::vector<CrossPoint>, CrossPoint::ascending> pq;
 
 	// find points of intersection in all dimensions.
-	for (size_t i = 0; i < m_dimension; i++)
+	for (uint32_t i = 0; i < m_dimension; ++i)
 	{
 		if (getLow(i, tmin) > r.getLow(i, tmin))
 		{
@@ -1017,17 +1017,17 @@ MovingRegion* MovingRegion::clone()
 //
 // ISerializable interface
 //
-size_t MovingRegion::getByteArraySize()
+uint32_t MovingRegion::getByteArraySize()
 {
-	return (sizeof(size_t) + 2 * sizeof(double) + 4 * m_dimension * sizeof(double));
+	return (sizeof(uint32_t) + 2 * sizeof(double) + 4 * m_dimension * sizeof(double));
 }
 
 void MovingRegion::loadFromByteArray(const byte* ptr)
 {
-	size_t dimension;
+	uint32_t dimension;
 
-	memcpy(&dimension, ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(&dimension, ptr, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 	memcpy(&m_startTime, ptr, sizeof(double));
 	ptr += sizeof(double);
 	memcpy(&m_endTime, ptr, sizeof(double));
@@ -1044,14 +1044,14 @@ void MovingRegion::loadFromByteArray(const byte* ptr)
 	//ptr += m_dimension * sizeof(double);
 }
 
-void MovingRegion::storeToByteArray(byte** data, size_t& len)
+void MovingRegion::storeToByteArray(byte** data, uint32_t& len)
 {
 	len = getByteArraySize();
 	*data = new byte[len];
 	byte* ptr = *data;
 
-	memcpy(ptr, &m_dimension, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(ptr, &m_dimension, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 	memcpy(ptr, &m_startTime, sizeof(double));
 	ptr += sizeof(double);
 	memcpy(ptr, &m_endTime, sizeof(double));
@@ -1080,7 +1080,7 @@ void MovingRegion::getVMBR(Region& out) const
 void MovingRegion::getMBRAtTime(double t, Region& out) const
 {
 	out.makeDimension(m_dimension);
-	for (size_t cDim = 0; cDim < m_dimension; cDim++)
+	for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
 	{
 		out.m_pLow[cDim] = getLow(cDim, t);
 		out.m_pHigh[cDim] = getHigh(cDim, t);
@@ -1158,10 +1158,10 @@ double MovingRegion::getIntersectingAreaInTime(const IInterval& ivI, const ITime
 	throw Tools::IllegalStateException("getIntersectingAreaInTime: Not implemented yet!");
 }
 
-void MovingRegion::makeInfinite(size_t dimension)
+void MovingRegion::makeInfinite(uint32_t dimension)
 {
 	makeDimension(dimension);
-	for (size_t cIndex = 0; cIndex < m_dimension; cIndex++)
+	for (uint32_t cIndex = 0; cIndex < m_dimension; ++cIndex)
 	{
 		m_pLow[cIndex] = std::numeric_limits<double>::max();
 		m_pHigh[cIndex] = -std::numeric_limits<double>::max();
@@ -1173,7 +1173,7 @@ void MovingRegion::makeInfinite(size_t dimension)
 	m_endTime = std::numeric_limits<double>::max();
 }
 
-void MovingRegion::makeDimension(size_t dimension)
+void MovingRegion::makeDimension(uint32_t dimension)
 {
 	if (m_dimension != dimension)
 	{
@@ -1194,30 +1194,30 @@ void MovingRegion::makeDimension(size_t dimension)
 
 std::ostream& SpatialIndex::operator<<(std::ostream& os, const MovingRegion& r)
 {
-	size_t i;
+	uint32_t i;
 
 	os << "Low: ";
-	for (i = 0; i < r.m_dimension; i++)
+	for (i = 0; i < r.m_dimension; ++i)
 	{
 		os << r.m_pLow[i] << " ";
 	}
 
 	os << ", High: ";
 
-	for (i = 0; i < r.m_dimension; i++)
+	for (i = 0; i < r.m_dimension; ++i)
 	{
 		os << r.m_pHigh[i] << " ";
 	}
 
 	os << "VLow: ";
-	for (i = 0; i < r.m_dimension; i++)
+	for (i = 0; i < r.m_dimension; ++i)
 	{
 		os << r.m_pVLow[i] << " ";
 	}
 
 	os << ", VHigh: ";
 
-	for (i = 0; i < r.m_dimension; i++)
+	for (i = 0; i < r.m_dimension; ++i)
 	{
 		os << r.m_pVHigh[i] << " ";
 	}

@@ -35,7 +35,7 @@ IBuffer* SpatialIndex::StorageManager::returnRandomEvictionsBuffer(IStorageManag
 	return b;
 }
 
-IBuffer* SpatialIndex::StorageManager::createNewRandomEvictionsBuffer(IStorageManager& sm, size_t capacity, bool bWriteThrough)
+IBuffer* SpatialIndex::StorageManager::createNewRandomEvictionsBuffer(IStorageManager& sm, uint32_t capacity, bool bWriteThrough)
 {
 	Tools::Variant var;
 	Tools::PropertySet ps;
@@ -53,7 +53,7 @@ IBuffer* SpatialIndex::StorageManager::createNewRandomEvictionsBuffer(IStorageMa
 
 RandomEvictionsBuffer::RandomEvictionsBuffer(IStorageManager& sm, Tools::PropertySet& ps) : Buffer(sm, ps)
 {
-	srand48(time(0));
+	srand48(static_cast<uint32_t>(time(0)));
 }
 
 RandomEvictionsBuffer::~RandomEvictionsBuffer()
@@ -77,10 +77,10 @@ void RandomEvictionsBuffer::removeEntry()
 
     random = drand48();
 
-	size_t entry = static_cast<size_t>(floor(((double) m_buffer.size()) * random));
+	uint32_t entry = static_cast<uint32_t>(floor(((double) m_buffer.size()) * random));
 
 	std::map<id_type, Entry*>::iterator it = m_buffer.begin();
-	for (size_t cIndex = 0; cIndex < entry; cIndex++) ++it;
+	for (uint32_t cIndex = 0; cIndex < entry; cIndex++) ++it;
 
 	if ((*it).second->m_bDirty)
 	{

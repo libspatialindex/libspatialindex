@@ -62,7 +62,7 @@ namespace SpatialIndex
 			//
 			// ISpatialIndex interface
 			//
-			virtual void insertData(size_t len, const byte* pData, const IShape& shape, id_type id);
+			virtual void insertData(uint32_t len, const byte* pData, const IShape& shape, id_type id);
 			virtual bool deleteData(const IShape& shape, id_type id);
 			virtual void containsWhatQuery(const IShape& query, IVisitor& v);
 			virtual void intersectsWithQuery(const IShape& query, IVisitor& v);
@@ -82,8 +82,8 @@ namespace SpatialIndex
 			void storeHeader();
 			void loadHeader();
 
-			void insertData_impl(size_t dataLength, byte* pData, TimeRegion& mbr, id_type id);
-			void insertData_impl(size_t dataLength, byte* pData, TimeRegion& mbr, id_type id, size_t level);
+			void insertData_impl(uint32_t dataLength, byte* pData, TimeRegion& mbr, id_type id);
+			void insertData_impl(uint32_t dataLength, byte* pData, TimeRegion& mbr, id_type id, uint32_t level);
 			bool deleteData_impl(const TimeRegion& mbr, id_type id);
 
 			id_type writeNode(Node*);
@@ -104,11 +104,11 @@ namespace SpatialIndex
 
 			double m_fillFactor;
 
-			size_t m_indexCapacity;
+			uint32_t m_indexCapacity;
 
-			size_t m_leafCapacity;
+			uint32_t m_leafCapacity;
 
-			size_t m_nearMinimumOverlapFactor;
+			uint32_t m_nearMinimumOverlapFactor;
 				// The R*-Tree 'p' constant, for calculating nearly minimum overlap cost.
 				// [Beckmann, Kriegel, Schneider, Seeger 'The R*-tree: An efficient and Robust Access Method
 				// for Points and Rectangles, Section 4.1]
@@ -127,7 +127,7 @@ namespace SpatialIndex
 			//double m_strongVersionUnderflow;
 			double m_versionUnderflow;
 
-			size_t m_dimension;
+			uint32_t m_dimension;
 
 			TimeRegion m_infiniteRegion;
 

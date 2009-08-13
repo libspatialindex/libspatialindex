@@ -37,7 +37,7 @@ Leaf::Leaf(SpatialIndex::RTree::RTree* pTree, id_type id): Node(pTree, id, 0, pT
 {
 }
 
-NodePtr Leaf::chooseSubtree(const Region& mbr, size_t level, std::stack<id_type>& pathBuffer)
+NodePtr Leaf::chooseSubtree(const Region& mbr, uint32_t level, std::stack<id_type>& pathBuffer)
 {
 	// should make sure to relinquish other PoolPointer lists that might be pointing to the
 	// same leaf.
@@ -46,7 +46,7 @@ NodePtr Leaf::chooseSubtree(const Region& mbr, size_t level, std::stack<id_type>
 
 NodePtr Leaf::findLeaf(const Region& mbr, id_type id, std::stack<id_type>& pathBuffer)
 {
-	for (size_t cChild = 0; cChild < m_children; cChild++)
+	for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 	{
 		// should make sure to relinquish other PoolPointer lists that might be pointing to the
 		// same leaf.
@@ -56,11 +56,11 @@ NodePtr Leaf::findLeaf(const Region& mbr, id_type id, std::stack<id_type>& pathB
 	return NodePtr();
 }
 
-void Leaf::split(size_t dataLength, byte* pData, Region& mbr, id_type id, NodePtr& pLeft, NodePtr& pRight)
+void Leaf::split(uint32_t dataLength, byte* pData, Region& mbr, id_type id, NodePtr& pLeft, NodePtr& pRight)
 {
-	m_pTree->m_stats.m_splits++;
+	++(m_pTree->m_stats.m_u64Splits);
 
-	std::vector<size_t> g1, g2;
+	std::vector<uint32_t> g1, g2;
 
 	switch (m_pTree->m_treeVariant)
 	{
@@ -84,16 +84,16 @@ void Leaf::split(size_t dataLength, byte* pData, Region& mbr, id_type id, NodePt
 	pLeft->m_nodeMBR = m_pTree->m_infiniteRegion;
 	pRight->m_nodeMBR = m_pTree->m_infiniteRegion;
 
-	size_t cIndex;
+	uint32_t cIndex;
 
-	for (cIndex = 0; cIndex < g1.size(); cIndex++)
+	for (cIndex = 0; cIndex < g1.size(); ++cIndex)
 	{
 		pLeft->insertEntry(m_pDataLength[g1[cIndex]], m_pData[g1[cIndex]], *(m_ptrMBR[g1[cIndex]]), m_pIdentifier[g1[cIndex]]);
 		// we don't want to delete the data array from this node's destructor!
 		m_pData[g1[cIndex]] = 0;
 	}
 
-	for (cIndex = 0; cIndex < g2.size(); cIndex++)
+	for (cIndex = 0; cIndex < g2.size(); ++cIndex)
 	{
 		pRight->insertEntry(m_pDataLength[g2[cIndex]], m_pData[g2[cIndex]], *(m_ptrMBR[g2[cIndex]]), m_pIdentifier[g2[cIndex]]);
 		// we don't want to delete the data array from this node's destructor!
@@ -103,9 +103,9 @@ void Leaf::split(size_t dataLength, byte* pData, Region& mbr, id_type id, NodePt
 
 void Leaf::deleteData(id_type id, std::stack<id_type>& pathBuffer)
 {
-	size_t child;
+	uint32_t child;
 
-	for (child = 0; child < m_children; child++)
+	for (child = 0; child < m_children; ++child)
 	{
 		if (m_pIdentifier[child] == id) break;
 	}
@@ -124,11 +124,11 @@ void Leaf::deleteData(id_type id, std::stack<id_type>& pathBuffer)
 		NodePtr n = toReinsert.top(); toReinsert.pop();
 		m_pTree->deleteNode(n.get());
 
-		for (size_t cChild = 0; cChild < n->m_children; cChild++)
+		for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
 		{
 			// keep this in the for loop. The tree height might change after insertions.
-			byte* overflowTable = new byte[m_pTree->m_stats.m_treeHeight];
-			bzero(overflowTable, m_pTree->m_stats.m_treeHeight);
+			byte* overflowTable = new byte[m_pTree->m_stats.m_u32TreeHeight];
+			bzero(overflowTable, m_pTree->m_stats.m_u32TreeHeight);
 			m_pTree->insertData_impl(n->m_pDataLength[cChild], n->m_pData[cChild], *(n->m_ptrMBR[cChild]), n->m_pIdentifier[cChild], n->m_level, overflowTable);
 			n->m_pData[cChild] = 0;
 			delete[] overflowTable;

@@ -27,8 +27,8 @@ namespace SpatialIndex
 	{
 	public:
 		MovingPoint();
-		MovingPoint(const double* pCoords, const double* pVCoords, const Tools::IInterval& ti, size_t dimension);
-		MovingPoint(const double* pCoords, const double* pVCoords, double tStart, double tEnd, size_t dimension);
+		MovingPoint(const double* pCoords, const double* pVCoords, const Tools::IInterval& ti, uint32_t dimension);
+		MovingPoint(const double* pCoords, const double* pVCoords, double tStart, double tEnd, uint32_t dimension);
 		MovingPoint(const Point& p, const Point& vp, const Tools::IInterval& ti);
 		MovingPoint(const Point& p, const Point& vp, double tStart, double tEnd);
 		MovingPoint(const MovingPoint& p);
@@ -37,9 +37,9 @@ namespace SpatialIndex
 		virtual MovingPoint& operator=(const MovingPoint& p);
 		virtual bool operator==(const MovingPoint& p) const;
 
-		virtual double getCoord(size_t index, double t) const;
-		virtual double getProjectedCoord(size_t index, double t) const;
-		virtual double getVCoord(size_t index) const;
+		virtual double getCoord(uint32_t index, double t) const;
+		virtual double getProjectedCoord(uint32_t index, double t) const;
+		virtual double getVCoord(uint32_t index) const;
 		virtual void getPointAtTime(double t, Point& out) const;
 
 		//
@@ -50,9 +50,9 @@ namespace SpatialIndex
 		//
 		// ISerializable interface
 		//
-		virtual size_t getByteArraySize();
+		virtual uint32_t getByteArraySize();
 		virtual void loadFromByteArray(const byte* data);
-		virtual void storeToByteArray(byte** data, size_t& len);
+		virtual void storeToByteArray(byte** data, uint32_t& len);
 
 		//
 		// IEvolvingShape interface
@@ -60,13 +60,13 @@ namespace SpatialIndex
 		virtual void getVMBR(Region& out) const;
 		virtual void getMBRAtTime(double t, Region& out) const;
 
-		virtual void makeInfinite(size_t dimension);
-		virtual void makeDimension(size_t dimension);
+		virtual void makeInfinite(uint32_t dimension);
+		virtual void makeDimension(uint32_t dimension);
 
 	private:
 		void initialize(
 			const double* pCoords, const double* pVCoords,
-			double tStart, double tEnd, size_t dimension);
+			double tStart, double tEnd, uint32_t dimension);
 
 	public:
 		double* m_pVCoords;

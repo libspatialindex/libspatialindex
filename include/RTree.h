@@ -52,30 +52,30 @@ namespace SpatialIndex
 		class SIDX_DLL Data : public IData, public Tools::ISerializable
 		{
 		public:
-			Data(size_t len, byte* pData, Region& r, id_type id);
+			Data(uint32_t len, byte* pData, Region& r, id_type id);
 			virtual ~Data();
 
 			virtual Data* clone();
 			virtual id_type getIdentifier() const;
 			virtual void getShape(IShape** out) const;
-			virtual void getData(size_t& len, byte** data) const;
-			virtual size_t getByteArraySize();
+			virtual void getData(uint32_t& len, byte** data) const;
+			virtual uint32_t getByteArraySize();
 			virtual void loadFromByteArray(const byte* data);
-			virtual void storeToByteArray(byte** data, size_t& len);
+			virtual void storeToByteArray(byte** data, uint32_t& len);
 
 			id_type m_id;
 			Region m_region;
 			byte* m_pData;
-			size_t m_dataLength;
+			uint32_t m_dataLength;
 		}; // Data
 
 		SIDX_DLL ISpatialIndex* returnRTree(IStorageManager& ind, Tools::PropertySet& in);
 		SIDX_DLL ISpatialIndex* createNewRTree(
 			IStorageManager& sm,
 			double fillFactor,
-			size_t indexCapacity,
-			size_t leafCapacity,
-			size_t dimension,
+			uint32_t indexCapacity,
+			uint32_t leafCapacity,
+			uint32_t dimension,
 			RTreeVariant rv,
 			id_type& indexIdentifier
 		);
@@ -84,10 +84,17 @@ namespace SpatialIndex
 			IDataStream& stream,
 			IStorageManager& sm,
 			double fillFactor,
-			size_t indexCapacity,
-			size_t leafCapacity,
-			size_t dimension,
+			uint32_t indexCapacity,
+			uint32_t leafCapacity,
+			uint32_t dimension,
 			RTreeVariant rv,
+			id_type& indexIdentifier
+		);
+		SIDX_DLL ISpatialIndex* createAndBulkLoadNewRTree(
+			BulkLoadMethod m,
+			IDataStream& stream,
+			IStorageManager& sm,
+			Tools::PropertySet& ps,
 			id_type& indexIdentifier
 		);
 		SIDX_DLL ISpatialIndex* loadRTree(IStorageManager& in, id_type indexIdentifier);

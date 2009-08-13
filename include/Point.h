@@ -27,7 +27,7 @@ namespace SpatialIndex
 	{
 	public:
 		Point();
-		Point(const double* pCoords, size_t dimension);
+		Point(const double* pCoords, uint32_t dimension);
 		Point(const Point& p);
 		virtual ~Point();
 
@@ -42,9 +42,9 @@ namespace SpatialIndex
 		//
 		// ISerializable interface
 		//
-		virtual size_t getByteArraySize();
+		virtual uint32_t getByteArraySize();
 		virtual void loadFromByteArray(const byte* data);
-		virtual void storeToByteArray(byte** data, size_t& length);
+		virtual void storeToByteArray(byte** data, uint32_t& length);
 
 		//
 		// IShape interface
@@ -53,20 +53,20 @@ namespace SpatialIndex
 		virtual bool containsShape(const IShape& in) const;
 		virtual bool touchesShape(const IShape& in) const;
 		virtual void getCenter(Point& out) const;
-		virtual size_t getDimension() const;
+		virtual uint32_t getDimension() const;
 		virtual void getMBR(Region& out) const;
 		virtual double getArea() const;
 		virtual double getMinimumDistance(const IShape& in) const;
 
 		virtual double getMinimumDistance(const Point& p) const;
 
-		virtual double getCoordinate(size_t index) const;
+		virtual double getCoordinate(uint32_t index) const;
 
-		virtual void makeInfinite(size_t dimension);
-		virtual void makeDimension(size_t dimension);
+		virtual void makeInfinite(uint32_t dimension);
+		virtual void makeDimension(uint32_t dimension);
 
 	public:
-		size_t m_dimension;
+		uint32_t m_dimension;
 		double* m_pCoords;
 
 		friend class Region;

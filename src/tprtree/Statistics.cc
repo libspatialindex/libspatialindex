@@ -68,59 +68,59 @@ Statistics& Statistics::operator=(const Statistics& s)
 	return *this;
 }
 
-size_t Statistics::getReads() const
+uint64_t Statistics::getReads() const
 {
 	return m_reads;
 }
 
-size_t Statistics::getWrites() const
+uint64_t Statistics::getWrites() const
 {
 	return m_writes;
 }
 
-size_t Statistics::getNumberOfNodes() const
+uint32_t Statistics::getNumberOfNodes() const
 {
 	return m_nodes;
 }
 
-size_t Statistics::getNumberOfData() const
+uint64_t Statistics::getNumberOfData() const
 {
 	return m_data;
 }
 
-size_t Statistics::getSplits() const
+uint64_t Statistics::getSplits() const
 {
 	return m_splits;
 }
 
-size_t Statistics::getHits() const
+uint64_t Statistics::getHits() const
 {
 	return m_hits;
 }
 
-size_t Statistics::getMisses() const
+uint64_t Statistics::getMisses() const
 {
 	return m_misses;
 }
 
-size_t Statistics::getAdjustments() const
+uint64_t Statistics::getAdjustments() const
 {
 	return m_adjustments;
 }
 
-size_t Statistics::getQueryResults() const
+uint64_t Statistics::getQueryResults() const
 {
 	return m_queryResults;
 }
 
-size_t Statistics::getTreeHeight() const
+uint32_t Statistics::getTreeHeight() const
 {
 	return m_treeHeight;
 }
 
-size_t Statistics::getNumberOfNodesInLevel(size_t l) const
+uint32_t Statistics::getNumberOfNodesInLevel(uint32_t l) const
 {
-	size_t cNodes;
+	uint32_t cNodes;
 	try
 	{
 		cNodes = m_nodesInLevel.at(l);
@@ -158,7 +158,7 @@ std::ostream& SpatialIndex::TPRTree::operator<<(std::ostream& os, const Statisti
 		<< "Number of data: " << s.m_data << std::endl
 		<< "Number of nodes: " << s.m_nodes << std::endl;
 
-	for (size_t cLevel = 0; cLevel < s.m_treeHeight; cLevel++)
+	for (uint32_t cLevel = 0; cLevel < s.m_treeHeight; ++cLevel)
 	{
 		os << "Level " << cLevel << " pages: " << s.m_nodesInLevel[cLevel] << std::endl;
 	}
@@ -169,4 +169,3 @@ std::ostream& SpatialIndex::TPRTree::operator<<(std::ostream& os, const Statisti
 
 	return os;
 }
-

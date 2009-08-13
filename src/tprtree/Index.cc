@@ -31,17 +31,17 @@ Index::~Index()
 {
 }
 
-Index::Index(SpatialIndex::TPRTree::TPRTree* pTree, id_type id, size_t level) : Node(pTree, id, level, pTree->m_indexCapacity)
+Index::Index(SpatialIndex::TPRTree::TPRTree* pTree, id_type id, uint32_t level) : Node(pTree, id, level, pTree->m_indexCapacity)
 {
 }
 
-NodePtr Index::chooseSubtree(const MovingRegion& mbr, size_t insertionLevel, std::stack<id_type>& pathBuffer)
+NodePtr Index::chooseSubtree(const MovingRegion& mbr, uint32_t insertionLevel, std::stack<id_type>& pathBuffer)
 {
 	if (m_level == insertionLevel) return NodePtr(this, &(m_pTree->m_indexPool));
 
 	pathBuffer.push(m_identifier);
 
-	size_t child = 0;
+	uint32_t child = 0;
 
 	switch (m_pTree->m_treeVariant)
 	{
@@ -59,7 +59,7 @@ NodePtr Index::chooseSubtree(const MovingRegion& mbr, size_t insertionLevel, std
 		default:
 			throw Tools::NotSupportedException("Index::chooseSubtree: Tree variant not supported.");
 	}
-	assert(child != std::numeric_limits<size_t>::max());
+	assert(child != std::numeric_limits<uint32_t>::max());
 
 	NodePtr n = m_pTree->readNode(m_pIdentifier[child]);
 	NodePtr ret = n->chooseSubtree(mbr, insertionLevel, pathBuffer);
@@ -73,7 +73,7 @@ NodePtr Index::findLeaf(const MovingRegion& mbr, id_type id, std::stack<id_type>
 {
 	pathBuffer.push(m_identifier);
 
-	for (size_t cChild = 0; cChild < m_children; cChild++)
+	for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 	{
 		if (m_ptrMBR[cChild]->containsRegionAfterTime(m_pTree->m_currentTime, mbr))
 		{
@@ -89,11 +89,11 @@ NodePtr Index::findLeaf(const MovingRegion& mbr, id_type id, std::stack<id_type>
 	return NodePtr();
 }
 
-void Index::split(size_t dataLength, byte* pData, MovingRegion& mbr, id_type id, NodePtr& pLeft, NodePtr& pRight)
+void Index::split(uint32_t dataLength, byte* pData, MovingRegion& mbr, id_type id, NodePtr& pLeft, NodePtr& pRight)
 {
-	m_pTree->m_stats.m_splits++;
+	++(m_pTree->m_stats.m_splits);
 
-	std::vector<size_t> g1, g2;
+	std::vector<uint32_t> g1, g2;
 
 	switch (m_pTree->m_treeVariant)
 	{
@@ -113,28 +113,28 @@ void Index::split(size_t dataLength, byte* pData, MovingRegion& mbr, id_type id,
 	pLeft->m_nodeMBR = m_pTree->m_infiniteRegion;
 	pRight->m_nodeMBR = m_pTree->m_infiniteRegion;
 
-	size_t cIndex;
+	uint32_t cIndex;
 
-	for (cIndex = 0; cIndex < g1.size(); cIndex++)
+	for (cIndex = 0; cIndex < g1.size(); ++cIndex)
 	{
 		pLeft->insertEntry(0, 0, *(m_ptrMBR[g1[cIndex]]), m_pIdentifier[g1[cIndex]]);
 	}
 
-	for (cIndex = 0; cIndex < g2.size(); cIndex++)
+	for (cIndex = 0; cIndex < g2.size(); ++cIndex)
 	{
 		pRight->insertEntry(0, 0, *(m_ptrMBR[g2[cIndex]]), m_pIdentifier[g2[cIndex]]);
 	}
 }
 
-size_t Index::findLeastEnlargement(const MovingRegion& r) const
+uint32_t Index::findLeastEnlargement(const MovingRegion& r) const
 {
 	double area = std::numeric_limits<double>::max();
-	size_t best = std::numeric_limits<size_t>::max();
+	uint32_t best = std::numeric_limits<uint32_t>::max();
 
 	MovingRegionPtr t = m_pTree->m_regionPool.acquire();
 	Tools::Interval ivT(m_pTree->m_currentTime, m_pTree->m_currentTime + m_pTree->m_horizon);
 
-	for (size_t cChild = 0; cChild < m_children; cChild++)
+	for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 	{
 		// I need the combined region from current time up to infinity here.
 		m_ptrMBR[cChild]->getCombinedRegionAfterTime(ivT.getLowerBound(), *t, r);
@@ -159,7 +159,7 @@ size_t Index::findLeastEnlargement(const MovingRegion& r) const
 	return best;
 }
 
-size_t Index::findLeastOverlap(const MovingRegion& r) const
+uint32_t Index::findLeastOverlap(const MovingRegion& r) const
 {
 	OverlapEntry** entries = new OverlapEntry*[m_children];
 
@@ -170,7 +170,7 @@ size_t Index::findLeastOverlap(const MovingRegion& r) const
 	Tools::Interval ivT(m_pTree->m_currentTime, m_pTree->m_currentTime + m_pTree->m_horizon);
 
 	// find combined region and enlargement of every entry and store it.
-	for (size_t cChild = 0; cChild < m_children; cChild++)
+	for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 	{
 		try
 		{
@@ -178,7 +178,7 @@ size_t Index::findLeastOverlap(const MovingRegion& r) const
 		}
 		catch (...)
 		{
-			for (size_t i = 0; i < cChild; i++) delete entries[i];
+			for (uint32_t i = 0; i < cChild; ++i) delete entries[i];
 			delete[] entries;
 			throw;
 		}
@@ -204,7 +204,7 @@ size_t Index::findLeastOverlap(const MovingRegion& r) const
 
 	if (me < -std::numeric_limits<double>::epsilon() || me > std::numeric_limits<double>::epsilon())
 	{
-		size_t cIterations;
+		uint32_t cIterations;
 
 		if (m_children > m_pTree->m_nearMinimumOverlapFactor)
 		{
@@ -222,12 +222,12 @@ size_t Index::findLeastOverlap(const MovingRegion& r) const
 		}
 
 		// calculate overlap of most important original entries (near minimum overlap cost).
-		for (size_t cIndex = 0; cIndex < cIterations; cIndex++)
+		for (uint32_t cIndex = 0; cIndex < cIterations; ++cIndex)
 		{
 			double dif = 0.0;
 			OverlapEntry* e = entries[cIndex];
 
-			for (size_t cChild = 0; cChild < m_children; cChild++)
+			for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 			{
 				if (e->m_index != cChild)
 				{
@@ -257,9 +257,9 @@ size_t Index::findLeastOverlap(const MovingRegion& r) const
 		} // for (cIndex)
 	}
 
-	size_t ret = best->m_index;
+	uint32_t ret = best->m_index;
 
-	for (size_t cChild = 0; cChild < m_children; cChild++)
+	for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 	{
 		delete entries[cChild];
 	}
@@ -270,11 +270,11 @@ size_t Index::findLeastOverlap(const MovingRegion& r) const
 
 void Index::adjustTree(Node* n, std::stack<id_type>& pathBuffer)
 {
-	m_pTree->m_stats.m_adjustments++;
+	++(m_pTree->m_stats.m_adjustments);
 
 	// find entry pointing to old node;
-	size_t child;
-	for (child = 0; child < m_children; child++)
+	uint32_t child;
+	for (child = 0; child < m_children; ++child)
 	{
 		if (m_pIdentifier[child] == n->m_identifier) break;
 	}
@@ -293,14 +293,14 @@ void Index::adjustTree(Node* n, std::stack<id_type>& pathBuffer)
 		// update the MBR at the current time anyway, to make tighter.
 		m_nodeMBR.m_startTime = m_pTree->m_currentTime;
 
-		for (size_t cDim = 0; cDim < m_nodeMBR.m_dimension; cDim++)
+		for (uint32_t cDim = 0; cDim < m_nodeMBR.m_dimension; ++cDim)
 		{
 			m_nodeMBR.m_pLow[cDim] = std::numeric_limits<double>::max();
 			m_nodeMBR.m_pHigh[cDim] = -std::numeric_limits<double>::max();
 			m_nodeMBR.m_pVLow[cDim] = std::numeric_limits<double>::max();
 			m_nodeMBR.m_pVHigh[cDim] = -std::numeric_limits<double>::max();
 
-			for (size_t cChild = 0; cChild < m_children; cChild++)
+			for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 			{
 				m_nodeMBR.m_pLow[cDim] = std::min(m_nodeMBR.m_pLow[cDim], m_ptrMBR[cChild]->getExtrapolatedLow(cDim, m_nodeMBR.m_startTime));
 				m_nodeMBR.m_pHigh[cDim] = std::max(m_nodeMBR.m_pHigh[cDim], m_ptrMBR[cChild]->getExtrapolatedHigh(cDim, m_nodeMBR.m_startTime));
@@ -313,7 +313,7 @@ void Index::adjustTree(Node* n, std::stack<id_type>& pathBuffer)
 	//}
 
 #ifndef NDEBUG
-	for (size_t cChild = 0; cChild < m_children; cChild++)
+	for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 	{
 		assert(m_nodeMBR.containsRegionAfterTime(m_pTree->m_currentTime, *(m_ptrMBR[cChild])) == true);
 	}
@@ -332,11 +332,11 @@ void Index::adjustTree(Node* n, std::stack<id_type>& pathBuffer)
 
 void Index::adjustTree(Node* n1, Node* n2, std::stack<id_type>& pathBuffer, byte* overflowTable)
 {
-	m_pTree->m_stats.m_adjustments++;
+	++(m_pTree->m_stats.m_adjustments);
 
 	// find entry pointing to old node;
-	size_t child;
-	for (child = 0; child < m_children; child++)
+	uint32_t child;
+	for (child = 0; child < m_children; ++child)
 	{
 		if (m_pIdentifier[child] == n1->m_identifier) break;
 	}
@@ -354,14 +354,14 @@ void Index::adjustTree(Node* n1, Node* n2, std::stack<id_type>& pathBuffer, byte
 	//{
 		m_nodeMBR.m_startTime = m_pTree->m_currentTime;
 
-		for (size_t cDim = 0; cDim < m_nodeMBR.m_dimension; cDim++)
+		for (uint32_t cDim = 0; cDim < m_nodeMBR.m_dimension; ++cDim)
 		{
 			m_nodeMBR.m_pLow[cDim] = std::numeric_limits<double>::max();
 			m_nodeMBR.m_pHigh[cDim] = -std::numeric_limits<double>::max();
 			m_nodeMBR.m_pVLow[cDim] = std::numeric_limits<double>::max();
 			m_nodeMBR.m_pVHigh[cDim] = -std::numeric_limits<double>::max();
 
-			for (size_t cChild = 0; cChild < m_children; cChild++)
+			for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 			{
 				m_nodeMBR.m_pLow[cDim] = std::min(m_nodeMBR.m_pLow[cDim], m_ptrMBR[cChild]->getExtrapolatedLow(cDim, m_nodeMBR.m_startTime));
 				m_nodeMBR.m_pHigh[cDim] = std::max(m_nodeMBR.m_pHigh[cDim], m_ptrMBR[cChild]->getExtrapolatedHigh(cDim, m_nodeMBR.m_startTime));
@@ -374,7 +374,7 @@ void Index::adjustTree(Node* n1, Node* n2, std::stack<id_type>& pathBuffer, byte
 	//}
 
 #ifndef NDEBUG
-	for (size_t cChild = 0; cChild < m_children; cChild++)
+	for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 	{
 		assert(m_nodeMBR.containsRegionAfterTime(m_pTree->m_currentTime, *(m_ptrMBR[cChild])) == true);
 	}

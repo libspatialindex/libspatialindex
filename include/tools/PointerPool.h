@@ -28,7 +28,7 @@ namespace Tools
 	template <class X> class PointerPool
 	{
 	public:
-		explicit PointerPool(size_t capacity) : m_capacity(capacity)
+		explicit PointerPool(uint32_t capacity) : m_capacity(capacity)
 		{
 			#ifndef NDEBUG
 			m_hits = 0;
@@ -45,7 +45,7 @@ namespace Tools
 			{
 				X* x = m_pool.top(); m_pool.pop();
 				#ifndef NDEBUG
-				m_pointerCount--;
+				--m_pointerCount;
 				#endif
 				delete x;
 			}
@@ -87,7 +87,7 @@ namespace Tools
 			else
 			{
 				#ifndef NDEBUG
-				m_pointerCount--;
+				--m_pointerCount;
 				#endif
 				delete p;
 			}
@@ -95,22 +95,22 @@ namespace Tools
 			assert(m_pool.size() <= m_capacity);
 		}
 
-		size_t getCapacity() const { return m_capacity; }
-		void setCapacity(size_t c)
+		uint32_t getCapacity() const { return m_capacity; }
+		void setCapacity(uint32_t c)
 		{
 			assert (c >= 0);
 			m_capacity = c;
 		}
 
 	private:
-		size_t m_capacity;
+		uint32_t m_capacity;
 		std::stack<X*> m_pool;
 
 	#ifndef NDEBUG
 	public:
-		size_t m_hits;
-		size_t m_misses;
-		size_t m_pointerCount;
+		uint64_t m_hits;
+		uint64_t m_misses;
+		uint64_t m_pointerCount;
 	#endif
 	};
 }

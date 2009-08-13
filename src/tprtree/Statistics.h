@@ -41,43 +41,43 @@ namespace SpatialIndex
 			//
 			// IStatistics interface
 			//
-			virtual size_t getReads() const;
-			virtual size_t getWrites() const;
-			virtual size_t getNumberOfNodes() const;
-			virtual size_t getNumberOfData() const;
+			virtual uint64_t getReads() const;
+			virtual uint64_t getWrites() const;
+			virtual uint32_t getNumberOfNodes() const;
+			virtual uint64_t getNumberOfData() const;
 
-			virtual size_t getSplits() const;
-			virtual size_t getHits() const;
-			virtual size_t getMisses() const;
-			virtual size_t getAdjustments() const;
-			virtual size_t getQueryResults() const;
-			virtual size_t getTreeHeight() const;
-			virtual size_t getNumberOfNodesInLevel(size_t l) const;
+			virtual uint64_t getSplits() const;
+			virtual uint64_t getHits() const;
+			virtual uint64_t getMisses() const;
+			virtual uint64_t getAdjustments() const;
+			virtual uint64_t getQueryResults() const;
+			virtual uint32_t getTreeHeight() const;
+			virtual uint32_t getNumberOfNodesInLevel(uint32_t l) const;
 
 		private:
 			void reset();
 
-			size_t m_reads;
+			uint64_t m_reads;
 
-			size_t m_writes;
+			uint64_t m_writes;
 
-			size_t m_splits;
+			uint64_t m_splits;
 
-			size_t m_hits;
+			uint64_t m_hits;
 
-			size_t m_misses;
+			uint64_t m_misses;
 
-			size_t m_nodes;
+			uint32_t m_nodes;
 
-			size_t m_adjustments;
+			uint64_t m_adjustments;
 
-			size_t m_queryResults;
+			uint64_t m_queryResults;
 
-			size_t m_data;
+			uint64_t m_data;
 
-			size_t m_treeHeight;
+			uint32_t m_treeHeight;
 
-			std::vector<size_t> m_nodesInLevel;
+			std::vector<uint32_t> m_nodesInLevel;
 
 			friend class TPRTree;
 			friend class Node;

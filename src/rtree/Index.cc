@@ -31,17 +31,17 @@ Index::~Index()
 {
 }
 
-Index::Index(SpatialIndex::RTree::RTree* pTree, id_type id, size_t level) : Node(pTree, id, level, pTree->m_indexCapacity)
+Index::Index(SpatialIndex::RTree::RTree* pTree, id_type id, uint32_t level) : Node(pTree, id, level, pTree->m_indexCapacity)
 {
 }
 
-NodePtr Index::chooseSubtree(const Region& mbr, size_t insertionLevel, std::stack<id_type>& pathBuffer)
+NodePtr Index::chooseSubtree(const Region& mbr, uint32_t insertionLevel, std::stack<id_type>& pathBuffer)
 {
 	if (m_level == insertionLevel) return NodePtr(this, &(m_pTree->m_indexPool));
 
 	pathBuffer.push(m_identifier);
 
-	size_t child = 0;
+	uint32_t child = 0;
 
 	switch (m_pTree->m_treeVariant)
 	{
@@ -63,7 +63,7 @@ NodePtr Index::chooseSubtree(const Region& mbr, size_t insertionLevel, std::stac
 		default:
 			throw Tools::NotSupportedException("Index::chooseSubtree: Tree variant not supported.");
 	}
-	assert(child != std::numeric_limits<size_t>::max());
+	assert(child != std::numeric_limits<uint32_t>::max());
 
 	NodePtr n = m_pTree->readNode(m_pIdentifier[child]);
 	NodePtr ret = n->chooseSubtree(mbr, insertionLevel, pathBuffer);
@@ -77,7 +77,7 @@ NodePtr Index::findLeaf(const Region& mbr, id_type id, std::stack<id_type>& path
 {
 	pathBuffer.push(m_identifier);
 
-	for (size_t cChild = 0; cChild < m_children; cChild++)
+	for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 	{
 		if (m_ptrMBR[cChild]->containsRegion(mbr))
 		{
@@ -93,11 +93,11 @@ NodePtr Index::findLeaf(const Region& mbr, id_type id, std::stack<id_type>& path
 	return NodePtr();
 }
 
-void Index::split(size_t dataLength, byte* pData, Region& mbr, id_type id, NodePtr& ptrLeft, NodePtr& ptrRight)
+void Index::split(uint32_t dataLength, byte* pData, Region& mbr, id_type id, NodePtr& ptrLeft, NodePtr& ptrRight)
 {
-	m_pTree->m_stats.m_splits++;
+	++(m_pTree->m_stats.m_u64Splits);
 
-	std::vector<size_t> g1, g2;
+	std::vector<uint32_t> g1, g2;
 
 	switch (m_pTree->m_treeVariant)
 	{
@@ -121,27 +121,27 @@ void Index::split(size_t dataLength, byte* pData, Region& mbr, id_type id, NodeP
 	ptrLeft->m_nodeMBR = m_pTree->m_infiniteRegion;
 	ptrRight->m_nodeMBR = m_pTree->m_infiniteRegion;
 
-	size_t cIndex;
+	uint32_t cIndex;
 
-	for (cIndex = 0; cIndex < g1.size(); cIndex++)
+	for (cIndex = 0; cIndex < g1.size(); ++cIndex)
 	{
 		ptrLeft->insertEntry(0, 0, *(m_ptrMBR[g1[cIndex]]), m_pIdentifier[g1[cIndex]]);
 	}
 
-	for (cIndex = 0; cIndex < g2.size(); cIndex++)
+	for (cIndex = 0; cIndex < g2.size(); ++cIndex)
 	{
 		ptrRight->insertEntry(0, 0, *(m_ptrMBR[g2[cIndex]]), m_pIdentifier[g2[cIndex]]);
 	}
 }
 
-size_t Index::findLeastEnlargement(const Region& r) const
+uint32_t Index::findLeastEnlargement(const Region& r) const
 {
 	double area = std::numeric_limits<double>::max();
-	size_t best = std::numeric_limits<size_t>::max();
+	uint32_t best = std::numeric_limits<uint32_t>::max();
 
 	RegionPtr t = m_pTree->m_regionPool.acquire();
 
-	for (size_t cChild = 0; cChild < m_children; cChild++)
+	for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 	{
 		m_ptrMBR[cChild]->getCombinedRegion(*t, r);
 
@@ -164,7 +164,7 @@ size_t Index::findLeastEnlargement(const Region& r) const
 	return best;
 }
 
-size_t Index::findLeastOverlap(const Region& r) const
+uint32_t Index::findLeastOverlap(const Region& r) const
 {
 	OverlapEntry** entries = new OverlapEntry*[m_children];
 
@@ -173,7 +173,7 @@ size_t Index::findLeastOverlap(const Region& r) const
 	OverlapEntry* best = 0;
 
 	// find combined region and enlargement of every entry and store it.
-	for (size_t cChild = 0; cChild < m_children; cChild++)
+	for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 	{
 		try
 		{
@@ -181,7 +181,7 @@ size_t Index::findLeastOverlap(const Region& r) const
 		}
 		catch (...)
 		{
-			for (size_t i = 0; i < cChild; i++) delete entries[i];
+			for (uint32_t i = 0; i < cChild; ++i) delete entries[i];
 			delete[] entries;
 			throw;
 		}
@@ -207,7 +207,7 @@ size_t Index::findLeastOverlap(const Region& r) const
 
 	if (me < -std::numeric_limits<double>::epsilon() || me > std::numeric_limits<double>::epsilon())
 	{
-		size_t cIterations;
+		uint32_t cIterations;
 
 		if (m_children > m_pTree->m_nearMinimumOverlapFactor)
 		{
@@ -225,12 +225,12 @@ size_t Index::findLeastOverlap(const Region& r) const
 		}
 
 		// calculate overlap of most important original entries (near minimum overlap cost).
-		for (size_t cIndex = 0; cIndex < cIterations; cIndex++)
+		for (uint32_t cIndex = 0; cIndex < cIterations; ++cIndex)
 		{
 			double dif = 0.0;
 			OverlapEntry* e = entries[cIndex];
 
-			for (size_t cChild = 0; cChild < m_children; cChild++)
+			for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 			{
 				if (e->m_index != cChild)
 				{
@@ -260,9 +260,9 @@ size_t Index::findLeastOverlap(const Region& r) const
 		} // for (cIndex)
 	}
 
-	size_t ret = best->m_index;
+	uint32_t ret = best->m_index;
 
-	for (size_t cChild = 0; cChild < m_children; cChild++)
+	for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 	{
 		delete entries[cChild];
 	}
@@ -273,11 +273,11 @@ size_t Index::findLeastOverlap(const Region& r) const
 
 void Index::adjustTree(Node* n, std::stack<id_type>& pathBuffer)
 {
-	m_pTree->m_stats.m_adjustments++;
+	++(m_pTree->m_stats.m_u64Adjustments);
 
 	// find entry pointing to old node;
-	size_t child;
-	for (child = 0; child < m_children; child++)
+	uint32_t child;
+	for (child = 0; child < m_children; ++child)
 	{
 		if (m_pIdentifier[child] == n->m_identifier) break;
 	}
@@ -293,12 +293,12 @@ void Index::adjustTree(Node* n, std::stack<id_type>& pathBuffer)
 
 	if (bRecompute)
 	{
-		for (size_t cDim = 0; cDim < m_nodeMBR.m_dimension; cDim++)
+		for (uint32_t cDim = 0; cDim < m_nodeMBR.m_dimension; ++cDim)
 		{
 			m_nodeMBR.m_pLow[cDim] = std::numeric_limits<double>::max();
 			m_nodeMBR.m_pHigh[cDim] = -std::numeric_limits<double>::max();
 
-			for (size_t cChild = 0; cChild < m_children; cChild++)
+			for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 			{
 				m_nodeMBR.m_pLow[cDim] = std::min(m_nodeMBR.m_pLow[cDim], m_ptrMBR[cChild]->m_pLow[cDim]);
 				m_nodeMBR.m_pHigh[cDim] = std::max(m_nodeMBR.m_pHigh[cDim], m_ptrMBR[cChild]->m_pHigh[cDim]);
@@ -319,11 +319,11 @@ void Index::adjustTree(Node* n, std::stack<id_type>& pathBuffer)
 
 void Index::adjustTree(Node* n1, Node* n2, std::stack<id_type>& pathBuffer, byte* overflowTable)
 {
-	m_pTree->m_stats.m_adjustments++;
+	++(m_pTree->m_stats.m_u64Adjustments);
 
 	// find entry pointing to old node;
-	size_t child;
-	for (child = 0; child < m_children; child++)
+	uint32_t child;
+	for (child = 0; child < m_children; ++child)
 	{
 		if (m_pIdentifier[child] == n1->m_identifier) break;
 	}
@@ -339,12 +339,12 @@ void Index::adjustTree(Node* n1, Node* n2, std::stack<id_type>& pathBuffer, byte
 
 	if (bRecompute)
 	{
-		for (size_t cDim = 0; cDim < m_nodeMBR.m_dimension; cDim++)
+		for (uint32_t cDim = 0; cDim < m_nodeMBR.m_dimension; ++cDim)
 		{
 			m_nodeMBR.m_pLow[cDim] = std::numeric_limits<double>::max();
 			m_nodeMBR.m_pHigh[cDim] = -std::numeric_limits<double>::max();
 
-			for (size_t cChild = 0; cChild < m_children; cChild++)
+			for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 			{
 				m_nodeMBR.m_pLow[cDim] = std::min(m_nodeMBR.m_pLow[cDim], m_ptrMBR[cChild]->m_pLow[cDim]);
 				m_nodeMBR.m_pHigh[cDim] = std::max(m_nodeMBR.m_pHigh[cDim], m_ptrMBR[cChild]->m_pHigh[cDim]);

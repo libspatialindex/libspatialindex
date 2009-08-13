@@ -60,7 +60,7 @@ public:
 
 		// data should be an array of characters representing a Region as a string.
 		byte* pData = 0;
-		size_t cLen = 0;
+		uint32_t cLen = 0;
 		d.getData(cLen, &pData);
 		// do something.
 		//string s = reinterpret_cast<char*>(pData);
@@ -105,7 +105,7 @@ public:
 		// traverse only index nodes at levels 2 and higher.
 		if (n != 0 && n->getLevel() > 1)
 		{
-			for (size_t cChild = 0; cChild < n->getChildrenCount(); cChild++)
+			for (uint32_t cChild = 0; cChild < n->getChildrenCount(); cChild++)
 			{
 				ids.push(n->getChildIdentifier(cChild));
 			}

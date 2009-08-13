@@ -27,7 +27,7 @@ namespace SpatialIndex
 	{
 	public:
 		Region();
-		Region(const double* pLow, const double* pHigh, size_t dimension);
+		Region(const double* pLow, const double* pHigh, uint32_t dimension);
 		Region(const Point& low, const Point& high);
 		Region(const Region& in);
 		virtual ~Region();
@@ -43,9 +43,9 @@ namespace SpatialIndex
 		//
 		// ISerializable interface
 		//
-		virtual size_t getByteArraySize();
+		virtual uint32_t getByteArraySize();
 		virtual void loadFromByteArray(const byte* data);
-		virtual void storeToByteArray(byte** data, size_t& length);
+		virtual void storeToByteArray(byte** data, uint32_t& length);
 
 		//
 		// IShape interface
@@ -54,7 +54,7 @@ namespace SpatialIndex
 		virtual bool containsShape(const IShape& in) const;
 		virtual bool touchesShape(const IShape& in) const;
 		virtual void getCenter(Point& out) const;
-		virtual size_t getDimension() const;
+		virtual uint32_t getDimension() const;
 		virtual void getMBR(Region& out) const;
 		virtual double getArea() const;
 		virtual double getMinimumDistance(const IShape& in) const;
@@ -76,17 +76,17 @@ namespace SpatialIndex
 		virtual void combinePoint(const Point& in);
 		virtual void getCombinedRegion(Region& out, const Region& in) const;
 
-		virtual double getLow(size_t index) const;
-		virtual double getHigh(size_t index) const;
+		virtual double getLow(uint32_t index) const;
+		virtual double getHigh(uint32_t index) const;
 
-		virtual void makeInfinite(size_t dimension);
-		virtual void makeDimension(size_t dimension);
+		virtual void makeInfinite(uint32_t dimension);
+		virtual void makeDimension(uint32_t dimension);
 
 	private:
-		void initialize(const double* pLow, const double* pHigh, size_t dimension);
+		void initialize(const double* pLow, const double* pHigh, uint32_t dimension);
 
 	public:
-		size_t m_dimension;
+		uint32_t m_dimension;
 		double* m_pLow;
 		double* m_pHigh;
 

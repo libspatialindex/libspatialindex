@@ -30,11 +30,11 @@ namespace SpatialIndex
 		MovingRegion(
 			const double* pLow, const double* pHigh,
 			const double* pVLow, const double* pVHigh,
-			const Tools::IInterval& ti, size_t dimension);
+			const Tools::IInterval& ti, uint32_t dimension);
 		MovingRegion(
 			const double* pLow, const double* pHigh,
 			const double* pVLow, const double* pVHigh,
-			double tStart, double tEnd, size_t dimension);
+			double tStart, double tEnd, uint32_t dimension);
 		MovingRegion(
 			const Point& low, const Point& high,
 			const Point& vlow, const Point& vhigh,
@@ -54,12 +54,12 @@ namespace SpatialIndex
 
 		bool isShrinking() const;
 
-		virtual double getLow(size_t index, double t) const;
-		virtual double getHigh(size_t index, double t) const;
-		virtual double getExtrapolatedLow(size_t index, double t) const;
-		virtual double getExtrapolatedHigh(size_t index, double t) const;
-		virtual double getVLow(size_t index) const;
-		virtual double getVHigh(size_t index) const;
+		virtual double getLow(uint32_t index, double t) const;
+		virtual double getHigh(uint32_t index, double t) const;
+		virtual double getExtrapolatedLow(uint32_t index, double t) const;
+		virtual double getExtrapolatedHigh(uint32_t index, double t) const;
+		virtual double getVLow(uint32_t index) const;
+		virtual double getVHigh(uint32_t index) const;
 
 		virtual bool intersectsRegionInTime(const MovingRegion& r) const;
 		virtual bool intersectsRegionInTime(const MovingRegion& r, Tools::IInterval& out) const;
@@ -102,9 +102,9 @@ namespace SpatialIndex
 		//
 		// ISerializable interface
 		//
-		virtual size_t getByteArraySize();
+		virtual uint32_t getByteArraySize();
 		virtual void loadFromByteArray(const byte* data);
-		virtual void storeToByteArray(byte** data, size_t& len);
+		virtual void storeToByteArray(byte** data, uint32_t& len);
 
 		//
 		// IEvolvingShape interface
@@ -120,22 +120,22 @@ namespace SpatialIndex
 		virtual double getIntersectingAreaInTime(const ITimeShape& r) const;
 		virtual double getIntersectingAreaInTime(const Tools::IInterval& ivI, const ITimeShape& r) const;
 
-		virtual void makeInfinite(size_t dimension);
-		virtual void makeDimension(size_t dimension);
+		virtual void makeInfinite(uint32_t dimension);
+		virtual void makeDimension(uint32_t dimension);
 
 	private:
 		void initialize(
 			const double* pLow, const double* pHigh,
 			const double* pVLow, const double* pVHigh,
-			double tStart, double tEnd, size_t dimension);
+			double tStart, double tEnd, uint32_t dimension);
 
 	public:
 		class CrossPoint
 		{
 		public:
 			double m_t;
-			size_t m_dimension;
-			size_t m_boundary;
+			uint32_t m_dimension;
+			uint32_t m_boundary;
 			const MovingRegion* m_to;
 
 			struct ascending: public std::binary_function<CrossPoint&, CrossPoint&, bool>

@@ -32,9 +32,9 @@ namespace SpatialIndex
 			{
 			public:
 				Record();
-				Record(const Region& r, id_type id, size_t len, byte* pData, size_t s);
+				Record(const Region& r, id_type id, uint32_t len, byte* pData, uint32_t s);
 				~Record();
-
+				
 				bool operator<(const Record& r) const;
 
 				void storeToFile(Tools::TemporaryFile& f);
@@ -53,8 +53,8 @@ namespace SpatialIndex
 				Region m_r;
 				id_type m_id;
 				byte* m_pData;
-				size_t m_len;
-				size_t m_s;
+				uint32_t m_len;
+				uint32_t m_s;
 			};
 
 		public:
@@ -63,7 +63,7 @@ namespace SpatialIndex
 
 			void insert(Record* r);
 			void sort();
-			void getNextRecord(Record& r);
+			Record* getNextRecord();
 			void rewind();
 			uint64_t getTotalEntries() const;
 
@@ -94,7 +94,7 @@ namespace SpatialIndex
 			std::list<Tools::TemporaryFile*> m_runs;
 			std::vector<Record*> m_buffer;
 			uint64_t m_u64TotalEntries;
-			size_t m_stI;
+			uint32_t m_stI;
 		};
 
 		class BulkLoader
@@ -103,29 +103,29 @@ namespace SpatialIndex
 			void bulkLoadUsingSTR(
 				RTree* pTree,
 				IDataStream& stream,
-				size_t bindex,
-				size_t bleaf,
-				size_t pageSize, // The number of node entries per page.
-				size_t numberOfPages // The total number of pages to use.
+				uint32_t bindex,
+				uint32_t bleaf,
+				uint32_t pageSize, // The number of node entries per page.
+				uint32_t numberOfPages // The total number of pages to use.
 			);
 
 		protected:
 			void createLevel(
 				RTree* pTree,
 				Tools::SmartPointer<ExternalSorter> es,
-				size_t dimension,
-				size_t indexSize,
-				size_t leafSize,
-				size_t level,
+				uint32_t dimension,
+				uint32_t indexSize,
+				uint32_t leafSize,
+				uint32_t level,
 				Tools::SmartPointer<ExternalSorter> es2,
-				size_t pageSize,
-				size_t numberOfPages
+				uint32_t pageSize,
+				uint32_t numberOfPages
 			);
 
 			Node* createNode(
 				RTree* pTree,
-				std::vector<ExternalSorter::Record>& e,
-				size_t level
+				std::vector<ExternalSorter::Record*>& e,
+				uint32_t level
 			);
 		};
 	}

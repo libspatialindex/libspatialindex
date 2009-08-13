@@ -31,15 +31,15 @@ namespace SpatialIndex
 			virtual ~Index();
 
 		private:
-			Index(TPRTree* pTree, id_type id, size_t level);
+			Index(TPRTree* pTree, id_type id, uint32_t level);
 
-			virtual NodePtr chooseSubtree(const MovingRegion& mbr, size_t level, std::stack<id_type>& pathBuffer);
+			virtual NodePtr chooseSubtree(const MovingRegion& mbr, uint32_t level, std::stack<id_type>& pathBuffer);
 			virtual NodePtr findLeaf(const MovingRegion& mbr, id_type id, std::stack<id_type>& pathBuffer);
 
-			virtual void split(size_t dataLength, byte* pData, MovingRegion& mbr, id_type id, NodePtr& left, NodePtr& right);
+			virtual void split(uint32_t dataLength, byte* pData, MovingRegion& mbr, id_type id, NodePtr& left, NodePtr& right);
 
-			size_t findLeastEnlargement(const MovingRegion&) const;
-			size_t findLeastOverlap(const MovingRegion&) const;
+			uint32_t findLeastEnlargement(const MovingRegion&) const;
+			uint32_t findLeastOverlap(const MovingRegion&) const;
 
 			void adjustTree(Node*, std::stack<id_type>&);
 			void adjustTree(Node*, Node*, std::stack<id_type>&, byte* overflowTable);
@@ -47,7 +47,7 @@ namespace SpatialIndex
 			class OverlapEntry
 			{
 			public:
-				size_t m_index;
+				uint32_t m_index;
 				double m_enlargement;
 				MovingRegionPtr m_original;
 				MovingRegionPtr m_combined;

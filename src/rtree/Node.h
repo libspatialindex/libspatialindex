@@ -45,9 +45,9 @@ namespace SpatialIndex
 			//
 			// Tools::ISerializable interface
 			//
-			virtual size_t getByteArraySize();
+			virtual uint32_t getByteArraySize();
 			virtual void loadFromByteArray(const byte* data);
-			virtual void storeToByteArray(byte** data, size_t& len);
+			virtual void storeToByteArray(byte** data, uint32_t& len);
 
 			//
 			// SpatialIndex::IEntry interface
@@ -58,55 +58,52 @@ namespace SpatialIndex
 			//
 			// SpatialIndex::INode interface
 			//
-			virtual size_t getChildrenCount() const;
-			virtual id_type getChildIdentifier(size_t index)  const;
-			virtual void getChildShape(size_t index, IShape** out)  const;
-                        virtual void getChildData(size_t index, size_t& length, byte** data) const;
-			virtual size_t getLevel() const;
+			virtual uint32_t getChildrenCount() const;
+			virtual id_type getChildIdentifier(uint32_t index)  const;
+			virtual void getChildShape(uint32_t index, IShape** out)  const;
+                        virtual void getChildData(uint32_t index, uint32_t& length, byte** data) const;
+			virtual uint32_t getLevel() const;
 			virtual bool isIndex() const;
 			virtual bool isLeaf() const;
 
 		private:
 			Node();
-			Node(RTree* pTree, id_type id, size_t level, size_t capacity);
+			Node(RTree* pTree, id_type id, uint32_t level, uint32_t capacity);
 
 			virtual Node& operator=(const Node&);
 
-			virtual void insertEntry(size_t dataLength, byte* pData, Region& mbr, id_type id);
-			virtual void deleteEntry(size_t index);
+			virtual void insertEntry(uint32_t dataLength, byte* pData, Region& mbr, id_type id);
+			virtual void deleteEntry(uint32_t index);
 
-			virtual bool insertData(size_t dataLength, byte* pData, Region& mbr, id_type id, std::stack<id_type>& pathBuffer, byte* overflowTable);
-			virtual void reinsertData(size_t dataLength, byte* pData, Region& mbr, id_type id, std::vector<size_t>& reinsert, std::vector<size_t>& keep);
+			virtual bool insertData(uint32_t dataLength, byte* pData, Region& mbr, id_type id, std::stack<id_type>& pathBuffer, byte* overflowTable);
+			virtual void reinsertData(uint32_t dataLength, byte* pData, Region& mbr, id_type id, std::vector<uint32_t>& reinsert, std::vector<uint32_t>& keep);
 
-			virtual void rtreeSplit(size_t dataLength, byte* pData, Region& mbr, id_type id, std::vector<size_t>& group1, std::vector<size_t>& group2);
-			virtual void rstarSplit(size_t dataLength, byte* pData, Region& mbr, id_type id, std::vector<size_t>& group1, std::vector<size_t>& group2);
+			virtual void rtreeSplit(uint32_t dataLength, byte* pData, Region& mbr, id_type id, std::vector<uint32_t>& group1, std::vector<uint32_t>& group2);
+			virtual void rstarSplit(uint32_t dataLength, byte* pData, Region& mbr, id_type id, std::vector<uint32_t>& group1, std::vector<uint32_t>& group2);
 
-			virtual void pickSeeds(size_t& index1, size_t& index2);
+			virtual void pickSeeds(uint32_t& index1, uint32_t& index2);
 
 			virtual void condenseTree(std::stack<NodePtr>& toReinsert, std::stack<id_type>& pathBuffer, NodePtr& ptrThis);
 
-			//virtual void load(size_t len, byte* const data);
-			//virtual void store(size_t& len, byte** data);
-
-			virtual NodePtr chooseSubtree(const Region& mbr, size_t level, std::stack<id_type>& pathBuffer) = 0;
+			virtual NodePtr chooseSubtree(const Region& mbr, uint32_t level, std::stack<id_type>& pathBuffer) = 0;
 			virtual NodePtr findLeaf(const Region& mbr, id_type id, std::stack<id_type>& pathBuffer) = 0;
 
-			virtual void split(size_t dataLength, byte* pData, Region& mbr, id_type id, NodePtr& left, NodePtr& right) = 0;
+			virtual void split(uint32_t dataLength, byte* pData, Region& mbr, id_type id, NodePtr& left, NodePtr& right) = 0;
 
 			RTree* m_pTree;
 				// Parent of all nodes.
 
-			size_t m_level;
+			uint32_t m_level;
 				// The level of the node in the tree.
 				// Leaves are always at level 0.
 
 			id_type m_identifier;
 				// The unique ID of this node.
 
-			size_t m_children;
+			uint32_t m_children;
 				// The number of children pointed by this node.
 
-			size_t m_capacity;
+			uint32_t m_capacity;
 				// Specifies the node capacity.
 
 			Region m_nodeMBR;
@@ -121,18 +118,18 @@ namespace SpatialIndex
 			id_type* m_pIdentifier;
 				// The corresponding data identifiers.
 
-			size_t* m_pDataLength;
+			uint32_t* m_pDataLength;
 
-			size_t m_totalDataLength;
+			uint32_t m_totalDataLength;
 
 			class RstarSplitEntry
 			{
 			public:
 				Region* m_pRegion;
-				size_t m_index;
-				size_t m_sortDim;
+				uint32_t m_index;
+				uint32_t m_sortDim;
 
-				RstarSplitEntry(Region* pr, size_t index, size_t dimension) :
+				RstarSplitEntry(Region* pr, uint32_t index, uint32_t dimension) :
 					m_pRegion(pr), m_index(index), m_sortDim(dimension) {}
 
 				static int compareLow(const void* pv1, const void* pv2)
@@ -163,10 +160,10 @@ namespace SpatialIndex
 			class ReinsertEntry
 			{
 			public:
-				size_t m_index;
+				uint32_t m_index;
 				double m_dist;
 
-				ReinsertEntry(size_t index, double dist) : m_index(index), m_dist(dist) {}
+				ReinsertEntry(uint32_t index, double dist) : m_index(index), m_dist(dist) {}
 
 				static int compareReinsertEntry(const void* pv1, const void* pv2)
 				{

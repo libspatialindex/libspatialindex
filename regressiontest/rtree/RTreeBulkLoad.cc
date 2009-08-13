@@ -40,22 +40,7 @@ public:
 		if (! m_fin)
 			throw Tools::IllegalArgumentException("Input file not found.");
 
-		id_type id;
-		uint32_t op;
-		double low[2], high[2];
-
-		m_fin >> op >> id >> low[0] >> low[1] >> high[0] >> high[1];
-
-		if (m_fin.good())
-		{
-			if (op != INSERT)
-				throw Tools::IllegalArgumentException(
-					"The data input should contain insertions only."
-				);
-
-			Region r = Region(low, high, 2);
-			m_pNext = new RTree::Data(0, 0, r, id);
-		}
+		readNextEntry();
 	}
 
 	virtual ~MyDataStream()
@@ -69,43 +54,22 @@ public:
 
 		RTree::Data* ret = m_pNext;
 		m_pNext = 0;
-
-		id_type id;
-		uint32_t op;
-		double low[2], high[2];
-
-		m_fin >> op >> id >> low[0] >> low[1] >> high[0] >> high[1];
-
-		if (m_fin.good())
-		{
-			if (op != INSERT)
-				throw Tools::IllegalArgumentException(
-					"The data input should contain insertions only."
-				);
-
-			Region r = Region(low, high, 2);
-			m_pNext = new RTree::Data(0, 0, r, id);
-		}
-
+		readNextEntry();
 		return ret;
 	}
 
-	virtual bool hasNext() throw (Tools::NotSupportedException)
+	virtual bool hasNext()
 	{
 		return (m_pNext != 0);
 	}
 
-	virtual size_t size() throw (Tools::NotSupportedException)
+	virtual uint32_t size()
 	{
 		throw Tools::NotSupportedException("Operation not supported.");
 	}
 
-	virtual void rewind() throw (Tools::NotSupportedException)
+	virtual void rewind()
 	{
-		id_type id;
-		uint32_t op;
-		double low[2], high[2];
-		
 		if (m_pNext != 0)
 		{
 			delete m_pNext;
@@ -113,6 +77,15 @@ public:
 		}
 
 		m_fin.seekg(0, std::ios::beg);
+		readNextEntry();
+	}
+
+	void readNextEntry()
+	{
+		id_type id;
+		uint32_t op;
+		double low[2], high[2];
+
 		m_fin >> op >> id >> low[0] >> low[1] >> high[0] >> high[1];
 
 		if (m_fin.good())
@@ -122,8 +95,12 @@ public:
 					"The data input should contain insertions only."
 				);
 
-			Region r = Region(low, high, 2);
-			m_pNext = new RTree::Data(0, 0, r, id);
+			Region r(low, high, 2);
+			m_pNext = new RTree::Data(sizeof(double), reinterpret_cast<byte*>(low), r, id);
+				// Associate a bogus data array with every entry for testing purposes.
+				// Once the data array is given to RTRee:Data a local copy will be created.
+				// Hence, the input data array can be deleted after this operation if not
+				// needed anymore.
 		}
 	}
 

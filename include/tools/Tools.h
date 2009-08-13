@@ -220,11 +220,11 @@ namespace Tools
 	public:
 		virtual ~ISerializable() {}
 
-		virtual size_t getByteArraySize() = 0;
+		virtual uint32_t getByteArraySize() = 0;
 			// returns the size of the required byte array.
 		virtual void loadFromByteArray(const byte* data) = 0;
 			// load this object using the byte array.
-		virtual void storeToByteArray(byte** data, size_t& length) = 0;
+		virtual void storeToByteArray(byte** data, uint32_t& length) = 0;
 			// store this object in the byte array.
 	};
 
@@ -258,7 +258,7 @@ namespace Tools
 		virtual bool hasNext() = 0;
 			// returns true if there are more items in the stream.
 
-		virtual size_t size() = 0;
+		virtual uint32_t size() = 0;
 			// returns the total number of entries available in the stream.
 
 		virtual void rewind() = 0;
@@ -308,9 +308,9 @@ namespace Tools
 		void setProperty(std::string property, Variant& v);
 		void removeProperty(std::string property);
 
-		virtual size_t getByteArraySize();
+		virtual uint32_t getByteArraySize();
 		virtual void loadFromByteArray(const byte* data);
-		virtual void storeToByteArray(byte** data, size_t& length);
+		virtual void storeToByteArray(byte** data, uint32_t& length);
 
 	private:
 		std::map<std::string, Variant> m_propertySet;
@@ -412,7 +412,7 @@ namespace Tools
 	class SIDX_DLL BufferedFile
 	{
 	public:
-		BufferedFile(size_t stBufferSize = 16384);
+		BufferedFile(uint32_t u32BufferSize = 16384);
 		virtual ~BufferedFile();
 
 		virtual void close();
@@ -423,7 +423,7 @@ namespace Tools
 	protected:
 		std::fstream m_file;
 		char* m_buffer;
-		size_t m_stBufferSize;
+		uint32_t m_u32BufferSize;
 		bool m_bEOF;
 	};
 
@@ -431,7 +431,7 @@ namespace Tools
 	{
 	public:
 		BufferedFileReader();
-		BufferedFileReader(const std::string& sFileName, size_t stBufferSize = 32768);
+		BufferedFileReader(const std::string& sFileName, uint32_t u32BufferSize = 32768);
 		virtual ~BufferedFileReader();
 
 		virtual void open(const std::string& sFileName);
@@ -453,7 +453,7 @@ namespace Tools
 	{
 	public:
 		BufferedFileWriter();
-		BufferedFileWriter(const std::string& sFileName, FileMode mode = CREATE, size_t stBufferSize = 32768);
+		BufferedFileWriter(const std::string& sFileName, FileMode mode = CREATE, uint32_t u32BufferSize = 32768);
 		virtual ~BufferedFileWriter();
 
 		virtual void open(const std::string& sFileName, FileMode mode = CREATE);

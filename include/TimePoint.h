@@ -27,8 +27,8 @@ namespace SpatialIndex
 	{
 	public:
 		TimePoint();
-		TimePoint(const double* pCoords, const Tools::IInterval& ti, size_t dimension);
-		TimePoint(const double* pCoords, double tStart, double tEnd, size_t dimension);
+		TimePoint(const double* pCoords, const Tools::IInterval& ti, uint32_t dimension);
+		TimePoint(const double* pCoords, double tStart, double tEnd, uint32_t dimension);
 		TimePoint(const Point& p, const Tools::IInterval& ti);
 		TimePoint(const Point& p, double tStart, double tEnd);
 		TimePoint(const TimePoint& p);
@@ -45,9 +45,9 @@ namespace SpatialIndex
 		//
 		// ISerializable interface
 		//
-		virtual size_t getByteArraySize();
+		virtual uint32_t getByteArraySize();
 		virtual void loadFromByteArray(const byte* data);
-		virtual void storeToByteArray(byte** data, size_t& len);
+		virtual void storeToByteArray(byte** data, uint32_t& len);
 
 		//
 		// ITimeShape interface
@@ -75,8 +75,8 @@ namespace SpatialIndex
 		virtual bool containsInterval(const Tools::IInterval& ti) const;
 		virtual Tools::IntervalType getIntervalType() const;
 
-		virtual void makeInfinite(size_t dimension);
-		virtual void makeDimension(size_t dimension);
+		virtual void makeInfinite(uint32_t dimension);
+		virtual void makeDimension(uint32_t dimension);
 
 	public:
 		double m_startTime;

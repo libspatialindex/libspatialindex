@@ -39,14 +39,14 @@ Tools::IObject* Node::clone()
 //
 // Tools::ISerializable interface
 //
-size_t Node::getByteArraySize()
+uint32_t Node::getByteArraySize()
 {
 	return
-		(sizeof(size_t) +
-		sizeof(size_t) +
-		sizeof(size_t) +
+		(sizeof(uint32_t) +
+		sizeof(uint32_t) +
+		sizeof(uint32_t) +
 		sizeof(double) +
-		(m_children * (4 * m_pTree->m_dimension * sizeof(double) + sizeof(double) + sizeof(id_type) + sizeof(size_t))) +
+		(m_children * (4 * m_pTree->m_dimension * sizeof(double) + sizeof(double) + sizeof(id_type) + sizeof(uint32_t))) +
 		m_totalDataLength +
 		(4 * m_pTree->m_dimension * sizeof(double)));
 }
@@ -56,13 +56,13 @@ void Node::loadFromByteArray(const byte* ptr)
 	m_nodeMBR = m_pTree->m_infiniteRegion;
 
 	// skip the node type information, it is not needed.
-	ptr += sizeof(size_t);
+	ptr += sizeof(uint32_t);
 
-	memcpy(&m_level, ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(&m_level, ptr, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 
-	memcpy(&m_children, ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(&m_children, ptr, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 
 	memcpy(&(m_nodeMBR.m_startTime), ptr, sizeof(double));
 	ptr += sizeof(double);
@@ -70,7 +70,7 @@ void Node::loadFromByteArray(const byte* ptr)
 	//memcpy(&(m_nodeMBR.m_endTime), ptr, sizeof(double));
 	//ptr += sizeof(double);
 
-	for (size_t cChild = 0; cChild < m_children; cChild++)
+	for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 	{
 		m_ptrMBR[cChild] = m_pTree->m_regionPool.acquire();
 		m_ptrMBR[cChild]->makeDimension(m_pTree->m_dimension);
@@ -90,8 +90,8 @@ void Node::loadFromByteArray(const byte* ptr)
 		memcpy(&(m_pIdentifier[cChild]), ptr, sizeof(id_type));
 		ptr += sizeof(id_type);
 
-		memcpy(&(m_pDataLength[cChild]), ptr, sizeof(size_t));
-		ptr += sizeof(size_t);
+		memcpy(&(m_pDataLength[cChild]), ptr, sizeof(uint32_t));
+		ptr += sizeof(uint32_t);
 
 		if (m_pDataLength[cChild] > 0)
 		{
@@ -118,31 +118,31 @@ void Node::loadFromByteArray(const byte* ptr)
 	//ptr += m_pTree->m_dimension * sizeof(double);
 }
 
-void Node::storeToByteArray(byte** data, size_t& len)
+void Node::storeToByteArray(byte** data, uint32_t& len)
 {
 	len = getByteArraySize();
 
 	*data = new byte[len];
 	byte* ptr = *data;
 
-	size_t nodeType;
+	uint32_t nodeType;
 
 	if (m_level == 0) nodeType = PersistentLeaf;
 	else nodeType = PersistentIndex;
 
-	memcpy(ptr, &nodeType, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(ptr, &nodeType, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 
-	memcpy(ptr, &m_level, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(ptr, &m_level, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 
-	memcpy(ptr, &m_children, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(ptr, &m_children, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 
 	memcpy(ptr, &(m_nodeMBR.m_startTime), sizeof(double));
 	ptr += sizeof(double);
 
-	for (size_t cChild = 0; cChild < m_children; cChild++)
+	for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 	{
 		memcpy(ptr, m_ptrMBR[cChild]->m_pLow, m_pTree->m_dimension * sizeof(double));
 		ptr += m_pTree->m_dimension * sizeof(double);
@@ -158,8 +158,8 @@ void Node::storeToByteArray(byte** data, size_t& len)
 		memcpy(ptr, &(m_pIdentifier[cChild]), sizeof(id_type));
 		ptr += sizeof(id_type);
 
-		memcpy(ptr, &(m_pDataLength[cChild]), sizeof(size_t));
-		ptr += sizeof(size_t);
+		memcpy(ptr, &(m_pDataLength[cChild]), sizeof(uint32_t));
+		ptr += sizeof(uint32_t);
 
 		if (m_pDataLength[cChild] > 0)
 		{
@@ -197,26 +197,26 @@ void Node::getShape(IShape** out) const
 //
 // SpatialIndex::INode interface
 //
-size_t Node::getChildrenCount() const
+uint32_t Node::getChildrenCount() const
 {
 	return m_children;
 }
 
-id_type Node::getChildIdentifier(size_t index) const
+id_type Node::getChildIdentifier(uint32_t index) const
 {
 	if (index < 0 || index >= m_children) throw Tools::IndexOutOfBoundsException(index);
 
 	return m_pIdentifier[index];
 }
 
-void Node::getChildShape(size_t index, IShape** out) const
+void Node::getChildShape(uint32_t index, IShape** out) const
 {
 	if (index < 0 || index >= m_children) throw Tools::IndexOutOfBoundsException(index);
 
 	*out = new MovingRegion(*(m_ptrMBR[index]));
 }
 
-void Node::getChildData(size_t index, size_t& length, byte** data) const
+void Node::getChildData(uint32_t index, uint32_t& length, byte** data) const
 {
         if (index < 0 || index >= m_children) throw Tools::IndexOutOfBoundsException(index);
         if (m_pData[index] == NULL) 
@@ -231,7 +231,7 @@ void Node::getChildData(size_t index, size_t& length, byte** data) const
         }
 }
 
-size_t Node::getLevel() const
+uint32_t Node::getLevel() const
 {
 	return m_level;
 }
@@ -264,7 +264,7 @@ Node::Node() :
 {
 }
 
-Node::Node(SpatialIndex::TPRTree::TPRTree* pTree, id_type id, size_t level, size_t capacity) :
+Node::Node(SpatialIndex::TPRTree::TPRTree* pTree, id_type id, uint32_t level, uint32_t capacity) :
 	m_pTree(pTree),
 	m_level(level),
 	m_identifier(id),
@@ -280,7 +280,7 @@ Node::Node(SpatialIndex::TPRTree::TPRTree* pTree, id_type id, size_t level, size
 
 	try
 	{
-		m_pDataLength = new size_t[m_capacity + 1];
+		m_pDataLength = new uint32_t[m_capacity + 1];
 		m_pData = new byte*[m_capacity + 1];
 		m_ptrMBR = new MovingRegionPtr[m_capacity + 1];
 		m_pIdentifier = new id_type[m_capacity + 1];
@@ -299,7 +299,7 @@ Node::~Node()
 {
 	if (m_pData != 0)
 	{
-		for (size_t cChild = 0; cChild < m_children; cChild++)
+		for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 		{
 			if (m_pData[cChild] != 0) delete[] m_pData[cChild];
 		}
@@ -317,7 +317,7 @@ Node& Node::operator=(const Node& n)
 	throw Tools::IllegalStateException("Node::operator =: This should never be called.");
 }
 
-bool Node::insertEntry(size_t dataLength, byte* pData, MovingRegion& mbr, id_type id)
+bool Node::insertEntry(uint32_t dataLength, byte* pData, MovingRegion& mbr, id_type id)
 {
 	assert(m_children < m_capacity);
 
@@ -330,20 +330,20 @@ bool Node::insertEntry(size_t dataLength, byte* pData, MovingRegion& mbr, id_typ
 	m_pIdentifier[m_children] = id;
 
 	m_totalDataLength += dataLength;
-	m_children++;
+	++m_children;
 
 	if (m_nodeMBR.m_startTime != m_pTree->m_currentTime)
 	{
 		m_nodeMBR.m_startTime = m_pTree->m_currentTime;
 
-		for (size_t cDim = 0; cDim < m_nodeMBR.m_dimension; cDim++)
+		for (uint32_t cDim = 0; cDim < m_nodeMBR.m_dimension; ++cDim)
 		{
 			m_nodeMBR.m_pLow[cDim] = std::numeric_limits<double>::max();
 			m_nodeMBR.m_pHigh[cDim] = -std::numeric_limits<double>::max();
 			m_nodeMBR.m_pVLow[cDim] = std::numeric_limits<double>::max();
 			m_nodeMBR.m_pVHigh[cDim] = -std::numeric_limits<double>::max();
 
-			for (size_t cChild = 0; cChild < m_children; cChild++)
+			for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 			{
 				m_nodeMBR.m_pLow[cDim] = std::min(m_nodeMBR.m_pLow[cDim], m_ptrMBR[cChild]->getExtrapolatedLow(cDim, m_nodeMBR.m_startTime));
 				m_nodeMBR.m_pHigh[cDim] = std::max(m_nodeMBR.m_pHigh[cDim], m_ptrMBR[cChild]->getExtrapolatedHigh(cDim, m_nodeMBR.m_startTime));
@@ -360,7 +360,7 @@ bool Node::insertEntry(size_t dataLength, byte* pData, MovingRegion& mbr, id_typ
 		//m_nodeMBR.m_pLow[0] != std::numeric_limits<double>::max() &&
 		! m_nodeMBR.containsRegionAfterTime(m_pTree->m_currentTime, mbr))
 	{
-		for (size_t cDim = 0; cDim < m_nodeMBR.m_dimension; cDim++)
+		for (uint32_t cDim = 0; cDim < m_nodeMBR.m_dimension; ++cDim)
 		{
 			double l = m_nodeMBR.getExtrapolatedLow(cDim, m_pTree->m_currentTime);
 			double rl = mbr.getExtrapolatedLow(cDim, m_pTree->m_currentTime);
@@ -384,7 +384,7 @@ bool Node::insertEntry(size_t dataLength, byte* pData, MovingRegion& mbr, id_typ
 	}
 
 #ifndef NDEBUG
-	for (size_t cChild = 0; cChild < m_children; cChild++)
+	for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 	{
 		assert(m_nodeMBR.containsRegionAfterTime(m_nodeMBR.m_startTime, *(m_ptrMBR[cChild])));
 	}
@@ -393,7 +393,7 @@ bool Node::insertEntry(size_t dataLength, byte* pData, MovingRegion& mbr, id_typ
 	return true;
 }
 
-void Node::deleteEntry(size_t index)
+void Node::deleteEntry(uint32_t index)
 {
 	assert(index >= 0 && index < m_children);
 
@@ -411,7 +411,7 @@ void Node::deleteEntry(size_t index)
 		m_pIdentifier[index] = m_pIdentifier[m_children - 1];
 	}
 
-	m_children--;
+	--m_children;
 
 	// WARNING: index has now changed. Do not use it below here.
 
@@ -423,14 +423,14 @@ void Node::deleteEntry(size_t index)
 	{
 		m_nodeMBR.m_startTime = m_pTree->m_currentTime;
 
-		for (size_t cDim = 0; cDim < m_nodeMBR.m_dimension; cDim++)
+		for (uint32_t cDim = 0; cDim < m_nodeMBR.m_dimension; ++cDim)
 		{
 			m_nodeMBR.m_pLow[cDim] = std::numeric_limits<double>::max();
 			m_nodeMBR.m_pHigh[cDim] = -std::numeric_limits<double>::max();
 			m_nodeMBR.m_pVLow[cDim] = std::numeric_limits<double>::max();
 			m_nodeMBR.m_pVHigh[cDim] = -std::numeric_limits<double>::max();
 
-			for (size_t cChild = 0; cChild < m_children; cChild++)
+			for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 			{
 				m_nodeMBR.m_pLow[cDim] = std::min(m_nodeMBR.m_pLow[cDim], m_ptrMBR[cChild]->getExtrapolatedLow(cDim, m_nodeMBR.m_startTime));
 				m_nodeMBR.m_pHigh[cDim] = std::max(m_nodeMBR.m_pHigh[cDim], m_ptrMBR[cChild]->getExtrapolatedHigh(cDim, m_nodeMBR.m_startTime));
@@ -442,7 +442,7 @@ void Node::deleteEntry(size_t index)
 		}
 
 #ifndef NDEBUG
-		for (size_t cChild = 0; cChild < m_children; cChild++)
+		for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 		{
 			assert(m_nodeMBR.containsRegionAfterTime(m_pTree->m_currentTime, *(m_ptrMBR[cChild])) == true);
 		}
@@ -450,7 +450,7 @@ void Node::deleteEntry(size_t index)
 	}
 }
 
-bool Node::insertData(size_t dataLength, byte* pData, MovingRegion& mbr, id_type id, std::stack<id_type>& pathBuffer, byte* overflowTable)
+bool Node::insertData(uint32_t dataLength, byte* pData, MovingRegion& mbr, id_type id, std::stack<id_type>& pathBuffer, byte* overflowTable)
 {
 	if (m_children < m_capacity)
 	{
@@ -471,32 +471,32 @@ bool Node::insertData(size_t dataLength, byte* pData, MovingRegion& mbr, id_type
 	{
 		overflowTable[m_level] = 1;
 
-		std::vector<size_t> vReinsert, vKeep;
+		std::vector<uint32_t> vReinsert, vKeep;
 		reinsertData(dataLength, pData, mbr, id, vReinsert, vKeep);
 
-		size_t lReinsert = vReinsert.size();
-		size_t lKeep = vKeep.size();
+		uint32_t lReinsert = static_cast<uint32_t>(vReinsert.size());
+		uint32_t lKeep = static_cast<uint32_t>(vKeep.size());
 
 		byte** reinsertdata = 0;
 		MovingRegionPtr* reinsertmbr = 0;
 		id_type* reinsertid = 0;
-		size_t* reinsertlen = 0;
+		uint32_t* reinsertlen = 0;
 		byte** keepdata = 0;
 		MovingRegionPtr* keepmbr = 0;
 		id_type* keepid = 0;
-		size_t* keeplen = 0;
+		uint32_t* keeplen = 0;
 
 		try
 		{
 			reinsertdata = new byte*[lReinsert];
 			reinsertmbr = new MovingRegionPtr[lReinsert];
 			reinsertid = new id_type[lReinsert];
-			reinsertlen = new size_t[lReinsert];
+			reinsertlen = new uint32_t[lReinsert];
 
 			keepdata = new byte*[m_capacity + 1];
 			keepmbr = new MovingRegionPtr[m_capacity + 1];
 			keepid = new id_type[m_capacity + 1];
-			keeplen = new size_t[m_capacity + 1];
+			keeplen = new uint32_t[m_capacity + 1];
 		}
 		catch (...)
 		{
@@ -511,9 +511,9 @@ bool Node::insertData(size_t dataLength, byte* pData, MovingRegion& mbr, id_type
 			throw;
 		}
 
-		size_t cIndex;
+		uint32_t cIndex;
 
-		for (cIndex = 0; cIndex < lReinsert; cIndex++)
+		for (cIndex = 0; cIndex < lReinsert; ++cIndex)
 		{
 			reinsertlen[cIndex] = m_pDataLength[vReinsert[cIndex]];
 			reinsertdata[cIndex] = m_pData[vReinsert[cIndex]];
@@ -521,7 +521,7 @@ bool Node::insertData(size_t dataLength, byte* pData, MovingRegion& mbr, id_type
 			reinsertid[cIndex] = m_pIdentifier[vReinsert[cIndex]];
 		}
 
-		for (cIndex = 0; cIndex < lKeep; cIndex++)
+		for (cIndex = 0; cIndex < lKeep; ++cIndex)
 		{
 			keeplen[cIndex] = m_pDataLength[vKeep[cIndex]];
 			keepdata[cIndex] = m_pData[vKeep[cIndex]];
@@ -541,18 +541,18 @@ bool Node::insertData(size_t dataLength, byte* pData, MovingRegion& mbr, id_type
 		m_children = lKeep;
 		m_totalDataLength = 0;
 
-		for (size_t cChild = 0; cChild < m_children; cChild++) m_totalDataLength += m_pDataLength[cChild];
+		for (uint32_t cChild = 0; cChild < m_children; ++cChild) m_totalDataLength += m_pDataLength[cChild];
 
 		m_nodeMBR.m_startTime = m_pTree->m_currentTime;
 
-		for (size_t cDim = 0; cDim < m_nodeMBR.m_dimension; cDim++)
+		for (uint32_t cDim = 0; cDim < m_nodeMBR.m_dimension; ++cDim)
 		{
 			m_nodeMBR.m_pLow[cDim] = std::numeric_limits<double>::max();
 			m_nodeMBR.m_pHigh[cDim] = -std::numeric_limits<double>::max();
 			m_nodeMBR.m_pVLow[cDim] = std::numeric_limits<double>::max();
 			m_nodeMBR.m_pVHigh[cDim] = -std::numeric_limits<double>::max();
 
-			for (size_t cChild = 0; cChild < m_children; cChild++)
+			for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 			{
 				m_nodeMBR.m_pLow[cDim] = std::min(m_nodeMBR.m_pLow[cDim], m_ptrMBR[cChild]->getExtrapolatedLow(cDim, m_nodeMBR.m_startTime));
 				m_nodeMBR.m_pHigh[cDim] = std::max(m_nodeMBR.m_pHigh[cDim], m_ptrMBR[cChild]->getExtrapolatedHigh(cDim, m_nodeMBR.m_startTime));
@@ -564,7 +564,7 @@ bool Node::insertData(size_t dataLength, byte* pData, MovingRegion& mbr, id_type
 		}
 
 #ifndef NDEBUG
-		for (size_t cChild = 0; cChild < m_children; cChild++)
+		for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 		{
 			assert(m_nodeMBR.containsRegionAfterTime(m_nodeMBR.m_startTime, *(m_ptrMBR[cChild])));
 		}
@@ -580,7 +580,7 @@ bool Node::insertData(size_t dataLength, byte* pData, MovingRegion& mbr, id_type
 		Index* p = static_cast<Index*>(ptrN.get());
 		p->adjustTree(this, pathBuffer);
 
-		for (cIndex = 0; cIndex < lReinsert; cIndex++)
+		for (cIndex = 0; cIndex < lReinsert; ++cIndex)
 		{
 			m_pTree->insertData_impl(
 				reinsertlen[cIndex], reinsertdata[cIndex],
@@ -609,11 +609,11 @@ bool Node::insertData(size_t dataLength, byte* pData, MovingRegion& mbr, id_type
 			nn->m_identifier = -1;
 
 #ifndef NDEBUG
-			for (size_t cChild = 0; cChild < n->m_children; cChild++)
+			for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
 			{
 				assert(n->m_nodeMBR.containsRegionAfterTime(n->m_nodeMBR.m_startTime, *(n->m_ptrMBR[cChild])) == true);
 			}
-			for (size_t cChild = 0; cChild < nn->m_children; cChild++)
+			for (uint32_t cChild = 0; cChild < nn->m_children; ++cChild)
 			{
 				assert(nn->m_nodeMBR.containsRegionAfterTime(nn->m_nodeMBR.m_startTime, *(nn->m_ptrMBR[cChild])) == true);
 			}
@@ -652,11 +652,11 @@ bool Node::insertData(size_t dataLength, byte* pData, MovingRegion& mbr, id_type
 			nn->m_identifier = -1;
 
 #ifndef NDEBUG
-			for (size_t cChild = 0; cChild < n->m_children; cChild++)
+			for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
 			{
 				assert(n->m_nodeMBR.containsRegionAfterTime(n->m_nodeMBR.m_startTime, *(n->m_ptrMBR[cChild])) == true);
 			}
-			for (size_t cChild = 0; cChild < nn->m_children; cChild++)
+			for (uint32_t cChild = 0; cChild < nn->m_children; ++cChild)
 			{
 				assert(nn->m_nodeMBR.containsRegionAfterTime(nn->m_nodeMBR.m_startTime, *(nn->m_ptrMBR[cChild])) == true);
 			}
@@ -675,7 +675,7 @@ bool Node::insertData(size_t dataLength, byte* pData, MovingRegion& mbr, id_type
 	}
 }
 
-void Node::reinsertData(size_t dataLength, byte* pData, MovingRegion& mbr, id_type id, std::vector<size_t>& reinsert, std::vector<size_t>& keep)
+void Node::reinsertData(uint32_t dataLength, byte* pData, MovingRegion& mbr, id_type id, std::vector<uint32_t>& reinsert, std::vector<uint32_t>& keep)
 {
 	ReinsertEntry** v = new ReinsertEntry*[m_capacity + 1];
 
@@ -687,7 +687,7 @@ void Node::reinsertData(size_t dataLength, byte* pData, MovingRegion& mbr, id_ty
 
 	Tools::Interval ivT(m_pTree->m_currentTime, m_pTree->m_currentTime + m_pTree->m_horizon);
 
-	for (size_t cChild = 0; cChild < m_capacity + 1; cChild++)
+	for (uint32_t cChild = 0; cChild < m_capacity + 1; ++cChild)
 	{
 		try
 		{
@@ -695,7 +695,7 @@ void Node::reinsertData(size_t dataLength, byte* pData, MovingRegion& mbr, id_ty
 		}
 		catch (...)
 		{
-			for (size_t i = 0; i < cChild; i++) delete v[i];
+			for (uint32_t i = 0; i < cChild; ++i) delete v[i];
 			delete[] v;
 			throw;
 		}
@@ -706,17 +706,17 @@ void Node::reinsertData(size_t dataLength, byte* pData, MovingRegion& mbr, id_ty
 	// sort by increasing order of distances.
 	::qsort(v, m_capacity + 1, sizeof(ReinsertEntry*), ReinsertEntry::compareReinsertEntry);
 
-	size_t cReinsert = static_cast<size_t>(std::floor((m_capacity + 1) * m_pTree->m_reinsertFactor));
+	uint32_t cReinsert = static_cast<uint32_t>(std::floor((m_capacity + 1) * m_pTree->m_reinsertFactor));
 
-	size_t cCount;
+	uint32_t cCount;
 
-	for (cCount = 0; cCount < cReinsert; cCount++)
+	for (cCount = 0; cCount < cReinsert; ++cCount)
 	{
 		reinsert.push_back(v[cCount]->m_index);
 		delete v[cCount];
 	}
 
-	for (cCount = cReinsert; cCount < m_capacity + 1; cCount++)
+	for (cCount = cReinsert; cCount < m_capacity + 1; ++cCount)
 	{
 		keep.push_back(v[cCount]->m_index);
 		delete v[cCount];
@@ -726,10 +726,10 @@ void Node::reinsertData(size_t dataLength, byte* pData, MovingRegion& mbr, id_ty
 }
 
 /*
-void Node::rtreeSplit(size_t dataLength, byte* pData, Region& mbr, id_type id, std::vector<size_t>& group1, std::vector<size_t>& group2)
+void Node::rtreeSplit(uint32_t dataLength, byte* pData, Region& mbr, id_type id, std::vector<uint32_t>& group1, std::vector<uint32_t>& group2)
 {
-	size_t cChild;
-	size_t minimumLoad = static_cast<size_t>(std::floor(m_capacity * m_pTree->m_fillFactor));
+	uint32_t cChild;
+	uint32_t minimumLoad = static_cast<uint32_t>(std::floor(m_capacity * m_pTree->m_fillFactor));
 
 	// use this mask array for marking visited entries.
 	byte* mask = new byte[m_capacity + 1];
@@ -744,7 +744,7 @@ void Node::rtreeSplit(size_t dataLength, byte* pData, Region& mbr, id_type id, s
 	m_pIdentifier[m_capacity] = id;
 
 	// initialize each group with the seed entries.
-	size_t seed1, seed2;
+	uint32_t seed1, seed2;
 	pickSeeds(seed1, seed2);
 
 	group1.push_back(seed1);
@@ -760,33 +760,33 @@ void Node::rtreeSplit(size_t dataLength, byte* pData, Region& mbr, id_type id, s
 	*mbr2 = *(m_ptrMBR[seed2]);
 
 	// count how many entries are left unchecked (exclude the seeds here.)
-	size_t cRemaining = m_capacity + 1 - 2;
+	uint32_t cRemaining = m_capacity + 1 - 2;
 
 	while (cRemaining > 0)
 	{
 		if (minimumLoad - group1.size() == cRemaining)
 		{
 			// all remaining entries must be assigned to group1 to comply with minimun load requirement.
-			for (cChild = 0; cChild < m_capacity + 1; cChild++)
+			for (cChild = 0; cChild < m_capacity + 1; ++cChild)
 			{
 				if (mask[cChild] == 0)
 				{
 					group1.push_back(cChild);
 					mask[cChild] = 1;
-					cRemaining--;
+					--cRemaining;
 				}
 			}
 		}
 		else if (minimumLoad - group2.size() == cRemaining)
 		{
 			// all remaining entries must be assigned to group2 to comply with minimun load requirement.
-			for (cChild = 0; cChild < m_capacity + 1; cChild++)
+			for (cChild = 0; cChild < m_capacity + 1; ++cChild)
 			{
 				if (mask[cChild] == 0)
 				{
 					group2.push_back(cChild);
 					mask[cChild] = 1;
-					cRemaining--;
+					--cRemaining;
 				}
 			}
 		}
@@ -795,7 +795,7 @@ void Node::rtreeSplit(size_t dataLength, byte* pData, Region& mbr, id_type id, s
 			// For all remaining entries compute the difference of the cost of grouping an
 			// entry in either group. When done, choose the entry that yielded the maximum
 			// difference. In case of linear split, select any entry (e.g. the first one.)
-			size_t sel;
+			uint32_t sel;
 			double md1 = 0.0, md2 = 0.0;
 			double m = -std::numeric_limits<double>::max();
 			double d1, d2, d;
@@ -805,7 +805,7 @@ void Node::rtreeSplit(size_t dataLength, byte* pData, Region& mbr, id_type id, s
 			RegionPtr a = m_pTree->m_regionPool.acquire();
 			RegionPtr b = m_pTree->m_regionPool.acquire();
 
-			for (cChild = 0; cChild < m_capacity + 1; cChild++)
+			for (cChild = 0; cChild < m_capacity + 1; ++cChild)
 			{
 				if (mask[cChild] == 0)
 				{
@@ -864,7 +864,7 @@ void Node::rtreeSplit(size_t dataLength, byte* pData, Region& mbr, id_type id, s
 				group = 1;
 			}
 			mask[sel] = 1;
-			cRemaining--;
+			--cRemaining;
 			if (group == 1)
 			{
 				mbr1->combineRegion(*(m_ptrMBR[sel]));
@@ -880,7 +880,7 @@ void Node::rtreeSplit(size_t dataLength, byte* pData, Region& mbr, id_type id, s
 }
 */
 
-void Node::rstarSplit(size_t dataLength, byte* pData, MovingRegion& mbr, id_type id, std::vector<size_t>& group1, std::vector<size_t>& group2)
+void Node::rstarSplit(uint32_t dataLength, byte* pData, MovingRegion& mbr, id_type id, std::vector<uint32_t>& group1, std::vector<uint32_t>& group2)
 {
 	RstarSplitEntry** dataLow = 0;
 	RstarSplitEntry** dataHigh = 0;
@@ -909,14 +909,14 @@ void Node::rstarSplit(size_t dataLength, byte* pData, MovingRegion& mbr, id_type
 	*(m_ptrMBR[m_capacity]) = mbr;
 	m_pIdentifier[m_capacity] = id;
 
-	size_t nodeSPF = static_cast<size_t>(std::floor((m_capacity + 1) * m_pTree->m_splitDistributionFactor));
-	size_t splitDistribution = (m_capacity + 1) - (2 * nodeSPF) + 2;
+	uint32_t nodeSPF = static_cast<uint32_t>(std::floor((m_capacity + 1) * m_pTree->m_splitDistributionFactor));
+	uint32_t splitDistribution = (m_capacity + 1) - (2 * nodeSPF) + 2;
 
 	Tools::Interval ivT(m_pTree->m_currentTime, m_pTree->m_currentTime + m_pTree->m_horizon);
 
-	size_t cChild = 0, cDim, cIndex;
+	uint32_t cChild = 0, cDim, cIndex;
 
-	for (cChild = 0; cChild <= m_capacity; cChild++)
+	for (cChild = 0; cChild <= m_capacity; ++cChild)
 	{
 		try
 		{
@@ -924,7 +924,7 @@ void Node::rstarSplit(size_t dataLength, byte* pData, MovingRegion& mbr, id_type
 		}
 		catch (...)
 		{
-			for (size_t i = 0; i < cChild; i++) delete dataLow[i];
+			for (uint32_t i = 0; i < cChild; ++i) delete dataLow[i];
 			delete[] dataLow;
 			delete[] dataHigh;
 			throw;
@@ -936,11 +936,11 @@ void Node::rstarSplit(size_t dataLength, byte* pData, MovingRegion& mbr, id_type
 	}
 
 	double minimumMargin = std::numeric_limits<double>::max();
-	size_t splitAxis = std::numeric_limits<size_t>::max();
-	size_t sortOrder = std::numeric_limits<size_t>::max();
+	uint32_t splitAxis = std::numeric_limits<uint32_t>::max();
+	uint32_t sortOrder = std::numeric_limits<uint32_t>::max();
 
 	// chooseSplitAxis.
-	for (cDim = 0; cDim < m_pTree->m_dimension; cDim++)
+	for (cDim = 0; cDim < m_pTree->m_dimension; ++cDim)
 	{
 		::qsort(dataLow, m_capacity + 1, sizeof(RstarSplitEntry*), RstarSplitEntry::compareLow);
 		::qsort(dataHigh, m_capacity + 1, sizeof(RstarSplitEntry*), RstarSplitEntry::compareHigh);
@@ -956,16 +956,16 @@ void Node::rstarSplit(size_t dataLength, byte* pData, MovingRegion& mbr, id_type
 		MovingRegion bbl1, bbl2, bbh1, bbh2;
 		MovingRegion bbvl1, bbvl2, bbvh1, bbvh2;
 
-		for (cChild = 1; cChild <= splitDistribution; cChild++)
+		for (cChild = 1; cChild <= splitDistribution; ++cChild)
 		{
-			size_t l = nodeSPF - 1 + cChild;
+			uint32_t l = nodeSPF - 1 + cChild;
 
 			bbl1 = *(dataLow[0]->m_pRegion);
 			bbh1 = *(dataHigh[0]->m_pRegion);
 			bbvl1 = *(dataVLow[0]->m_pRegion);
 			bbvh1 = *(dataVHigh[0]->m_pRegion);
 
-			for (cIndex = 1; cIndex < l; cIndex++)
+			for (cIndex = 1; cIndex < l; ++cIndex)
 			{
 				bbl1.combineRegionAfterTime(m_pTree->m_currentTime, *(dataLow[cIndex]->m_pRegion));
 				bbh1.combineRegionAfterTime(m_pTree->m_currentTime, *(dataHigh[cIndex]->m_pRegion));
@@ -978,7 +978,7 @@ void Node::rstarSplit(size_t dataLength, byte* pData, MovingRegion& mbr, id_type
 			bbvl2 = *(dataVLow[l]->m_pRegion);
 			bbvh2 = *(dataVHigh[l]->m_pRegion);
 
-			for (cIndex = l + 1; cIndex <= m_capacity; cIndex++)
+			for (cIndex = l + 1; cIndex <= m_capacity; ++cIndex)
 			{
 				bbl2.combineRegionAfterTime(m_pTree->m_currentTime, *(dataLow[cIndex]->m_pRegion));
 				bbh2.combineRegionAfterTime(m_pTree->m_currentTime, *(dataHigh[cIndex]->m_pRegion));
@@ -1006,13 +1006,13 @@ void Node::rstarSplit(size_t dataLength, byte* pData, MovingRegion& mbr, id_type
 		}
 
 		// increase the dimension according to which the data entries should be sorted.
-		for (cChild = 0; cChild <= m_capacity; cChild++)
+		for (cChild = 0; cChild <= m_capacity; ++cChild)
 		{
 			dataLow[cChild]->m_sortDim = cDim + 1;
 		}
 	} // for (cDim)
 
-	for (cChild = 0; cChild <= m_capacity; cChild++)
+	for (cChild = 0; cChild <= m_capacity; ++cChild)
 	{
 		dataLow[cChild]->m_sortDim = splitAxis;
 	}
@@ -1028,24 +1028,24 @@ void Node::rstarSplit(size_t dataLength, byte* pData, MovingRegion& mbr, id_type
 
 	double ma = std::numeric_limits<double>::max();
 	double mo = std::numeric_limits<double>::max();
-	size_t splitPoint = std::numeric_limits<size_t>::max();
+	uint32_t splitPoint = std::numeric_limits<uint32_t>::max();
 
 	MovingRegion bb1, bb2;
 
-	for (cChild = 1; cChild <= splitDistribution; cChild++)
+	for (cChild = 1; cChild <= splitDistribution; ++cChild)
 	{
-		size_t l = nodeSPF - 1 + cChild;
+		uint32_t l = nodeSPF - 1 + cChild;
 
 		bb1 = *(dataLow[0]->m_pRegion);
 
-		for (cIndex = 1; cIndex < l; cIndex++)
+		for (cIndex = 1; cIndex < l; ++cIndex)
 		{
 			bb1.combineRegionAfterTime(m_pTree->m_currentTime, *(dataLow[cIndex]->m_pRegion));
 		}
 
 		bb2 = *(dataLow[l]->m_pRegion);
 
-		for (cIndex = l + 1; cIndex <= m_capacity; cIndex++)
+		for (cIndex = l + 1; cIndex <= m_capacity; ++cIndex)
 		{
 			bb2.combineRegionAfterTime(m_pTree->m_currentTime, *(dataLow[cIndex]->m_pRegion));
 		}
@@ -1070,15 +1070,15 @@ void Node::rstarSplit(size_t dataLength, byte* pData, MovingRegion& mbr, id_type
 		}
 	} // for (cChild)
 
-	size_t l1 = nodeSPF - 1 + splitPoint;
+	uint32_t l1 = nodeSPF - 1 + splitPoint;
 
-	for (cIndex = 0; cIndex < l1; cIndex++)
+	for (cIndex = 0; cIndex < l1; ++cIndex)
 	{
 		group1.push_back(dataLow[cIndex]->m_index);
 		delete dataLow[cIndex];
 	}
 
-	for (cIndex = l1; cIndex <= m_capacity; cIndex++)
+	for (cIndex = l1; cIndex <= m_capacity; ++cIndex)
 	{
 		group2.push_back(dataLow[cIndex]->m_index);
 		delete dataLow[cIndex];
@@ -1091,25 +1091,25 @@ void Node::rstarSplit(size_t dataLength, byte* pData, MovingRegion& mbr, id_type
 }
 
 /*
-void Node::pickSeeds(size_t& index1, size_t& index2)
+void Node::pickSeeds(uint32_t& index1, uint32_t& index2)
 {
 	double separation = -std::numeric_limits<double>::max();
 	double inefficiency = -std::numeric_limits<double>::max();
-	size_t cDim, cChild, cIndex;
+	uint32_t cDim, cChild, cIndex;
 
 	switch (m_pTree->m_treeVariant)
 	{
 		case RV_LINEAR:
 		case RV_RSTAR:
-			for (cDim = 0; cDim < m_pTree->m_dimension; cDim++)
+			for (cDim = 0; cDim < m_pTree->m_dimension; ++cDim)
 			{
 				double leastLower = m_ptrMBR[0]->m_pLow[cDim];
 				double greatestUpper = m_ptrMBR[0]->m_pHigh[cDim];
-				size_t greatestLower = 0;
-				size_t leastUpper = 0;
+				uint32_t greatestLower = 0;
+				uint32_t leastUpper = 0;
 				double width;
 
-				for (cChild = 1; cChild <= m_capacity; cChild++)
+				for (cChild = 1; cChild <= m_capacity; ++cChild)
 				{
 					if (m_ptrMBR[cChild]->m_pLow[cDim] > m_ptrMBR[greatestLower]->m_pLow[cDim]) greatestLower = cChild;
 					if (m_ptrMBR[cChild]->m_pHigh[cDim] < m_ptrMBR[leastUpper]->m_pHigh[cDim]) leastUpper = cChild;
@@ -1133,18 +1133,18 @@ void Node::pickSeeds(size_t& index1, size_t& index2)
 
 			if (index1 == index2)
 			{
- 				if (index2 == 0) index2++;
- 				else index2--;
+ 				if (index2 == 0) ++index2;
+ 				else --index2;
 			}
 
 			break;
 		case RV_QUADRATIC:
 			// for each pair of Regions (account for overflow Region too!)
-			for (cChild = 0; cChild < m_capacity; cChild++)
+			for (cChild = 0; cChild < m_capacity; ++cChild)
 			{
 				double a = m_ptrMBR[cChild]->getArea();
 
-				for (cIndex = cChild + 1; cIndex <= m_capacity; cIndex++)
+				for (cIndex = cChild + 1; cIndex <= m_capacity; ++cIndex)
 				{
 					// get the combined MBR of those two entries.
 					Region r;
@@ -1171,7 +1171,7 @@ void Node::pickSeeds(size_t& index1, size_t& index2)
 
 void Node::condenseTree(std::stack<NodePtr>& toReinsert, std::stack<id_type>& pathBuffer, NodePtr& ptrThis)
 {
-	size_t minimumLoad = static_cast<size_t>(std::floor(m_capacity * m_pTree->m_fillFactor));
+	uint32_t minimumLoad = static_cast<uint32_t>(std::floor(m_capacity * m_pTree->m_fillFactor));
 
 	if (pathBuffer.empty())
 	{
@@ -1196,9 +1196,9 @@ void Node::condenseTree(std::stack<NodePtr>& toReinsert, std::stack<id_type>& pa
 		Index* p = static_cast<Index*>(ptrParent.get());
 
 		// find the entry in the parent, that points to this node.
-		size_t child;
+		uint32_t child;
 
-		for (child = 0; child != p->m_children; child++)
+		for (child = 0; child != p->m_children; ++child)
 		{
 			if (p->m_pIdentifier[child] == m_identifier) break;
 		}
@@ -1223,14 +1223,14 @@ void Node::condenseTree(std::stack<NodePtr>& toReinsert, std::stack<id_type>& pa
 
 				p->m_nodeMBR.m_startTime = m_pTree->m_currentTime;
 
-				for (size_t cDim = 0; cDim < p->m_nodeMBR.m_dimension; cDim++)
+				for (uint32_t cDim = 0; cDim < p->m_nodeMBR.m_dimension; ++cDim)
 				{
 					p->m_nodeMBR.m_pLow[cDim] = std::numeric_limits<double>::max();
 					p->m_nodeMBR.m_pHigh[cDim] = -std::numeric_limits<double>::max();
 					p->m_nodeMBR.m_pVLow[cDim] = std::numeric_limits<double>::max();
 					p->m_nodeMBR.m_pVHigh[cDim] = -std::numeric_limits<double>::max();
 
-					for (size_t cChild = 0; cChild < p->m_children; cChild++)
+					for (uint32_t cChild = 0; cChild < p->m_children; ++cChild)
 					{
 						p->m_nodeMBR.m_pLow[cDim] = std::min(p->m_nodeMBR.m_pLow[cDim], p->m_ptrMBR[cChild]->getExtrapolatedLow(cDim, m_pTree->m_currentTime));
 						p->m_nodeMBR.m_pHigh[cDim] = std::max(p->m_nodeMBR.m_pHigh[cDim], p->m_ptrMBR[cChild]->getExtrapolatedHigh(cDim, m_pTree->m_currentTime));

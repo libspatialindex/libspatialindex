@@ -30,12 +30,12 @@ TimePoint::TimePoint()
 {
 }
 
-TimePoint::TimePoint(const double* pCoords, const IInterval& ti, size_t dimension)
+TimePoint::TimePoint(const double* pCoords, const IInterval& ti, uint32_t dimension)
 	: Point(pCoords, dimension), m_startTime(ti.getLowerBound()), m_endTime(ti.getUpperBound())
 {
 }
 
-TimePoint::TimePoint(const double* pCoords, double tStart, double tEnd, size_t dimension)
+TimePoint::TimePoint(const double* pCoords, double tStart, double tEnd, uint32_t dimension)
 	: Point(pCoords, dimension), m_startTime(tStart), m_endTime(tEnd)
 {
 }
@@ -85,7 +85,7 @@ bool TimePoint::operator==(const TimePoint& p) const
 		m_endTime > p.m_endTime + std::numeric_limits<double>::epsilon())
 		return false;
 
-	for (size_t cDim = 0; cDim < m_dimension; cDim++)
+	for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
 	{
 		if (
 			m_pCoords[cDim] < p.m_pCoords[cDim] - std::numeric_limits<double>::epsilon() ||
@@ -107,16 +107,16 @@ TimePoint* TimePoint::clone()
 //
 // ISerializable interface
 //
-size_t TimePoint::getByteArraySize()
+uint32_t TimePoint::getByteArraySize()
 {
-	return (sizeof(size_t) + 2 * sizeof(double) + m_dimension * sizeof(double));
+	return (sizeof(uint32_t) + 2 * sizeof(double) + m_dimension * sizeof(double));
 }
 
 void TimePoint::loadFromByteArray(const byte* ptr)
 {
-	size_t dimension;
-	memcpy(&dimension, ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
+	uint32_t dimension;
+	memcpy(&dimension, ptr, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 	memcpy(&m_startTime, ptr, sizeof(double));
 	ptr += sizeof(double);
 	memcpy(&m_endTime, ptr, sizeof(double));
@@ -127,14 +127,14 @@ void TimePoint::loadFromByteArray(const byte* ptr)
 	//ptr += m_dimension * sizeof(double);
 }
 
-void TimePoint::storeToByteArray(byte** data, size_t& len)
+void TimePoint::storeToByteArray(byte** data, uint32_t& len)
 {
 	len = getByteArraySize();
 	*data = new byte[len];
 	byte* ptr = *data;
 
-	memcpy(ptr, &m_dimension, sizeof(size_t));
-	ptr += sizeof(size_t);
+	memcpy(ptr, &m_dimension, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 	memcpy(ptr, &m_startTime, sizeof(double));
 	ptr += sizeof(double);
 	memcpy(ptr, &m_endTime, sizeof(double));
@@ -256,10 +256,10 @@ Tools::IntervalType TimePoint::getIntervalType() const
 	return Tools::IT_RIGHTOPEN;
 }
 
-void TimePoint::makeInfinite(size_t dimension)
+void TimePoint::makeInfinite(uint32_t dimension)
 {
 	makeDimension(dimension);
-	for (size_t cIndex = 0; cIndex < m_dimension; cIndex++)
+	for (uint32_t cIndex = 0; cIndex < m_dimension; ++cIndex)
 	{
 		m_pCoords[cIndex] = std::numeric_limits<double>::max();
 	}
@@ -268,7 +268,7 @@ void TimePoint::makeInfinite(size_t dimension)
 	m_endTime = -std::numeric_limits<double>::max();
 }
 
-void TimePoint::makeDimension(size_t dimension)
+void TimePoint::makeDimension(uint32_t dimension)
 {
 	if (m_dimension != dimension)
 	{
@@ -283,9 +283,9 @@ void TimePoint::makeDimension(size_t dimension)
 
 std::ostream& SpatialIndex::operator<<(std::ostream& os, const TimePoint& pt)
 {
-	size_t i;
+	uint32_t i;
 
-	for (i = 0; i < pt.m_dimension; i++)
+	for (i = 0; i < pt.m_dimension; ++i)
 	{
 		os << pt.m_pCoords[i] << " ";
 	}

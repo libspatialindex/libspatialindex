@@ -95,13 +95,13 @@ void Tools::PropertySet::loadFromByteArray(const byte* ptr)
 {
 	m_propertySet.clear();
 
-	size_t numberOfProperties;
-	memcpy(&numberOfProperties, ptr, sizeof(size_t));
-	ptr += sizeof(size_t);
+	uint32_t numberOfProperties;
+	memcpy(&numberOfProperties, ptr, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 
 	Variant v;
 
-	for (size_t cIndex = 0; cIndex < numberOfProperties; cIndex++)
+	for (uint32_t cIndex = 0; cIndex < numberOfProperties; ++cIndex)
 	{
 		std::string s(reinterpret_cast<const char*>(ptr));
 		ptr += s.size() + 1;
@@ -186,12 +186,12 @@ void Tools::PropertySet::loadFromByteArray(const byte* ptr)
 	}
 }
 
-size_t Tools::PropertySet::getByteArraySize()
+uint32_t Tools::PropertySet::getByteArraySize()
 {
-	size_t size = sizeof(size_t);
+	uint32_t size = sizeof(uint32_t);
 	std::map<std::string, Variant>::iterator it;
 
-	for (it = m_propertySet.begin(); it != m_propertySet.end(); it++)
+	for (it = m_propertySet.begin(); it != m_propertySet.end(); ++it)
 	{
 		switch ((*it).second.m_varType)
 		{
@@ -233,31 +233,31 @@ size_t Tools::PropertySet::getByteArraySize()
 				"Tools::PropertySet::getSize: Unknown type."
 			);
 		}
-		size += (*it).first.size() + 1 + sizeof(VariantType);
+		size += static_cast<uint32_t>((*it).first.size()) + 1 + sizeof(VariantType);
 	}
 
 	return size;
 }
 
-void Tools::PropertySet::storeToByteArray(byte** data, size_t& length)
+void Tools::PropertySet::storeToByteArray(byte** data, uint32_t& length)
 {
 	length = getByteArraySize();
 	*data = new byte[length];
 	byte* ptr = *data;
 
-	size_t numberOfProperties = m_propertySet.size();
-	memcpy(ptr, &numberOfProperties, sizeof(size_t));
-	ptr += sizeof(size_t);
+	uint32_t numberOfProperties = static_cast<uint32_t>(m_propertySet.size());
+	memcpy(ptr, &numberOfProperties, sizeof(uint32_t));
+	ptr += sizeof(uint32_t);
 
 	std::map<std::string, Variant>::iterator it;
 
-	for (it = m_propertySet.begin(); it != m_propertySet.end(); it++)
+	for (it = m_propertySet.begin(); it != m_propertySet.end(); ++it)
 	{
 		size_t strSize = (*it).first.size();
 		memcpy(ptr, (*it).first.c_str(), strSize);
 		ptr += strSize;
 		*ptr = 0;
-		ptr++;
+		++ptr;
 
 		memcpy(ptr, &((*it).second.m_varType), sizeof(VariantType));
 		ptr += sizeof(VariantType);
@@ -519,7 +519,7 @@ Tools::IntervalType Tools::Interval::getIntervalType() const
 Tools::Random::Random()
 {
 	m_pBuffer = 0;
-	initDrand(time(0), 0xD31A);
+	initDrand(static_cast<uint32_t>(time(0)), 0xD31A);
 }
 
 Tools::Random::Random(uint32_t seed, uint16_t xsubi0)
@@ -650,7 +650,7 @@ std::ostream& Tools::operator<<(std::ostream& os, const Tools::PropertySet& p)
 {
 	std::map<std::string, Variant>::const_iterator it;
 
-	for (it = p.m_propertySet.begin(); it != p.m_propertySet.end(); it++)
+	for (it = p.m_propertySet.begin(); it != p.m_propertySet.end(); ++it)
 	{
 		if (it != p.m_propertySet.begin()) os << ", ";
 
@@ -715,8 +715,8 @@ std::ostream& Tools::operator<<(std::ostream& os, const Tools::Interval& iv)
 //
 // BufferedFile
 //
-Tools::BufferedFile::BufferedFile(size_t stBufferSize)
-: m_buffer(new char[stBufferSize]), m_stBufferSize(stBufferSize), m_bEOF(true)
+Tools::BufferedFile::BufferedFile(uint32_t u32BufferSize)
+: m_buffer(new char[u32BufferSize]), m_u32BufferSize(u32BufferSize), m_bEOF(true)
 {
 }
 
@@ -743,8 +743,8 @@ Tools::BufferedFileReader::BufferedFileReader()
 {
 }
 
-Tools::BufferedFileReader::BufferedFileReader(const std::string& sFileName, size_t stBufferSize)
-: BufferedFile(stBufferSize)
+Tools::BufferedFileReader::BufferedFileReader(const std::string& sFileName, uint32_t u32BufferSize)
+: BufferedFile(u32BufferSize)
 {
 	open(sFileName);
 }
@@ -759,7 +759,7 @@ void Tools::BufferedFileReader::open(const std::string& sFileName)
 	if (! m_file.good())
 		throw std::ios_base::failure("Tools::BufferedFileReader::BufferedFileReader: Cannot open file.");
 
-	m_file.rdbuf()->pubsetbuf(m_buffer, m_stBufferSize);
+	m_file.rdbuf()->pubsetbuf(m_buffer, m_u32BufferSize);
 }
 
 Tools::BufferedFileReader::~BufferedFileReader()
@@ -887,8 +887,8 @@ std::string Tools::BufferedFileReader::readString()
 {
 	if (m_bEOF) throw Tools::EndOfStreamException("");
 
-	std::string::size_type len;
-	m_file.read(reinterpret_cast<char*>(&len), sizeof(std::string::size_type));
+	uint32_t len;
+	m_file.read(reinterpret_cast<char*>(&len), sizeof(uint32_t));
 	if (! m_file.good())
 	{
 		m_bEOF = true;
@@ -932,8 +932,8 @@ Tools::BufferedFileWriter::BufferedFileWriter()
 	open("");
 }
 
-Tools::BufferedFileWriter::BufferedFileWriter(const std::string& sFileName, FileMode mode, size_t stBufferSize)
-: BufferedFile(stBufferSize)
+Tools::BufferedFileWriter::BufferedFileWriter(const std::string& sFileName, FileMode mode, uint32_t u32BufferSize)
+: BufferedFile(u32BufferSize)
 {
 	open(sFileName, mode);
 }
@@ -1041,8 +1041,8 @@ void Tools::BufferedFileWriter::write(bool b)
 
 void Tools::BufferedFileWriter::write(const std::string& s)
 {
-	std::string::size_type len = s.size();
-	m_file.write(reinterpret_cast<const char*>(&len), sizeof(std::string::size_type));
+	uint32_t len = static_cast<uint32_t>(s.size());
+	m_file.write(reinterpret_cast<const char*>(&len), sizeof(uint32_t));
 	if (! m_file.good()) throw std::ios_base::failure("");
 	m_file.write(reinterpret_cast<const char*>(s.c_str()), len * sizeof(std::string::value_type));
 	if (! m_file.good()) throw std::ios_base::failure("");
