@@ -110,15 +110,13 @@ void ExternalSorter::Record::loadFromFile(Tools::TemporaryFile& f)
 //
 ExternalSorter::ExternalSorter(uint32_t u32PageSize, uint32_t u32BufferPages)
 : m_bInsertionPhase(true), m_u32PageSize(u32PageSize),
-  m_u32BufferPages(u32BufferPages), m_sortedFile(0), m_u64TotalEntries(0), m_stI(0)
+  m_u32BufferPages(u32BufferPages), m_u64TotalEntries(0), m_stI(0)
 {
 }
 
 ExternalSorter::~ExternalSorter()
 {
-	delete m_sortedFile;
 	for (m_stI = 0; m_stI < m_buffer.size(); ++m_stI) delete m_buffer[m_stI];
-
 }
 
 void ExternalSorter::insert(Record* r)
@@ -142,7 +140,7 @@ void ExternalSorter::insert(Record* r)
 		}
 		m_buffer.clear();
 		tf->rewindForReading();
-		m_runs.push_back(tf);
+		m_runs.push_back(Tools::SmartPointer<Tools::TemporaryFile>(tf));
 	}
 }
 
@@ -172,7 +170,7 @@ void ExternalSorter::sort()
 		}
 		m_buffer.clear();
 		tf->rewindForReading();
-		m_runs.push_back(tf);
+		m_runs.push_back(Tools::SmartPointer<Tools::TemporaryFile>(tf));
 	}
 
 	if (m_runs.size() == 1)
@@ -185,13 +183,13 @@ void ExternalSorter::sort()
 
 		while (m_runs.size() > 1)
 		{
-			Tools::TemporaryFile* tf = new Tools::TemporaryFile();
-			std::vector<Tools::TemporaryFile*> buckets;
+			Tools::SmartPointer<Tools::TemporaryFile> tf(new Tools::TemporaryFile());
+			std::vector<Tools::SmartPointer<Tools::TemporaryFile> > buckets;
 			std::vector<std::queue<Record*> > buffers;
 			std::priority_queue<PQEntry, std::vector<PQEntry>, PQEntry::SortAscending> pq;
 
 			// initialize buffers and priority queue.
-			std::list<Tools::TemporaryFile*>::iterator it = m_runs.begin();
+			std::list<Tools::SmartPointer<Tools::TemporaryFile> >::iterator it = m_runs.begin();
 			for (uint32_t i = 0; i < (std::min)(static_cast<uint32_t>(m_runs.size()), m_u32BufferPages); ++i)
 			{
 				buckets.push_back(*it);
@@ -259,7 +257,6 @@ void ExternalSorter::sort()
 			uint32_t u32Count = std::min(static_cast<uint32_t>(m_runs.size()), m_u32BufferPages);
 			for (uint32_t i = 0; i < u32Count; ++i)
 			{
-				delete m_runs.front();
 				m_runs.pop_front();
 			}
 
@@ -281,13 +278,11 @@ void ExternalSorter::sort()
 ExternalSorter::Record* ExternalSorter::getNextRecord()
 {
 	if (m_bInsertionPhase == true)
-		throw Tools::IllegalStateException(
-			"ExternalSorter::getNextRecord: Input has not been sorted yet."
-		);
+		throw Tools::IllegalStateException("ExternalSorter::getNextRecord: Input has not been sorted yet.");
 
 	Record* ret;
 
-	if (m_sortedFile == 0)
+	if (m_sortedFile.get() == 0)
 	{
 		if (m_stI < m_buffer.size())
 		{
@@ -307,15 +302,6 @@ ExternalSorter::Record* ExternalSorter::getNextRecord()
 	return ret;
 }
 
-void ExternalSorter::rewind()
-{
-	if (m_bInsertionPhase == true)
-		throw Tools::IllegalStateException("ExternalSorter::rewind: Input has not been sorted yet.");
-
-	if (m_sortedFile != 0) m_sortedFile->rewindForReading();
-	else m_stI = 0;
-}
-
 inline uint64_t ExternalSorter::getTotalEntries() const
 {
 	return m_u64TotalEntries;
@@ -332,6 +318,11 @@ void BulkLoader::bulkLoadUsingSTR(
 	uint32_t pageSize,
 	uint32_t numberOfPages
 ) {
+	if (! stream.hasNext())
+		throw Tools::IllegalArgumentException(
+			"RTree::BulkLoader::bulkLoadUsingSTR: Empty data stream given."
+		);
+
 	NodePtr n = pTree->readNode(pTree->m_rootID);
 	pTree->deleteNode(n.get());
 
@@ -370,7 +361,6 @@ void BulkLoader::bulkLoadUsingSTR(
 
 		Tools::SmartPointer<ExternalSorter> es2 = Tools::SmartPointer<ExternalSorter>(new ExternalSorter(pageSize, numberOfPages));
 		createLevel(pTree, es, 0, bleaf, bindex, level++, es2, pageSize, numberOfPages);
-		
 		es = es2;
 
 		if (es->getTotalEntries() == 1) break;

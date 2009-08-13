@@ -64,7 +64,6 @@ namespace SpatialIndex
 			void insert(Record* r);
 			void sort();
 			Record* getNextRecord();
-			void rewind();
 			uint64_t getTotalEntries() const;
 
 		private:
@@ -90,8 +89,8 @@ namespace SpatialIndex
 			bool m_bInsertionPhase;
 			uint32_t m_u32PageSize;
 			uint32_t m_u32BufferPages;
-			Tools::TemporaryFile* m_sortedFile;
-			std::list<Tools::TemporaryFile*> m_runs;
+			Tools::SmartPointer<Tools::TemporaryFile> m_sortedFile;
+			std::list<Tools::SmartPointer<Tools::TemporaryFile> > m_runs;
 			std::vector<Record*> m_buffer;
 			uint64_t m_u64TotalEntries;
 			uint32_t m_stI;
