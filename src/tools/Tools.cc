@@ -353,7 +353,7 @@ Tools::Variant Tools::PropertySet::getProperty(std::string property)
 void Tools::PropertySet::setProperty(std::string property, Variant& v)
 {
 #ifdef HAVE_PTHREAD_H
-	Tools::ExclusiveLock lock(&m_rwLock);
+    // Tools::ExclusiveLock lock(&m_rwLock);
 #else
 	if (m_rwLock == false) m_rwLock = true;
 	else throw Tools::EndOfStreamException("setProperty: cannot acquire an exclusive lock");
