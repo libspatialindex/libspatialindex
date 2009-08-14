@@ -322,22 +322,66 @@ void Tools::PropertySet::storeToByteArray(byte** data, uint32_t& length)
 
 Tools::Variant Tools::PropertySet::getProperty(std::string property)
 {
-	std::map<std::string, Variant>::iterator it = m_propertySet.find(property);
+#ifdef HAVE_PTHREAD_H
+    // Tools::SharedLock lock(&m_rwLock);
+#else
+	if (m_rwLock == false) m_rwLock = true;
+	else throw Tools::IllegalStateException("getProperty: cannot acquire an shared lock");
+#endif
 
-	if (it != m_propertySet.end()) return (*it).second;
-	else return Variant();
+	try
+	{
+    	std::map<std::string, Variant>::iterator it = m_propertySet.find(property);
+
+    	if (it != m_propertySet.end()) return (*it).second;
+    	else return Variant();
+	
+#ifndef HAVE_PTHREAD_H
+		m_rwLock = false;
+#endif
+
+	}
+	catch (...)
+	{
+#ifndef HAVE_PTHREAD_H
+		m_rwLock = false;
+#endif
+		throw;
+	}
 }
 
 void Tools::PropertySet::setProperty(std::string property, Variant& v)
 {
-	std::pair<std::map<std::string, Variant>::iterator, bool> ret;
-	std::map<std::string, Variant>::iterator it;
-	
-	ret = m_propertySet.insert(std::pair<std::string, Variant>(property, v));
+#ifdef HAVE_PTHREAD_H
+	Tools::ExclusiveLock lock(&m_rwLock);
+#else
+	if (m_rwLock == false) m_rwLock = true;
+	else throw Tools::EndOfStreamException("setProperty: cannot acquire an exclusive lock");
+#endif
 
-	// If we weren't able to insert because it is already in the map
-	// update our existing value
-	if (ret.second == false) ret.first->second = v;
+	try
+	{
+    	std::pair<std::map<std::string, Variant>::iterator, bool> ret;
+    	std::map<std::string, Variant>::iterator it;
+	
+    	ret = m_propertySet.insert(std::pair<std::string, Variant>(property, v));
+
+    	// If we weren't able to insert because it is already in the map
+    	// update our existing value
+    	if (ret.second == false) ret.first->second = v;
+
+#ifndef HAVE_PTHREAD_H
+		m_rwLock = false;
+#endif
+
+	}
+	catch (...)
+	{
+#ifndef HAVE_PTHREAD_H
+		m_rwLock = false;
+#endif
+		throw;
+	}
 }
 
 void Tools::PropertySet::removeProperty(std::string property)

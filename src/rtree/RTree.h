@@ -136,7 +136,7 @@ namespace SpatialIndex
 			std::vector<Tools::SmartPointer<ICommand> > m_readNodeCommands;
 			std::vector<Tools::SmartPointer<ICommand> > m_deleteNodeCommands;
 
-#ifdef PTHREADS
+#ifdef HAVE_PTHREAD_H
 			pthread_rwlock_t m_rwLock;
 #else
 			bool m_rwLock;

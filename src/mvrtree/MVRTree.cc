@@ -210,7 +210,7 @@ SpatialIndex::MVRTree::MVRTree::MVRTree(IStorageManager& sm, Tools::PropertySet&
 	m_indexPool(100),
 	m_leafPool(100)
 {
-#ifdef PTHREADS
+#ifdef HAVE_PTHREAD_H
 	pthread_rwlock_init(&m_rwLock, NULL);
 #else
 	m_rwLock = false;
@@ -237,7 +237,7 @@ SpatialIndex::MVRTree::MVRTree::MVRTree(IStorageManager& sm, Tools::PropertySet&
 
 SpatialIndex::MVRTree::MVRTree::~MVRTree()
 {
-#ifdef PTHREADS
+#ifdef HAVE_PTHREAD_H
 	pthread_rwlock_destroy(&m_rwLock);
 #endif
 
@@ -255,7 +255,7 @@ void SpatialIndex::MVRTree::MVRTree::insertData(uint32_t len, const byte* pData,
 	if (ti == 0) throw Tools::IllegalArgumentException("insertData: Shape does not support the Tools::IInterval interface.");
 	if (ti->getLowerBound() < m_currentTime) throw Tools::IllegalArgumentException("insertData: Shape start time is older than tree current time.");
 
-#ifdef PTHREADS
+#ifdef HAVE_PTHREAD_H
 	Tools::ExclusiveLock lock(&m_rwLock);
 #else
 	if (m_rwLock == false) m_rwLock = true;
@@ -287,13 +287,13 @@ void SpatialIndex::MVRTree::MVRTree::insertData(uint32_t len, const byte* pData,
 		insertData_impl(len, buffer, *mbr, id);
 			// the buffer is stored in the tree. Do not delete here.
 
-#ifndef PTHREADS
+#ifndef HAVE_PTHREAD_H
 		m_rwLock = false;
 #endif
 	}
 	catch (...)
 	{
-#ifndef PTHREADS
+#ifndef HAVE_PTHREAD_H
 		m_rwLock = false;
 #endif
 		throw;
@@ -306,7 +306,7 @@ bool SpatialIndex::MVRTree::MVRTree::deleteData(const IShape& shape, id_type id)
 	const Tools::IInterval* ti = dynamic_cast<const Tools::IInterval*>(&shape);
 	if (ti == 0) throw Tools::IllegalArgumentException("deleteData: Shape does not support the Tools::IInterval interface.");
 
-#ifdef PTHREADS
+#ifdef HAVE_PTHREAD_H
 	Tools::ExclusiveLock lock(&m_rwLock);
 #else
 	if (m_rwLock == false) m_rwLock = true;
@@ -328,7 +328,7 @@ bool SpatialIndex::MVRTree::MVRTree::deleteData(const IShape& shape, id_type id)
 
 		bool ret = deleteData_impl(*mbr, id);
 
-#ifndef PTHREADS
+#ifndef HAVE_PTHREAD_H
 		m_rwLock = false;
 #endif
 
@@ -336,7 +336,7 @@ bool SpatialIndex::MVRTree::MVRTree::deleteData(const IShape& shape, id_type id)
 	}
 	catch (...)
 	{
-#ifndef PTHREADS
+#ifndef HAVE_PTHREAD_H
 		m_rwLock = false;
 #endif
 		throw;
@@ -383,7 +383,7 @@ void SpatialIndex::MVRTree::MVRTree::selfJoinQuery(const IShape& query, IVisitor
 
 void SpatialIndex::MVRTree::MVRTree::queryStrategy(IQueryStrategy& qs)
 {
-#ifdef PTHREADS
+#ifdef HAVE_PTHREAD_H
 	Tools::SharedLock lock(&m_rwLock);
 #else
 	if (m_rwLock == false) m_rwLock = true;
@@ -401,13 +401,13 @@ void SpatialIndex::MVRTree::MVRTree::queryStrategy(IQueryStrategy& qs)
 			qs.getNextEntry(*n, next, hasNext);
 		}
 
-#ifndef PTHREADS
+#ifndef HAVE_PTHREAD_H
 		m_rwLock = false;
 #endif
 	}
 	catch (...)
 	{
-#ifndef PTHREADS
+#ifndef HAVE_PTHREAD_H
 		m_rwLock = false;
 #endif
 		throw;
@@ -1282,7 +1282,7 @@ void SpatialIndex::MVRTree::MVRTree::rangeQuery(RangeQueryType type, const IShap
 	const Tools::IInterval* ti = dynamic_cast<const Tools::IInterval*>(&query);
 	if (ti == 0) throw Tools::IllegalArgumentException("rangeQuery: Shape does not support the Tools::IInterval interface.");
 
-#ifdef PTHREADS
+#ifdef HAVE_PTHREAD_H
 	Tools::SharedLock lock(&m_rwLock);
 #else
 	if (m_rwLock == false) m_rwLock = true;
@@ -1344,13 +1344,13 @@ void SpatialIndex::MVRTree::MVRTree::rangeQuery(RangeQueryType type, const IShap
 			}
 		}
 
-#ifndef PTHREADS
+#ifndef HAVE_PTHREAD_H
 		m_rwLock = false;
 #endif
 	}
 	catch (...)
 	{
-#ifndef PTHREADS
+#ifndef HAVE_PTHREAD_H
 		m_rwLock = false;
 #endif
 		throw;

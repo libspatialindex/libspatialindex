@@ -359,7 +359,7 @@ SpatialIndex::RTree::RTree::RTree(IStorageManager& sm, Tools::PropertySet& ps) :
 	m_indexPool(100),
 	m_leafPool(100)
 {
-#ifdef PTHREADS
+#ifdef HAVE_PTHREAD_H
 	pthread_rwlock_init(&m_rwLock, NULL);
 #else
 	m_rwLock = false;
@@ -386,7 +386,7 @@ SpatialIndex::RTree::RTree::RTree(IStorageManager& sm, Tools::PropertySet& ps) :
 
 SpatialIndex::RTree::RTree::~RTree()
 {
-#ifdef PTHREADS
+#ifdef HAVE_PTHREAD_H
 	pthread_rwlock_destroy(&m_rwLock);
 #endif
 
@@ -401,7 +401,7 @@ void SpatialIndex::RTree::RTree::insertData(uint32_t len, const byte* pData, con
 {
 	if (shape.getDimension() != m_dimension) throw Tools::IllegalArgumentException("insertData: Shape has the wrong number of dimensions.");
 
-#ifdef PTHREADS
+#ifdef HAVE_PTHREAD_H
 	Tools::ExclusiveLock lock(&m_rwLock);
 #else
 	if (m_rwLock == false) m_rwLock = true;
@@ -425,13 +425,13 @@ void SpatialIndex::RTree::RTree::insertData(uint32_t len, const byte* pData, con
 		insertData_impl(len, buffer, *mbr, id);
 			// the buffer is stored in the tree. Do not delete here.
 
-#ifndef PTHREADS
+#ifndef HAVE_PTHREAD_H
 		m_rwLock = false;
 #endif
 	}
 	catch (...)
 	{
-#ifndef PTHREADS
+#ifndef HAVE_PTHREAD_H
 		m_rwLock = false;
 #endif
 		throw;
@@ -442,7 +442,7 @@ bool SpatialIndex::RTree::RTree::deleteData(const IShape& shape, id_type id)
 {
 	if (shape.getDimension() != m_dimension) throw Tools::IllegalArgumentException("deleteData: Shape has the wrong number of dimensions.");
 
-#ifdef PTHREADS
+#ifdef HAVE_PTHREAD_H
 	Tools::ExclusiveLock lock(&m_rwLock);
 #else
 	if (m_rwLock == false) m_rwLock = true;
@@ -455,7 +455,7 @@ bool SpatialIndex::RTree::RTree::deleteData(const IShape& shape, id_type id)
 		shape.getMBR(*mbr);
 		bool ret = deleteData_impl(*mbr, id);
 
-#ifndef PTHREADS
+#ifndef HAVE_PTHREAD_H
 		m_rwLock = false;
 #endif
 
@@ -463,7 +463,7 @@ bool SpatialIndex::RTree::RTree::deleteData(const IShape& shape, id_type id)
 	}
 	catch (...)
 	{
-#ifndef PTHREADS
+#ifndef HAVE_PTHREAD_H
 		m_rwLock = false;
 #endif
 		throw;
@@ -493,7 +493,7 @@ void SpatialIndex::RTree::RTree::nearestNeighborQuery(uint32_t k, const IShape& 
 {
 	if (query.getDimension() != m_dimension) throw Tools::IllegalArgumentException("nearestNeighborQuery: Shape has the wrong number of dimensions.");
 
-#ifdef PTHREADS
+#ifdef HAVE_PTHREAD_H
 	Tools::SharedLock lock(&m_rwLock);
 #else
 	if (m_rwLock == false) m_rwLock = true;
@@ -559,13 +559,13 @@ void SpatialIndex::RTree::RTree::nearestNeighborQuery(uint32_t k, const IShape& 
 			delete e;
 		}
 
-#ifndef PTHREADS
+#ifndef HAVE_PTHREAD_H
 		m_rwLock = false;
 #endif
 	}
 	catch (...)
 	{
-#ifndef PTHREADS
+#ifndef HAVE_PTHREAD_H
 		m_rwLock = false;
 #endif
 		throw;
@@ -585,7 +585,7 @@ void SpatialIndex::RTree::RTree::selfJoinQuery(const IShape& query, IVisitor& v)
 	if (query.getDimension() != m_dimension)
 		throw Tools::IllegalArgumentException("selfJoinQuery: Shape has the wrong number of dimensions.");
 
-#ifdef PTHREADS
+#ifdef HAVE_PTHREAD_H
 	Tools::SharedLock lock(&m_rwLock);
 #else
 	if (m_rwLock == false) m_rwLock = true;
@@ -598,13 +598,13 @@ void SpatialIndex::RTree::RTree::selfJoinQuery(const IShape& query, IVisitor& v)
 		query.getMBR(*mbr);
 		selfJoinQuery(m_rootID, m_rootID, *mbr, v);
 
-#ifndef PTHREADS
+#ifndef HAVE_PTHREAD_H
 		m_rwLock = false;
 #endif
 	}
 	catch (...)
 	{
-#ifndef PTHREADS
+#ifndef HAVE_PTHREAD_H
 		m_rwLock = false;
 #endif
 		throw;
@@ -613,7 +613,7 @@ void SpatialIndex::RTree::RTree::selfJoinQuery(const IShape& query, IVisitor& v)
 
 void SpatialIndex::RTree::RTree::queryStrategy(IQueryStrategy& qs)
 {
-#ifdef PTHREADS
+#ifdef HAVE_PTHREAD_H
 	Tools::SharedLock lock(&m_rwLock);
 #else
 	if (m_rwLock == false) m_rwLock = true;
@@ -631,13 +631,13 @@ void SpatialIndex::RTree::RTree::queryStrategy(IQueryStrategy& qs)
 			qs.getNextEntry(*n, next, hasNext);
 		}
 
-#ifndef PTHREADS
+#ifndef HAVE_PTHREAD_H
 		m_rwLock = false;
 #endif
 	}
 	catch (...)
 	{
-#ifndef PTHREADS
+#ifndef HAVE_PTHREAD_H
 		m_rwLock = false;
 #endif
 		throw;
@@ -1413,7 +1413,7 @@ void SpatialIndex::RTree::RTree::deleteNode(Node* n)
 
 void SpatialIndex::RTree::RTree::rangeQuery(RangeQueryType type, const IShape& query, IVisitor& v)
 {
-#ifdef PTHREADS
+#ifdef HAVE_PTHREAD_H
 	Tools::SharedLock lock(&m_rwLock);
 #else
 	if (m_rwLock == false) m_rwLock = true;
@@ -1460,13 +1460,13 @@ void SpatialIndex::RTree::RTree::rangeQuery(RangeQueryType type, const IShape& q
 			}
 		}
 
-#ifndef PTHREADS
+#ifndef HAVE_PTHREAD_H
 		m_rwLock = false;
 #endif
 	}
 	catch (...)
 	{
-#ifndef PTHREADS
+#ifndef HAVE_PTHREAD_H
 		m_rwLock = false;
 #endif
 		throw;
