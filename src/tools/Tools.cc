@@ -88,9 +88,29 @@ Tools::Variant::Variant() : m_varType(VT_EMPTY)
 
 Tools::PropertySet::PropertySet(const byte* data)
 {
+#ifdef HAVE_PTHREAD_H
+	// pthread_rwlock_init(&m_rwLock, NULL);
+#else
+	m_rwLock = false;
+#endif
 	loadFromByteArray(data);
 }
 
+Tools::PropertySet::~PropertySet() 
+{
+#ifdef HAVE_PTHREAD_H
+	// pthread_rwlock_destroy(&m_rwLock);
+#endif	
+}
+
+Tools::PropertySet::PropertySet()
+{
+#ifdef HAVE_PTHREAD_H
+	// pthread_rwlock_init(&m_rwLock, NULL);
+#else
+	m_rwLock = false;
+#endif	
+}
 void Tools::PropertySet::loadFromByteArray(const byte* ptr)
 {
 	m_propertySet.clear();
@@ -322,12 +342,12 @@ void Tools::PropertySet::storeToByteArray(byte** data, uint32_t& length)
 
 Tools::Variant Tools::PropertySet::getProperty(std::string property)
 {
-#ifdef HAVE_PTHREAD_H
-    // Tools::SharedLock lock(&m_rwLock);
-#else
-	if (m_rwLock == false) m_rwLock = true;
-	else throw Tools::IllegalStateException("getProperty: cannot acquire an shared lock");
-#endif
+// #ifdef HAVE_PTHREAD_H
+//     Tools::ExclusiveLock lock(&m_rwLock);
+// #else
+// 	if (m_rwLock == false) m_rwLock = true;
+// 	else throw Tools::IllegalStateException("getProperty: cannot acquire an shared lock");
+// #endif
 
 	try
 	{
@@ -353,7 +373,7 @@ Tools::Variant Tools::PropertySet::getProperty(std::string property)
 void Tools::PropertySet::setProperty(std::string property, Variant& v)
 {
 #ifdef HAVE_PTHREAD_H
-    // Tools::ExclusiveLock lock(&m_rwLock);
+	// Tools::ExclusiveLock lock(&m_rwLock);
 #else
 	if (m_rwLock == false) m_rwLock = true;
 	else throw Tools::EndOfStreamException("setProperty: cannot acquire an exclusive lock");
@@ -386,8 +406,25 @@ void Tools::PropertySet::setProperty(std::string property, Variant& v)
 
 void Tools::PropertySet::removeProperty(std::string property)
 {
-	std::map<std::string, Variant>::iterator it = m_propertySet.find(property);
-	if (it != m_propertySet.end()) m_propertySet.erase(it);
+#ifdef HAVE_PTHREAD_H
+	// Tools::ExclusiveLock lock(&m_rwLock);
+#else
+	if (m_rwLock == false) m_rwLock = true;
+	else throw Tools::EndOfStreamException("setProperty: cannot acquire an exclusive lock");
+#endif
+
+	try
+	{
+	   	std::map<std::string, Variant>::iterator it = m_propertySet.find(property);
+	   	if (it != m_propertySet.end()) m_propertySet.erase(it);
+	}
+	catch (...)
+	{
+#ifndef HAVE_PTHREAD_H
+		m_rwLock = false;
+#endif
+		throw;
+	}
 }
 
 Tools::Interval::Interval() : m_type(IT_RIGHTOPEN), m_low(0.0), m_high(0.0)

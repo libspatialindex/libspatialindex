@@ -300,9 +300,9 @@ namespace Tools
 	class SIDX_DLL PropertySet : public ISerializable
 	{
 	public:
-		PropertySet() {}
+		PropertySet();
 		PropertySet(const byte* data);
-		virtual ~PropertySet() {}
+		virtual ~PropertySet();
 
 		Variant getProperty(std::string property);
 		void setProperty(std::string property, Variant& v);
