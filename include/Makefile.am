@@ -1,4 +1,4 @@
-SUBDIRS = tools
+SUBDIRS = tools capi
 
 spatialindexdir = $(includedir)/spatialindex
 

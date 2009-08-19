@@ -52,8 +52,10 @@ AC_CHECK_FUNCS([gettimeofday bzero memset memcpy bcopy])
 
 AC_CONFIG_FILES([	Makefile
 					include/Makefile
+					include/capi/Makefile
 					include/tools/Makefile
 					src/Makefile
+					src/capi/Makefile
 					src/spatialindex/Makefile
 					src/storagemanager/Makefile
 					src/rtree/Makefile
