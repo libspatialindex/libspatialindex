@@ -18,6 +18,6 @@ libspatialindex_c_la_LIBADD = \
 	src/capi/libsidxc.la
 
 libspatialindex_la_LDFLAGS = -version-info 1:0:0 
-libspatialindex_c_la_LDFLAGS = -version-info 1:0:0
+libspatialindex_c_la_LDFLAGS = -version-info 1:0:0 -lstdc++
 
 EXTRA_DIST = makefile.vc INSTALL.WIN
