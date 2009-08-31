@@ -70,6 +70,8 @@ LAS_LIB_DLL = spatialindex_i.lib
 OPTFLAGS=/nologo /MD /EHsc /Ox /GR /W2 /D_CRT_SECURE_NO_DEPRECATE /D_CRT_NONSTDC_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /DNDEBUG /D "PACKAGE_BUGREPORT=\"hobu.inc@gmail.com\"" /DSPATIALINDEX_CREATE_DLL=1
 LAS_LIB = spatialindex.lib
 LAS_DLL = spatialindex$(DLL_VERSION).dll
+CDLLNAME = spatialindex$(DLL_VERSION)_c.dll
+CLIBNAME = spatialindex_c_i.lib
 LAS_LIB_DLL = spatialindex_i.lib
 !ENDIF
 
@@ -83,7 +85,7 @@ MPFLAGS=""
 
 PACKAGE_VERSION=1.4.0
 
-INCLUDES=-I$(SPATIALINDEX_HOME)/include
+INCLUDES=-I$(SPATIALINDEX_HOME)/include -I$(SPATIALINDEX_HOME)/include/capi
 CFLAGS= $(MPFLAGS) $(OPTFLAGS) $(INCLUDES) 
 
 
@@ -99,7 +101,8 @@ LAS_DIRLIST =  src\mvrtree \
                 src\spatialindex \
                 src\storagemanager \
                 src\tools \
-                src\tprtree
+                src\tprtree \
+                src\capi
 
 OBJS = 	src\mvrtree\Index.obj \
         src\mvrtree\Leaf.obj \
@@ -132,8 +135,17 @@ OBJS = 	src\mvrtree\Index.obj \
         src\tprtree\Statistics.obj \
         src\tprtree\TPRTree.obj 
         
-
-default: $(LAS_DLL)
+COBJS = src\capi\BoundsQuery.obj \
+        src\capi\DataStream.obj \
+        src\capi\Error.obj \
+        src\capi\IdVisitor.obj \
+        src\capi\Index.obj \
+        src\capi\Item.obj \
+        src\capi\ObjVisitor.obj \
+        src\capi\sidx_api.obj\
+        src\capi\Utility.obj 
+        
+default: $(LAS_DLL) $(CDLLNAME)
 
 all: default
 
@@ -148,6 +160,10 @@ $(LAS_DLL):	$(LAS_LIB) $(RES)
             /out:$(LAS_DLL) /implib:$(LAS_LIB_DLL)
     if exist $(LAS_DLL).manifest mt -manifest $(LAS_DLL).manifest -outputresource:$(LAS_DLL);2   
 
+$(CDLLNAME): $(COBJS) $(LAS_DLL)
+	$(LINK) /dll /debug $(COBJS) $(LAS_LIB_DLL) /out:$(CDLLNAME) /implib:$(CLIBNAME)
+	if exist $(CDLLNAME).manifest mt -manifest $(CDLLNAME).manifest -outputresource:$(CDLLNAME);2
+ 
 
 install: default
     -mkdir $(BINDIR)
