@@ -33,7 +33,7 @@ ObjVisitor::ObjVisitor(): nResults(0)
 
 ObjVisitor::~ObjVisitor()
 {
-    std::vector<Item*>::iterator it;
+    std::vector<SpatialIndex::IData*>::iterator it;
     for (it = m_vector.begin(); it != m_vector.end(); it++) {
         delete *it;
     }
@@ -42,32 +42,12 @@ ObjVisitor::~ObjVisitor()
 
 void ObjVisitor::visitNode(const SpatialIndex::INode& n)
 {
-    if (n.isLeaf()) m_leafIO++;
-    else m_indexIO++;
 }
 
 void ObjVisitor::visitData(const SpatialIndex::IData& d)
 {
-    SpatialIndex::IShape* pS;
-    d.getShape(&pS);
-    SpatialIndex::Region *r = new SpatialIndex::Region();
-    pS->getMBR(*r);
-    // std::cout <<"found shape: " << *r << " dimension: " <<pS->getDimension() << std::endl;
 
-
-    // data should be an array of characters representing a Region as a string.
-    uint8_t* data = 0;
-    uint32_t length = 0;
-    d.getData(length, &data);
-
-    Item* item = new Item(d.getIdentifier());
-    item->SetData(data, length);
-    item->SetBounds(r);
-
-
-    delete pS;
-    delete r;
-    delete[] data;
+	SpatialIndex::IData* item = dynamic_cast<SpatialIndex::IData*>(const_cast<SpatialIndex::IData&>(d).clone()) ; 
     
     nResults += 1;
     
@@ -76,6 +56,5 @@ void ObjVisitor::visitData(const SpatialIndex::IData& d)
 
 void ObjVisitor::visitData(std::vector<const SpatialIndex::IData*>& v)
 {
-    // std::cout << v[0]->getIdentifier() << " " << v[1]->getIdentifier() << std::endl;
 }
 

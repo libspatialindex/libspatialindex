@@ -35,7 +35,6 @@
 #include <capi/sidx_config.h>
 
 #include <capi/Utility.h>
-#include <capi/Item.h>
 #include <capi/ObjVisitor.h>
 #include <capi/IdVisitor.h>
 #include <capi/BoundsQuery.h>

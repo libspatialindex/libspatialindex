@@ -30,9 +30,7 @@
 class ObjVisitor : public SpatialIndex::IVisitor
 {
 private:
-    uint32_t m_indexIO;
-    uint32_t m_leafIO;
-    std::vector<Item*> m_vector;
+    std::vector<SpatialIndex::IData*> m_vector;
     uint32_t nResults;
 
 public:
@@ -41,7 +39,7 @@ public:
     ~ObjVisitor();
 
     uint32_t GetResultCount() const { return nResults; }
-    std::vector<Item*>& GetResults()  { return m_vector; }
+    std::vector<SpatialIndex::IData*>& GetResults()  { return m_vector; }
     
     void visitNode(const SpatialIndex::INode& n);
     void visitData(const SpatialIndex::IData& d);

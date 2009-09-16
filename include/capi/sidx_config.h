@@ -101,7 +101,7 @@ typedef enum
 #endif
 
 typedef Index *IndexH;
-typedef Item *IndexItemH;
+typedef SpatialIndex::IData *IndexItemH;
 typedef Tools::PropertySet *IndexPropertyH;
 
 #ifndef SIDX_C_DLL

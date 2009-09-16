@@ -43,8 +43,7 @@ CONFIG_CLEAN_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
 libsidxc_la_LIBADD =
 am_libsidxc_la_OBJECTS = BoundsQuery.lo DataStream.lo Error.lo \
-	IdVisitor.lo Index.lo Item.lo ObjVisitor.lo sidx_api.lo \
-	Utility.lo
+	IdVisitor.lo Index.lo ObjVisitor.lo sidx_api.lo Utility.lo
 libsidxc_la_OBJECTS = $(am_libsidxc_la_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -175,7 +174,6 @@ libsidxc_la_SOURCES = BoundsQuery.cc \
 						Error.cc \
 						IdVisitor.cc \
 						Index.cc \
-						Item.cc \
 						ObjVisitor.cc \
 						sidx_api.cc \
 						Utility.cc
@@ -236,7 +234,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Error.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IdVisitor.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Index.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Item.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ObjVisitor.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Utility.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sidx_api.Plo@am__quote@
