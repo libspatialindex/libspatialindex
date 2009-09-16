@@ -1,9 +1,9 @@
 /******************************************************************************
- * $Id: sidx_impl.hpp 1361 2009-08-02 17:53:31Z hobu $
+ * $Id: boundsquery.hpp 1361 2009-08-02 17:53:31Z hobu $
  *
- * Project:  libsidx - A C API wrapper around libspatialindex
- * Purpose:  C++ object declarations to implement the wrapper.
- * Author:   Howard Butler, hobu.inc@gmail.com
+ * Project:	 libsidx - A C API wrapper around libspatialindex
+ * Purpose:	 C++ object declarations to implement a query of the index's leaves.
+ * Author:	 Howard Butler, hobu.inc@gmail.com
  *
  ******************************************************************************
  * Copyright (c) 2009, Howard Butler
@@ -22,23 +22,23 @@
  * 
  * You should have received a copy of the GNU Lesser General Public License 
  * along with this library; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * 51 Franklin Street, Fifth Floor, Boston, MA	02110-1301	USA
  ****************************************************************************/
- 
-#include <stack>
-#include <string>
-#include <vector>
-#include <stdexcept>
-#include <sstream>
-#include <cstring>
 
-#include <capi/sidx_config.h>
+#pragma once
 
-#include <capi/Utility.h>
-#include <capi/ObjVisitor.h>
-#include <capi/IdVisitor.h>
-#include <capi/BoundsQuery.h>
-#include <capi/LeafQuery.h>
-#include <capi/Error.h>
-#include <capi/DataStream.h>
-#include <capi/Index.h>
+class LeafQuery : public SpatialIndex::IQueryStrategy
+{
+private:
+	std::queue<SpatialIndex::id_type> m_ids;
+	std::vector<const SpatialIndex::INode*> m_results;
+public:
+
+	LeafQuery();
+	~LeafQuery() { }
+	void getNextEntry(	const SpatialIndex::IEntry& entry, 
+						SpatialIndex::id_type& nextEntry, 
+						bool& hasNext);
+	std::vector<const SpatialIndex::INode*> const& GetResults() const {return m_results;}
+};
+

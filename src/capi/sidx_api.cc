@@ -594,6 +594,72 @@ SIDX_C_DLL void Index_Free(void* results)
 	
 	std::free(results);
 }
+
+SIDX_C_DLL RTError Index_GetLeaves(	IndexH index, 
+									uint32_t* nLeafNodes,
+									uint32_t** nLeafSizes, 
+									uint64_t** nLeafIDs, 
+									uint64_t*** nLeafChildIDs)
+{
+	VALIDATE_POINTER1(index, "Index_GetLeaves", RT_Failure);
+	Index* idx = static_cast<Index*>(index);
+	
+	std::vector<const SpatialIndex::INode*>::const_iterator i;
+	LeafQuery* query = new LeafQuery;
+
+	try {	 
+		idx->index().queryStrategy( *query);
+		
+		const std::vector<const SpatialIndex::INode*>& results = query->GetResults();
+
+		*nLeafNodes = results.size();
+		
+		*nLeafSizes = (uint32_t*) malloc (*nLeafNodes * sizeof(uint32_t));
+		*nLeafIDs = (uint64_t*) malloc (*nLeafNodes * sizeof(uint64_t));
+
+		*nLeafChildIDs = (uint64_t**) malloc(*nLeafNodes * sizeof(uint64_t*));
+		
+		uint32_t k=0;
+		for (i = results.begin(); i != results.end(); ++i)
+		{
+			*nLeafSizes[k] = (*i)->getChildrenCount();
+			(*nLeafChildIDs)[k] = (uint64_t*) malloc( (*nLeafSizes[k]) * sizeof(uint64_t));
+			(*nLeafIDs)[k] = (*i)->getIdentifier();
+			for (uint32_t cChild = 0; cChild < (*i)->getChildrenCount(); cChild++)
+			{
+				(*nLeafChildIDs[k])[cChild] = (*i)->getChildIdentifier(cChild);
+			}
+			++k;
+		}
+
+		
+		delete query;
+
+	} catch (Tools::Exception& e)
+	{
+		Error_PushError(RT_Failure, 
+						e.what().c_str(), 
+						"Index_GetLeaves");
+		delete query;
+		return RT_Failure;
+	} catch (std::exception const& e)
+	{
+		Error_PushError(RT_Failure, 
+						e.what(), 
+						"Index_GetLeaves");
+		delete query;
+		return RT_Failure;
+	} catch (...) {
+		Error_PushError(RT_Failure, 
+						"Unknown Error", 
+						"Index_GetLeaves");
+		delete query;
+		return RT_Failure;		  
+	}
+	return RT_None;
+}
+
+
 SIDX_C_DLL void IndexItem_Destroy(IndexItemH item)
 {
 	VALIDATE_POINTER0(item, "IndexItem_Destroy"); 

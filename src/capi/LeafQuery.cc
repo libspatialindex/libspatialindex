@@ -1,9 +1,9 @@
 /******************************************************************************
- * $Id: sidx_impl.hpp 1361 2009-08-02 17:53:31Z hobu $
+ * $Id: boundsquery.cc 1361 2009-08-02 17:53:31Z hobu $
  *
- * Project:  libsidx - A C API wrapper around libspatialindex
- * Purpose:  C++ object declarations to implement the wrapper.
- * Author:   Howard Butler, hobu.inc@gmail.com
+ * Project:	 libsidx - A C API wrapper around libspatialindex
+ * Purpose:	 C++ objects to implement a query of the index's leaves.
+ * Author:	 Howard Butler, hobu.inc@gmail.com
  *
  ******************************************************************************
  * Copyright (c) 2009, Howard Butler
@@ -22,23 +22,43 @@
  * 
  * You should have received a copy of the GNU Lesser General Public License 
  * along with this library; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * 51 Franklin Street, Fifth Floor, Boston, MA	02110-1301	USA
  ****************************************************************************/
- 
-#include <stack>
-#include <string>
-#include <vector>
-#include <stdexcept>
-#include <sstream>
-#include <cstring>
 
-#include <capi/sidx_config.h>
+#include <capi/sidx_impl.h>
 
-#include <capi/Utility.h>
-#include <capi/ObjVisitor.h>
-#include <capi/IdVisitor.h>
-#include <capi/BoundsQuery.h>
-#include <capi/LeafQuery.h>
-#include <capi/Error.h>
-#include <capi/DataStream.h>
-#include <capi/Index.h>
+LeafQuery::LeafQuery() 
+{
+
+}
+
+void LeafQuery::getNextEntry(	const SpatialIndex::IEntry& entry, 
+								SpatialIndex::id_type& nextEntry, 
+								bool& hasNext) 
+{
+
+	const SpatialIndex::INode* n = dynamic_cast<const SpatialIndex::INode*>(&entry);
+
+	// traverse only index nodes at levels 2 and higher.
+	if (n != 0 && n->getLevel() > 0)
+	{
+		for (uint32_t cChild = 0; cChild < n->getChildrenCount(); cChild++)
+		{
+			m_ids.push(n->getChildIdentifier(cChild));
+		}
+	}
+	
+	if (n->isLeaf()) {
+		m_results.push_back(n);
+	}
+			
+	if (! m_ids.empty())
+	{
+		nextEntry = m_ids.front(); m_ids.pop();
+		hasNext = true;
+	}
+	else
+	{
+		hasNext = false;
+	}	 
+}

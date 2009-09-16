@@ -4,6 +4,7 @@ INCLUDES = -I../../include -I../../include/capi
 libsidxc_la_SOURCES = 	BoundsQuery.cc \
 						DataStream.cc \
 						Error.cc \
+						LeafQuery.cc \
 						IdVisitor.cc \
 						Index.cc \
 						ObjVisitor.cc \
