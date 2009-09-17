@@ -27,11 +27,13 @@
 
 #pragma once
 
+class LeafQueryResult;
+
 class LeafQuery : public SpatialIndex::IQueryStrategy
 {
 private:
 	std::queue<SpatialIndex::id_type> m_ids;
-	std::vector<const SpatialIndex::INode*> m_results;
+	std::vector<LeafQueryResult> m_results;
 public:
 
 	LeafQuery();
@@ -39,6 +41,30 @@ public:
 	void getNextEntry(	const SpatialIndex::IEntry& entry, 
 						SpatialIndex::id_type& nextEntry, 
 						bool& hasNext);
-	std::vector<const SpatialIndex::INode*> const& GetResults() const {return m_results;}
+	std::vector<LeafQueryResult> const& GetResults() const {return m_results;}
 };
 
+class LeafQueryResult 
+{
+private:
+    std::vector<SpatialIndex::id_type> ids;
+    SpatialIndex::Region* bounds;
+    uint32_t m_id;
+    LeafQueryResult();
+public:
+    LeafQueryResult(uint32_t id) : bounds(0), m_id(id){};
+    ~LeafQueryResult() {if (bounds!=0) delete bounds;};
+
+    /// Copy constructor.
+    LeafQueryResult(LeafQueryResult const& other);
+
+    /// Assignment operator.
+    LeafQueryResult& operator=(LeafQueryResult const& rhs);
+        
+    std::vector<SpatialIndex::id_type> const& GetIDs() const;
+    void SetIDs(std::vector<SpatialIndex::id_type>& v);
+    const SpatialIndex::Region* GetBounds() const;
+    void SetBounds(const SpatialIndex::Region*  b);
+    uint32_t getIdentifier() const {return m_id;}
+    void setIdentifier(uint32_t v) {m_id = v;}
+};

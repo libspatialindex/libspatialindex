@@ -596,38 +596,81 @@ SIDX_C_DLL void Index_Free(void* results)
 }
 
 SIDX_C_DLL RTError Index_GetLeaves(	IndexH index, 
-									uint32_t* nLeafNodes,
+									uint32_t* nNumLeafNodes,
 									uint32_t** nLeafSizes, 
-									uint64_t** nLeafIDs, 
-									uint64_t*** nLeafChildIDs)
+									int64_t** nLeafIDs, 
+									int64_t*** nLeafChildIDs,
+									double*** pppdMin, 
+									double*** pppdMax, 
+									uint32_t* nDimension)
 {
 	VALIDATE_POINTER1(index, "Index_GetLeaves", RT_Failure);
 	Index* idx = static_cast<Index*>(index);
 	
-	std::vector<const SpatialIndex::INode*>::const_iterator i;
+	std::vector<LeafQueryResult>::const_iterator i;
 	LeafQuery* query = new LeafQuery;
+
+	// Fetch the dimensionality of the index
+	Tools::PropertySet ps;
+	idx->index().getIndexProperties(ps);
+
+	Tools::Variant var;
+	var = ps.getProperty("Dimension");
+
+	if (var.m_varType != Tools::VT_EMPTY)
+	{
+		if (var.m_varType != Tools::VT_ULONG) {
+			Error_PushError(RT_Failure, 
+							"Property Dimension must be Tools::VT_ULONG", 
+							"Index_GetBounds");
+			return RT_Failure;
+		}
+	}
+	
+	*nDimension = var.m_val.ulVal;
+		
+		// *ppdMin = (double*) malloc (*nDimension * sizeof(double));
+		// *ppdMax = (double*) malloc (*nDimension * sizeof(double));
+		// 
+		// for (uint32_t i=0; i< *nDimension; ++i) {
+		// 	(*ppdMin)[i] = bounds->getLow(i);
+		// 	(*ppdMax)[i] = bounds->getHigh(i);
+		// }
+		
 
 	try {	 
 		idx->index().queryStrategy( *query);
 		
-		const std::vector<const SpatialIndex::INode*>& results = query->GetResults();
+		const std::vector<LeafQueryResult>& results = query->GetResults();
 
-		*nLeafNodes = results.size();
+		*nNumLeafNodes = results.size();
 		
-		*nLeafSizes = (uint32_t*) malloc (*nLeafNodes * sizeof(uint32_t));
-		*nLeafIDs = (uint64_t*) malloc (*nLeafNodes * sizeof(uint64_t));
+		*nLeafSizes = (uint32_t*) malloc (*nNumLeafNodes * sizeof(uint32_t));
+		*nLeafIDs = (int64_t*) malloc (*nNumLeafNodes * sizeof(int64_t));
 
-		*nLeafChildIDs = (uint64_t**) malloc(*nLeafNodes * sizeof(uint64_t*));
+		*nLeafChildIDs = (int64_t**) malloc(*nNumLeafNodes * sizeof(int64_t*));
+		*pppdMin = (double**) malloc (*nNumLeafNodes * sizeof(double*));
+		*pppdMax = (double**) malloc (*nNumLeafNodes * sizeof(double*));
 		
 		uint32_t k=0;
 		for (i = results.begin(); i != results.end(); ++i)
 		{
-			*nLeafSizes[k] = (*i)->getChildrenCount();
-			(*nLeafChildIDs)[k] = (uint64_t*) malloc( (*nLeafSizes[k]) * sizeof(uint64_t));
-			(*nLeafIDs)[k] = (*i)->getIdentifier();
-			for (uint32_t cChild = 0; cChild < (*i)->getChildrenCount(); cChild++)
+			std::vector<SpatialIndex::id_type> const& ids = (*i).GetIDs();
+			const SpatialIndex::Region* b = (*i).GetBounds();
+			
+			(*nLeafIDs)[k] = (*i).getIdentifier();
+			(*nLeafSizes)[k] = ids.size();
+
+			(*nLeafChildIDs)[k] = (int64_t*) malloc( (*nLeafSizes)[k] * sizeof(int64_t));
+			(*pppdMin)[k] = (double*) malloc ( (*nLeafSizes)[k] *  sizeof(double));
+			(*pppdMax)[k] = (double*) malloc ( (*nLeafSizes)[k] *  sizeof(double));
+			for (uint32_t i=0; i< *nDimension; ++i) {
+				(*pppdMin)[k][i] = b->getLow(i);
+				(*pppdMax)[k][i] = b->getHigh(i);
+			}
+			for (uint32_t cChild = 0; cChild < ids.size(); cChild++)
 			{
-				(*nLeafChildIDs[k])[cChild] = (*i)->getChildIdentifier(cChild);
+				(*nLeafChildIDs)[k][cChild] = ids[cChild];
 			}
 			++k;
 		}

@@ -32,6 +32,24 @@ LeafQuery::LeafQuery()
 
 }
 
+LeafQueryResult get_results(const SpatialIndex::INode* n)
+{
+	LeafQueryResult result (n->getIdentifier());
+
+	SpatialIndex::IShape* ps;
+	n->getShape(&ps);
+	SpatialIndex::Region* pr = dynamic_cast<SpatialIndex::Region*>(ps);
+	std::vector<SpatialIndex::id_type> ids;
+	for (size_t cChild = 0; cChild < n->getChildrenCount(); cChild++)
+	{
+		ids.push_back(n->getChildIdentifier(cChild));
+	}
+
+	result.SetIDs(ids);
+	result.SetBounds(pr);
+	
+	return result;
+}
 void LeafQuery::getNextEntry(	const SpatialIndex::IEntry& entry, 
 								SpatialIndex::id_type& nextEntry, 
 								bool& hasNext) 
@@ -47,9 +65,9 @@ void LeafQuery::getNextEntry(	const SpatialIndex::IEntry& entry,
 			m_ids.push(n->getChildIdentifier(cChild));
 		}
 	}
-	
+
 	if (n->isLeaf()) {
-		m_results.push_back(n);
+		m_results.push_back(get_results(n));
 	}
 			
 	if (! m_ids.empty())
@@ -61,4 +79,46 @@ void LeafQuery::getNextEntry(	const SpatialIndex::IEntry& entry,
 	{
 		hasNext = false;
 	}	 
+}
+
+
+std::vector<SpatialIndex::id_type> const& LeafQueryResult::GetIDs() const
+{
+    return ids;
+}
+
+void LeafQueryResult::SetIDs(std::vector<SpatialIndex::id_type>& v) 
+{
+    ids.resize(v.size());
+    std::copy(v.begin(), v.end(), ids.begin());
+}
+const SpatialIndex::Region*  LeafQueryResult::GetBounds() const
+{
+    return bounds;
+}
+
+void LeafQueryResult::SetBounds(const SpatialIndex::Region*  b) 
+{
+    bounds = new SpatialIndex::Region(*b);
+}
+
+LeafQueryResult::LeafQueryResult(LeafQueryResult const& other)
+{
+    ids.resize(other.ids.size());
+    std::copy(other.ids.begin(), other.ids.end(), ids.begin());
+    m_id = other.m_id;
+    
+    bounds = other.bounds->clone();
+}
+
+LeafQueryResult& LeafQueryResult::operator=(LeafQueryResult const& rhs)
+{
+    if (&rhs != this)
+    {
+        ids.resize(rhs.ids.size());
+        std::copy(rhs.ids.begin(), rhs.ids.end(), ids.begin());
+        m_id = rhs.m_id;
+        bounds = rhs.bounds->clone();
+    }
+    return *this;
 }
