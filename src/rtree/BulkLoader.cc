@@ -434,7 +434,7 @@ void BulkLoader::createLevel(
 				es3->insert(pR);
 			}
 			es3->sort();
-			createLevel(pTree, es3, dimension + 1, bindex, bleaf, level, es2, pageSize, numberOfPages);
+			createLevel(pTree, es3, dimension + 1, bleaf, bindex, level, es2, pageSize, numberOfPages);
 		}
 	}
 }
