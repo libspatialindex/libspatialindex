@@ -60,7 +60,7 @@ MSVCVER = 0.0
 # Compilation flags for Release and Debug modes
 
 !IF "$(BUILD_DEBUG)" == "YES"
-OPTFLAGS= /nologo /MDd /EHsc /Z7 /W4 /D_CRT_SECURE_NO_DEPRECATE /D_CRT_NONSTDC_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /DDEBUG /D_DEBUG /DDEBUG /Fd$(SPATIALINDEX_HOME)\spatialindex.pdb
+OPTFLAGS=/nologo /MDd /EHsc /Z7 /W4 /D_CRT_SECURE_NO_DEPRECATE /D_CRT_NONSTDC_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /DDEBUG /D_DEBUG /DDEBUG /Fd$(SPATIALINDEX_HOME)\spatialindex.pdb
 LAS_LIB = spatialindex_d.lib
 LAS_DLL = spatialindex_d$(DLL_VERSION).dll
 LAS_LIB_DLL = spatialindex_i.lib
@@ -80,7 +80,7 @@ LAS_LIB_DLL = spatialindex_i.lib
 MPFLAGS=/MP
 !MESSAGE *** Using /MP flag with number of effective processors
 !ELSE
-MPFLAGS=""
+MPFLAGS=
 !ENDIF
 
 PACKAGE_VERSION=1.4.0
