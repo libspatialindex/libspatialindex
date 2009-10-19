@@ -1140,16 +1140,30 @@ void Tools::BufferedFileWriter::write(uint32_t u32Len, byte* pData)
 //
 Tools::TemporaryFile::TemporaryFile()
 {
+    
 #ifdef _MSC_VER
+
+#ifndef L_tmpnam_s
+// MSVC 2003 doesn't have tmpnam_s, so we'll have to use the old functions
+
+    char* tmpName = NULL;
+    tmpName = tmpnam( NULL );
+    
+    if (tmpName == NULL)
+        throw std::ios_base::failure("Tools::TemporaryFile: Cannot create temporary file name.");
+     
+#else 
 	char tmpName[L_tmpnam_s];
 	errno_t err = tmpnam_s(tmpName, L_tmpnam_s);
 	if (err)
 		throw std::ios_base::failure("Tools::TemporaryFile: Cannot create temporary file name.");
 
+#endif
 	if (tmpName[0] == '\\')
 		m_sFile = std::string(tmpName + 1);
 	else
 		m_sFile = std::string(tmpName);
+
 #else
 	char tmpName[7] = "XXXXXX";
 	if (mktemp(tmpName) == 0)
