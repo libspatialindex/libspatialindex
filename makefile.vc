@@ -140,7 +140,7 @@ COBJS = src\capi\BoundsQuery.obj \
         src\capi\Error.obj \
         src\capi\IdVisitor.obj \
         src\capi\Index.obj \
-        src\capi\Item.obj \
+        src\capi\LeafQuery.obj \
         src\capi\ObjVisitor.obj \
         src\capi\sidx_api.obj\
         src\capi\Utility.obj 
