@@ -189,6 +189,8 @@ SIDX_DLL char* IndexProperty_GetFileNameExtensionIdx(IndexPropertyH iprop);
 SIDX_DLL RTError IndexProperty_SetIndexID(IndexPropertyH iprop, int64_t value);
 SIDX_DLL int64_t IndexProperty_GetIndexID(IndexPropertyH iprop);
 
+SIDX_C_DLL char* SIDX_Version();
+
 IDX_C_END
 
 #endif
