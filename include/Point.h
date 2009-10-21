@@ -23,7 +23,7 @@
 
 namespace SpatialIndex
 {
-	class SIDX_DLL Point : public IObject, public virtual IShape
+	class SIDX_DLL Point : public Tools::IObject, public virtual IShape
 	{
 	public:
 		Point();

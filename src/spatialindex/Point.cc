@@ -67,7 +67,7 @@ Point& Point::operator=(const Point& p)
 bool Point::operator==(const Point& p) const
 {
 	if (m_dimension != p.m_dimension)
-		throw IllegalArgumentException(
+		throw Tools::IllegalArgumentException(
 			"Point::operator==: Points have different number of dimensions."
 		);
 
@@ -131,7 +131,7 @@ bool Point::intersectsShape(const IShape& s) const
 		return pr->containsPoint(*this);
 	}
 
-	throw IllegalStateException(
+	throw Tools::IllegalStateException(
 		"Point::intersectsShape: Not implemented yet!"
 	);
 }
@@ -156,7 +156,7 @@ bool Point::touchesShape(const IShape& s) const
 		return pr->touchesPoint(*this);
 	}
 
-	throw IllegalStateException(
+	throw Tools::IllegalStateException(
 		"Point::touchesShape: Not implemented yet!"
 	);
 }
@@ -195,7 +195,7 @@ double Point::getMinimumDistance(const IShape& s) const
 		return pr->getMinimumDistance(*this);
 	}
 
-	throw IllegalStateException(
+	throw Tools::IllegalStateException(
 		"Point::getMinimumDistance: Not implemented yet!"
 	);
 }
@@ -203,7 +203,7 @@ double Point::getMinimumDistance(const IShape& s) const
 double Point::getMinimumDistance(const Point& p) const
 {
 	if (m_dimension != p.m_dimension)
-		throw IllegalArgumentException(
+		throw Tools::IllegalArgumentException(
 			"Point::getMinimumDistance: Shapes have different number of dimensions."
 		);
 
@@ -220,7 +220,7 @@ double Point::getMinimumDistance(const Point& p) const
 double Point::getCoordinate(uint32_t index) const
 {
 	if (index < 0 || index >= m_dimension)
-		throw IndexOutOfBoundsException(index);
+		throw Tools::IndexOutOfBoundsException(index);
 
 	return m_pCoords[index];
 }

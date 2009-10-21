@@ -89,7 +89,7 @@ LineSegment& LineSegment::operator=(const LineSegment& l)
 bool LineSegment::operator==(const LineSegment& l) const
 {
 	if (m_dimension != l.m_dimension)
-		throw IllegalArgumentException(
+		throw Tools::IllegalArgumentException(
 			"LineSegment::operator==: LineSegments have different number of dimensions."
 		);
 
@@ -155,7 +155,7 @@ void LineSegment::storeToByteArray(byte** data, uint32_t& len)
 //
 bool LineSegment::intersectsShape(const IShape& s) const
 {
-	throw IllegalStateException(
+	throw Tools::IllegalStateException(
 		"LineSegment::intersectsShape: Not implemented yet!"
 	);
 }
@@ -167,7 +167,7 @@ bool LineSegment::containsShape(const IShape& s) const
 
 bool LineSegment::touchesShape(const IShape& s) const
 {
-	throw IllegalStateException(
+	throw Tools::IllegalStateException(
 		"LineSegment::touchesShape: Not implemented yet!"
 	);
 }
@@ -227,7 +227,7 @@ double LineSegment::getMinimumDistance(const IShape& s) const
 	}
 */
 
-	throw IllegalStateException(
+	throw Tools::IllegalStateException(
 		"LineSegment::getMinimumDistance: Not implemented yet!"
 	);
 }

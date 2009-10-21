@@ -38,7 +38,7 @@ Region::Region(const double* pLow, const double* pHigh, uint32_t dimension)
 Region::Region(const Point& low, const Point& high)
 {
 	if (low.m_dimension != high.m_dimension)
-		throw IllegalArgumentException(
+		throw Tools::IllegalArgumentException(
 			"Region::Region: arguments have different number of dimensions."
 		);
 
@@ -107,7 +107,7 @@ Region& Region::operator=(const Region& r)
 bool Region::operator==(const Region& r) const
 {
 	if (m_dimension != r.m_dimension)
-		throw IllegalArgumentException(
+		throw Tools::IllegalArgumentException(
 			"Region::operator==: Regions have different number of dimensions."
 		);
 
@@ -177,7 +177,7 @@ bool Region::intersectsShape(const IShape& s) const
 	const Point* ppt = dynamic_cast<const Point*>(&s);
 	if (ppt != 0) return containsPoint(*ppt);
 
-	throw IllegalStateException(
+	throw Tools::IllegalStateException(
 		"Region::intersectsShape: Not implemented yet!"
 	);
 }
@@ -190,7 +190,7 @@ bool Region::containsShape(const IShape& s) const
 	const Point* ppt = dynamic_cast<const Point*>(&s);
 	if (ppt != 0) return containsPoint(*ppt);
 
-	throw IllegalStateException(
+	throw Tools::IllegalStateException(
 		"Region::containsShape: Not implemented yet!"
 	);
 }
@@ -203,7 +203,7 @@ bool Region::touchesShape(const IShape& s) const
 	const Point* ppt = dynamic_cast<const Point*>(&s);
 	if (ppt != 0) return touchesPoint(*ppt);
 
-	throw IllegalStateException(
+	throw Tools::IllegalStateException(
 		"Region::touchesShape: Not implemented yet!"
 	);
 }
@@ -247,7 +247,7 @@ double Region::getMinimumDistance(const IShape& s) const
 	const Point* ppt = dynamic_cast<const Point*>(&s);
 	if (ppt != 0) return getMinimumDistance(*ppt);
 
-	throw IllegalStateException(
+	throw Tools::IllegalStateException(
 		"Region::getMinimumDistance: Not implemented yet!"
 	);
 }
@@ -255,7 +255,7 @@ double Region::getMinimumDistance(const IShape& s) const
 bool Region::intersectsRegion(const Region& r) const
 {
 	if (m_dimension != r.m_dimension)
-		throw IllegalArgumentException(
+		throw Tools::IllegalArgumentException(
 			"Region::intersectsRegion: Regions have different number of dimensions."
 		);
 
@@ -269,7 +269,7 @@ bool Region::intersectsRegion(const Region& r) const
 bool Region::containsRegion(const Region& r) const
 {
 	if (m_dimension != r.m_dimension)
-		throw IllegalArgumentException(
+		throw Tools::IllegalArgumentException(
 			"Region::containsRegion: Regions have different number of dimensions."
 		);
 
@@ -283,7 +283,7 @@ bool Region::containsRegion(const Region& r) const
 bool Region::touchesRegion(const Region& r) const
 {
 	if (m_dimension != r.m_dimension)
-		throw IllegalArgumentException(
+		throw Tools::IllegalArgumentException(
 			"Region::touchesRegion: Regions have different number of dimensions."
 		);
 
@@ -302,7 +302,7 @@ bool Region::touchesRegion(const Region& r) const
 double Region::getMinimumDistance(const Region& r) const
 {
 	if (m_dimension != r.m_dimension)
-		throw IllegalArgumentException(
+		throw Tools::IllegalArgumentException(
 			"Region::getMinimumDistance: Regions have different number of dimensions."
 		);
 
@@ -330,7 +330,7 @@ double Region::getMinimumDistance(const Region& r) const
 bool Region::containsPoint(const Point& p) const
 {
 	if (m_dimension != p.m_dimension)
-		throw IllegalArgumentException(
+		throw Tools::IllegalArgumentException(
 			"Region::containsPoint: Point has different number of dimensions."
 		);
 
@@ -344,7 +344,7 @@ bool Region::containsPoint(const Point& p) const
 bool Region::touchesPoint(const Point& p) const
 {
 	if (m_dimension != p.m_dimension)
-		throw IllegalArgumentException(
+		throw Tools::IllegalArgumentException(
 			"Region::touchesPoint: Point has different number of dimensions."
 		);
 
@@ -363,7 +363,7 @@ bool Region::touchesPoint(const Point& p) const
 double Region::getMinimumDistance(const Point& p) const
 {
 	if (m_dimension != p.m_dimension)
-		throw IllegalArgumentException(
+		throw Tools::IllegalArgumentException(
 			"Region::getMinimumDistance: Point has different number of dimensions."
 		);
 
@@ -387,7 +387,7 @@ double Region::getMinimumDistance(const Point& p) const
 Region Region::getIntersectingRegion(const Region& r) const
 {
 	if (m_dimension != r.m_dimension)
-		throw IllegalArgumentException(
+		throw Tools::IllegalArgumentException(
 			"Region::getIntersectingRegion: Regions have different number of dimensions."
 		);
 
@@ -413,7 +413,7 @@ Region Region::getIntersectingRegion(const Region& r) const
 double Region::getIntersectingArea(const Region& r) const
 {
 	if (m_dimension != r.m_dimension)
-		throw IllegalArgumentException(
+		throw Tools::IllegalArgumentException(
 			"Region::getIntersectingArea: Regions have different number of dimensions."
 		);
 
@@ -452,7 +452,7 @@ double Region::getMargin() const
 void Region::combineRegion(const Region& r)
 {
 	if (m_dimension != r.m_dimension)
-		throw IllegalArgumentException(
+		throw Tools::IllegalArgumentException(
 			"Region::combineRegion: Region has different number of dimensions."
 		);
 
@@ -466,7 +466,7 @@ void Region::combineRegion(const Region& r)
 void Region::combinePoint(const Point& p)
 {
 	if (m_dimension != p.m_dimension)
-		throw IllegalArgumentException(
+		throw Tools::IllegalArgumentException(
 			"Region::combinePoint: Point has different number of dimensions."
 		);
 
@@ -480,7 +480,7 @@ void Region::combinePoint(const Point& p)
 void Region::getCombinedRegion(Region& out, const Region& in) const
 {
 	if (m_dimension != in.m_dimension)
-		throw IllegalArgumentException(
+		throw Tools::IllegalArgumentException(
 			"Region::getCombinedRegion: Regions have different number of dimensions."
 		);
 
@@ -491,7 +491,7 @@ void Region::getCombinedRegion(Region& out, const Region& in) const
 double Region::getLow(uint32_t index) const
 {
 	if (index < 0 || index >= m_dimension)
-		throw IndexOutOfBoundsException(index);
+		throw Tools::IndexOutOfBoundsException(index);
 
 	return m_pLow[index];
 }
@@ -499,7 +499,7 @@ double Region::getLow(uint32_t index) const
 double Region::getHigh(uint32_t index) const
 {
 	if (index < 0 || index >= m_dimension)
-		throw IndexOutOfBoundsException(index);
+		throw Tools::IndexOutOfBoundsException(index);
 
 	return m_pHigh[index];
 }

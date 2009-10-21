@@ -23,7 +23,7 @@
 
 namespace SpatialIndex
 {
-	class SIDX_DLL LineSegment : public IObject, public virtual IShape
+	class SIDX_DLL LineSegment : public Tools::IObject, public virtual IShape
 	{
 	public:
 		LineSegment();

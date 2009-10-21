@@ -22,7 +22,6 @@
 #pragma once
 
 #include "tools/Tools.h"
-using namespace Tools;
 
 # if !HAVE_BZERO
 # define bzero(d, n) memset((d), 0, (n))
@@ -46,7 +45,7 @@ namespace SpatialIndex
 		CT_NODEWRITE
 	};
 
-	class SIDX_DLL InvalidPageException : public Exception
+	class SIDX_DLL InvalidPageException : public Tools::Exception
 	{
 	public:
 		InvalidPageException(id_type id);
@@ -61,7 +60,7 @@ namespace SpatialIndex
 	// Interfaces
 	//
 
-	class SIDX_DLL IShape : public ISerializable
+	class SIDX_DLL IShape : public Tools::ISerializable
 	{
 	public:
 		virtual bool intersectsShape(const IShape& in) const = 0;
