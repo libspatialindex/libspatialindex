@@ -579,9 +579,13 @@ SIDX_C_DLL IndexPropertyH Index_GetProperties(IndexH index)
 SIDX_C_DLL void Index_DestroyObjResults(IndexItemH* results, uint32_t nResults)
 {
 	VALIDATE_POINTER0(results, "Index_DestroyObjResults");
+	SpatialIndex::IData* it;
 	for (uint32_t i=0; i< nResults; ++i) {
-		if (results[i] != NULL)
-			std::free(results[i]);
+		if (results[i] != NULL) {
+			it = static_cast<SpatialIndex::IData*>(results[i]);
+			if (it != 0) 
+				delete it;
+		}
 	}
 	
 	std::free(results);
