@@ -22,6 +22,7 @@
 #include "../../include/SpatialIndex.h"
 
 #include <cstring>
+#include <cmath>
 
 using namespace SpatialIndex;
 

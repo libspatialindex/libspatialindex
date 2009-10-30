@@ -23,9 +23,11 @@
  * Does not support degenerate time intervals or shrinking regions.
 */
 
-#include "../../include/SpatialIndex.h"
 
 #include <cstring>
+#include <cmath>
+
+#include "../../include/SpatialIndex.h"
 
 using namespace SpatialIndex;
 

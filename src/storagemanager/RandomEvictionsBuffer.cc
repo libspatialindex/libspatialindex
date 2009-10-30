@@ -21,6 +21,7 @@
 
 #include <time.h>
 #include <stdlib.h>
+#include <cmath>
 #include "../../include/tools/rand48.h"
 
 #include "../spatialindex/SpatialIndexImpl.h"

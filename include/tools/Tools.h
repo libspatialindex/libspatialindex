@@ -62,9 +62,9 @@
 #include <stack>
 #include <list>
 #include <algorithm>
-#include <cmath>
-#include <limits>
-#include <climits>
+// #include <cmath>
+// #include <limits>
+// #include <climits>
 
 #if HAVE_PTHREAD_H
   #include <pthread.h>

@@ -20,6 +20,7 @@
 //    mhadji@gmail.com
 
 #include <tools/Tools.h>
+#include <cmath>
 
 using namespace std;
 

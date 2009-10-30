@@ -21,6 +21,7 @@
 
 #include <cstring>
 #include <stdio.h>
+#include <cmath>
 
 #ifndef _MSC_VER
 #include <unistd.h>

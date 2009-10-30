@@ -19,13 +19,14 @@
 //  Email:
 //    mhadji@gmail.com
 
+#include <cstring>
+#include <cmath>
+
 #include "../spatialindex/SpatialIndexImpl.h"
 #include "MVRTree.h"
 #include "Node.h"
 #include "Index.h"
 #include "Leaf.h"
-
-#include <cstring>
 
 using namespace SpatialIndex::MVRTree;
 
