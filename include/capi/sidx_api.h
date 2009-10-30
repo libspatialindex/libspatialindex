@@ -29,6 +29,8 @@
 #ifndef SIDX_API_H_INCLUDED
 #define SIDX_API_H_INCLUDED
 
+#define SIDX_C_API 1
+
 #include "sidx_config.h"
 
 IDX_C_START
