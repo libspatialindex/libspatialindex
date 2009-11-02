@@ -19,6 +19,8 @@
 //  Email:
 //    mhadji@gmail.com
 
+#include <limits>
+
 #include "../spatialindex/SpatialIndexImpl.h"
 #include "MVRTree.h"
 #include "Node.h"

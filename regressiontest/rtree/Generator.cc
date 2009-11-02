@@ -21,6 +21,7 @@
 
 #include <tools/Tools.h>
 #include <cmath>
+#include <limits>
 
 #include <set>
 

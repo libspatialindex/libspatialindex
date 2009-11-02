@@ -25,6 +25,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA	02110-1301	USA
  ****************************************************************************/
 
+#include <limits>
 #include "sidx_impl.h"
 
 static std::stack<Error> errors;

@@ -21,6 +21,7 @@
 
 #include <cstring>
 #include <cmath>
+#include <limits>
 
 #include "../spatialindex/SpatialIndexImpl.h"
 #include "RTree.h"

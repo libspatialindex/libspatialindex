@@ -26,6 +26,7 @@
 
 #include <cstring>
 #include <cmath>
+#include <limits>
 
 #include "../../include/SpatialIndex.h"
 

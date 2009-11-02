@@ -23,6 +23,7 @@
 
 #include <cstring>
 #include <cmath>
+#include <limits>
 
 using namespace SpatialIndex;
 

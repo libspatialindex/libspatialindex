@@ -22,7 +22,10 @@
 // NOTE: Please read README.txt before browsing this code.
 
 // include library header file.
+
 #include <SpatialIndex.h>
+
+#include <limits>
 
 using namespace SpatialIndex;
 using namespace std;

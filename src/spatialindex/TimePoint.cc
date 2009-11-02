@@ -20,6 +20,7 @@
 //    mhadji@gmail.com
 
 #include <cstring>
+#include <limits>
 
 #include "../../include/SpatialIndex.h"
 
