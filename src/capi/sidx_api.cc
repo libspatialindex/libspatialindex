@@ -750,9 +750,10 @@ SIDX_C_DLL RTError IndexItem_GetBounds(	  IndexItemH item,
 	SpatialIndex::Region *bounds = new SpatialIndex::Region();
     s->getMBR(*bounds);
 	
-	
 	if (bounds == 0) { 
 		*nDimension = 0;
+                delete bounds;
+                delete s;
 		return RT_None;
 	}
 	*nDimension = bounds->getDimension();
@@ -771,8 +772,8 @@ SIDX_C_DLL RTError IndexItem_GetBounds(	  IndexItemH item,
 		(*ppdMin)[i] = bounds->getLow(i);
 		(*ppdMax)[i] = bounds->getHigh(i);
 	}
-	
-	
+	delete bounds;
+	delete s;
 	return RT_None;
 }
 SIDX_C_DLL IndexPropertyH IndexProperty_Create()
