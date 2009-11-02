@@ -508,23 +508,8 @@ SIDX_C_DLL RTError Index_GetBounds(	  IndexH index,
 			delete query;
 			return RT_None;
 		}
-		Tools::PropertySet ps;
-		idx->index().getIndexProperties(ps);
-
-		Tools::Variant var;
-		var = ps.getProperty("Dimension");
-
-		if (var.m_varType != Tools::VT_EMPTY)
-		{
-			if (var.m_varType != Tools::VT_ULONG) {
-				Error_PushError(RT_Failure, 
-								"Property Dimension must be Tools::VT_ULONG", 
-								"Index_GetBounds");
-				return RT_Failure;
-			}
-		}
 		
-		*nDimension = var.m_val.ulVal;
+		*nDimension =bounds->getDimension();
 		
 		*ppdMin = (double*) malloc (*nDimension * sizeof(double));
 		*ppdMax = (double*) malloc (*nDimension * sizeof(double));
@@ -627,22 +612,13 @@ SIDX_C_DLL RTError Index_GetLeaves(	IndexH index,
 		if (var.m_varType != Tools::VT_ULONG) {
 			Error_PushError(RT_Failure, 
 							"Property Dimension must be Tools::VT_ULONG", 
-							"Index_GetBounds");
+							"Index_GetLeaves");
 			return RT_Failure;
 		}
 	}
 	
 	*nDimension = var.m_val.ulVal;
 		
-		// *ppdMin = (double*) malloc (*nDimension * sizeof(double));
-		// *ppdMax = (double*) malloc (*nDimension * sizeof(double));
-		// 
-		// for (uint32_t i=0; i< *nDimension; ++i) {
-		// 	(*ppdMin)[i] = bounds->getLow(i);
-		// 	(*ppdMax)[i] = bounds->getHigh(i);
-		// }
-		
-
 	try {	 
 		idx->index().queryStrategy( *query);
 		
