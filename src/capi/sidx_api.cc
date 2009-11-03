@@ -701,10 +701,12 @@ SIDX_C_DLL RTError IndexItem_GetData( IndexItemH item,
     uint32_t* l= new uint32_t;
 
 	it->getData(*l,&p_data);
-	*length = (uint64_t)l;
+	*length = (uint64_t)*l;
 	*data = (uint8_t*) malloc (*length * sizeof(uint8_t));
 
 	memcpy(*data, p_data, *length);
+        delete[] p_data;
+        delete l;
 	return RT_None;
 	
 }
