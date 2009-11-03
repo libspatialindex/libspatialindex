@@ -331,8 +331,9 @@ SIDX_C_DLL RTError Index_Intersects_id(	  IndexH index,
 	Index* idx = static_cast<Index*>(index);
 
 	IdVisitor* visitor = new IdVisitor;
-	try {	 
-		idx->index().intersectsWithQuery(	SpatialIndex::Region(pdMin, pdMax, nDimension), 
+	try {
+        SpatialIndex::Region* r = new SpatialIndex::Region(pdMin, pdMax, nDimension);
+		idx->index().intersectsWithQuery(	*r, 
 											*visitor);
 
 		*nResults = visitor->GetResultCount();
@@ -347,7 +348,7 @@ SIDX_C_DLL RTError Index_Intersects_id(	  IndexH index,
 
 		}
 
-		
+        delete r;
 		delete visitor;
 
 	} catch (Tools::Exception& e)
