@@ -697,9 +697,14 @@ SIDX_C_DLL RTError IndexItem_GetData( IndexItemH item,
 {
 	VALIDATE_POINTER1(item, "IndexItem_GetData", RT_Failure);  
 	SpatialIndex::IData* it = static_cast<SpatialIndex::IData*>(item);
-	uint32_t* l= new uint32_t;
-	it->getData(*l,static_cast<byte**>(data));
-	*length = (uint64_t)*l;
+    uint8_t* p_data;
+    uint32_t* l= new uint32_t;
+
+	it->getData(*l,&p_data);
+	*length = (uint64_t)l;
+	*data = (uint8_t*) malloc (*length * sizeof(uint8_t));
+
+	memcpy(*data, p_data, *length);
 	return RT_None;
 	
 }
@@ -2285,15 +2290,15 @@ SIDX_C_DLL int64_t IndexProperty_GetIndexID(IndexPropertyH hProp)
 SIDX_C_DLL char* SIDX_Version()
 {
 	
-	std::ostringstream output;
+	std::ostringstream ot;
 
 #ifdef SIDX_RELEASE_NAME
-	output << SIDX_RELEASE_NAME;
+	ot << SIDX_RELEASE_NAME;
 #else
-	output << "1.3.2";
+	ot << "1.3.2";
 #endif
 
-	std::string out(output.str());
+	std::string out(ot.str());
 	return STRDUP(out.c_str());
 	
 }
