@@ -275,7 +275,8 @@ SIDX_C_DLL RTError Index_Intersects_obj(  IndexH index,
 
 	ObjVisitor* visitor = new ObjVisitor;
 	try {	 
-		idx->index().intersectsWithQuery(	SpatialIndex::Region(pdMin, pdMax, nDimension), 
+        SpatialIndex::Region* r = new SpatialIndex::Region(pdMin, pdMax, nDimension);
+		idx->index().intersectsWithQuery(	*r, 
 											*visitor);
 
 		*items = (SpatialIndex::IData**) malloc (visitor->GetResultCount() * sizeof(SpatialIndex::IData*));
@@ -294,6 +295,7 @@ SIDX_C_DLL RTError Index_Intersects_obj(  IndexH index,
 		}
 		*nResults = visitor->GetResultCount();
 		
+        delete r;
 		delete visitor;
 
 	} catch (Tools::Exception& e)
