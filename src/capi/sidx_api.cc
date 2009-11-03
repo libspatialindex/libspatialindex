@@ -582,8 +582,8 @@ SIDX_C_DLL void Index_DestroyObjResults(IndexItemH* results, uint32_t nResults)
 SIDX_C_DLL void Index_Free(void* results)
 {
 	VALIDATE_POINTER0(results, "Index_Free");
-	
-	std::free(results);
+	if (results != 0)
+	    std::free(results);
 }
 
 SIDX_C_DLL RTError Index_GetLeaves(	IndexH index, 
