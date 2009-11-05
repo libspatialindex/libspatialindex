@@ -58,17 +58,17 @@ void Region::initialize(const double* pLow, const double* pHigh, uint32_t dimens
 	m_dimension = dimension;
 
 #ifndef NDEBUG
-    // FIXME: this needs to be fixed for the case when both pHigh and pLow are
-    // at their numeric limits, when high can be negative infinity and low can
-    // be positive infinity
     for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
     {
-     if (pLow[cDim] > pHigh[cDim])
+     if ((pLow[cDim] > pHigh[cDim]))
      {
-         throw Tools::IllegalArgumentException(
-             "Region::initialize: Low point has larger coordinates than High point. FIXME:"
-             " This produces false positives for +- infinity"
-         );
+         // check for infinitive region
+         if (!(pLow[cDim] == std::numeric_limits<double>::max() ||
+             pHigh[cDim] == -std::numeric_limits<double>::max() ))
+             throw Tools::IllegalArgumentException(
+                 "Region::initialize: Low point has larger coordinates than High point."
+                 " Neither point is infinity."
+             );
      }
     }
 #endif
