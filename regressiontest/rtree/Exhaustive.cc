@@ -22,6 +22,7 @@
 #include <tools/Tools.h>
 #include <cstring>
 #include <cmath>
+#include <stdint.h>
 
 #define INSERT 1
 #define DELETE 0

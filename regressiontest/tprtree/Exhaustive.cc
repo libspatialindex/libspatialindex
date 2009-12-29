@@ -25,6 +25,7 @@
 #include <map>
 #include <queue>
 #include <cmath>
+#include <stdint.h>
 
 using namespace std;
 

@@ -28,6 +28,7 @@
 #include <cstring>
 #include <limits>
 #include <cmath>
+#include <stdint.h>
 
 using namespace std;
 
