@@ -65,28 +65,28 @@ SIDX_DLL RTError Index_Intersects_obj(	IndexH index,
 										double* pdMax, 
 										uint32_t nDimension, 
 										IndexItemH** items, 
-										uint32_t* nResults);
+										uint64_t* nResults);
 
 SIDX_DLL RTError Index_Intersects_id(	IndexH index, 
 										double* pdMin, 
 										double* pdMax, 
 										uint32_t nDimension, 
 										uint64_t** items, 
-										uint32_t* nResults);
+										uint64_t* nResults);
 										
 SIDX_DLL RTError Index_NearestNeighbors_obj(IndexH index, 
 											double* pdMin, 
 											double* pdMax, 
 											uint32_t nDimension, 
 											IndexItemH** items, 
-											uint32_t* nResults);
+											uint64_t* nResults);
 
 SIDX_DLL RTError Index_NearestNeighbors_id( IndexH index, 
 											double* pdMin, 
 											double* pdMax, 
 											uint32_t nDimension, 
 											uint64_t** items, 
-											uint32_t* nResults);
+											uint64_t* nResults);
 
 SIDX_DLL RTError Index_GetBounds(	IndexH index,
 									double** ppdMin,

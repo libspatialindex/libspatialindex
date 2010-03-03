@@ -268,7 +268,7 @@ SIDX_C_DLL RTError Index_Intersects_obj(  IndexH index,
 										double* pdMax, 
 										uint32_t nDimension, 
 										IndexItemH** items, 
-										uint32_t* nResults)
+										uint64_t* nResults)
 {
 	VALIDATE_POINTER1(index, "Index_Intersects_obj", RT_Failure);	   
 	Index* idx = static_cast<Index*>(index);
@@ -327,7 +327,7 @@ SIDX_C_DLL RTError Index_Intersects_id(	  IndexH index,
 										double* pdMax, 
 										uint32_t nDimension, 
 										uint64_t** ids, 
-										uint32_t* nResults)
+										uint64_t* nResults)
 {
 	VALIDATE_POINTER1(index, "Index_Intersects_id", RT_Failure);	  
 	Index* idx = static_cast<Index*>(index);
@@ -382,7 +382,7 @@ SIDX_C_DLL RTError Index_NearestNeighbors_id(IndexH index,
 											double* pdMax, 
 											uint32_t nDimension, 
 											uint64_t** ids, 
-											uint32_t* nResults)
+											uint64_t* nResults)
 {
 	VALIDATE_POINTER1(index, "Index_NearestNeighbors_id", RT_Failure);	
 	Index* idx = static_cast<Index*>(index);
@@ -438,7 +438,7 @@ SIDX_C_DLL RTError Index_NearestNeighbors_obj(IndexH index,
 											double* pdMax, 
 											uint32_t nDimension, 
 											IndexItemH** items, 
-											uint32_t* nResults)
+											uint64_t* nResults)
 {
 	VALIDATE_POINTER1(index, "Index_NearestNeighbors_obj", RT_Failure);	 
 	Index* idx = static_cast<Index*>(index);

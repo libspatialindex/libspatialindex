@@ -47,7 +47,7 @@ LeafQueryResult get_results(const SpatialIndex::INode* n)
 
 	result.SetIDs(ids);
 	result.SetBounds(pr);
-        delete ps;
+    delete ps;
 	
 	return result;
 }

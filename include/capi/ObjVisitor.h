@@ -31,7 +31,7 @@ class ObjVisitor : public SpatialIndex::IVisitor
 {
 private:
     std::vector<SpatialIndex::IData*> m_vector;
-    uint32_t nResults;
+    uint64_t nResults;
 
 public:
 
