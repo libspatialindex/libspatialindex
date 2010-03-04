@@ -136,6 +136,7 @@ OBJS = 	src\mvrtree\Index.obj \
         src\tprtree\TPRTree.obj 
         
 COBJS = src\capi\BoundsQuery.obj \
+        src\capi\CountVisitor.obj \
         src\capi\DataStream.obj \
         src\capi\Error.obj \
         src\capi\IdVisitor.obj \

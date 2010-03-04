@@ -1,12 +1,13 @@
 ## Makefile.am -- Process this file with automake to produce Makefile.in
 noinst_LTLIBRARIES = libsidxc.la
 INCLUDES = -I../../include -I../../include/capi
-libsidxc_la_SOURCES = 	BoundsQuery.cc \
+libsidxc_la_SOURCES =	BoundsQuery.cc \
+						CountVisitor.cc \
 						DataStream.cc \
 						Error.cc \
-						LeafQuery.cc \
 						IdVisitor.cc \
 						Index.cc \
+						LeafQuery.cc \
 						ObjVisitor.cc \
 						sidx_api.cc \
 						Utility.cc

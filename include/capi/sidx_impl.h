@@ -37,6 +37,7 @@
 #include <capi/Utility.h>
 #include <capi/ObjVisitor.h>
 #include <capi/IdVisitor.h>
+#include <capi/CountVisitor.h>
 #include <capi/BoundsQuery.h>
 #include <capi/LeafQuery.h>
 #include <capi/Error.h>

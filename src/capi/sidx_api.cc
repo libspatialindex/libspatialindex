@@ -377,6 +377,50 @@ SIDX_C_DLL RTError Index_Intersects_id(	  IndexH index,
 	return RT_None;
 }
 
+SIDX_C_DLL RTError Index_Intersects_count(	  IndexH index, 
+										double* pdMin, 
+										double* pdMax, 
+										uint32_t nDimension, 
+										uint64_t* nResults)
+{
+	VALIDATE_POINTER1(index, "Index_Intersects_count", RT_Failure);	  
+	Index* idx = static_cast<Index*>(index);
+
+	CountVisitor* visitor = new CountVisitor;
+	try {
+        SpatialIndex::Region* r = new SpatialIndex::Region(pdMin, pdMax, nDimension);
+		idx->index().intersectsWithQuery(	*r, 
+											*visitor);
+
+		*nResults = visitor->GetResultCount();
+
+		delete r;
+		delete visitor;
+
+	} catch (Tools::Exception& e)
+	{
+		Error_PushError(RT_Failure, 
+						e.what().c_str(), 
+						"Index_Intersects_count");
+		delete visitor;
+		return RT_Failure;
+	} catch (std::exception const& e)
+	{
+		Error_PushError(RT_Failure, 
+						e.what(), 
+						"Index_Intersects_count");
+		delete visitor;
+		return RT_Failure;
+	} catch (...) {
+		Error_PushError(RT_Failure, 
+						"Unknown Error", 
+						"Index_Intersects_count");
+		delete visitor;
+		return RT_Failure;		  
+	}
+	return RT_None;
+}
+
 SIDX_C_DLL RTError Index_NearestNeighbors_id(IndexH index, 
 											double* pdMin, 
 											double* pdMax, 

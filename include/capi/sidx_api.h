@@ -74,6 +74,11 @@ SIDX_DLL RTError Index_Intersects_id(	IndexH index,
 										uint64_t** items, 
 										uint64_t* nResults);
 										
+SIDX_DLL RTError Index_Intersects_count(	IndexH index, 
+										double* pdMin, 
+										double* pdMax, 
+										uint32_t nDimension, 
+										uint64_t* nResults);
 SIDX_DLL RTError Index_NearestNeighbors_obj(IndexH index, 
 											double* pdMin, 
 											double* pdMax, 
