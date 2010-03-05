@@ -1,0 +1,82 @@
+       
+Steps for Making a libLAS Release
+==============================================================================
+
+:Author: Howard Butler
+:Contact: hobu.inc@gmail.com
+:Revision: $Revision$
+:Date: $Date$
+
+This document describes the process for releasing a new version of libspatialindex.
+
+General Notes
+------------------------------------------------------------------------------
+
+Release Process
+
+1) Increment Version Numbers
+ 
+  - configure.ac
+    * sidx_version_major
+    * sidx_version_minor
+    * sidx_version_micro
+  - include/Version.h
+    * SIDX_VERSION_MAJOR
+    * SIDX_VERSION_MINOR
+    * SIDX_VERSION_REV 
+    * SIDX_RELEASE_NAME
+  - makefile.vc's
+    *PACKAGE_VERSION
+
+2) Update README to include any relevant info about the release that 
+   might have changed.
+
+3) Update ChangeLog with svn2cl
+
+4) Run the regression tests.  Really.
+
+5) Build Windows version
+
+  - Issue nmake and nmake install commands
+  
+  ::
+      
+      nmake /f makefile.vc clean
+      nmake /f makefile.vc
+      nmake /f makefile.vc install
+      nmake /f makefile.vc package
+    
+
+6) Make the source distribution
+
+  ::
+      
+      make dist
+
+       
+7) Generate MD5 sums 
+
+  ::
+      
+      md5 spatialindex-src-1.5.0.tar.bz2 > spatialindex-src-1.5.0.tar.bz2.md5
+      md5 spatialindex-src-1.5.0.tar.gz > spatialindex-src-1.5.0.tar.gz.md5
+      md5 liblas-1.3.1-win32.zip > liblas-1.3.1-win32.zip.md5
+
+8) Update http://trac.gispython.org/spatialindex/wiki/Releases
+
+9) Upload windows and source package as attachments to the new release page.
+
+10) Tag the release.  Use the ``-f`` switch if you are retagging because you 
+   missed something.
+
+  ::
+      
+      svn cp http://svn.gispython.org/svn/spatialindex/spatialindex/trunk http://svn.gispython.org/svn/spatialindex/spatialindex/tags/1.5.0
+      
+11) Write the release notes.  Place a copy of the release notes on the release 
+   page you created as well as send an email to spatalindex list announcing the 
+   new release.
+
+
+
+$Id$
