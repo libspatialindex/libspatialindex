@@ -9,7 +9,7 @@ m4_define([sidx_version_micro], [0])
 m4_define([sidx_version],
           [sidx_version_major.sidx_version_minor.sidx_version_micro])
           
-AC_INIT(spatialindex, [sidx_version], mhadji@gmail.com)
+AC_INIT([spatialindex], [sidx_version], [mhadji@gmail.com], [spatialindex-src])
 AC_CANONICAL_BUILD
 
 debug_default="no"
@@ -22,7 +22,7 @@ AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
 AC_PROG_LIBTOOL
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([dist-bzip2 subdir-objects])
 
 # Checks for header files.
 AC_CHECK_HEADERS(fcntl.h,, [AC_MSG_ERROR([cannot find fcntl.h, bailing out])])
