@@ -1,3 +1,355 @@
+2010-03-03 21:55  hobu
+
+	* include/capi/IdVisitor.h, include/capi/ObjVisitor.h,
+	  include/capi/sidx_api.h, regressiontest/rtree/test3/run,
+	  src/capi/LeafQuery.cc, src/capi/sidx_api.cc: use uint64_t for
+	  result counts instead of uint32_t in C API
+
+2009-12-29 02:35  hobu
+
+	* regressiontest/mvrtree/Exhaustive.cc,
+	  regressiontest/rtree/Exhaustive.cc,
+	  regressiontest/tprtree/Exhaustive.cc: fix up for gcc 4.4
+
+2009-12-04 21:57  mhadji
+
+	* spatialindex.suo, src/spatialindex/Region.cc:
+
+2009-12-04 18:46  mhadji
+
+	* src/spatialindex/Region.cc: Fixed Region::touchesRegion member
+	  function bug.
+
+2009-11-05 16:26  hobu
+
+	* src/spatialindex/Region.cc: don't thrown an error when -DDEBUG is
+	  on and we initialize an infinite Region
+
+2009-11-03 03:10  hobu
+
+	* src/capi/sidx_api.cc: pass in a reference for the query bounds
+
+2009-11-03 03:04  hobu
+
+	* src/capi/sidx_api.cc: try to do no harm when calling Index_Free
+	  on something that's null
+
+2009-11-03 03:00  hobu
+
+	* src/capi/sidx_api.cc: pass in a reference for the query bounds
+
+2009-11-03 02:15  hobu
+
+	* src/capi/sidx_api.cc: copy the array using memcpy because we
+	  can't free() something created with new
+
+2009-11-03 01:48  hobu
+
+	* src/capi/sidx_api.cc: put the data in a newly malloc'd array to
+	  match our std::free call of Index_Delete
+
+2009-11-02 21:32  hobu
+
+	* src/capi/LeafQuery.cc: make sure to delete our shape when we're
+	  done
+
+2009-11-02 21:32  hobu
+
+	* src/capi/sidx_api.cc: get dimension from the Region, no need to
+	  fetch from index properties
+
+2009-11-02 20:53  hobu
+
+	* src/capi/sidx_api.cc: make sure we clean up the bounds and region
+
+2009-11-02 20:08  hobu
+
+	* regressiontest/mvrtree/Generator.cc,
+	  regressiontest/rtree/Generator.cc,
+	  regressiontest/tprtree/Generator.cc,
+	  regressiontest/tprtree/TPRTreeLoad.cc,
+	  regressiontest/tprtree/TPRTreeQuery.cc, src/capi/sidx_api.cc,
+	  src/mvrtree/Index.cc, src/mvrtree/MVRTree.cc,
+	  src/mvrtree/Node.cc, src/rtree/Index.cc, src/rtree/Node.cc,
+	  src/rtree/RTree.cc, src/spatialindex/LineSegment.cc,
+	  src/spatialindex/MovingPoint.cc,
+	  src/spatialindex/MovingRegion.cc, src/spatialindex/Point.cc,
+	  src/spatialindex/Region.cc, src/spatialindex/TimePoint.cc,
+	  src/spatialindex/TimeRegion.cc, src/tools/Tools.cc,
+	  src/tprtree/Index.cc, src/tprtree/Node.cc,
+	  src/tprtree/TPRTree.cc: only #include <limits> where needed, and
+	  not in the global Tools.h file
+
+2009-10-30 17:09  hobu
+
+	* include/tools/Tools.h, regressiontest/mvrtree/Exhaustive.cc,
+	  regressiontest/mvrtree/Generator.cc,
+	  regressiontest/rtree/Exhaustive.cc,
+	  regressiontest/rtree/Generator.cc,
+	  regressiontest/tprtree/Generator.cc, src/mvrtree/Node.cc,
+	  src/rtree/BulkLoader.cc, src/rtree/Node.cc, src/rtree/RTree.cc,
+	  src/spatialindex/LineSegment.cc, src/spatialindex/MovingPoint.cc,
+	  src/spatialindex/MovingRegion.cc, src/spatialindex/Point.cc,
+	  src/spatialindex/Region.cc,
+	  src/storagemanager/RandomEvictionsBuffer.cc, src/tprtree/Node.cc:
+	  remove <cmath> <limits> and <climits> from Tools.h and include
+	  them seperately in each file that needs them
+
+2009-10-30 16:37  hobu
+
+	* include/capi/sidx_api.h: define to denote we're C API
+
+2009-10-30 15:03  hobu
+
+	* include/capi/sidx_config.h: add a newline
+
+2009-10-22 02:42  hobu
+
+	* src/capi/sidx_api.cc: make sure we use new/delete instead of
+	  new/free
+
+2009-10-21 17:35  hobu
+
+	* ., include/LineSegment.h, include/Point.h, include/Region.h,
+	  include/SpatialIndex.h, include/capi, src/capi,
+	  src/spatialindex/LineSegment.cc, src/spatialindex/Point.cc,
+	  src/spatialindex/Region.cc: remove namespace pollution of Tools::
+	  into the globally include'd header SpatialIndex.h
+
+2009-10-20 15:24  hobu
+
+	* configure.ac, makefile.vc: bump versions in preparation for
+	  release
+
+2009-10-19 20:31  hobu
+
+	* include/capi/sidx_api.h: add SIDX_Version prototype
+
+2009-10-19 20:23  hobu
+
+	* ltmain.sh: ltmain.sh doesn't belong in svn
+
+2009-10-19 20:23  hobu
+
+	* include/capi/Makefile.in, src/capi/Makefile.in: Makefile.in's
+	  don't belong in svn
+
+2009-10-19 18:50  hobu
+
+	* makefile.vc: C API compilation fix
+
+2009-10-19 18:50  hobu
+
+	* src/tools/Tools.cc: tmpname fixes so we compile on msvc2003
+
+2009-10-19 18:29  hobu
+
+	* makefile.vc: don't define a variable to "" or cl will complain
+
+2009-10-08 19:32  hobu
+
+	* src/rtree/BulkLoader.cc: bleaf and bindex switched around in
+	  createLevel call
+
+2009-09-17 20:40  hobu
+
+	* include/capi/LeafQuery.h, include/capi/sidx_api.h,
+	  src/capi/LeafQuery.cc, src/capi/sidx_api.cc: more leaf querying
+	  code
+
+2009-09-16 18:45  hobu
+
+	* include/capi/LeafQuery.h, include/capi/Makefile.am,
+	  include/capi/Makefile.in, include/capi/sidx_impl.h,
+	  src/capi/LeafQuery.cc, src/capi/Makefile.am,
+	  src/capi/Makefile.in, src/capi/sidx_api.cc: add beginnings of
+	  leaf querying to C API
+
+2009-09-16 03:34  hobu
+
+	* include/capi/Item.h, include/capi/ObjVisitor.h,
+	  include/capi/sidx_config.h, include/capi/sidx_impl.h,
+	  src/capi/Item.cc, src/capi/Makefile.am, src/capi/Makefile.in,
+	  src/capi/ObjVisitor.cc, src/capi/sidx_api.cc: remove the
+	  duplicate and unnecessary Item construct that was masking the
+	  already existing IData interface
+
+2009-08-31 15:32  hobu
+
+	* makefile.vc: support building the c api
+
+2009-08-24 13:25  hobu
+
+	* regressiontest/mvrtree/Exhaustive.cc,
+	  regressiontest/rtree/Exhaustive.cc,
+	  regressiontest/tprtree/Exhaustive.cc: fix issue with uint32_t by
+	  copying macros from Tools.h
+
+2009-08-19 20:47  hobu
+
+	* Makefile.am: try to ensure -lstdc++ is linked
+
+2009-08-19 19:56  hobu
+
+	* include/capi, src/capi: ignores
+
+2009-08-19 16:37  hobu
+
+	* Makefile.am, configure.ac, include/Makefile.am, include/capi,
+	  include/capi/BoundsQuery.h, include/capi/DataStream.h,
+	  include/capi/Error.h, include/capi/IdVisitor.h,
+	  include/capi/Index.h, include/capi/Item.h,
+	  include/capi/Makefile.am, include/capi/Makefile.in,
+	  include/capi/ObjVisitor.h, include/capi/Utility.h,
+	  include/capi/sidx_api.h, include/capi/sidx_config.h,
+	  include/capi/sidx_impl.h, include/tools/Makefile.am,
+	  src/Makefile.am, src/capi, src/capi/BoundsQuery.cc,
+	  src/capi/DataStream.cc, src/capi/Error.cc, src/capi/IdVisitor.cc,
+	  src/capi/Index.cc, src/capi/Item.cc, src/capi/Makefile.am,
+	  src/capi/Makefile.in, src/capi/ObjVisitor.cc,
+	  src/capi/Utility.cc, src/capi/sidx_api.cc: add C API (not
+	  currently built on windows)
+
+2009-08-19 15:25  hobu
+
+	* .: ignore propset
+
+2009-08-19 15:24  hobu
+
+	* regressiontest/mvrtree/test1, regressiontest/mvrtree/test2,
+	  regressiontest/rtree, regressiontest/rtree/test1,
+	  regressiontest/rtree/test2, regressiontest/rtree/test3,
+	  regressiontest/rtree/test4, regressiontest/tprtree/test1,
+	  regressiontest/tprtree/test2: propsets to ignore test results
+
+2009-08-18 18:07  hobu
+
+	* include/tools/Tools.h, src/tools/Tools.cc: locking for
+	  Tools::PropertySet (commented out though because it doesn't work
+
+2009-08-14 17:41  hobu
+
+	* src/tools/Tools.cc: comment out PropertySet locking for now
+
+2009-08-14 15:19  hobu
+
+	* include/tools/Tools.h, src/mvrtree/MVRTree.cc,
+	  src/mvrtree/MVRTree.h, src/rtree/RTree.cc, src/rtree/RTree.h,
+	  src/tools/Tools.cc, src/tprtree/TPRTree.cc,
+	  src/tprtree/TPRTree.h: use HAVE_PTHREAD_H for #ifdef, make
+	  Tools::PropertySet threadsafe for read/write
+
+2009-08-13 19:10  mhadji
+
+	* spatialindex.suo, src/rtree/BulkLoader.cc,
+	  src/rtree/BulkLoader.h, src/rtree/RTree.cc:
+
+2009-08-13 15:42  mhadji
+
+	* spatialindex-vc/spatialindex.vcproj, spatialindex.suo:
+
+2009-08-13 15:24  mhadji
+
+	* include/LineSegment.h, include/MVRTree.h, include/MovingPoint.h,
+	  include/MovingRegion.h, include/Point.h, include/RTree.h,
+	  include/Region.h, include/SpatialIndex.h, include/TPRTree.h,
+	  include/TimePoint.h, include/TimeRegion.h,
+	  include/tools/PointerPool.h, include/tools/Tools.h,
+	  regressiontest/rtree/RTreeBulkLoad.cc,
+	  regressiontest/rtree/RTreeQuery.cc,
+	  regressiontest/rtree/test1/run, regressiontest/rtree/test2/run,
+	  spatialindex.suo, src/mvrtree/Index.cc, src/mvrtree/Index.h,
+	  src/mvrtree/Leaf.cc, src/mvrtree/Leaf.h, src/mvrtree/MVRTree.cc,
+	  src/mvrtree/MVRTree.h, src/mvrtree/Node.cc, src/mvrtree/Node.h,
+	  src/mvrtree/PointerPoolNode.h, src/mvrtree/Statistics.cc,
+	  src/mvrtree/Statistics.h, src/rtree/BulkLoader.cc,
+	  src/rtree/BulkLoader.h, src/rtree/Index.cc, src/rtree/Index.h,
+	  src/rtree/Leaf.cc, src/rtree/Leaf.h, src/rtree/Node.cc,
+	  src/rtree/Node.h, src/rtree/PointerPoolNode.h,
+	  src/rtree/RTree.cc, src/rtree/RTree.h, src/rtree/Statistics.cc,
+	  src/rtree/Statistics.h, src/spatialindex/LineSegment.cc,
+	  src/spatialindex/MovingPoint.cc,
+	  src/spatialindex/MovingRegion.cc, src/spatialindex/Point.cc,
+	  src/spatialindex/Region.cc, src/spatialindex/TimePoint.cc,
+	  src/spatialindex/TimeRegion.cc, src/storagemanager/Buffer.cc,
+	  src/storagemanager/Buffer.h,
+	  src/storagemanager/DiskStorageManager.cc,
+	  src/storagemanager/DiskStorageManager.h,
+	  src/storagemanager/MemoryStorageManager.cc,
+	  src/storagemanager/MemoryStorageManager.h,
+	  src/storagemanager/RandomEvictionsBuffer.cc, src/tools/Tools.cc,
+	  src/tprtree/Index.cc, src/tprtree/Index.h, src/tprtree/Leaf.cc,
+	  src/tprtree/Leaf.h, src/tprtree/Node.cc, src/tprtree/Node.h,
+	  src/tprtree/PointerPoolNode.h, src/tprtree/Statistics.cc,
+	  src/tprtree/Statistics.h, src/tprtree/TPRTree.cc,
+	  src/tprtree/TPRTree.h: 1. Replace size_t with uint32_t to fix
+	  64/32 bit compatibility issues
+	  2. Fixed memory bug related to data array and bulk loading for
+	  RTree.
+
+2009-08-10 13:35  hobu
+
+	* include/SpatialIndex.h, include/tools/Tools.h: remove #define
+	  interface, use class
+
+2009-08-06 01:11  hobu
+
+	* makefile.vc: osgeo4w packaging
+
+2009-08-05 20:21  hobu
+
+	* include/tools/Tools.h: don't redefine interface if it is already
+	  defined (/me scowls at windows
+
+2009-08-05 19:27  hobu
+
+	* src/rtree/BulkLoader.cc: comment out record deletion entirely
+
+2009-08-05 17:58  hobu
+
+	* src/rtree/BulkLoader.cc: guard against invalid delete
+
+2009-07-30 18:48  hobu
+
+	* Makefile.am, configure.ac: bump version to 1.4.0 in prep for
+	  release, add a windows docs to the dist
+
+2009-07-30 16:57  hobu
+
+	* src/storagemanager/DiskStorageManager.cc: Add a
+	  CheckFilesExists(Tools::PropertySet&) method instead of the cheap
+	  way we were checking for existence before. This takes into
+	  account the file extensions and only returns true if both files
+	  exist
+
+2009-07-30 16:56  hobu
+
+	* include/tools/Tools.h: move the warning about 4251 down into
+	  _MSC_VER
+
+2009-07-30 03:10  hobu
+
+	* ChangeLog, configure.ac: new changelog
+
+2009-07-30 02:32  hobu
+
+	* makefile.vc: update for new layout. make sure to build dll
+	  appropriately
+
+2009-07-29 21:24  hobu
+
+	* include/tools/Tools.h: turn off warning 4251
+
+2009-07-29 20:57  hobu
+
+	* include/Makefile.am, include/SpatialIndex.h, include/Version.h:
+	  fix #15 and provide a way to determine the library version at
+	  compile time
+
+2009-07-29 20:50  hobu
+
+	* makefile.vc: add back makefile.vc
+
 2009-07-22 19:29  hobu
 
 	* src/spatialindex/Region.cc: a note about the debugging lint that
