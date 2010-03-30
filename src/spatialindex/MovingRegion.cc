@@ -882,7 +882,7 @@ double MovingRegion::getIntersectingAreaInTime(const IInterval& ivI, const Movin
 	assert(tmin > -std::numeric_limits<double>::max());
 
 	Tools::Interval ivIn(tmin, tmax);
-	Tools::Interval ivOut;
+	Tools::Interval ivOut(ivIn);
 
 	if (! intersectsRegionInTime(ivIn, r, ivOut)) return 0.0;
 
