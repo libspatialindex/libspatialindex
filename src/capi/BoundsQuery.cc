@@ -1,9 +1,9 @@
 /******************************************************************************
  * $Id: boundsquery.cc 1361 2009-08-02 17:53:31Z hobu $
  *
- * Project:  libsidx - A C API wrapper around libspatialindex
- * Purpose:  C++ objects to implement the bounds query.
- * Author:   Howard Butler, hobu.inc@gmail.com
+ * Project:	 libsidx - A C API wrapper around libspatialindex
+ * Purpose:	 C++ objects to implement the bounds query.
+ * Author:	 Howard Butler, hobu.inc@gmail.com
  *
  ******************************************************************************
  * Copyright (c) 2009, Howard Butler
@@ -22,24 +22,24 @@
  * 
  * You should have received a copy of the GNU Lesser General Public License 
  * along with this library; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * 51 Franklin Street, Fifth Floor, Boston, MA	02110-1301	USA
  ****************************************************************************/
 
 #include <capi/sidx_impl.h>
 
 BoundsQuery::BoundsQuery() 
 {
-    m_bounds = new SpatialIndex::Region;
+	m_bounds = new SpatialIndex::Region;
 }
 
 void BoundsQuery::getNextEntry( const SpatialIndex::IEntry& entry, 
-                                SpatialIndex::id_type& nextEntry, 
-                                bool& hasNext) 
+								SpatialIndex::id_type& nextEntry, 
+								bool& hasNext) 
 {
-    SpatialIndex::IShape* ps;
-    entry.getShape(&ps);
-    ps->getMBR(*m_bounds);
-    delete ps;
-        
-    hasNext = false;
+	SpatialIndex::IShape* ps;
+	entry.getShape(&ps);
+	ps->getMBR(*m_bounds);
+	delete ps;
+		
+	hasNext = false;
 }

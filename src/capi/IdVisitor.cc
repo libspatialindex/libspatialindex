@@ -1,9 +1,9 @@
 /******************************************************************************
  * $Id: idvisitor.cc 1361 2009-08-02 17:53:31Z hobu $
  *
- * Project:  libsidx - A C API wrapper around libspatialindex
- * Purpose:  C++ objects to implement the id visitor.
- * Author:   Howard Butler, hobu.inc@gmail.com
+ * Project:	 libsidx - A C API wrapper around libspatialindex
+ * Purpose:	 C++ objects to implement the id visitor.
+ * Author:	 Howard Butler, hobu.inc@gmail.com
  *
  ******************************************************************************
  * Copyright (c) 2009, Howard Butler
@@ -22,7 +22,7 @@
  * 
  * You should have received a copy of the GNU Lesser General Public License 
  * along with this library; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * 51 Franklin Street, Fifth Floor, Boston, MA	02110-1301	USA
  ****************************************************************************/
 
 #include "sidx_impl.h"
@@ -43,9 +43,9 @@ void IdVisitor::visitNode(const SpatialIndex::INode& n)
 
 void IdVisitor::visitData(const SpatialIndex::IData& d)
 {
-    nResults += 1;
-    
-    m_vector.push_back(d.getIdentifier());
+	nResults += 1;
+	
+	m_vector.push_back(d.getIdentifier());
 }
 
 void IdVisitor::visitData(std::vector<const SpatialIndex::IData*>& v)

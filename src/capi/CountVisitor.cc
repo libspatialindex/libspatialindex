@@ -2,9 +2,9 @@
 /******************************************************************************
 * $Id$
 *
-* Project:  libsidx - A C API wrapper around libspatialindex
-* Purpose:  C++ objects to implement the count visitor.
-* Author:   Leonard Norrgård, leonard.norrgard@refactor.fi
+* Project:	libsidx - A C API wrapper around libspatialindex
+* Purpose:	C++ objects to implement the count visitor.
+* Author:	Leonard Norrgård, leonard.norrgard@refactor.fi
 *
 ******************************************************************************
 * Copyright (c) 2010, Leonard Norrgård
@@ -18,7 +18,7 @@
 
 * This library is distributed in the hope that it will be useful, but WITHOUT
 * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-* FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+* FOR A PARTICULAR PURPOSE.	 See the GNU Lesser General Public License for more
 * details.
 * 
 * You should have received a copy of the GNU Lesser General Public License 

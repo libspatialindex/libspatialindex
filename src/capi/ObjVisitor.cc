@@ -1,9 +1,9 @@
 /******************************************************************************
  * $Id: objvisitor.cc 1385 2009-08-13 15:45:16Z hobu $
  *
- * Project:  libsidx - A C API wrapper around libspatialindex
- * Purpose:  C++ objects to implement the wrapper.
- * Author:   Howard Butler, hobu.inc@gmail.com
+ * Project:	 libsidx - A C API wrapper around libspatialindex
+ * Purpose:	 C++ objects to implement the wrapper.
+ * Author:	 Howard Butler, hobu.inc@gmail.com
  *
  ******************************************************************************
  * Copyright (c) 2009, Howard Butler
@@ -22,7 +22,7 @@
  * 
  * You should have received a copy of the GNU Lesser General Public License 
  * along with this library; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * 51 Franklin Street, Fifth Floor, Boston, MA	02110-1301	USA
  ****************************************************************************/
 
 #include "sidx_impl.h"
@@ -33,10 +33,10 @@ ObjVisitor::ObjVisitor(): nResults(0)
 
 ObjVisitor::~ObjVisitor()
 {
-    std::vector<SpatialIndex::IData*>::iterator it;
-    for (it = m_vector.begin(); it != m_vector.end(); it++) {
-        delete *it;
-    }
+	std::vector<SpatialIndex::IData*>::iterator it;
+	for (it = m_vector.begin(); it != m_vector.end(); it++) {
+		delete *it;
+	}
 
 }
 
@@ -48,10 +48,10 @@ void ObjVisitor::visitData(const SpatialIndex::IData& d)
 {
 
 	SpatialIndex::IData* item = dynamic_cast<SpatialIndex::IData*>(const_cast<SpatialIndex::IData&>(d).clone()) ; 
-    
-    nResults += 1;
-    
-    m_vector.push_back(item);
+	
+	nResults += 1;
+	
+	m_vector.push_back(item);
 }
 
 void ObjVisitor::visitData(std::vector<const SpatialIndex::IData*>& v)
