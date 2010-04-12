@@ -40,7 +40,7 @@
 	// Nuke this annoying warning.  See http://www.unknownroad.com/rtfm/VisualStudio/warningC4251.html
 	#pragma warning( disable: 4251 )
 #else
-  #include <stdint.h>
+	#include <stdint.h>
 #endif
 
 class Region
