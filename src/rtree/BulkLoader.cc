@@ -387,7 +387,7 @@ void BulkLoader::createLevel(
 	uint64_t P = static_cast<uint64_t>(std::ceil(static_cast<double>(es->getTotalEntries()) / static_cast<double>(b)));
 	uint64_t S = static_cast<uint64_t>(std::ceil(std::sqrt(static_cast<double>(P))));
 
-	if (S == 1 || dimension == pTree->m_dimension - 1)
+	if (S == 1 || dimension == pTree->m_dimension - 1 || S * b == es->getTotalEntries())
 	{
 		std::vector<ExternalSorter::Record*> node;
 		ExternalSorter::Record* r;
