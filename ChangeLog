@@ -1,3 +1,57 @@
+2010-04-12 17:17  mhadji
+
+	* regressiontest/rtree/Exhaustive.cc:
+
+2010-04-12 17:07  mhadji
+
+	* regressiontest/rtree/Exhaustive.cc,
+	  regressiontest/rtree/test3/run, spatialindex.suo,
+	  src/rtree/BulkLoader.cc: Fixed rtree/BulkLoader infinit loop bug
+
+2010-03-31 15:33  hobu
+
+	* src/capi/BoundsQuery.cc, src/capi/CountVisitor.cc,
+	  src/capi/DataStream.cc, src/capi/IdVisitor.cc, src/capi/Index.cc,
+	  src/capi/ObjVisitor.cc, src/capi/Utility.cc: format and layout
+	  normalization
+
+2010-03-30 20:18  hobu
+
+	* src/spatialindex/MovingRegion.cc: ensure that we instantiate the
+	  ivOut with at least the ivIn so we have a properly constructed
+	  Tools::Interval #16
+
+2010-03-05 14:19  hobu
+
+	* ., HOWTORELEASE.txt: add doc describing how to release
+
+2010-03-05 02:56  hobu
+
+	* regressiontest/tprtree/test1, regressiontest/tprtree/test2:
+	  propsets to ignore test output:
+
+2010-03-05 02:53  hobu
+
+	* configure.ac: use subdir-objects for automake and rename the make
+	  dist output to spatialindex-src
+
+2010-03-05 02:52  hobu
+
+	* include/Version.h: increment version info in preparation for
+	  release
+
+2010-03-05 01:59  hobu
+
+	* ChangeLog: update for release
+
+2010-03-04 16:33  hobu
+
+	* include/capi/CountVisitor.h, include/capi/Makefile.am,
+	  include/capi/sidx_api.h, include/capi/sidx_impl.h, makefile.vc,
+	  src/capi/CountVisitor.cc, src/capi/Makefile.am,
+	  src/capi/sidx_api.cc: add CountVisitor to the CAPI to provide a
+	  cumulation of the number of hits that land within a query
+
 2010-03-03 21:55  hobu
 
 	* include/capi/IdVisitor.h, include/capi/ObjVisitor.h,
