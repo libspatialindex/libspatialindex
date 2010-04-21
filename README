@@ -370,6 +370,39 @@ RegionPoolCapacity            VT_LONG      Default is 1000
 PointPoolCapacity             VT_LONG      Default is 500
 ==========================    ===========  ============================================================
 
+Performance
+------------------------------------------------------------------------------
+
+Dataset size, data density, etc. have nothing to do with capacity and page
+size. What you are trying to achieve is fast reads from the disk and take
+advantage of disk buffering and prefetching.
+
+Normally, you select the page size to be equal to the disk page size (depends
+on how you format the drive). Then you choose the node capacity to be enough
+to fill the whole page (including data entries if you have any).
+
+There is a tradeoff though in making node capacity too large. The larger the
+capacity, the longer the "for loops" for inserting, deleting, locating node
+entries take (CPU time). On the other hand, the larger the capacity the
+shorter the tree becomes, reducing the number of random IOs to reach the
+leaves. Hence, you might want to fit multiple nodes (of smaller capacity)
+inside a single page to balance I/O and CPU cost, in case your disk page size
+is too large.
+
+Finally, if you have enough buffer space to fit most of the index nodes in
+main memory, then large capacities do not make too much sense, because the
+height of the tree does not matter any more. Of course, the smaller the
+capacity, the larger the number of leaf nodes you will have to retrieve from
+disk for range queries (point queries and nearest neighbor queries will not
+suffer that much). So very small capacities hurt as well.
+
+There is another issue when trying to fit multiple nodes per page: Leftover
+space. You might have leftover space due to data entries that do not have a
+fixed size. Unfortunately, in that case, leftover space per page is lost,
+negatively impacting space usage.
+
+Selecting the right page size is easy; make it equal to the disk page size.
+Selecting the right node capacity is an art...
 
 ------------------------------------------------------------------------------
 Contact Information
