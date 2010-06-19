@@ -49,6 +49,8 @@ public:
     void SetIndexVariant(RTStorageType v);
     
     SpatialIndex::ISpatialIndex& index() {return *m_rtree;}
+    SpatialIndex::StorageManager::IBuffer& buffer() {return *m_buffer;}
+
 private:
 
     void Initialize();

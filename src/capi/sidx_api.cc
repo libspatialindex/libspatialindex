@@ -243,20 +243,20 @@ SIDX_C_DLL RTError Index_InsertData(  IndexH index,
 	{
 		Error_PushError(RT_Failure, 
 						e.what().c_str(), 
-						"Index_DeleteData");
+						"Index_InsertData");
 		delete shape;
 		return RT_Failure;
 	} catch (std::exception const& e)
 	{
 		Error_PushError(RT_Failure, 
 						e.what(), 
-						"Index_DeleteData");
+						"Index_InsertData");
 		delete shape;
 		return RT_Failure;
 	} catch (...) {
 		Error_PushError(RT_Failure, 
 						"Unknown Error", 
-						"Index_DeleteData");
+						"Index_InsertData");
 		delete shape;
 		return RT_Failure;		  
 	}
@@ -607,6 +607,13 @@ SIDX_C_DLL IndexPropertyH Index_GetProperties(IndexH index)
 	
 	idx->index().getIndexProperties(*ps);
 	return (IndexPropertyH)ps;
+}
+
+SIDX_C_DLL IndexPropertyH Index_ClearBuffer(IndexH index)
+{
+	VALIDATE_POINTER1(index, "Index_ClearBuffer", 0); 
+	Index* idx = static_cast<Index*>(index);
+	idx->buffer().clear();
 }
 
 SIDX_C_DLL void Index_DestroyObjResults(IndexItemH* results, uint32_t nResults)
@@ -1040,7 +1047,7 @@ SIDX_C_DLL RTError IndexProperty_SetIndexStorage( IndexPropertyH hProp,
 
 	try
 	{
-		if (!(value == RT_Disk || value == RT_Memory )) {
+		if (!(value == RT_Disk || value == RT_Memory || value == RT_Custom)) {
 			throw std::runtime_error("Inputted value is not a valid index storage type");
 		}
 		Tools::Variant var;
@@ -2276,6 +2283,148 @@ SIDX_C_DLL char* IndexProperty_GetFileNameExtensionIdx(IndexPropertyH hProp)
 	return NULL;
 }
 
+SIDX_C_DLL RTError IndexProperty_SetCustomStorageCallbacksSize(IndexPropertyH hProp, 
+												uint32_t value)
+{
+	VALIDATE_POINTER1(hProp, "IndexProperty_SetCustomStorageCallbacksSize", RT_Failure);	   
+	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+
+	try
+	{
+		Tools::Variant var;
+		var.m_varType = Tools::VT_ULONG;
+		var.m_val.ulVal = value;
+		prop->setProperty("CustomStorageCallbacksSize", var);
+	} catch (Tools::Exception& e)
+	{
+		Error_PushError(RT_Failure, 
+						e.what().c_str(), 
+						"IndexProperty_SetCustomStorageCallbacksSize");
+		return RT_Failure;
+	} catch (std::exception const& e)
+	{
+		Error_PushError(RT_Failure, 
+						e.what(), 
+						"IndexProperty_SetCustomStorageCallbacksSize");
+		return RT_Failure;
+	} catch (...) {
+		Error_PushError(RT_Failure, 
+						"Unknown Error", 
+						"IndexProperty_SetCustomStorageCallbacksSize");
+		return RT_Failure;		  
+	}
+	return RT_None;
+}
+
+SIDX_C_DLL uint32_t IndexProperty_GetCustomStorageCallbacksSize(IndexPropertyH hProp)
+{
+	VALIDATE_POINTER1(hProp, "IndexProperty_GetCustomStorageCallbacksSize", 0);
+	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+
+	Tools::Variant var;
+	var = prop->getProperty("CustomStorageCallbacksSize");
+
+	if (var.m_varType != Tools::VT_EMPTY)
+	{
+		if (var.m_varType != Tools::VT_ULONG) {
+			Error_PushError(RT_Failure, 
+							"Property CustomStorageCallbacksSize must be Tools::VT_ULONG", 
+							"IndexProperty_GetCustomStorageCallbacksSize");
+			return 0;
+		}
+		
+		return var.m_val.ulVal;
+	}
+	
+	// return nothing for an error
+	Error_PushError(RT_Failure, 
+					"Property CustomStorageCallbacksSize was empty", 
+					"IndexProperty_GetCustomStorageCallbacksSize");
+	return 0;
+}
+
+SIDX_C_DLL RTError IndexProperty_SetCustomStorageCallbacks( IndexPropertyH hProp, 
+														const void* value)
+{
+	VALIDATE_POINTER1(	hProp, 
+						"IndexProperty_SetCustomStorageCallbacks", 
+						RT_Failure);	
+	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+
+    // check if the CustomStorageCallbacksSize is alright, so we can make a copy of the passed in structure
+  	Tools::Variant varSize;
+    varSize = prop->getProperty("CustomStorageCallbacksSize");
+    if ( varSize.m_val.ulVal != sizeof(SpatialIndex::StorageManager::CustomStorageManagerCallbacks) )
+    {
+        std::ostringstream ss;
+        ss << "The supplied storage callbacks size is wrong, expected "
+            << sizeof(SpatialIndex::StorageManager::CustomStorageManagerCallbacks) 
+           << ", got " << varSize.m_val.ulVal;
+		Error_PushError(RT_Failure, 
+						ss.str().c_str(), 
+						"IndexProperty_SetCustomStorageCallbacks");
+		return RT_Failure;
+    }
+
+    try
+	{
+		Tools::Variant var;
+		var.m_varType = Tools::VT_PVOID;
+        var.m_val.pvVal = value ? 
+                            new SpatialIndex::StorageManager::CustomStorageManagerCallbacks( 
+                                    *static_cast<const SpatialIndex::StorageManager::CustomStorageManagerCallbacks*>(value) 
+                                    ) 
+                            : 0;
+		prop->setProperty("CustomStorageCallbacks", var);
+
+	} catch (Tools::Exception& e)
+	{
+		Error_PushError(RT_Failure, 
+						e.what().c_str(), 
+						"IndexProperty_SetCustomStorageCallbacks");
+		return RT_Failure;
+	} catch (std::exception const& e)
+	{
+		Error_PushError(RT_Failure, 
+						e.what(), 
+						"IndexProperty_SetCustomStorageCallbacks");
+		return RT_Failure;
+	} catch (...) {
+		Error_PushError(RT_Failure, 
+						"Unknown Error", 
+						"IndexProperty_SetCustomStorageCallbacks");
+		return RT_Failure;		  
+	}
+	return RT_None;
+}
+
+SIDX_C_DLL void* IndexProperty_GetCustomStorageCallbacks(IndexPropertyH hProp)
+{
+	VALIDATE_POINTER1(hProp, "IndexProperty_GetCustomStorageCallbacks", 0);
+	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+
+	Tools::Variant var;
+	var = prop->getProperty("CustomStorageCallbacks");
+
+	if (var.m_varType != Tools::VT_EMPTY)
+	{
+		if (var.m_varType != Tools::VT_PVOID) {
+			Error_PushError(RT_Failure, 
+							"Property CustomStorageCallbacks must be Tools::VT_PVOID", 
+							"IndexProperty_GetCustomStorageCallbacks");
+			return NULL;
+		}
+		
+		return var.m_val.pvVal;
+	}
+	
+	// return nothing for an error
+	Error_PushError(RT_Failure, 
+					"Property CustomStorageCallbacks was empty", 
+					"IndexProperty_GetCustomStorageCallbacks");
+	return NULL;
+}
+
 SIDX_C_DLL RTError IndexProperty_SetIndexID(IndexPropertyH hProp, 
 											int64_t value)
 {
@@ -2335,6 +2484,17 @@ SIDX_C_DLL int64_t IndexProperty_GetIndexID(IndexPropertyH hProp)
 					"IndexProperty_GetIndexID");
 	return 0;
 }
+
+SIDX_C_DLL void* SIDX_NewBuffer(size_t length)
+{
+    return new char[length];
+}
+    
+SIDX_C_DLL void SIDX_DeleteBuffer(void* buffer)
+{
+    delete []buffer;
+}
+
 
 SIDX_C_DLL char* SIDX_Version()
 {

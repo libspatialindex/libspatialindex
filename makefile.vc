@@ -137,6 +137,7 @@ OBJS = 	src\mvrtree\Index.obj \
         
 COBJS = src\capi\BoundsQuery.obj \
         src\capi\CountVisitor.obj \
+        src\capi\CustomStorage.obj \
         src\capi\DataStream.obj \
         src\capi\Error.obj \
         src\capi\IdVisitor.obj \

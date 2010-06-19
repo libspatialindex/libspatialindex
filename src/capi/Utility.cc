@@ -136,5 +136,15 @@ Tools::PropertySet* GetDefaults()
 	var.m_varType = Tools::VT_PCHAR;
 	var.m_val.pcVal = const_cast<char*>("idx");
 	ps->setProperty("FileNameIdx", var);
-	return ps;
+
+    // Custom storage manager properties
+    var.m_varType = Tools::VT_ULONG;
+	var.m_val.pcVal = 0;
+	ps->setProperty("CustomStorageCallbacksSize", var);
+
+    var.m_varType = Tools::VT_PVOID;
+	var.m_val.pcVal = 0;
+	ps->setProperty("CustomStorageCallbacks", var);
+
+    return ps;
 }

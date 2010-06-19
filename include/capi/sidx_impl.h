@@ -43,3 +43,4 @@
 #include <capi/Error.h>
 #include <capi/DataStream.h>
 #include <capi/Index.h>
+#include <capi/CustomStorage.h>

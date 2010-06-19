@@ -80,6 +80,7 @@ typedef enum
 {
    RT_Memory = 0,
    RT_Disk = 1,
+   RT_Custom = 2,
    RT_InvalidStorageType = -99
 } RTStorageType;
 

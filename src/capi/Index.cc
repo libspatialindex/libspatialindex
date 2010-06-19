@@ -258,6 +258,17 @@ SpatialIndex::IStorageManager* Index::CreateStorage()
 			throw std::runtime_error(os.str());
 		} 
 					
+	} else if (GetIndexStorage() == RT_Custom) {
+
+		try {
+            storage = returnCustomStorageManager(m_properties);
+			return storage;
+		} catch (Tools::Exception& e) {
+			std::ostringstream os;
+			os << "Spatial Index Error: " << e.what();
+			throw std::runtime_error(os.str());
+		} 
+					
 	}
 	return storage;				  
 }

@@ -3,6 +3,7 @@ noinst_LTLIBRARIES = libsidxc.la
 INCLUDES = -I../../include -I../../include/capi
 libsidxc_la_SOURCES =	BoundsQuery.cc \
 						CountVisitor.cc \
+						CustomStorage.cc \
 						DataStream.cc \
 						Error.cc \
 						IdVisitor.cc \

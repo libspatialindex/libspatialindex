@@ -3,6 +3,7 @@ spatialindexdir = $(includedir)/spatialindex/capi
 dist_spatialindex_HEADERS =	\
 								BoundsQuery.h \
 								CountVisitor.h \
+								CustomStorage.h \
 								DataStream.h \
 								Error.h \
 								IdVisitor.h \
