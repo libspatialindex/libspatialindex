@@ -381,6 +381,8 @@ namespace Tools
 			// returns a uniformly distributed double in the range [0, 1).
 		double nextUniformDouble(double low, double high);
 			// returns a uniformly distributed double in the range [low, high).
+		long double nextUniformLongDouble();
+
 		bool flipCoin();
 
 	private:

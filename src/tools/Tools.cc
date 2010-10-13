@@ -698,6 +698,24 @@ double Tools::Random::nextUniformDouble(double low, double high)
 	return (high - low) * nextUniformDouble() + low;
 }
 
+long double Tools::Random::nextUniformLongDouble()
+{
+	uint16_t* xsubi = reinterpret_cast<uint16_t*>(m_pBuffer);
+
+ 	long double ret;
+ 	char* p = reinterpret_cast<char*>(&ret);
+ 	int32_t i32;
+
+ 	for (size_t i = 0; i < sizeof(long double) / sizeof(int32_t); ++i)
+ 	{
+ 		i32 = nextUniformLong();
+ 		memcpy(p, &i32, sizeof(int32_t));
+ 		p += sizeof(int32_t);
+ 	}
+
+ 	return ret;
+}
+
 bool Tools::Random::flipCoin()
 {
 	if (nextUniformDouble() < 0.5) return true;
