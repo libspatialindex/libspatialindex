@@ -221,9 +221,9 @@ SIDX_C_DLL RTError Index_InsertData(  IndexH index,
 	for (uint32_t i = 0; i < nDimension; ++i){
 		double delta = pdMin[i] - pdMax[i];
 		if (!(delta <= epsilon && delta >= -epsilon)) {
-    		isPoint = true;
 			break;
 		}
+		isPoint = true;
 	}
 	if (isPoint == true) {
 		shape = new SpatialIndex::Point(pdMin, nDimension);
