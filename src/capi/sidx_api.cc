@@ -219,14 +219,16 @@ SIDX_C_DLL RTError Index_InsertData(  IndexH index,
 	SpatialIndex::IShape* shape = 0;
 	double const epsilon = std::numeric_limits<double>::epsilon(); 
 	
-  double length = 0.0;
+	double length(0);
 	for (uint32_t i = 0; i < nDimension; ++i) {
 		double delta = pdMin[i] - pdMax[i];
-    length += std::fabs(delta);
-  }
-	if (length <= epsilon && length >= -epsilon) {
-    isPoint = true;
+		length += std::fabs(delta);
 	}
+
+	if (length <= epsilon && length >= -epsilon) {
+		isPoint = true;
+	}
+
 	if (isPoint == true) {
 		shape = new SpatialIndex::Point(pdMin, nDimension);
 	} else {
