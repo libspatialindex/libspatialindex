@@ -25,6 +25,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA	02110-1301	USA
  ****************************************************************************/
 
+#include <cmath>
 #include <limits>
 #include "sidx_impl.h"
 
@@ -221,17 +222,10 @@ SIDX_C_DLL RTError Index_InsertData(  IndexH index,
   double length = 0.0;
 	for (uint32_t i = 0; i < nDimension; ++i) {
 		double delta = pdMin[i] - pdMax[i];
-<<<<<<< .mine
-    length += delta;
+    length += std::fabs(delta);
   }
 	if (length <= epsilon && length >= -epsilon) {
     isPoint = true;
-=======
-		if (!(delta <= epsilon && delta >= -epsilon)) {
-			break;
-		}
->>>>>>> .r194
-		isPoint = true;
 	}
 	if (isPoint == true) {
 		shape = new SpatialIndex::Point(pdMin, nDimension);
