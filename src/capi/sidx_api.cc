@@ -225,7 +225,7 @@ SIDX_C_DLL RTError Index_InsertData(  IndexH index,
 		length += std::fabs(delta);
 	}
 
-	if (length <= epsilon && length >= -epsilon) {
+	if (length <= epsilon) {
 		isPoint = true;
 	}
 
