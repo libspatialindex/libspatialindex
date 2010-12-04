@@ -1,3 +1,69 @@
+2010-11-22 19:53  seang
+
+	* src/capi/sidx_api.cc: Fix test of length value
+
+2010-11-22 19:23  hobu
+
+	* src/capi/sidx_api.cc: whitespace normalization
+
+2010-11-22 19:00  seang
+
+	* src/capi/sidx_api.cc: Add up deltas for multidimensional input
+
+2010-11-22 18:49  seang
+
+	* src/capi/sidx_api.cc: Add up deltas for multidimensional input
+
+2010-11-22 18:46  hobu
+
+	* src/capi/sidx_api.cc: revert r193
+
+2010-11-22 16:02  hobu
+
+	* src/capi/sidx_api.cc: we should set isPoint to true if we pass
+	  our epsilon test -- this didn't work before
+
+2010-10-14 13:18  mhadji
+
+	* include/tools/Tools.h, src/tools/Tools.cc: Removed
+	  nextUnifromLongDouble. It was incorrect
+
+2010-10-13 15:10  mhadji
+
+	* include/tools/Tools.h, src/tools/Tools.cc: Added
+	  nextUniformLongDouble
+
+2010-09-16 13:56  hobu
+
+	* Makefile.am: fix #25 and include visual studio files in the
+	  release
+
+2010-09-16 13:53  hobu
+
+	* makefile.vc: bump versions in preparation for release
+
+2010-09-16 13:52  hobu
+
+	* configure.ac, include/Version.h: bump versions in preparation for
+	  release
+
+2010-06-19 20:34  hobu
+
+	* include/capi/CustomStorage.h, include/capi/Index.h,
+	  include/capi/Makefile.am, include/capi/sidx_api.h,
+	  include/capi/sidx_config.h, include/capi/sidx_impl.h,
+	  makefile.vc, src/capi/CustomStorage.cc, src/capi/Index.cc,
+	  src/capi/Makefile.am, src/capi/Utility.cc, src/capi/sidx_api.cc:
+	  add Matthias' CustomStorage backend for C API
+
+2010-04-21 18:50  hobu
+
+	* README: Add Marios' pagesize diatribe to the docs
+
+2010-04-12 19:56  hobu
+
+	* ChangeLog: update ChangeLog
+
 2010-04-12 17:17  mhadji
 
 	* regressiontest/rtree/Exhaustive.cc:
