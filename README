@@ -41,6 +41,7 @@ The purpose of this library is to provide:
 Installation
 ------------------------------------------------------------------------------
 
+First run autogen.sh to generate the configure scripts.
 By default include files and library files will be installed in /usr/local. If 
 you would like to use a different installation directory (e.g., in case 
 that you do not have root access) run the configure script with 
