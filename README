@@ -74,7 +74,7 @@ files and then compile with the following options:
 If the library is installed in the default /usr/local path, then the 
 -I and -L options are not necessary.
 
-If you are compiling on Mac OS X you will might need to add the -bind_at_load 
+If you are compiling on Mac OS X you will need to add the -bind_at_load 
 option when linking against the dynamic link libraries.  OS X Tiger should 
 work out of the box, however, with XCode 3.0.
 
