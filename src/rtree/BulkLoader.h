@@ -52,8 +52,8 @@ namespace SpatialIndex
 			public:
 				Region m_r;
 				id_type m_id;
-				byte* m_pData;
 				uint32_t m_len;
+				byte* m_pData;
 				uint32_t m_s;
 			};
 
