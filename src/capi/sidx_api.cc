@@ -613,9 +613,9 @@ SIDX_C_DLL IndexPropertyH Index_GetProperties(IndexH index)
 	return (IndexPropertyH)ps;
 }
 
-SIDX_C_DLL IndexPropertyH Index_ClearBuffer(IndexH index)
+SIDX_C_DLL void Index_ClearBuffer(IndexH index)
 {
-	VALIDATE_POINTER1(index, "Index_ClearBuffer", 0); 
+	VALIDATE_POINTER0(index, "Index_ClearBuffer"); 
 	Index* idx = static_cast<Index*>(index);
 	idx->buffer().clear();
 }
@@ -2496,7 +2496,7 @@ SIDX_C_DLL void* SIDX_NewBuffer(size_t length)
     
 SIDX_C_DLL void SIDX_DeleteBuffer(void* buffer)
 {
-    delete []buffer;
+    delete [] static_cast<char*>(buffer);
 }
 
 
