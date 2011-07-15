@@ -218,9 +218,13 @@ SpatialIndex::ISpatialIndex* SpatialIndex::RTree::createAndBulkLoadNewRTree(
 	id_type& indexIdentifier)
 {
 	Tools::Variant var;
-	RTreeVariant rv;
-	double fillFactor;
-	uint32_t indexCapacity, leafCapacity, dimension, pageSize, numberOfPages;
+	RTreeVariant rv(RV_LINEAR);
+	double fillFactor(0.0);
+	uint32_t indexCapacity(0);
+	uint32_t leafCapacity(0);
+	uint32_t dimension(0);
+	uint32_t pageSize(0);
+	uint32_t numberOfPages(0);
 
 	// tree variant
 	var = ps.getProperty("TreeVariant");
