@@ -13,7 +13,9 @@ AC_INIT([spatialindex], [sidx_version], [mhadji@gmail.com], [spatialindex-src])
 AC_CANONICAL_BUILD
 
 debug_default="no"
-CXXFLAGS="$CXXFLAGS"
+
+CFLAGS="-Wall -Wno-long-long -pedantic $CFLAGS"
+CXXFLAGS="-Wall -Wno-long-long -pedantic -std=c++98 $CXXFLAGS"
 
 # Checks for programs.
 AC_PROG_CXX
