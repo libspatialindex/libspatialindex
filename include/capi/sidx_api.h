@@ -38,20 +38,20 @@ IDX_C_START
 SIDX_DLL IndexH Index_Create(IndexPropertyH properties);
 
 SIDX_DLL IndexH Index_CreateWithStream( IndexPropertyH properties,
-										int (*readNext)(uint64_t *id, double **pMin, double **pMax, uint32_t *nDimension, const uint8_t **pData, size_t *nDataLength)
+										int (*readNext)(int64_t *id, double **pMin, double **pMax, uint32_t *nDimension, const uint8_t **pData, size_t *nDataLength)
 									   );
 
 SIDX_DLL void Index_Destroy(IndexH index);
 SIDX_DLL IndexPropertyH Index_GetProperties(IndexH index);
 
 SIDX_DLL RTError Index_DeleteData(	IndexH index, 
-									uint64_t id, 
+									int64_t id, 
 									double* pdMin, 
 									double* pdMax, 
 									uint32_t nDimension);
 							
 SIDX_DLL RTError Index_InsertData(	IndexH index, 
-									uint64_t id, 
+									int64_t id, 
 									double* pdMin, 
 									double* pdMax, 
 									uint32_t nDimension, 
@@ -71,7 +71,7 @@ SIDX_DLL RTError Index_Intersects_id(	IndexH index,
 										double* pdMin, 
 										double* pdMax, 
 										uint32_t nDimension, 
-										uint64_t** items, 
+										int64_t** items, 
 										uint64_t* nResults);
 										
 SIDX_DLL RTError Index_Intersects_count(	IndexH index, 
@@ -90,7 +90,7 @@ SIDX_DLL RTError Index_NearestNeighbors_id( IndexH index,
 											double* pdMin, 
 											double* pdMax, 
 											uint32_t nDimension, 
-											uint64_t** items, 
+											int64_t** items, 
 											uint64_t* nResults);
 
 SIDX_DLL RTError Index_GetBounds(	IndexH index,
@@ -113,7 +113,7 @@ SIDX_DLL void Index_ClearBuffer(IndexH index);
 SIDX_DLL void Index_Free(void* object);
 
 SIDX_DLL void IndexItem_Destroy(IndexItemH item);
-SIDX_DLL uint64_t IndexItem_GetID(IndexItemH item);
+SIDX_DLL int64_t IndexItem_GetID(IndexItemH item);
 
 SIDX_DLL RTError IndexItem_GetData(IndexItemH item, uint8_t** data, uint64_t* length);
 

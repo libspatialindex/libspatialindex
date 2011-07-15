@@ -166,7 +166,7 @@ SIDX_C_DLL void Index_Destroy(IndexH index)
 }
 
 SIDX_C_DLL RTError Index_DeleteData(  IndexH index, 
-									uint64_t id, 
+									int64_t id, 
 									double* pdMin, 
 									double* pdMax, 
 									uint32_t nDimension)
@@ -200,7 +200,7 @@ SIDX_C_DLL RTError Index_DeleteData(  IndexH index,
 }
 
 SIDX_C_DLL RTError Index_InsertData(  IndexH index, 
-									uint64_t id, 
+									int64_t id, 
 									double* pdMin, 
 									double* pdMax, 
 									uint32_t nDimension,
@@ -330,7 +330,7 @@ SIDX_C_DLL RTError Index_Intersects_id(	  IndexH index,
 										double* pdMin, 
 										double* pdMax, 
 										uint32_t nDimension, 
-										uint64_t** ids, 
+										int64_t** ids, 
 										uint64_t* nResults)
 {
 	VALIDATE_POINTER1(index, "Index_Intersects_id", RT_Failure);	  
@@ -344,7 +344,7 @@ SIDX_C_DLL RTError Index_Intersects_id(	  IndexH index,
 
 		*nResults = visitor->GetResultCount();
 
-		*ids = (uint64_t*) malloc (*nResults * sizeof(uint64_t));
+		*ids = (int64_t*) malloc (*nResults * sizeof(int64_t));
 		
 		std::vector<uint64_t>& results = visitor->GetResults();
 
@@ -429,7 +429,7 @@ SIDX_C_DLL RTError Index_NearestNeighbors_id(IndexH index,
 											double* pdMin, 
 											double* pdMax, 
 											uint32_t nDimension, 
-											uint64_t** ids, 
+											int64_t** ids, 
 											uint64_t* nResults)
 {
 	VALIDATE_POINTER1(index, "Index_NearestNeighbors_id", RT_Failure);	
@@ -442,7 +442,7 @@ SIDX_C_DLL RTError Index_NearestNeighbors_id(IndexH index,
 											SpatialIndex::Region(pdMin, pdMax, nDimension), 
 											*visitor);
 		
-		*ids = (uint64_t*) malloc (visitor->GetResultCount() * sizeof(uint64_t));
+		*ids = (int64_t*) malloc (visitor->GetResultCount() * sizeof(int64_t));
 		
 		std::vector<uint64_t>& results = visitor->GetResults();
 
@@ -486,7 +486,7 @@ SIDX_C_DLL RTError Index_NearestNeighbors_obj(IndexH index,
 											double* pdMax, 
 											uint32_t nDimension, 
 											IndexItemH** items, 
-											uint64_t* nResults)
+											int64_t* nResults)
 {
 	VALIDATE_POINTER1(index, "Index_NearestNeighbors_obj", RT_Failure);	 
 	Index* idx = static_cast<Index*>(index);
@@ -769,11 +769,11 @@ SIDX_C_DLL RTError IndexItem_GetData( IndexItemH item,
 	
 }
 
-SIDX_C_DLL uint64_t IndexItem_GetID(IndexItemH item) 
+SIDX_C_DLL int64_t IndexItem_GetID(IndexItemH item) 
 {
 	VALIDATE_POINTER1(item, "IndexItem_GetID",0); 
 	SpatialIndex::IData* it = static_cast<SpatialIndex::IData*>(item);
-	uint64_t value = it->getIdentifier();
+	int64_t value = it->getIdentifier();
 	return value;
 }
 
