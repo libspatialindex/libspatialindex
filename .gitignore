@@ -27,3 +27,4 @@ regressiontest/tprtree/Exhaustive
 regressiontest/tprtree/Generator
 regressiontest/tprtree/TPRTreeLoad
 regressiontest/tprtree/TPRTreeQuery
+docs/build
