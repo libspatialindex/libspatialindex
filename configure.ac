@@ -35,6 +35,8 @@ AC_CHECK_HEADERS(pthread.h, [LIBS="$LIBS -lpthread"])
 AC_CHECK_HEADERS(sys/resource.h,, [AC_MSG_ERROR([cannot find sys/resource.h, bailing out])])
 AC_CHECK_HEADERS(sys/time.h,, [AC_MSG_ERROR([cannot find sys/time.h, bailing out])])
 AC_CHECK_HEADERS(stdint.h,, [AC_MSG_ERROR([cannot find stdint.h, bailing out])])
+AC_CHECK_HEADERS(features.h)
+
 #MH_CXX_HEADER_TOOLS
 
 LIBS="$LIBS"
