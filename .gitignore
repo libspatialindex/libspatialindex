@@ -28,3 +28,9 @@ regressiontest/tprtree/Generator
 regressiontest/tprtree/TPRTreeLoad
 regressiontest/tprtree/TPRTreeQuery
 docs/build
+CMakeFiles/
+src/CMakeFiles/
+bin/
+CMakeCache.txt
+cmake_install.cmake
+src/cmake_install.cmake
