@@ -20,7 +20,7 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules ${CMAKE_MODULE_PATH})
 
 
 #------------------------------------------------------------------------------
-# PDAL general settings
+# libspatialindex general settings
 #------------------------------------------------------------------------------
 
 SET(SIDX_VERSION_MAJOR "1")
