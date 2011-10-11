@@ -2,13 +2,6 @@
  SpatialIndex Reference 
 *****************************************************************************
 
-:Author: Marios Hadjieleftheriou
-:Contact: mhadji@gmail.com
-:Date: 9/26/2011
-
-.. contents::
-    :depth: 2
-    :backlinks: top
 
 ------------------------------------------------------------------------------
 Introduction
@@ -55,6 +48,14 @@ Development source code
 
 The main github repository for libspatialindex is located at 
 https://github.com/libspatialindex/libspatialindex
+
+------------------------------------------------------------------------------
+Contents
+------------------------------------------------------------------------------
+
+.. contents::
+    :depth: 2
+    :backlinks: top
 
 ------------------------------------------------------------------------------
 Installation
