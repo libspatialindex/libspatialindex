@@ -22,7 +22,10 @@
 #include <time.h>
 #include <limits>
 #include "../../include/tools/Tools.h"
+
+#ifdef HAVE_SRAND48
 #include "../../include/tools/rand48.h"
+#endif
 
 #include <cstring>
 

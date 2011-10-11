@@ -1,3 +1,7 @@
+#pragma once
+
+#ifndef HAVE_SRAND48
+
 #if HAVE_FEATURES_H
 #include <features.h>
 #ifndef __THROW
@@ -26,38 +30,22 @@ the -fexceptions options for C code as well.  */
 #   define __NTH(fct)  fct
 #endif
 
-#ifndef srand48
-extern void srand48(long seed) __THROW;
-#endif
+extern void srand48(long int seed) __THROW;
 
-#ifndef seed48
 extern unsigned short *seed48(unsigned short xseed[3]) __THROW;
-#endif
 
-#ifndef nrand48
 extern long nrand48(unsigned short xseed[3]) __THROW;
-#endif
 
-#ifndef mrand48
 extern long mrand48(void) __THROW;
-#endif
 
-#ifndef lrand48
 extern long lrand48(void) __THROW;
-#endif
 
-#ifndef lcong48
 extern void lcong48(unsigned short p[7]) __THROW;
-#endif
 
-#ifndef jrand48
 extern long jrand48(unsigned short xseed[3]) __THROW;
-#endif
 
-#ifndef erand48
 extern double erand48(unsigned short xseed[3]) __THROW;
-#endif
 
-#ifndef drand48
 extern double drand48(void) __THROW;
+
 #endif

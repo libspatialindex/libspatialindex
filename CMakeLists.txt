@@ -33,12 +33,17 @@ SET(SIDX_C_LIB_SOVERSION ${SIDX_VERSION_MAJOR})
 
 
 # Name of C++ library
-set(SIDX_LIB_NAME libspatialindex)
+set(SIDX_LIB_NAME spatialindex)
 
-set(SIDX_C_LIB_NAME libspatialindex_c)
+set(SIDX_C_LIB_NAME spatialindex_c)
 
 set(CMAKE_INCLUDE_DIRECTORIES_PROJECT_BEFORE ON)
 
+include (CheckFunctionExists)
+check_function_exists(srand48 HAVE_SRAND48)
+if (HAVE_SRAND48)
+    add_definitions(-HAVE_SRAND48=1)
+endif()
 
 # Choose to use pkg-config or not
 #set(WITH_PKGCONFIG FALSE CACHE BOOL
@@ -113,7 +118,7 @@ else()
   # Recommended C++ compilation flags
   # -Weffc++
   set(SIDX_COMMON_CXX_FLAGS
-    "-pedantic -ansi -Wall -Wpointer-arith -Wcast-align -Wcast-qual -Wfloat-equal -Wredundant-decls -Wno-long-long")
+    "-pedantic -ansi -Wall -Wpointer-arith -Wcast-align -Wcast-qual  -Wredundant-decls -Wno-long-long")
 
   if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
 
@@ -189,7 +194,7 @@ set(SIDX_DATA_DIR ${SIDX_DATA_SUBDIR})
 #------------------------------------------------------------------------------
 
 add_subdirectory(src)
-
+add_subdirectory(regressiontest)
 
 
 

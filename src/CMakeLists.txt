@@ -128,8 +128,14 @@ set(SIDX_STORAGEMANAGER_CPP
 )
 list (APPEND SIDX_CPP ${SIDX_STORAGEMANAGER_CPP})
 
+set(SIDX_RAND48 )
+
+if (NOT HAVE_SRAND48)
+    set(SIDX_RAND48 ${SIDX_SRC_DIR}/tools/rand48.cc)
+endif()
+
 set(SIDX_TOOLS_CPP
-  ${SIDX_SRC_DIR}/tools/rand48.cc
+  ${SIDX_RAND48}
   ${SIDX_SRC_DIR}/tools/Tools.cc
 )
 list (APPEND SIDX_CPP ${SIDX_TOOLS_CPP})

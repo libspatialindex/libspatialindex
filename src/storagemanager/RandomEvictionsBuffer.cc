@@ -22,7 +22,11 @@
 #include <time.h>
 #include <stdlib.h>
 #include <cmath>
+
+#ifdef HAVE_SRAND48
 #include "../../include/tools/rand48.h"
+#endif
+
 
 #include "../spatialindex/SpatialIndexImpl.h"
 #include "RandomEvictionsBuffer.h"

@@ -11,6 +11,8 @@
 * to anyone/anything when using this software.
 */
 
+#ifndef HAVE_SRAND48
+
 #include <math.h>
 #include <stdlib.h>
 #include <../../include/tools/rand48.h>
@@ -144,3 +146,5 @@ drand48(void) __THROW
 {
 	return erand48(__rand48_Seed);
 }
+
+#endif

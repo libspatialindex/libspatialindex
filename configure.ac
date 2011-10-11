@@ -52,7 +52,9 @@ else
 fi
 
 # Checks for library functions.
-AC_CHECK_FUNCS([gettimeofday bzero memset memcpy bcopy])
+AC_CHECK_FUNCS([gettimeofday bzero memset memcpy bcopy srand48])
+
+AM_CONDITIONAL([RAND_IS_CONFIG], [test "x$HAVE_SRAND48" = xtrue])
 
 AC_CONFIG_FILES([	Makefile
 					include/Makefile
