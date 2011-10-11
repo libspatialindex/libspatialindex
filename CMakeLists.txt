@@ -4,7 +4,7 @@
 # (based originally on the libLAS files copyright Mateusz Loskot)
 
 cmake_minimum_required(VERSION 2.6.0)
-project(libspatialindex)
+project(spatialindex)
 
 #------------------------------------------------------------------------------
 # internal cmake settings
@@ -35,6 +35,8 @@ SET(SIDX_C_LIB_SOVERSION ${SIDX_VERSION_MAJOR})
 # Name of C++ library
 set(SIDX_LIB_NAME libspatialindex)
 
+set(SIDX_C_LIB_NAME libspatialindex_c)
+
 set(CMAKE_INCLUDE_DIRECTORIES_PROJECT_BEFORE ON)
 
 
@@ -52,7 +54,7 @@ if(NOT MSVC_IDE)
   set(CMAKE_BUILD_TYPE Debug CACHE STRING 
     "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel" FORCE)
   endif()
-  message(STATUS "Setting PDAL build type - ${CMAKE_BUILD_TYPE}")
+  message(STATUS "Setting libspatialindex build type - ${CMAKE_BUILD_TYPE}")
 endif()
 
 set(SIDX_BUILD_TYPE ${CMAKE_BUILD_TYPE})
@@ -153,10 +155,10 @@ if(WIN32)
     set(DEFAULT_BIN_SUBDIR .)
   endif()
 else()
-  # Common locatoins for Unix and Mac OS X
+  # Common locations for Unix and Mac OS X
   set(DEFAULT_BIN_SUBDIR bin)
   set(DEFAULT_LIB_SUBDIR lib)
-  set(DEFAULT_DATA_SUBDIR share/pdal)
+  set(DEFAULT_DATA_SUBDIR share/libspatialindex)
   set(DEFAULT_INCLUDE_SUBDIR include)
 endif()
 

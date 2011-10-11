@@ -71,7 +71,6 @@ set(SIDX_CAPI_CPP
   ${SIDX_CAPI_DIR}/sidx_api.cc
   ${SIDX_CAPI_DIR}/Utility.cc
 )
-list (APPEND SIDX_CPP ${SIDX_CAPI_CPP} )
 
 
 set(SIDX_SPATIALINDEX_CPP
@@ -191,11 +190,21 @@ endif()
 
 add_library(${SIDX_LIB_NAME} SHARED ${SIDX_SOURCES})
 
-target_link_libraries(${APPS_CPP_DEPENDENCIES})
+add_library(${SIDX_C_LIB_NAME} SHARED ${SIDX_CAPI_CPP})
+
+target_link_libraries(${SIDX_C_LIB_NAME}
+  ${SIDX_LIB_NAME}
+)
+
 
 
 set_target_properties(${SIDX_LIB_NAME}
   PROPERTIES SOVERSION "${SIDX_LIB_SOVERSION}" )
+
+set_target_properties(${SIDX_C_LIB_NAME} 
+  PROPERTIES SOVERSION "${SIDX_C_LIB_SOVERSION}" )
+
+
 
 if (APPLE)
   set_target_properties(
@@ -213,5 +222,5 @@ install(TARGETS ${SIDX_LIB_NAME} ${SIDX_C_LIB_NAME}
   ARCHIVE DESTINATION ${SIDX_LIB_DIR})
 
 install(DIRECTORY ${SIDX_HEADERS_DIR}
-  DESTINATION ${SIDX_INCLUDE_DIR}
+  DESTINATION include/libspatialindex
   FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp")
