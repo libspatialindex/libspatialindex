@@ -1,83 +1,21 @@
 *****************************************************************************
- SpatialIndex Reference 
+ libspatialindex
 *****************************************************************************
 
 
-------------------------------------------------------------------------------
-Introduction
-------------------------------------------------------------------------------
 
-You have downloaded the SpatialIndex Library. This is free software under LGPL.
-The library is in beta testing stage. Use at your own risk.
+.. toctree::
+   :maxdepth: 1
 
-The purpose of this library is to provide:
- 1. An extensible framework that will support robust spatial indexing
-    methods.
- 2. Support for sophisticated spatial queries. Range, point location,
-    nearest neighbor and k-nearest neighbor as well as parametric
-    queries (defined by spatial constraints) should be easy to deploy and run.
- 3. Easy to use interfaces for inserting, deleting and updating information.
- 4. Wide variety of customization capabilities. Basic index and storage 
-    characteristics like the page size, node capacity, minimum fan-out, 
-    splitting algorithm, etc. should be easy to customize.
- 5. Index persistence. Internal memory and external memory structures 
-    should be supported.  Clustered and non-clustered indices should 
-    be easy to be persisted.
+   introduction
+   install
+   download
+   development
+   
+   
 
-Supported Features
-------------------------------------------------------------------------------
 
-* Generic main memory and disk based storage managers.
-* R\*-tree index (also supports linear and quadratic splitting).
-* MVR-tree index (a.k.a. PPR-tree).
-* TPR-tree index.
-* Advanced query capabilities, using Strategy and Visitor patterns.
-* Arbitrary shaped range queries, by defining generic geometry interfaces.
-* Large parameterization capabilities, including dimensionality, fill factor, node capacity, etc.
-* STR packing / bulk loading.
 
-------------------------------------------------------------------------------
-Download
-------------------------------------------------------------------------------
-
-Download the latest libspatialindex release source package from 
-http://download.osgeo.org/libspatialindex/
-
-Development source code
-------------------------------------------------------------------------------
-
-The main github repository for libspatialindex is located at 
-https://github.com/libspatialindex/libspatialindex
-
-------------------------------------------------------------------------------
-Contents
-------------------------------------------------------------------------------
-
-.. contents::
-    :depth: 2
-    :backlinks: top
-
-------------------------------------------------------------------------------
-Installation
-------------------------------------------------------------------------------
-
-First run autogen.sh to generate the configure scripts.
-By default include files and library files will be installed in /usr/local. If 
-you would like to use a different installation directory (e.g., in case 
-that you do not have root access) run the configure script with 
-the --prefix option:
-
-::
-
-    ./configure --prefix=/home/marioh/usr
-
-Make the library::
-
-     make
-
-Install the library::
-
-     make install
 
 ------------------------------------------------------------------------------
 Using the Library
@@ -200,7 +138,7 @@ Two storage managers are provided in the current implementation:
  2) DiskStorageManager
 
 MemoryStorageManager
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 As it is implied be the name, this is a main memory implementation. Everything 
 is stored in main memory using a simple vector. No properties are needed to 
@@ -208,7 +146,7 @@ initialize a MemoryStorageManager object. When a MemoryStorageManager instance
 goes out of scope, all data that it contains are lost.
 
 DiskStorageManager
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The disk storage manager uses two random access files for storing information. 
 One with extension .idx and the other with extension .dat.
