@@ -34,3 +34,4 @@ bin/
 CMakeCache.txt
 cmake_install.cmake
 src/cmake_install.cmake
+install_manifest.txt
