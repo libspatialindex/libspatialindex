@@ -25,6 +25,10 @@ Release Process
     * SIDX_VERSION_MINOR
     * SIDX_VERSION_REV 
     * SIDX_RELEASE_NAME
+  - CMakeLists.txt
+    * SET(SIDX_VERSION_MAJOR "1")
+    * SET(SIDX_VERSION_MINOR "7")
+    * SET(SIDX_VERSION_PATCH "0")
   - makefile.vc's
     *PACKAGE_VERSION
 
