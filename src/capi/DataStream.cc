@@ -28,7 +28,14 @@
 #include "sidx_impl.h"
 
 
-DataStream::DataStream(int (*readNext)(SpatialIndex::id_type * id, double **pMin, double **pMax, uint32_t *nDimension, const uint8_t** pData, uint32_t *nDataLength)) :m_pNext(0),m_bDoneReading(false)
+DataStream::DataStream(int (*readNext)(SpatialIndex::id_type * id, 
+					   double **pMin, 
+					   double **pMax, 
+					   uint32_t *nDimension, 
+					   const uint8_t** pData, 
+					   uint32_t *nDataLength) ) 
+  : m_pNext(0),
+    m_bDoneReading(false)
 {
 	iterfunct = readNext;
 	
@@ -47,14 +54,14 @@ bool DataStream::readData()
 	double *pMin=0;
 	double *pMax=0;
 	uint32_t nDimension=0;
-	const uint8_t *p_data=0;
+	uint8_t *p_data=0;
 	uint32_t nDataLength=0;
 	
 	if (m_bDoneReading == true) {
 		return false;
 	}
 	
-	int ret = iterfunct(&id, &pMin, &pMax, &nDimension, &p_data, &nDataLength);
+	int ret = iterfunct(&id, &pMin, &pMax, &nDimension, const_cast<const uint8_t**>(&p_data), &nDataLength);
 
 	// The callback should return anything other than 0 
 	// when it is done.
@@ -65,7 +72,9 @@ bool DataStream::readData()
 	}
 	
 	SpatialIndex::Region r = SpatialIndex::Region(pMin, pMax, nDimension);
-	m_pNext = new SpatialIndex::RTree::Data(nDataLength, (byte*)p_data, r, id);
+	
+	// Data gets copied here anyway. We should fix this part of SpatialIndex::RTree::Data's constructor
+	m_pNext = new SpatialIndex::RTree::Data(nDataLength, p_data, r, id);
 
 	return true;
 }
