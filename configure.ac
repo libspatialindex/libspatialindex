@@ -68,10 +68,10 @@ AC_CONFIG_FILES([	Makefile
 					src/mvrtree/Makefile
 					src/tprtree/Makefile
 		 			src/tools/Makefile
-		 			regressiontest/Makefile
-					regressiontest/rtree/Makefile
-					regressiontest/mvrtree/Makefile
-					regressiontest/tprtree/Makefile])
+		 			test/Makefile
+					test/rtree/Makefile
+					test/mvrtree/Makefile
+					test/tprtree/Makefile])
 
 AC_OUTPUT
 

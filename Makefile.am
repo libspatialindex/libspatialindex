@@ -1,5 +1,5 @@
 ## Makefile.am -- Process this file with automake to produce Makefile.in
-SUBDIRS = src . regressiontest include
+SUBDIRS = src . test include
 
 lib_LTLIBRARIES = libspatialindex.la libspatialindex_c.la
 
@@ -20,4 +20,10 @@ libspatialindex_c_la_LIBADD = \
 libspatialindex_la_LDFLAGS = -version-info 1:0:0 
 libspatialindex_c_la_LDFLAGS = -version-info 1:0:0 -lstdc++
 
-EXTRA_DIST = makefile.vc INSTALL.WIN spatialindex.sln spatialindex-vc/spatialindex.vcproj
+EXTRA_DIST = makefile.vc \
+             INSTALL.WIN \
+             spatialindex.sln \
+             spatialindex-vc/spatialindex.vcproj \
+             CMakeLists.txt \
+             src/CMakeLists.txt \
+             test/CMakeLists.txt

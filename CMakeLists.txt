@@ -194,7 +194,7 @@ set(SIDX_DATA_DIR ${SIDX_DATA_SUBDIR})
 #------------------------------------------------------------------------------
 
 add_subdirectory(src)
-add_subdirectory(regressiontest)
+add_subdirectory(test)
 
 
 
