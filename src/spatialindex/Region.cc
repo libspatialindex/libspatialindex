@@ -492,7 +492,7 @@ void Region::getCombinedRegion(Region& out, const Region& in) const
 
 double Region::getLow(uint32_t index) const
 {
-	if (index < 0 || index >= m_dimension)
+	if (index >= m_dimension)
 		throw Tools::IndexOutOfBoundsException(index);
 
 	return m_pLow[index];
@@ -500,7 +500,7 @@ double Region::getLow(uint32_t index) const
 
 double Region::getHigh(uint32_t index) const
 {
-	if (index < 0 || index >= m_dimension)
+	if (index >= m_dimension)
 		throw Tools::IndexOutOfBoundsException(index);
 
 	return m_pHigh[index];
