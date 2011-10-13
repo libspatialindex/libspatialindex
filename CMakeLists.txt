@@ -42,7 +42,7 @@ set(CMAKE_INCLUDE_DIRECTORIES_PROJECT_BEFORE ON)
 include (CheckFunctionExists)
 check_function_exists(srand48 HAVE_SRAND48)
 if (HAVE_SRAND48)
-    add_definitions(-HAVE_SRAND48=1)
+    add_definitions(-DHAVE_SRAND48=1)
 endif()
 
 # Choose to use pkg-config or not
@@ -118,11 +118,11 @@ else()
   # Recommended C++ compilation flags
   # -Weffc++
   set(SIDX_COMMON_CXX_FLAGS
-    "-pedantic -ansi -Wall -Wpointer-arith -Wcast-align -Wcast-qual  -Wredundant-decls -Wno-long-long")
+    "-pedantic -Wall -Wpointer-arith -Wcast-align -Wcast-qual  -Wredundant-decls -Wno-long-long")
 
   if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
 
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SIDX_COMMON_CXX_FLAGS}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SIDX_COMMON_CXX_FLAGS} -ansi")
     if (CMAKE_COMPILER_IS_GNUCXX)
       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++98")
     endif()
