@@ -52,8 +52,8 @@ private:
     uint32_t m_id;
     LeafQueryResult();
 public:
-    LeafQueryResult(uint32_t id) : bounds(0), m_id(id){};
-    ~LeafQueryResult() {if (bounds!=0) delete bounds;};
+    LeafQueryResult(uint32_t id) : bounds(0), m_id(id){}
+    ~LeafQueryResult() {if (bounds!=0) delete bounds;}
 
     /// Copy constructor.
     LeafQueryResult(LeafQueryResult const& other);

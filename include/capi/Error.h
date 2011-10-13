@@ -39,9 +39,9 @@ public:
     /// Assignment operator.
     Error& operator=(Error const& rhs);
 
-    int GetCode() const { return m_code; };
-    const char* GetMessage() const { return m_message.c_str(); };
-    const char* GetMethod() const { return m_method.c_str(); };    
+    int GetCode() const { return m_code; }
+    const char* GetMessage() const { return m_message.c_str(); }
+    const char* GetMethod() const { return m_method.c_str(); }
 
 private:
 
