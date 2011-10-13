@@ -206,31 +206,31 @@ uint32_t Node::getChildrenCount() const
 
 id_type Node::getChildIdentifier(uint32_t index) const
 {
-	if (index < 0 || index >= m_children) throw Tools::IndexOutOfBoundsException(index);
+	if (index >= m_children) throw Tools::IndexOutOfBoundsException(index);
 
 	return m_pIdentifier[index];
 }
 
 void Node::getChildShape(uint32_t index, IShape** out) const
 {
-	if (index < 0 || index >= m_children) throw Tools::IndexOutOfBoundsException(index);
+	if (index >= m_children) throw Tools::IndexOutOfBoundsException(index);
 
 	*out = new MovingRegion(*(m_ptrMBR[index]));
 }
 
 void Node::getChildData(uint32_t index, uint32_t& length, byte** data) const
 {
-        if (index < 0 || index >= m_children) throw Tools::IndexOutOfBoundsException(index);
-        if (m_pData[index] == NULL) 
-        {
-                length = 0;
-                data = NULL;
-        } 
-        else
-        {
-                length = m_pDataLength[index];
-                *data = m_pData[index];
-        }
+	if (index >= m_children) throw Tools::IndexOutOfBoundsException(index);
+	if (m_pData[index] == NULL) 
+	{
+		length = 0;
+		data = NULL;
+	} 
+	else
+	{
+		length = m_pDataLength[index];
+		*data = m_pData[index];
+	}
 }
 
 uint32_t Node::getLevel() const

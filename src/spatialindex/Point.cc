@@ -221,7 +221,7 @@ double Point::getMinimumDistance(const Point& p) const
 
 double Point::getCoordinate(uint32_t index) const
 {
-	if (index < 0 || index >= m_dimension)
+	if (index >= m_dimension)
 		throw Tools::IndexOutOfBoundsException(index);
 
 	return m_pCoords[index];

@@ -9,15 +9,15 @@
 //
 // This library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
 // Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA	 02111-1307	 USA
 //
-//  Email:
-//    mhadji@gmail.com
+//	Email:
+//	  mhadji@gmail.com
 
 #include <cstring>
 #include <cmath>
@@ -173,31 +173,31 @@ uint32_t Node::getChildrenCount() const
 
 SpatialIndex::id_type Node::getChildIdentifier(uint32_t index) const
 {
-	if (index < 0 || index >= m_children) throw Tools::IndexOutOfBoundsException(index);
+	if (index >= m_children) throw Tools::IndexOutOfBoundsException(index);
 
 	return m_pIdentifier[index];
 }
 
 void Node::getChildShape(uint32_t index, IShape** out) const
 {
-	if (index < 0 || index >= m_children) throw Tools::IndexOutOfBoundsException(index);
+	if (index >= m_children) throw Tools::IndexOutOfBoundsException(index);
 
 	*out = new Region(*(m_ptrMBR[index]));
 }
 
 void Node::getChildData(uint32_t index, uint32_t& length, byte** data) const
 {
-        if (index < 0 || index >= m_children) throw Tools::IndexOutOfBoundsException(index);
-        if (m_pData[index] == NULL) 
-        {
-                length = 0;
-                data = NULL;
-        } 
-        else
-        {
-                length = m_pDataLength[index];
-                *data = m_pData[index];
-        }
+	if (index >= m_children) throw Tools::IndexOutOfBoundsException(index);
+	if (m_pData[index] == NULL) 
+	{
+		length = 0;
+		data = NULL;
+	} 
+	else
+	{
+		length = m_pDataLength[index];
+		*data = m_pData[index];
+	}
 }
 
 uint32_t Node::getLevel() const
@@ -966,8 +966,8 @@ void Node::pickSeeds(uint32_t& index1, uint32_t& index2)
 
 			if (index1 == index2)
 			{
- 				if (index2 == 0) ++index2;
- 				else --index2;
+				if (index2 == 0) ++index2;
+				else --index2;
 			}
 
 			break;

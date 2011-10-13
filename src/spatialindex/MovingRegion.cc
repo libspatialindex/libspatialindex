@@ -267,7 +267,7 @@ bool MovingRegion::isShrinking() const
 // assumes that the region is not moving before and after start and end time.
 double MovingRegion::getLow(uint32_t d, double t) const
 {
-	if (d < 0 || d >= m_dimension) throw Tools::IndexOutOfBoundsException(d);
+	if (d >= m_dimension) throw Tools::IndexOutOfBoundsException(d);
 
 	if (t > m_endTime) return m_pLow[d] + m_pVLow[d] * (m_endTime - m_startTime);
 	else if (t < m_startTime) return m_pLow[d];
@@ -277,7 +277,7 @@ double MovingRegion::getLow(uint32_t d, double t) const
 // assumes that the region is not moving before and after start and end time.
 double MovingRegion::getHigh(uint32_t d, double t) const
 {
-	if (d < 0 || d >= m_dimension) throw Tools::IndexOutOfBoundsException(d);
+	if (d >= m_dimension) throw Tools::IndexOutOfBoundsException(d);
 
 	if (t > m_endTime) return m_pHigh[d] + m_pVHigh[d] * (m_endTime - m_startTime);
 	else if (t < m_startTime) return m_pHigh[d];
@@ -287,7 +287,7 @@ double MovingRegion::getHigh(uint32_t d, double t) const
 // assuming that the region kept moving.
 double MovingRegion::getExtrapolatedLow(uint32_t d, double t) const
 {
-	if (d < 0 || d >= m_dimension) throw Tools::IndexOutOfBoundsException(d);
+	if (d >= m_dimension) throw Tools::IndexOutOfBoundsException(d);
 
 	return m_pLow[d] + m_pVLow[d] * (t - m_startTime);
 }
@@ -295,21 +295,21 @@ double MovingRegion::getExtrapolatedLow(uint32_t d, double t) const
 // assuming that the region kept moving.
 double MovingRegion::getExtrapolatedHigh(uint32_t d, double t) const
 {
-	if (d < 0 || d >= m_dimension) throw Tools::IndexOutOfBoundsException(d);
+	if (d >= m_dimension) throw Tools::IndexOutOfBoundsException(d);
 
 	return m_pHigh[d] + m_pVHigh[d] * (t - m_startTime);
 }
 
 double MovingRegion::getVLow(uint32_t d) const
 {
-	if (d < 0 || d >= m_dimension) throw Tools::IndexOutOfBoundsException(d);
+	if (d >= m_dimension) throw Tools::IndexOutOfBoundsException(d);
 
 	return m_pVLow[d];
 }
 
 double MovingRegion::getVHigh(uint32_t d) const
 {
-	if (d < 0 || d >= m_dimension) throw Tools::IndexOutOfBoundsException(d);
+	if (d >= m_dimension) throw Tools::IndexOutOfBoundsException(d);
 
 	return m_pVHigh[d];
 }
