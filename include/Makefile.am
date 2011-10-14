@@ -14,6 +14,7 @@ nobase_spatialindex_HEADERS =			spatialindex/SpatialIndex.h \
 								spatialindex/Version.h \
 								spatialindex/capi/BoundsQuery.h \
 								spatialindex/capi/CountVisitor.h \
+								spatialindex/capi/CustomStorage.h \
 								spatialindex/capi/DataStream.h \
 								spatialindex/capi/Error.h \
 								spatialindex/capi/IdVisitor.h \
