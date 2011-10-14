@@ -111,7 +111,7 @@ set(SIDX_RTREE_CPP
   ${SIDX_SRC_DIR}/rtree/Node.h
   ${SIDX_SRC_DIR}/rtree/PointerPoolNode.h
   ${SIDX_SRC_DIR}/rtree/RTree.cc
-  ${SIDX_SRC_DIR}/rtree/Rtree.h
+  ${SIDX_SRC_DIR}/rtree/RTree.h
   ${SIDX_SRC_DIR}/rtree/Statistics.cc
   ${SIDX_SRC_DIR}/rtree/Statistics.h
 )
