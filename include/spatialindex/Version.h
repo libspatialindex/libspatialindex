@@ -33,7 +33,7 @@
 #endif
 
 #ifndef SIDX_RELEASE_DATE
-#define SIDX_RELEASE_DATE     20110928
+#define SIDX_RELEASE_DATE     20111014
 #endif
 
 #ifndef SIDX_RELEASE_NAME
