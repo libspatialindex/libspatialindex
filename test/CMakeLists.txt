@@ -32,6 +32,8 @@ set (DIR tprtree)
 set (SOURCES 
         Exhaustive
         Generator
+        TPRTreeLoad
+        TPRTreeQuery
         )
 
 

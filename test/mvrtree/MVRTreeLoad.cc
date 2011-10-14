@@ -26,7 +26,7 @@
 #include <cstring>
 
 // include library header file.
-#include <SpatialIndex.h>
+#include <spatialindex/SpatialIndex.h>
 
 using namespace SpatialIndex;
 using namespace std;

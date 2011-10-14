@@ -19,7 +19,7 @@
 //  Email:
 //    mhadji@gmail.com
 
-#include <tools/Tools.h>
+#include <spatialindex/tools/Tools.h>
 #include <cstring>
 #include <cmath>
 
