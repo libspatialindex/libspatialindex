@@ -27,11 +27,11 @@ EXTRA_DIST = makefile.vc \
              CMakeLists.txt \
              src/CMakeLists.txt \
              test/CMakeLists.txt \
-             test/mvrtree/test1/run
-             test/mvrtree/test2/run
-             test/rtree/test1/run
-             test/rtree/test2/run
-             test/rtree/test3/run
-             test/rtree/test4/run
-             test/tprtree/test1/run
+             test/mvrtree/test1/run \
+             test/mvrtree/test2/run \
+             test/rtree/test1/run \
+             test/rtree/test2/run \
+             test/rtree/test3/run \
+             test/rtree/test4/run \
+             test/tprtree/test1/run \
              test/tprtree/test2/run
