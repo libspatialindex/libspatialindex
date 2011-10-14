@@ -1,5 +1,13 @@
 2011-10-14  Howard Butler <hobu.inc@gmail.com>
 
+	* src/tools/rand48.cc: newline
+
+2011-10-14  Howard Butler <hobu.inc@gmail.com>
+
+	* ChangeLog: update ChangeLog
+
+2011-10-14  Howard Butler <hobu.inc@gmail.com>
+
 	* include/spatialindex/Version.h: update release date
 
 2011-10-14  Howard Butler <hobu.inc@gmail.com>
