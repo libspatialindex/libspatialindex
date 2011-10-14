@@ -1,8 +1,0 @@
-.. _download:
-
-------------------------------------------------------------------------------
-Download
-------------------------------------------------------------------------------
-
-Download the latest libspatialindex release source package from 
-http://download.osgeo.org/libspatialindex/
