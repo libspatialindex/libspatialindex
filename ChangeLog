@@ -1,5 +1,26 @@
 2011-10-14  Howard Butler <hobu.inc@gmail.com>
 
+	* include/spatialindex/capi/sidx_config.h, src/mvrtree/Index.cc,
+	src/mvrtree/Leaf.cc, src/mvrtree/Node.cc, src/rtree/BulkLoader.cc,
+	src/rtree/Index.cc, src/rtree/Leaf.cc, src/rtree/Node.cc,
+	src/storagemanager/RandomEvictionsBuffer.cc, src/tools/Tools.cc,
+	src/tools/rand48.cc, src/tprtree/Index.cc, src/tprtree/Leaf.cc,
+	src/tprtree/Node.cc: namespace usings and such to satisfy msvc 10
+
+2011-10-14  Howard Butler <hobu.inc@gmail.com>
+
+	* .gitignore: more ignores
+
+2011-10-14  Howard Butler <hobu.inc@gmail.com>
+
+	* makefile.vc: check for msvc 10
+
+2011-10-14  Howard Butler <hobu.inc@gmail.com>
+
+	* ChangeLog: update ChangeLog
+
+2011-10-14  Howard Butler <hobu.inc@gmail.com>
+
 	* include/Makefile.am: missing reference to file
 
 2011-10-14  Howard Butler <hobu.inc@gmail.com>
