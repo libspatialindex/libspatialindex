@@ -40,9 +40,36 @@ set(SIDX_C_LIB_NAME spatialindex_c)
 set(CMAKE_INCLUDE_DIRECTORIES_PROJECT_BEFORE ON)
 
 include (CheckFunctionExists)
+
 check_function_exists(srand48 HAVE_SRAND48)
+check_function_exists(gettimeofday HAVE_GETTIMEOFDAY)
+check_function_exists(bzero HAVE_BZERO)
+check_function_exists(memset HAVE_MEMSET)
+check_function_exists(memcpy HAVE_MEMCPY)
+check_function_exists(bcopy HAVE_BCOPY)
+
 if (HAVE_SRAND48)
     add_definitions(-DHAVE_SRAND48=1)
+endif()
+
+if (HAVE_GETTIMEOFDAY)
+    add_definitions(-DHAVE_GETTIMEOFDAY=1)
+endif()
+
+if (HAVE_BZERO)
+    add_definitions(-DHAVE_BZERO=1)
+endif()
+
+if (HAVE_MEMSET)
+    add_definitions(-DHAVE_MEMSET=1)
+endif()
+
+if (HAVE_MEMCPY)
+    add_definitions(-DHAVE_MEMCPY=1)
+endif()
+
+if (HAVE_BCOPY)
+    add_definitions(-DHAVE_BCOPY=1)
 endif()
 
 # Choose to use pkg-config or not
