@@ -39,6 +39,7 @@
 #include <set>
 #include <stack>
 
+#include <spatialindex/SpatialIndex.h>
 #include <spatialindex/tools/Tools.h>
 
 using namespace std;
