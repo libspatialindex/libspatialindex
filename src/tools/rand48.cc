@@ -15,7 +15,7 @@
 
 #include <math.h>
 #include <stdlib.h>
-#include <../../include/tools/rand48.h>
+#include <spatialindex/tools/rand48.h>
 
 #define	RAND48_SEED_0	(0x330e)
 #define	RAND48_SEED_1	(0xabcd)

@@ -29,6 +29,7 @@
 #include "Node.h"
 #include "Index.h"
 
+using namespace SpatialIndex;
 using namespace SpatialIndex::TPRTree;
 
 //

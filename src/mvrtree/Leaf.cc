@@ -26,6 +26,7 @@
 #include "Index.h"
 #include "Leaf.h"
 
+using namespace SpatialIndex;
 using namespace SpatialIndex::MVRTree;
 
 Leaf::~Leaf()

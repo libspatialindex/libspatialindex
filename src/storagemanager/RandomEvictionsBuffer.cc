@@ -23,7 +23,7 @@
 #include <stdlib.h>
 #include <cmath>
 
-#ifdef HAVE_SRAND48
+#ifndef HAVE_SRAND48
 #include <spatialindex/tools/rand48.h>
 #endif
 

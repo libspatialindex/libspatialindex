@@ -23,7 +23,7 @@
 #include <limits>
 #include <spatialindex/tools/Tools.h>
 
-#ifdef HAVE_SRAND48
+#ifndef HAVE_SRAND48
 #include <spatialindex/tools/rand48.h>
 #endif
 

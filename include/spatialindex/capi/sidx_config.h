@@ -41,7 +41,7 @@
 
    #include <windows.h>
    #define STRDUP _strdup
-   #include "SpatialIndex.h"
+   #include <spatialindex/SpatialIndex.h>
    #include <windows.h>
 
 #else
