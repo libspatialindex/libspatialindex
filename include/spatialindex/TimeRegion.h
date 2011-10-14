@@ -98,5 +98,6 @@ namespace SpatialIndex
 		friend SIDX_DLL std::ostream& operator<<(std::ostream& os, const TimeRegion& r);
 	}; // TimeRegion
 
+	typedef Tools::PoolPointer<TimeRegion> TimeRegionPtr;
 	SIDX_DLL std::ostream& operator<<(std::ostream& os, const TimeRegion& r);
 }

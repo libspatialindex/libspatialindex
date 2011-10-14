@@ -26,6 +26,7 @@
 
 namespace Tools
 {
+	using namespace SpatialIndex;
 	template<> class PointerPool<RTree::Node>
 	{
 	public:

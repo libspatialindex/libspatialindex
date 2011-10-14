@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <spatialindex/tools/Tools.h>
+
 namespace SpatialIndex
 {
 	class SIDX_DLL Point : public Tools::IObject, public virtual IShape
@@ -72,6 +74,8 @@ namespace SpatialIndex
 		friend class Region;
 		friend SIDX_DLL std::ostream& operator<<(std::ostream& os, const Point& pt);
 	}; // Point
+	
+	typedef Tools::PoolPointer<Point> PointPtr;
 
 	SIDX_DLL std::ostream& operator<<(std::ostream& os, const Point& pt);
 }

@@ -20,7 +20,8 @@
 //    mhadji@gmail.com
 
 #include <cstring>
-#include "../spatialindex/SpatialIndexImpl.h"
+
+#include <spatialindex/SpatialIndex.h>
 #include "Buffer.h"
     
 Buffer::Buffer(IStorageManager& sm, Tools::PropertySet& ps) :

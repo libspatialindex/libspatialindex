@@ -21,7 +21,7 @@
 
 #include <limits>
 
-#include "../spatialindex/SpatialIndexImpl.h"
+#include <spatialindex/SpatialIndex.h>
 #include "Node.h"
 #include "Leaf.h"
 #include "Index.h"
@@ -1122,7 +1122,7 @@ bool SpatialIndex::TPRTree::TPRTree::deleteData_impl(const MovingRegion& mr, id_
 	return false;
 }
 
-id_type SpatialIndex::TPRTree::TPRTree::writeNode(Node* n)
+SpatialIndex::id_type SpatialIndex::TPRTree::TPRTree::writeNode(Node* n)
 {
 	byte* buffer;
 	uint32_t dataLength;

@@ -23,7 +23,8 @@
 #include <cmath>
 #include <limits>
 
-#include "../spatialindex/SpatialIndexImpl.h"
+#include <spatialindex/SpatialIndex.h>
+
 #include "MVRTree.h"
 #include "Node.h"
 #include "Index.h"

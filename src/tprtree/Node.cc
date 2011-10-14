@@ -23,7 +23,8 @@
 #include <cmath>
 #include <limits>
 
-#include "../spatialindex/SpatialIndexImpl.h"
+#include <spatialindex/SpatialIndex.h>
+
 #include "TPRTree.h"
 #include "Node.h"
 #include "Index.h"
@@ -186,7 +187,7 @@ void Node::storeToByteArray(byte** data, uint32_t& len)
 //
 // SpatialIndex::IEntry interface
 //
-id_type Node::getIdentifier() const
+SpatialIndex::id_type Node::getIdentifier() const
 {
 	return m_identifier;
 }
@@ -204,7 +205,7 @@ uint32_t Node::getChildrenCount() const
 	return m_children;
 }
 
-id_type Node::getChildIdentifier(uint32_t index) const
+SpatialIndex::id_type Node::getChildIdentifier(uint32_t index) const
 {
 	if (index >= m_children) throw Tools::IndexOutOfBoundsException(index);
 

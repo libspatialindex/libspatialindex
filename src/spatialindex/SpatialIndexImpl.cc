@@ -19,7 +19,7 @@
 //  Email:
 //    mhadji@gmail.com
 
-#include "SpatialIndexImpl.h"
+#include <spatialindex/SpatialIndex.h>
 
 #include "../rtree/RTree.h"
 #include "../mvrtree/MVRTree.h"

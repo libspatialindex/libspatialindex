@@ -27,7 +27,8 @@
 #include <unistd.h>
 #endif
 
-#include "../spatialindex/SpatialIndexImpl.h"
+#include <spatialindex/SpatialIndex.h>
+
 #include "RTree.h"
 #include "Leaf.h"
 #include "Index.h"

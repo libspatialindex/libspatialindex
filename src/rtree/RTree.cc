@@ -23,7 +23,7 @@
 #include <cmath>
 #include <limits>
 
-#include "../spatialindex/SpatialIndexImpl.h"
+#include <spatialindex/SpatialIndex.h>
 #include "Node.h"
 #include "Leaf.h"
 #include "Index.h"
@@ -31,6 +31,7 @@
 #include "RTree.h"
 
 using namespace SpatialIndex::RTree;
+using namespace SpatialIndex;
 
 SpatialIndex::RTree::Data::Data(uint32_t len, byte* pData, Region& r, id_type id)
 	: m_id(id), m_region(r), m_pData(0), m_dataLength(len)

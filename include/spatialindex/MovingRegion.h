@@ -151,5 +151,6 @@ namespace SpatialIndex
 		friend SIDX_DLL std::ostream& operator<<(std::ostream& os, const MovingRegion& r);
 	}; // MovingRegion
 
+	typedef Tools::PoolPointer<MovingRegion> MovingRegionPtr;
 	SIDX_DLL std::ostream& operator<<(std::ostream& os, const MovingRegion& r);
 }

@@ -31,10 +31,13 @@
 #define M_PI_2 1.57079632679489661922
 #endif
 
+
+
 namespace SpatialIndex
 {
 	class Point;
 	class Region;
+
 
 	typedef int64_t id_type;
 
@@ -248,3 +251,9 @@ namespace SpatialIndex
 #include "MVRTree.h"
 #include "TPRTree.h"
 #include "Version.h"
+
+
+// typedef SpatialIndex::Tools::PoolPointer<Region> RegionPtr;
+// typedef SpatialIndex::Tools::PoolPointer<Point> PointPtr;
+// typedef SpatialIndex::Tools::PoolPointer<TimeRegion> TimeRegionPtr;
+// typedef SpatialIndex::Tools::PoolPointer<MovingRegion> MovingRegionPtr;

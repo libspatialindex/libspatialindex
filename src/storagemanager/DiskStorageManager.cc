@@ -25,7 +25,7 @@
 // For checking if a file exists - hobu
 #include <sys/stat.h>
 
-#include "../spatialindex/SpatialIndexImpl.h"
+#include <spatialindex/SpatialIndex.h>
 #include "DiskStorageManager.h"
 
 using namespace SpatialIndex;

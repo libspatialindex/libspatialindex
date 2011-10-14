@@ -21,7 +21,8 @@
 
 #include <limits>
 
-#include "../spatialindex/SpatialIndexImpl.h"
+#include <spatialindex/SpatialIndex.h>
+
 #include "Node.h"
 #include "Leaf.h"
 #include "Index.h"

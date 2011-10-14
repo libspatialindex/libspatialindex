@@ -92,6 +92,7 @@ namespace SpatialIndex
 
 		friend SIDX_DLL std::ostream& operator<<(std::ostream& os, const Region& r);
 	}; // Region
-
+	
+	typedef Tools::PoolPointer<Region> RegionPtr;
 	SIDX_DLL std::ostream& operator<<(std::ostream& os, const Region& r);
 }

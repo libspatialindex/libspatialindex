@@ -25,7 +25,8 @@
 
 namespace Tools
 {
-	template<> class PointerPool<TPRTree::Node>
+	using namespace SpatialIndex;
+	template<> class PointerPool<SpatialIndex::TPRTree::Node>
 	{
 	public:
 		explicit PointerPool(uint32_t capacity) : m_capacity(capacity)
