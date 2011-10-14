@@ -25,8 +25,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA	02110-1301	USA
  ****************************************************************************/
 
-#include "../spatialindex/SpatialIndexImpl.h"
-#include "sidx_impl.h"
+//#include <spatialindex/SpatialIndexImpl.h>
+#include <spatialindex/capi/sidx_impl.h>
 
 using namespace SpatialIndex;
 using namespace SpatialIndex::StorageManager;

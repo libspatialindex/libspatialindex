@@ -58,8 +58,6 @@ AM_CONDITIONAL([RAND_IS_CONFIG], [test "x$HAVE_SRAND48" = xtrue])
 
 AC_CONFIG_FILES([	Makefile
 					include/Makefile
-					include/capi/Makefile
-					include/tools/Makefile
 					src/Makefile
 					src/capi/Makefile
 					src/spatialindex/Makefile

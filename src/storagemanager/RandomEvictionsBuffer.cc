@@ -24,11 +24,10 @@
 #include <cmath>
 
 #ifdef HAVE_SRAND48
-#include "../../include/tools/rand48.h"
+#include <spatialindex/tools/rand48.h>
 #endif
 
-
-#include "../spatialindex/SpatialIndexImpl.h"
+#include <spatialindex/SpatialIndex.h>
 #include "RandomEvictionsBuffer.h"
 
 using namespace SpatialIndex;

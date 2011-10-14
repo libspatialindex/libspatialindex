@@ -48,7 +48,7 @@
 
    #include <stdint.h>
    #define SIDX_THREAD  __thread
-   #include <SpatialIndex.h>
+   #include <spatialindex/SpatialIndex.h>
    #define STRDUP strdup
 #endif
 

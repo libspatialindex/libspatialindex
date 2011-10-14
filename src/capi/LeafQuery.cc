@@ -25,7 +25,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA	02110-1301	USA
  ****************************************************************************/
 
-#include <capi/sidx_impl.h>
+#include <spatialindex/capi/sidx_impl.h>
 
 LeafQuery::LeafQuery() 
 {

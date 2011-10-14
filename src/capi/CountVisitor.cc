@@ -26,7 +26,7 @@
 * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 ****************************************************************************/
 
-#include "sidx_impl.h"
+#include <spatialindex/capi/sidx_impl.h>
 
 CountVisitor::CountVisitor(): nResults(0)
 {

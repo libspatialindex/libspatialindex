@@ -28,7 +28,7 @@
 #include <cmath>
 #include <limits>
 
-#include "../../include/SpatialIndex.h"
+#include <spatialindex/SpatialIndex.h>
 
 using namespace SpatialIndex;
 

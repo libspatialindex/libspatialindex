@@ -27,7 +27,7 @@
 
 #include <cmath>
 #include <limits>
-#include "sidx_impl.h"
+#include <spatialindex/capi/sidx_impl.h>
 
 static std::stack<Error> errors;
 

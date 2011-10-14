@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "../../include/SpatialIndex.h"
+#include <spatialindex/SpatialIndex.h>
 
 using namespace SpatialIndex;
 

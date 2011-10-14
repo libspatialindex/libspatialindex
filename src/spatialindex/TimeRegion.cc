@@ -19,7 +19,7 @@
 //  Email:
 //    mhadji@gmail.com
 
-#include "../../include/SpatialIndex.h"
+#include <spatialindex/SpatialIndex.h>
 
 #include <cstring>
 #include <limits>

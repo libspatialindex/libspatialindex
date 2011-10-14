@@ -25,7 +25,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA	02110-1301	USA
  ****************************************************************************/
 
-#include "sidx_impl.h"
+#include <spatialindex/capi/sidx_impl.h>
 
 
 DataStream::DataStream(int (*readNext)(SpatialIndex::id_type * id, 
