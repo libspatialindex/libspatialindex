@@ -31,28 +31,51 @@ MovingPoint::MovingPoint()
 {
 }
 
-MovingPoint::MovingPoint(const double* pCoords, const double* pVCoords, const IInterval& ti, uint32_t dimension)
+MovingPoint::MovingPoint(	const double* pCoords, 
+							const double* pVCoords, 
+							const IInterval& ti, 
+							uint32_t dimension)
 {
-	initialize(pCoords, pVCoords, ti.getLowerBound(), ti.getUpperBound(), dimension);
+	initialize(	pCoords, 
+				pVCoords, 
+				ti.getLowerBound(), 
+				ti.getUpperBound(), 
+				dimension);
 }
 
-MovingPoint::MovingPoint(const double* pCoords, const double* pVCoords, double tStart, double tEnd, uint32_t dimension)
+MovingPoint::MovingPoint(	const double* pCoords, 
+							const double* pVCoords, 
+							double tStart, 
+							double tEnd, 
+							uint32_t dimension)
 {
 	initialize(pCoords, pVCoords, tStart, tEnd, dimension);
 }
 
-MovingPoint::MovingPoint(const Point& p, const Point& vp, const IInterval& ti)
+MovingPoint::MovingPoint(	const Point& p, 
+							const Point& vp, 
+							const IInterval& ti)
 {
-	if (p.m_dimension != vp.m_dimension) throw Tools::IllegalArgumentException("MovingPoint: Points have different number of dimensions.");
+	if (p.m_dimension != vp.m_dimension) 
+		throw Tools::IllegalArgumentException("MovingPoint: Points have different number of dimensions.");
 
-	initialize(p.m_pCoords, vp.m_pCoords, ti.getLowerBound(), ti.getUpperBound(), p.m_dimension);
+	initialize(	p.m_pCoords, 
+				vp.m_pCoords, 
+				ti.getLowerBound(), 
+				ti.getUpperBound(), 
+				p.m_dimension);
 }
 
 MovingPoint::MovingPoint(const Point& p, const Point& vp, double tStart, double tEnd)
 {
-	if (p.m_dimension != vp.m_dimension) throw Tools::IllegalArgumentException("MovingPoint: Points have different number of dimensions.");
+	if (p.m_dimension != vp.m_dimension) 
+		throw Tools::IllegalArgumentException("MovingPoint: Points have different number of dimensions.");
 
-	initialize(p.m_pCoords, vp.m_pCoords, tStart, tEnd, p.m_dimension);
+	initialize(	p.m_pCoords, 
+				vp.m_pCoords, 
+				tStart, 
+				tEnd, 
+				p.m_dimension);
 }
 
 MovingPoint::MovingPoint(const MovingPoint& p)
@@ -92,7 +115,8 @@ void MovingPoint::initialize(
 	m_endTime = tEnd;
 	m_pCoords = 0;
 
-	if (m_endTime <= m_startTime) throw Tools::IllegalArgumentException("MovingPoint: Cannot support degenerate time intervals.");
+	if (m_endTime <= m_startTime) 
+		throw Tools::IllegalArgumentException("MovingPoint: Cannot support degenerate time intervals.");
 
 	try
 	{
