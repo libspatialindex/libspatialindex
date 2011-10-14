@@ -1,5 +1,29 @@
 2011-10-14  Howard Butler <hobu.inc@gmail.com>
 
+	* include/spatialindex/Version.h: update release date
+
+2011-10-14  Howard Butler <hobu.inc@gmail.com>
+
+	* ChangeLog: update ChangeLog again
+
+2011-10-14  Howard Butler <hobu.inc@gmail.com>
+
+	* test/mvrtree/Exhaustive.cc, test/tprtree/Exhaustive.cc,
+	test/tprtree/RandomGenerator.h: fixes to be able to make things work
+	on msvc 10
+
+2011-10-14  Howard Butler <hobu.inc@gmail.com>
+
+	* include/spatialindex/capi/sidx_config.h: only redefine c++0x types
+	if we're <= msvc_ver 1500
+
+2011-10-14  Howard Butler <hobu.inc@gmail.com>
+
+	* CMakeLists.txt: add definition to make sure we export symbols in
+	windows land
+
+2011-10-14  Howard Butler <hobu.inc@gmail.com>
+
 	* include/spatialindex/capi/sidx_config.h, src/mvrtree/Index.cc,
 	src/mvrtree/Leaf.cc, src/mvrtree/Node.cc, src/rtree/BulkLoader.cc,
 	src/rtree/Index.cc, src/rtree/Leaf.cc, src/rtree/Node.cc,
