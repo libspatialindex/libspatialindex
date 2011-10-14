@@ -1,5 +1,13 @@
 2011-10-14  Howard Butler <hobu.inc@gmail.com>
 
+	* Makefile.am: oops, need line separators
+
+2011-10-14  Howard Butler <hobu.inc@gmail.com>
+
+	* ChangeLog: update ChangeLog
+
+2011-10-14  Howard Butler <hobu.inc@gmail.com>
+
 	* Makefile.am: distribut test running scripts too
 
 2011-10-14  Howard Butler <hobu.inc@gmail.com>
