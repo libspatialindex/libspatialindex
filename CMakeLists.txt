@@ -190,7 +190,7 @@ if(WIN32)
 else()
   # Common locations for Unix and Mac OS X
   set(DEFAULT_BIN_SUBDIR bin)
-  set(DEFAULT_LIB_SUBDIR lib)
+  set(DEFAULT_LIB_SUBDIR lib${LIB_SUFFIX})
   set(DEFAULT_DATA_SUBDIR share/libspatialindex)
   set(DEFAULT_INCLUDE_SUBDIR include)
 endif()
