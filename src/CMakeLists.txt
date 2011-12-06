@@ -217,6 +217,11 @@ if (APPLE)
     ${SIDX_LIB_NAME}
     PROPERTIES
     INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
+
+  set_target_properties(
+    ${SIDX_C_LIB_NAME}
+    PROPERTIES
+    INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 endif()
 
 ###############################################################################

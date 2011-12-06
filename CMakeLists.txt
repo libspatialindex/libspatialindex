@@ -26,10 +26,10 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules ${CMAKE_MODULE_PATH})
 SET(SIDX_VERSION_MAJOR "1")
 SET(SIDX_VERSION_MINOR "7")
 SET(SIDX_VERSION_PATCH "0")
+SET(SIDX_LIB_SOVERSION "2.0.0")
+
 
 set(SIDX_VERSION_STRING "${SIDX_VERSION_MAJOR}.${SIDX_VERSION_MINOR}.${SIDX_VERSION_PATCH}")
-SET(SIDX_LIB_SOVERSION ${SIDX_VERSION_MAJOR})
-SET(SIDX_C_LIB_SOVERSION ${SIDX_VERSION_MAJOR})
 
 
 # Name of C++ library
@@ -83,7 +83,7 @@ endif()
 # note we default to debug mode
 if(NOT MSVC_IDE)
   if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Debug CACHE STRING 
+  set(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING 
     "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel" FORCE)
   endif()
   message(STATUS "Setting libspatialindex build type - ${CMAKE_BUILD_TYPE}")
@@ -191,7 +191,7 @@ else()
   # Common locations for Unix and Mac OS X
   set(DEFAULT_BIN_SUBDIR bin)
   set(DEFAULT_LIB_SUBDIR lib${LIB_SUFFIX})
-  set(DEFAULT_DATA_SUBDIR share/libspatialindex)
+  set(DEFAULT_DATA_SUBDIR share/spatialindex)
   set(DEFAULT_INCLUDE_SUBDIR include)
 endif()
 
