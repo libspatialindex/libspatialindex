@@ -5,7 +5,7 @@ AC_PREREQ(2.59)
 
 m4_define([sidx_version_major], [1])
 m4_define([sidx_version_minor], [7])
-m4_define([sidx_version_micro], [0])
+m4_define([sidx_version_micro], [1])
 m4_define([sidx_version],
           [sidx_version_major.sidx_version_minor.sidx_version_micro])
           
