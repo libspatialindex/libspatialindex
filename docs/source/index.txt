@@ -58,5 +58,17 @@ Features
 Download
 ------------------------------------------------------------------------------
 
-Download the latest libspatialindex release source package from 
-http://download.osgeo.org/libspatialindex/
+Current Release(s)
+------------------------------------------------------------------------------
+
+* **2011-12-12** 
+
+  - `spatialindex-src-1.7.1-src.tar.gz  <http://download.osgeo.org/libspatialindex/spatialindex-src-1.7.1.tar.gz>`__ 
+    `(md5) <http://download.osgeo.org/libspatialindex/spatialindex-src-1.7.1.tar.gz.md5>`__ 
+
+  - `spatialindex-src-1.7.1-src.tar.bz2  <http://download.osgeo.org/libspatialindex/spatialindex-src-1.7.1.tar.bz2>`__ 
+    `(md5) <http://download.osgeo.org/libspatialindex/spatialindex-src-1.7.1.tar.bz2.md5>`__ 
+    
+  
+  - `Release Notes <http://lists.gispython.org/pipermail/spatialindex/2011-December/000288.html>`__
+
