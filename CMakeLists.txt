@@ -33,9 +33,24 @@ set(SIDX_VERSION_STRING "${SIDX_VERSION_MAJOR}.${SIDX_VERSION_MINOR}.${SIDX_VERS
 
 
 # Name of C++ library
-set(SIDX_LIB_NAME spatialindex)
 
+set(SIDX_LIB_NAME spatialindex)
 set(SIDX_C_LIB_NAME spatialindex_c)
+
+if(WIN32)
+  if (MSVC)
+    if (MSVC80 OR MSVC90 OR MSVC10)
+        if( CMAKE_SIZEOF_VOID_P EQUAL 8 )
+            set( SIDX_LIB_NAME "spatialindex-64" )
+            set( SIDX_C_LIB_NAME "spatialindex_c-64" )
+        else( CMAKE_SIZEOF_VOID_P EQUAL 8 )
+            set( SIDX_LIB_NAME "spatialindex-32"  )
+            set( SIDX_C_LIB_NAME "spatialindex_c-32"  )
+        endif( CMAKE_SIZEOF_VOID_P EQUAL 8 )
+    endif()
+  endif()
+endif()
+
 
 set(CMAKE_INCLUDE_DIRECTORIES_PROJECT_BEFORE ON)
 
