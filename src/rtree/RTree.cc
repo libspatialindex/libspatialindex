@@ -249,10 +249,10 @@ SpatialIndex::ISpatialIndex* SpatialIndex::RTree::createAndBulkLoadNewRTree(
 	{
 	    if (var.m_varType != Tools::VT_DOUBLE)
             throw Tools::IllegalArgumentException("createAndBulkLoadNewRTree: Property FillFactor was not of type Tools::VT_DOUBLE");
-        
+
         if (var.m_val.dblVal <= 0.0)
             throw Tools::IllegalArgumentException("createAndBulkLoadNewRTree: Property FillFactor was less than 0.0");
-        
+
         if (((rv == RV_LINEAR || rv == RV_QUADRATIC) && var.m_val.dblVal > 0.5))
             throw Tools::IllegalArgumentException( "createAndBulkLoadNewRTree: Property FillFactor must be in range (0.0, 0.5) for LINEAR or QUADRATIC index types");
         if ( var.m_val.dblVal >= 1.0)
@@ -585,7 +585,7 @@ void SpatialIndex::RTree::RTree::nearestNeighborQuery(uint32_t k, const IShape& 
 	NNComparator nnc;
 	nearestNeighborQuery(k, query, v, nnc);
 }
-                                   
+
 
 void SpatialIndex::RTree::RTree::selfJoinQuery(const IShape& query, IVisitor& v)
 {
@@ -860,10 +860,10 @@ void SpatialIndex::RTree::RTree::initNew(Tools::PropertySet& ps)
 	{
 	    if (var.m_varType != Tools::VT_DOUBLE)
             throw Tools::IllegalArgumentException("initNew: Property FillFactor was not of type Tools::VT_DOUBLE");
-        
+
         if (var.m_val.dblVal <= 0.0)
             throw Tools::IllegalArgumentException("initNew: Property FillFactor was less than 0.0");
-        
+
         if (((m_treeVariant == RV_LINEAR || m_treeVariant == RV_QUADRATIC) && var.m_val.dblVal > 0.5))
             throw Tools::IllegalArgumentException(  "initNew: Property FillFactor must be in range "
                                                     "(0.0, 0.5) for LINEAR or QUADRATIC index types");
@@ -1033,7 +1033,7 @@ void SpatialIndex::RTree::RTree::initOld(Tools::PropertySet& ps)
 	var = ps.getProperty("NearMinimumOverlapFactor");
 	if (var.m_varType != Tools::VT_EMPTY)
 	{
-		if (	
+		if (
 			var.m_varType != Tools::VT_ULONG ||
 			var.m_val.ulVal < 1 ||
 			var.m_val.ulVal > m_indexCapacity ||
@@ -1231,7 +1231,7 @@ void SpatialIndex::RTree::RTree::insertData_impl(uint32_t dataLength, byte* pDat
 		NodePtr root = readNode(m_rootID);
 
 		overflowTable = new byte[root->m_level];
-		bzero(overflowTable, root->m_level);
+		memset(overflowTable, 0, root->m_level);
 
 		NodePtr l = root->chooseSubtree(mbr, 0, pathBuffer);
 		if (l.get() == root.get())

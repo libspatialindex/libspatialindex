@@ -58,7 +58,6 @@ include (CheckFunctionExists)
 
 check_function_exists(srand48 HAVE_SRAND48)
 check_function_exists(gettimeofday HAVE_GETTIMEOFDAY)
-check_function_exists(bzero HAVE_BZERO)
 check_function_exists(memset HAVE_MEMSET)
 check_function_exists(memcpy HAVE_MEMCPY)
 check_function_exists(bcopy HAVE_BCOPY)
@@ -98,7 +97,7 @@ endif()
 # note we default to debug mode
 if(NOT MSVC_IDE)
   if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING 
+  set(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING
     "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel" FORCE)
   endif()
   message(STATUS "Setting libspatialindex build type - ${CMAKE_BUILD_TYPE}")
@@ -116,7 +115,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${SIDX_BUILD_OUTPUT_DIRECTORY})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${SIDX_BUILD_OUTPUT_DIRECTORY})
 
 # Output directory in which to build ARCHIVE target files.
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${SIDX_BUILD_OUTPUT_DIRECTORY}) 
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${SIDX_BUILD_OUTPUT_DIRECTORY})
 
 
 #------------------------------------------------------------------------------
@@ -141,7 +140,7 @@ if(WIN32)
         set(SIDX_COMPILER_VC8 1)
       endif()
     endif()
-    
+
     if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
       string(REGEX REPLACE "/W[0-4]" "/W4"
         CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
@@ -149,7 +148,7 @@ if(WIN32)
       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
     endif()
   endif()
-  
+
   set(CMAKE_INCLUDE_PATH c:/osgeo4w/include;$ENV{CMAKE_INCLUDE_PATH})
   set(CMAKE_LIBRARY_PATH c:/osgeo4w/lib;$ENV{CMAKE_LIBRARY_PATH})
 
@@ -169,9 +168,9 @@ else()
     if (CMAKE_COMPILER_IS_GNUCXX)
       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++98 -ansi")
     endif()
-    
+
     set(SIDX_COMPILER_GCC 1)
-    
+
   elseif("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang" OR "${CMAKE_CXX_COMPILER}" MATCHES "clang")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SIDX_COMMON_CXX_FLAGS}")
     set(SIDX_COMPILER_CLANG 1)
@@ -245,7 +244,7 @@ add_subdirectory(test)
 #------------------------------------------------------------------------------
 # finally, generate the pdal_config.h header
 #------------------------------------------------------------------------------
-# 
+#
 # configure_file(
 #   "${PROJECT_SOURCE_DIR}/pdal_defines.h.in"
 #   "${PROJECT_SOURCE_DIR}/include/pdal/pdal_defines.h")

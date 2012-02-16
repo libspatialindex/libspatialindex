@@ -130,7 +130,7 @@ void Leaf::deleteData(id_type id, std::stack<id_type>& pathBuffer)
 		{
 			// keep this in the for loop. The tree height might change after insertions.
 			byte* overflowTable = new byte[m_pTree->m_stats.m_u32TreeHeight];
-			bzero(overflowTable, m_pTree->m_stats.m_u32TreeHeight);
+			memset(overflowTable, 0, m_pTree->m_stats.m_u32TreeHeight);
 			m_pTree->insertData_impl(n->m_pDataLength[cChild], n->m_pData[cChild], *(n->m_ptrMBR[cChild]), n->m_pIdentifier[cChild], n->m_level, overflowTable);
 			n->m_pData[cChild] = 0;
 			delete[] overflowTable;

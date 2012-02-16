@@ -850,7 +850,7 @@ void SpatialIndex::TPRTree::TPRTree::initOld(Tools::PropertySet& ps)
 	var = ps.getProperty("NearMinimumOverlapFactor");
 	if (var.m_varType != Tools::VT_EMPTY)
 	{
-		if (	
+		if (
 			var.m_varType != Tools::VT_ULONG ||
 			var.m_val.ulVal < 1 ||
 			var.m_val.ulVal > m_indexCapacity ||
@@ -1059,7 +1059,7 @@ void SpatialIndex::TPRTree::TPRTree::insertData_impl(uint32_t dataLength, byte* 
 		NodePtr root = readNode(m_rootID);
 
 		overflowTable = new byte[root->m_level];
-		bzero(overflowTable, root->m_level);
+		memset(overflowTable, 0, root->m_level);
 
 		NodePtr l = root->chooseSubtree(mr, 0, pathBuffer);
 		if (l.get() == root.get())

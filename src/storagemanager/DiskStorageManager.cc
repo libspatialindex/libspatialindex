@@ -34,7 +34,7 @@ using namespace SpatialIndex::StorageManager;
 bool CheckFilesExists(Tools::PropertySet& ps)
 {
 	bool bExists = false;
-	
+
 	std::string filename("");
 	std::string idx("idx");
 	std::string dat("dat");
@@ -50,24 +50,24 @@ bool CheckFilesExists(Tools::PropertySet& ps)
 	if (idx_name.m_varType != Tools::VT_EMPTY) dat = std::string(idx_name.m_val.pcVal);
 	if (dat_name.m_varType != Tools::VT_EMPTY) idx = std::string(dat_name.m_val.pcVal);
 	if (fn.m_varType != Tools::VT_EMPTY) filename = std::string(fn.m_val.pcVal);
-	
+
 	struct stat stats;
-	
+
 	std::ostringstream os;
 	int ret;
 	os << filename <<"."<<dat;
 	std::string data_name = os.str();
 	ret = stat(data_name.c_str(), &stats);
-	
+
 	if (ret == 0) bExists = true;
-	
+
 	os.str("");
 	os << filename <<"."<<idx;
 	std::string index_name = os.str();
 	ret = stat(index_name.c_str(), &stats);
-	
+
 	if ((ret == 0) && (bExists == true)) bExists = true;
-	
+
 	return bExists;
 }
 SpatialIndex::IStorageManager* SpatialIndex::StorageManager::returnDiskStorageManager(Tools::PropertySet& ps)
@@ -206,7 +206,7 @@ DiskStorageManager::DiskStorageManager(Tools::PropertySet& ps) : m_pageSize(0), 
 
 	// create buffer.
 	m_buffer = new byte[m_pageSize];
-	bzero(m_buffer, m_pageSize);
+	memset(m_buffer, 0, m_pageSize);
 
 	if (bOverwrite == false)
 	{
@@ -406,7 +406,7 @@ void DiskStorageManager::storeByteArray(id_type& page, const uint32_t len, const
 			m_dataFile.seekp(cPage * m_pageSize, std::ios_base::beg);
 			if (m_dataFile.fail())
 				throw Tools::IllegalStateException("SpatialIndex::DiskStorageManager: Corrupted data file.");
-			
+
 			m_dataFile.write(reinterpret_cast<const char*>(m_buffer), m_pageSize);
 			if (m_dataFile.fail())
 				throw Tools::IllegalStateException("SpatialIndex::DiskStorageManager: Corrupted data file.");
@@ -463,7 +463,7 @@ void DiskStorageManager::storeByteArray(id_type& page, const uint32_t len, const
 			m_dataFile.seekp(cPage * m_pageSize, std::ios_base::beg);
 			if (m_dataFile.fail())
 				throw Tools::IllegalStateException("SpatialIndex::DiskStorageManager: Corrupted data file.");
-			
+
 			m_dataFile.write(reinterpret_cast<const char*>(m_buffer), m_pageSize);
 			if (m_dataFile.fail())
 				throw Tools::IllegalStateException("SpatialIndex::DiskStorageManager: Corrupted data file.");

@@ -8,7 +8,7 @@ m4_define([sidx_version_minor], [7])
 m4_define([sidx_version_micro], [1])
 m4_define([sidx_version],
           [sidx_version_major.sidx_version_minor.sidx_version_micro])
-          
+
 AC_INIT([spatialindex], [sidx_version], [mhadji@gmail.com], [spatialindex-src])
 AC_CANONICAL_BUILD
 
@@ -52,7 +52,7 @@ else
 fi
 
 # Checks for library functions.
-AC_CHECK_FUNCS([gettimeofday bzero memset memcpy bcopy srand48])
+AC_CHECK_FUNCS([gettimeofday memset memcpy bcopy srand48])
 
 AM_CONDITIONAL([RAND_IS_CONFIG], [test "x$HAVE_SRAND48" = xtrue])
 
