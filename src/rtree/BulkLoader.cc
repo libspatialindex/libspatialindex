@@ -182,7 +182,7 @@ void ExternalSorter::sort()
 	}
 	else
 	{
-		Record* r;
+		Record* r = 0;
 
 		while (m_runs.size() > 1)
 		{
@@ -428,7 +428,7 @@ void BulkLoader::createLevel(
 		{
 			ExternalSorter::Record* pR;
 			Tools::SmartPointer<ExternalSorter> es3 = Tools::SmartPointer<ExternalSorter>(new ExternalSorter(pageSize, numberOfPages));
-			
+
 			for (uint64_t i = 0; i < S * b; ++i)
 			{
 				try { pR = es->getNextRecord(); }

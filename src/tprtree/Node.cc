@@ -325,8 +325,6 @@ bool Node::insertEntry(uint32_t dataLength, byte* pData, MovingRegion& mbr, id_t
 {
 	assert(m_children < m_capacity);
 
-	bool bAdjusted = false;
-
 	m_pDataLength[m_children] = dataLength;
 	m_pData[m_children] = pData;
 	m_ptrMBR[m_children] = m_pTree->m_regionPool.acquire();
@@ -357,8 +355,6 @@ bool Node::insertEntry(uint32_t dataLength, byte* pData, MovingRegion& mbr, id_t
 			m_nodeMBR.m_pLow[cDim] -= 2.0 * std::numeric_limits<double>::epsilon();
 			m_nodeMBR.m_pHigh[cDim] += 2.0 * std::numeric_limits<double>::epsilon();
 		}
-
-		bAdjusted = true;
 	}
 	else if (
 		//m_nodeMBR.m_pLow[0] != std::numeric_limits<double>::max() &&
@@ -383,8 +379,6 @@ bool Node::insertEntry(uint32_t dataLength, byte* pData, MovingRegion& mbr, id_t
 			m_nodeMBR.m_pVLow[cDim] = std::min(m_nodeMBR.m_pVLow[cDim], mbr.m_pVLow[cDim]);
 			m_nodeMBR.m_pVHigh[cDim] = std::max(m_nodeMBR.m_pVHigh[cDim], mbr.m_pVHigh[cDim]);
 		}
-
-		bAdjusted = true;
 	}
 
 #ifndef NDEBUG

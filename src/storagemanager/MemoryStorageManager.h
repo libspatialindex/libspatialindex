@@ -34,6 +34,7 @@ namespace SpatialIndex
 
 			virtual ~MemoryStorageManager();
 
+			virtual void flush();
 			virtual void loadByteArray(const id_type page, uint32_t& len, byte** data);
 			virtual void storeByteArray(id_type& page, const uint32_t len, const byte* const data);
 			virtual void deleteByteArray(const id_type page);
