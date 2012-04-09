@@ -233,5 +233,5 @@ install(TARGETS ${SIDX_LIB_NAME} ${SIDX_C_LIB_NAME}
   ARCHIVE DESTINATION ${SIDX_LIB_DIR})
 
 install(DIRECTORY ${SIDX_HEADERS_DIR}
-  DESTINATION include/libspatialindex
+  DESTINATION include/spatialindex
   FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp")
