@@ -31,8 +31,7 @@ namespace SpatialIndex
 			DiskStorageManager(Tools::PropertySet&);
 			virtual ~DiskStorageManager();
 
-			void flush();
-
+			virtual void flush();
 			virtual void loadByteArray(const id_type page, uint32_t& len, byte** data);
 			virtual void storeByteArray(id_type& page, const uint32_t len, const byte* const data);
 			virtual void deleteByteArray(const id_type page);
@@ -49,7 +48,7 @@ namespace SpatialIndex
 			std::fstream m_indexFile;
 			uint32_t m_pageSize;
 			id_type m_nextPage;
-			std::priority_queue<id_type, std::vector<id_type>, std::greater<id_type> > m_emptyPages;
+			std::set<id_type> m_emptyPages;
 			std::map<id_type, Entry*> m_pageIndex;
 
 			byte* m_buffer;

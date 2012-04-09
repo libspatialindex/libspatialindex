@@ -23,7 +23,7 @@
 
 #include <spatialindex/SpatialIndex.h>
 #include "Buffer.h"
-    
+
 Buffer::Buffer(IStorageManager& sm, Tools::PropertySet& ps) :
 	m_capacity(10),
 	m_bWriteThrough(false),
@@ -46,6 +46,11 @@ Buffer::Buffer(IStorageManager& sm, Tools::PropertySet& ps) :
 }
 
 Buffer::~Buffer()
+{
+	flush();
+}
+
+void Buffer::flush()
 {
 	for (std::map<id_type, Entry*>::iterator it = m_buffer.begin(); it != m_buffer.end(); ++it)
 	{

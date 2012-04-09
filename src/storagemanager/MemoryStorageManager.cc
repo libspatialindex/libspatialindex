@@ -49,6 +49,10 @@ MemoryStorageManager::~MemoryStorageManager()
 	for (std::vector<Entry*>::iterator it = m_buffer.begin(); it != m_buffer.end(); ++it) delete *it;
 }
 
+void MemoryStorageManager::flush()
+{
+}
+
 void MemoryStorageManager::loadByteArray(const id_type page, uint32_t& len, byte** data)
 {
 	Entry* e;

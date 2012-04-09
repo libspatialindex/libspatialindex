@@ -9,7 +9,7 @@
  * Copyright (c) 2010, Matthias (nitro)
  *
  * All rights reserved.
- * 
+ *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
@@ -19,12 +19,12 @@
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
  * details.
- * 
- * You should have received a copy of the GNU Lesser General Public License 
+ *
+ * You should have received a copy of the GNU Lesser General Public License
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  ****************************************************************************/
- 
+
 #pragma once
 
 namespace SpatialIndex
@@ -37,11 +37,12 @@ namespace SpatialIndex
             {}
 
             void* context;
-            void (*createCallback)( const void* context, int* errorCode ); 
-            void (*destroyCallback)( const void* context, int* errorCode ); 
-            void (*loadByteArrayCallback)( const void* context, const id_type page, uint32_t* len, byte** data, int* errorCode ); 
-            void (*storeByteArrayCallback)( const void* context, id_type* page, const uint32_t len, const byte* const data, int* errorCode ); 
-            void (*deleteByteArrayCallback)( const void* context, const id_type page, int* errorCode ); 
+            void (*createCallback)( const void* context, int* errorCode );
+            void (*destroyCallback)( const void* context, int* errorCode );
+			void (*flushCallback)( const void* context, int* errorCode );
+            void (*loadByteArrayCallback)( const void* context, const id_type page, uint32_t* len, byte** data, int* errorCode );
+            void (*storeByteArrayCallback)( const void* context, id_type* page, const uint32_t len, const byte* const data, int* errorCode );
+            void (*deleteByteArrayCallback)( const void* context, const id_type page, int* errorCode );
         };
 
         class CustomStorageManager : public SpatialIndex::IStorageManager
@@ -56,6 +57,7 @@ namespace SpatialIndex
 
 	        virtual ~CustomStorageManager();
 
+			virtual void flush();
 	        virtual void loadByteArray(const id_type page, uint32_t& len, byte** data);
 	        virtual void storeByteArray(id_type& page, const uint32_t len, const byte* const data);
 	        virtual void deleteByteArray(const id_type page);
@@ -65,7 +67,7 @@ namespace SpatialIndex
 
             inline void processErrorCode(int errorCode, const id_type page);
         }; // CustomStorageManager
-    
+
         // factory function
         IStorageManager* returnCustomStorageManager(Tools::PropertySet& in);
     }

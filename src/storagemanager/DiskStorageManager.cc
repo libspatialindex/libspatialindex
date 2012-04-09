@@ -223,7 +223,7 @@ DiskStorageManager::DiskStorageManager(Tools::PropertySet& ps) : m_pageSize(0), 
 			m_indexFile.read(reinterpret_cast<char*>(&page), sizeof(id_type));
 			if (m_indexFile.fail())
 				throw Tools::IllegalStateException("SpatialIndex::DiskStorageManager: Corrupted storage manager index file.");
-			m_emptyPages.push(page);
+			m_emptyPages.insert(page);
 		}
 
 		// load index table in memory.
@@ -286,37 +286,29 @@ void DiskStorageManager::flush()
 		throw Tools::IllegalStateException("SpatialIndex::DiskStorageManager: Corrupted storage manager index file.");
 
 	uint32_t count = static_cast<uint32_t>(m_emptyPages.size());
-	id_type page, id;
-
 	m_indexFile.write(reinterpret_cast<const char*>(&count), sizeof(uint32_t));
 	if (m_indexFile.fail())
 			throw Tools::IllegalStateException("SpatialIndex::DiskStorageManager: Corrupted storage manager index file.");
 
-	while (! m_emptyPages.empty())
+	for (std::set<id_type>::const_iterator it = m_emptyPages.begin(); it != m_emptyPages.end(); ++it)
 	{
-		page = m_emptyPages.top(); m_emptyPages.pop();
-		m_indexFile.write(reinterpret_cast<const char*>(&page), sizeof(id_type));
+		m_indexFile.write(reinterpret_cast<const char*>(&(*it)), sizeof(id_type));
 		if (m_indexFile.fail())
 			throw Tools::IllegalStateException("SpatialIndex::DiskStorageManager: Corrupted storage manager index file.");
 	}
 
 	count = static_cast<uint32_t>(m_pageIndex.size());
-
 	m_indexFile.write(reinterpret_cast<const char*>(&count), sizeof(uint32_t));
 	if (m_indexFile.fail())
 		throw Tools::IllegalStateException("SpatialIndex::DiskStorageManager: Corrupted storage manager index file.");
 
-	std::map<id_type, Entry*>::iterator it;
-
-	for (it = m_pageIndex.begin(); it != m_pageIndex.end(); ++it)
+	for (std::map<id_type, Entry*>::iterator it = m_pageIndex.begin(); it != m_pageIndex.end(); ++it)
 	{
-		id = (*it).first;
-		m_indexFile.write(reinterpret_cast<const char*>(&id), sizeof(id_type));
+		m_indexFile.write(reinterpret_cast<const char*>(&((*it).first)), sizeof(id_type));
 		if (m_indexFile.fail())
 			throw Tools::IllegalStateException("SpatialIndex::DiskStorageManager: Corrupted storage manager index file.");
 
-		uint32_t length = (*it).second->m_length;
-		m_indexFile.write(reinterpret_cast<const char*>(&length), sizeof(uint32_t));
+		m_indexFile.write(reinterpret_cast<const char*>(&((*it).second->m_length)), sizeof(uint32_t));
 		if (m_indexFile.fail())
 			throw Tools::IllegalStateException("SpatialIndex::DiskStorageManager: Corrupted storage manager index file.");
 
@@ -327,8 +319,7 @@ void DiskStorageManager::flush()
 
 		for (uint32_t cIndex = 0; cIndex < count; ++cIndex)
 		{
-			page = (*it).second->m_pages[cIndex];
-			m_indexFile.write(reinterpret_cast<const char*>(&page), sizeof(id_type));
+			m_indexFile.write(reinterpret_cast<const char*>(&((*it).second->m_pages[cIndex])), sizeof(id_type));
 			if (m_indexFile.fail())
 				throw Tools::IllegalStateException("SpatialIndex::DiskStorageManager: Corrupted storage manager index file.");
 		}
@@ -392,7 +383,8 @@ void DiskStorageManager::storeByteArray(id_type& page, const uint32_t len, const
 		{
 			if (! m_emptyPages.empty())
 			{
-				cPage = m_emptyPages.top(); m_emptyPages.pop();
+				cPage = *m_emptyPages.begin();
+				m_emptyPages.erase(m_emptyPages.begin());
 			}
 			else
 			{
@@ -449,7 +441,8 @@ void DiskStorageManager::storeByteArray(id_type& page, const uint32_t len, const
 			}
 			else if (! m_emptyPages.empty())
 			{
-				cPage = m_emptyPages.top(); m_emptyPages.pop();
+				cPage = *m_emptyPages.begin();
+				m_emptyPages.erase(m_emptyPages.begin());
 			}
 			else
 			{
@@ -475,7 +468,7 @@ void DiskStorageManager::storeByteArray(id_type& page, const uint32_t len, const
 
 		while (cNext < oldEntry->m_pages.size())
 		{
-			m_emptyPages.push(oldEntry->m_pages[cNext]);
+			m_emptyPages.insert(oldEntry->m_pages[cNext]);
 			++cNext;
 		}
 
@@ -493,7 +486,7 @@ void DiskStorageManager::deleteByteArray(const id_type page)
 
 	for (uint32_t cIndex = 0; cIndex < (*it).second->m_pages.size(); ++cIndex)
 	{
-		m_emptyPages.push((*it).second->m_pages[cIndex]);
+		m_emptyPages.insert((*it).second->m_pages[cIndex]);
 	}
 
 	delete (*it).second;
