@@ -61,7 +61,7 @@ namespace SpatialIndex
 			virtual uint32_t getChildrenCount() const;
 			virtual id_type getChildIdentifier(uint32_t index)  const;
 			virtual void getChildShape(uint32_t index, IShape** out)  const;
-                        virtual void getChildData(uint32_t index, uint32_t& length, byte** data) const;
+			virtual void getChildData(uint32_t index, uint32_t& length, byte** data) const;
 			virtual uint32_t getLevel() const;
 			virtual bool isIndex() const;
 			virtual bool isLeaf() const;
