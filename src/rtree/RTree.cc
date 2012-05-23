@@ -480,7 +480,67 @@ bool SpatialIndex::RTree::RTree::deleteData(const IShape& shape, id_type id)
 void SpatialIndex::RTree::RTree::containsWhatQuery(const IShape& query, IVisitor& v)
 {
 	if (query.getDimension() != m_dimension) throw Tools::IllegalArgumentException("containsWhatQuery: Shape has the wrong number of dimensions.");
-	rangeQuery(ContainmentQuery, query, v);
+
+#ifdef HAVE_PTHREAD_H
+	Tools::SharedLock lock(&m_rwLock);
+#else
+	if (m_rwLock == false) m_rwLock = true;
+	else throw Tools::ResourceLockedException("containsWhatQuery: cannot acquire a shared lock");
+#endif
+
+	try
+	{
+		std::stack<NodePtr> st;
+		NodePtr root = readNode(m_rootID);
+		st.push(root);
+
+		while (! st.empty())
+		{
+			NodePtr n = st.top(); st.pop();
+
+			if(n->m_level == 0)
+			{
+				v.visitNode(*n);
+
+				for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
+				{
+					if(query.containsShape(*(n->m_ptrMBR[cChild])))
+					{
+						Data data = Data(n->m_pDataLength[cChild], n->m_pData[cChild], *(n->m_ptrMBR[cChild]), n->m_pIdentifier[cChild]);
+						v.visitData(data);
+						++(m_stats.m_u64QueryResults);
+					}
+				}
+			}
+			else //not a leaf
+			{
+				if(query.containsShape(n->m_nodeMBR))
+				{
+					visitSubTree(n, v);
+				}
+				else if(query.intersectsShape(n->m_nodeMBR))
+				{
+					v.visitNode(*n);
+
+					for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
+					{
+						st.push(readNode(n->m_pIdentifier[cChild]));
+					}
+				}
+			}
+		}
+
+#ifndef HAVE_PTHREAD_H
+		m_rwLock = false;
+#endif
+	}
+	catch (...)
+	{
+#ifndef HAVE_PTHREAD_H
+		m_rwLock = false;
+#endif
+		throw;
+	}
 }
 
 void SpatialIndex::RTree::RTree::intersectsWithQuery(const IShape& query, IVisitor& v)
@@ -1517,6 +1577,35 @@ void SpatialIndex::RTree::RTree::selfJoinQuery(id_type id1, id_type id2, const R
 						selfJoinQuery(n1->m_pIdentifier[cChild1], n2->m_pIdentifier[cChild2], rr, vis);
 					}
 				}
+			}
+		}
+	}
+}
+
+void SpatialIndex::RTree::RTree::visitSubTree(NodePtr subTree, IVisitor& v)
+{
+	std::stack<NodePtr> st;
+	st.push(subTree);
+
+	while (! st.empty())
+	{
+		NodePtr n = st.top(); st.pop();
+		v.visitNode(*n);
+
+		if(n->m_level == 0)
+		{
+			for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
+			{
+				Data data = Data(n->m_pDataLength[cChild], n->m_pData[cChild], *(n->m_ptrMBR[cChild]), n->m_pIdentifier[cChild]);
+				v.visitData(data);
+				++(m_stats.m_u64QueryResults);
+			}
+		}
+		else
+		{
+			for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
+			{
+				st.push(readNode(n->m_pIdentifier[cChild]));
 			}
 		}
 	}
