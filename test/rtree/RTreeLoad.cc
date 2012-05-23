@@ -54,7 +54,7 @@ int main(int argc, char** argv)
 	{
 		if (argc != 5)
 		{
-			std::cerr << "Usage: " << argv[0] << " input_file tree_file capacity query_type [intersection | 10NN | selfjoin]." << std::endl;
+			std::cerr << "Usage: " << argv[0] << " input_file tree_file capacity query_type [intersection | 10NN | selfjoin | contains]." << std::endl;
 			return -1;
 		}
 
@@ -63,6 +63,7 @@ int main(int argc, char** argv)
 		if (strcmp(argv[4], "intersection") == 0) queryType = 0;
 		else if (strcmp(argv[4], "10NN") == 0) queryType = 1;
 		else if (strcmp(argv[4], "selfjoin") == 0) queryType = 2;
+		else if (strcmp(argv[4], "contains") == 0) queryType = 3;
 		else
 		{
 			std::cerr << "Unknown query type." << std::endl;
@@ -162,10 +163,16 @@ int main(int argc, char** argv)
 					tree->nearestNeighborQuery(10, p, vis);
 						// this will find the 10 nearest neighbors.
 				}
-				else
+				else if(queryType == 2)
 				{
 					Region r = Region(plow, phigh, 2);
 					tree->selfJoinQuery(r, vis);
+				}
+				else
+				{
+					Region r = Region(plow, phigh, 2);
+					tree->containsWhatQuery(r, vis);
+						// this will find all data that is contained by the query range.
 				}
 			}
 
