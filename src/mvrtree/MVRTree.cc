@@ -215,8 +215,6 @@ SpatialIndex::MVRTree::MVRTree::MVRTree(IStorageManager& sm, Tools::PropertySet&
 {
 #ifdef HAVE_PTHREAD_H
 	pthread_rwlock_init(&m_rwLock, NULL);
-#else
-	m_rwLock = false;
 #endif
 
 	Tools::Variant var = ps.getProperty("IndexIdentifier");
@@ -260,47 +258,30 @@ void SpatialIndex::MVRTree::MVRTree::insertData(uint32_t len, const byte* pData,
 
 #ifdef HAVE_PTHREAD_H
 	Tools::ExclusiveLock lock(&m_rwLock);
-#else
-	if (m_rwLock == false) m_rwLock = true;
-	else throw Tools::ResourceLockedException("insertData: cannot acquire an exclusive lock");
 #endif
 
-	try
+	// convert the shape into a TimeRegion (R-Trees index regions only; i.e., approximations of the shapes).
+	Region mbrold;
+	shape.getMBR(mbrold);
+
+	TimeRegionPtr mbr = m_regionPool.acquire();
+	mbr->makeDimension(mbrold.m_dimension);
+
+	memcpy(mbr->m_pLow, mbrold.m_pLow, mbrold.m_dimension * sizeof(double));
+	memcpy(mbr->m_pHigh, mbrold.m_pHigh, mbrold.m_dimension * sizeof(double));
+	mbr->m_startTime = ti->getLowerBound();
+	mbr->m_endTime = std::numeric_limits<double>::max();
+
+	byte* buffer = 0;
+
+	if (len > 0)
 	{
-		// convert the shape into a TimeRegion (R-Trees index regions only; i.e., approximations of the shapes).
-		Region mbrold;
-		shape.getMBR(mbrold);
-
-		TimeRegionPtr mbr = m_regionPool.acquire();
-		mbr->makeDimension(mbrold.m_dimension);
-
-		memcpy(mbr->m_pLow, mbrold.m_pLow, mbrold.m_dimension * sizeof(double));
-		memcpy(mbr->m_pHigh, mbrold.m_pHigh, mbrold.m_dimension * sizeof(double));
-		mbr->m_startTime = ti->getLowerBound();
-		mbr->m_endTime = std::numeric_limits<double>::max();
-
-		byte* buffer = 0;
-
-		if (len > 0)
-		{
-			buffer = new byte[len];
-			memcpy(buffer, pData, len);
-		}
-
-		insertData_impl(len, buffer, *mbr, id);
-			// the buffer is stored in the tree. Do not delete here.
-
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
+		buffer = new byte[len];
+		memcpy(buffer, pData, len);
 	}
-	catch (...)
-	{
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
-		throw;
-	}
+
+	insertData_impl(len, buffer, *mbr, id);
+		// the buffer is stored in the tree. Do not delete here.
 }
 
 bool SpatialIndex::MVRTree::MVRTree::deleteData(const IShape& shape, id_type id)
@@ -311,39 +292,22 @@ bool SpatialIndex::MVRTree::MVRTree::deleteData(const IShape& shape, id_type id)
 
 #ifdef HAVE_PTHREAD_H
 	Tools::ExclusiveLock lock(&m_rwLock);
-#else
-	if (m_rwLock == false) m_rwLock = true;
-	else throw Tools::ResourceLockedException("deleteData: cannot acquire an exclusive lock");
 #endif
 
-	try
-	{
-		Region mbrold;
-		shape.getMBR(mbrold);
+	Region mbrold;
+	shape.getMBR(mbrold);
 
-		TimeRegionPtr mbr = m_regionPool.acquire();
-		mbr->makeDimension(mbrold.m_dimension);
+	TimeRegionPtr mbr = m_regionPool.acquire();
+	mbr->makeDimension(mbrold.m_dimension);
 
-		memcpy(mbr->m_pLow, mbrold.m_pLow, mbrold.m_dimension * sizeof(double));
-		memcpy(mbr->m_pHigh, mbrold.m_pHigh, mbrold.m_dimension * sizeof(double));
-		mbr->m_startTime = ti->getLowerBound();
-		mbr->m_endTime = ti->getUpperBound();
+	memcpy(mbr->m_pLow, mbrold.m_pLow, mbrold.m_dimension * sizeof(double));
+	memcpy(mbr->m_pHigh, mbrold.m_pHigh, mbrold.m_dimension * sizeof(double));
+	mbr->m_startTime = ti->getLowerBound();
+	mbr->m_endTime = ti->getUpperBound();
 
-		bool ret = deleteData_impl(*mbr, id);
+	bool ret = deleteData_impl(*mbr, id);
 
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
-
-		return ret;
-	}
-	catch (...)
-	{
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
-		throw;
-	}
+	return ret;
 }
 
 void SpatialIndex::MVRTree::MVRTree::containsWhatQuery(const IShape& query, IVisitor& v)
@@ -388,32 +352,15 @@ void SpatialIndex::MVRTree::MVRTree::queryStrategy(IQueryStrategy& qs)
 {
 #ifdef HAVE_PTHREAD_H
 	Tools::SharedLock lock(&m_rwLock);
-#else
-	if (m_rwLock == false) m_rwLock = true;
-	else throw Tools::ResourceLockedException("queryStrategy: cannot acquire a shared lock");
 #endif
 
 	id_type next = m_roots[m_roots.size() - 1].m_id;
 	bool hasNext = true;
 
-	try
+	while (hasNext)
 	{
-		while (hasNext)
-		{
-			NodePtr n = readNode(next);
-			qs.getNextEntry(*n, next, hasNext);
-		}
-
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
-	}
-	catch (...)
-	{
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
-		throw;
+		NodePtr n = readNode(next);
+		qs.getNextEntry(*n, next, hasNext);
 	}
 }
 
@@ -892,7 +839,7 @@ void SpatialIndex::MVRTree::MVRTree::initOld(Tools::PropertySet& ps)
 
 void SpatialIndex::MVRTree::MVRTree::storeHeader()
 {
-	const uint32_t headerSize = 
+	const uint32_t headerSize =
 		sizeof(uint32_t) +											// size of m_roots
 		static_cast<uint32_t>(m_roots.size())
 		* (sizeof(id_type) + 2 * sizeof(double)) +					// m_roots
@@ -1287,76 +1234,59 @@ void SpatialIndex::MVRTree::MVRTree::rangeQuery(RangeQueryType type, const IShap
 
 #ifdef HAVE_PTHREAD_H
 	Tools::SharedLock lock(&m_rwLock);
-#else
-	if (m_rwLock == false) m_rwLock = true;
-	else throw Tools::ResourceLockedException("rangeQuery: cannot acquire a shared lock");
 #endif
 
-	try
+	std::set<id_type> visitedNodes;
+	std::set<id_type> visitedData;
+	std::stack<NodePtr> st;
+	std::vector<id_type> ids;
+	findRootIdentifiers(*ti, ids);
+
+	for (size_t cRoot = 0; cRoot < ids.size(); ++cRoot)
 	{
-		std::set<id_type> visitedNodes;
-		std::set<id_type> visitedData;
-		std::stack<NodePtr> st;
-		std::vector<id_type> ids;
-		findRootIdentifiers(*ti, ids);
-
-		for (size_t cRoot = 0; cRoot < ids.size(); ++cRoot)
-		{
-			NodePtr root = readNode(ids[cRoot]);
-			if (root->m_children > 0 && query.intersectsShape(root->m_nodeMBR)) st.push(root);
-		}
-
-		while (! st.empty())
-		{
-			NodePtr n = st.top(); st.pop();
-			visitedNodes.insert(n->m_identifier);
-
-			if (n->m_level == 0)
-			{
-				v.visitNode(*n);
-
-				for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
-				{
-					if (visitedData.find(n->m_pIdentifier[cChild]) != visitedData.end()) continue;
-
-					bool b;
-					if (type == ContainmentQuery) b = (n->m_ptrMBR[cChild])->intersectsInterval(*ti) && query.containsShape(*(n->m_ptrMBR[cChild]));
-					else b = (n->m_ptrMBR[cChild])->intersectsInterval(*ti) && query.intersectsShape(*(n->m_ptrMBR[cChild]));
-
-					if (b)
-					{
-						visitedData.insert(n->m_pIdentifier[cChild]);
-						Data data = Data(n->m_pDataLength[cChild], n->m_pData[cChild], *(n->m_ptrMBR[cChild]), n->m_pIdentifier[cChild]);
-						v.visitData(data);
-						++(m_stats.m_u64QueryResults);
-					}
-				}
-			}
-			else
-			{
-				v.visitNode(*n);
-
-				for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
-				{
-					if (	
-						visitedNodes.find(n->m_pIdentifier[cChild]) == visitedNodes.end() &&
-						n->m_ptrMBR[cChild]->intersectsInterval(*ti) &&
-						query.intersectsShape(*(n->m_ptrMBR[cChild])))
-						st.push(readNode(n->m_pIdentifier[cChild]));
-				}
-			}
-		}
-
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
+		NodePtr root = readNode(ids[cRoot]);
+		if (root->m_children > 0 && query.intersectsShape(root->m_nodeMBR)) st.push(root);
 	}
-	catch (...)
+
+	while (! st.empty())
 	{
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
-		throw;
+		NodePtr n = st.top(); st.pop();
+		visitedNodes.insert(n->m_identifier);
+
+		if (n->m_level == 0)
+		{
+			v.visitNode(*n);
+
+			for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
+			{
+				if (visitedData.find(n->m_pIdentifier[cChild]) != visitedData.end()) continue;
+
+				bool b;
+				if (type == ContainmentQuery) b = (n->m_ptrMBR[cChild])->intersectsInterval(*ti) && query.containsShape(*(n->m_ptrMBR[cChild]));
+				else b = (n->m_ptrMBR[cChild])->intersectsInterval(*ti) && query.intersectsShape(*(n->m_ptrMBR[cChild]));
+
+				if (b)
+				{
+					visitedData.insert(n->m_pIdentifier[cChild]);
+					Data data = Data(n->m_pDataLength[cChild], n->m_pData[cChild], *(n->m_ptrMBR[cChild]), n->m_pIdentifier[cChild]);
+					v.visitData(data);
+					++(m_stats.m_u64QueryResults);
+				}
+			}
+		}
+		else
+		{
+			v.visitNode(*n);
+
+			for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
+			{
+				if (
+					visitedNodes.find(n->m_pIdentifier[cChild]) == visitedNodes.end() &&
+					n->m_ptrMBR[cChild]->intersectsInterval(*ti) &&
+					query.intersectsShape(*(n->m_ptrMBR[cChild])))
+					st.push(readNode(n->m_pIdentifier[cChild]));
+			}
+		}
 	}
 }
 

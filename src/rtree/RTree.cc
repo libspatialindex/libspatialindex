@@ -368,8 +368,6 @@ SpatialIndex::RTree::RTree::RTree(IStorageManager& sm, Tools::PropertySet& ps) :
 {
 #ifdef HAVE_PTHREAD_H
 	pthread_rwlock_init(&m_rwLock, NULL);
-#else
-	m_rwLock = false;
 #endif
 
 	Tools::Variant var = ps.getProperty("IndexIdentifier");
@@ -410,39 +408,22 @@ void SpatialIndex::RTree::RTree::insertData(uint32_t len, const byte* pData, con
 
 #ifdef HAVE_PTHREAD_H
 	Tools::ExclusiveLock lock(&m_rwLock);
-#else
-	if (m_rwLock == false) m_rwLock = true;
-	else throw Tools::ResourceLockedException("insertData: cannot acquire an exclusive lock");
 #endif
 
-	try
+	// convert the shape into a Region (R-Trees index regions only; i.e., approximations of the shapes).
+	RegionPtr mbr = m_regionPool.acquire();
+	shape.getMBR(*mbr);
+
+	byte* buffer = 0;
+
+	if (len > 0)
 	{
-		// convert the shape into a Region (R-Trees index regions only; i.e., approximations of the shapes).
-		RegionPtr mbr = m_regionPool.acquire();
-		shape.getMBR(*mbr);
-
-		byte* buffer = 0;
-
-		if (len > 0)
-		{
-			buffer = new byte[len];
-			memcpy(buffer, pData, len);
-		}
-
-		insertData_impl(len, buffer, *mbr, id);
-			// the buffer is stored in the tree. Do not delete here.
-
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
+		buffer = new byte[len];
+		memcpy(buffer, pData, len);
 	}
-	catch (...)
-	{
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
-		throw;
-	}
+
+	insertData_impl(len, buffer, *mbr, id);
+		// the buffer is stored in the tree. Do not delete here.
 }
 
 bool SpatialIndex::RTree::RTree::deleteData(const IShape& shape, id_type id)
@@ -451,30 +432,13 @@ bool SpatialIndex::RTree::RTree::deleteData(const IShape& shape, id_type id)
 
 #ifdef HAVE_PTHREAD_H
 	Tools::ExclusiveLock lock(&m_rwLock);
-#else
-	if (m_rwLock == false) m_rwLock = true;
-	else throw Tools::ResourceLockedException("deleteData: cannot acquire an exclusive lock");
 #endif
 
-	try
-	{
-		RegionPtr mbr = m_regionPool.acquire();
-		shape.getMBR(*mbr);
-		bool ret = deleteData_impl(*mbr, id);
+	RegionPtr mbr = m_regionPool.acquire();
+	shape.getMBR(*mbr);
+	bool ret = deleteData_impl(*mbr, id);
 
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
-
-		return ret;
-	}
-	catch (...)
-	{
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
-		throw;
-	}
+	return ret;
 }
 
 void SpatialIndex::RTree::RTree::containsWhatQuery(const IShape& query, IVisitor& v)
@@ -502,80 +466,63 @@ void SpatialIndex::RTree::RTree::nearestNeighborQuery(uint32_t k, const IShape& 
 
 #ifdef HAVE_PTHREAD_H
 	Tools::SharedLock lock(&m_rwLock);
-#else
-	if (m_rwLock == false) m_rwLock = true;
-	else throw Tools::ResourceLockedException("nearestNeighborQuery: cannot acquire a shared lock");
 #endif
 
-	try
+	std::priority_queue<NNEntry*, std::vector<NNEntry*>, NNEntry::ascending> queue;
+
+	queue.push(new NNEntry(m_rootID, 0, 0.0));
+
+	uint32_t count = 0;
+	double knearest = 0.0;
+
+	while (! queue.empty())
 	{
-		std::priority_queue<NNEntry*, std::vector<NNEntry*>, NNEntry::ascending> queue;
+		NNEntry* pFirst = queue.top();
 
-		queue.push(new NNEntry(m_rootID, 0, 0.0));
+		// report all nearest neighbors with equal greatest distances.
+		// (neighbors can be more than k, if many happen to have the same greatest distance).
+		if (count >= k && pFirst->m_minDist > knearest)	break;
 
-		uint32_t count = 0;
-		double knearest = 0.0;
+		queue.pop();
 
-		while (! queue.empty())
+		if (pFirst->m_pEntry == 0)
 		{
-			NNEntry* pFirst = queue.top();
+			// n is a leaf or an index.
+			NodePtr n = readNode(pFirst->m_id);
+			v.visitNode(*n);
 
-			// report all nearest neighbors with equal greatest distances.
-			// (neighbors can be more than k, if many happen to have the same greatest distance).
-			if (count >= k && pFirst->m_minDist > knearest)	break;
-
-			queue.pop();
-
-			if (pFirst->m_pEntry == 0)
+			for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
 			{
-				// n is a leaf or an index.
-				NodePtr n = readNode(pFirst->m_id);
-				v.visitNode(*n);
-
-				for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
+				if (n->m_level == 0)
 				{
-					if (n->m_level == 0)
-					{
-						Data* e = new Data(n->m_pDataLength[cChild], n->m_pData[cChild], *(n->m_ptrMBR[cChild]), n->m_pIdentifier[cChild]);
-						// we need to compare the query with the actual data entry here, so we call the
-						// appropriate getMinimumDistance method of NearestNeighborComparator.
-						queue.push(new NNEntry(n->m_pIdentifier[cChild], e, nnc.getMinimumDistance(query, *e)));
-					}
-					else
-					{
-						queue.push(new NNEntry(n->m_pIdentifier[cChild], 0, nnc.getMinimumDistance(query, *(n->m_ptrMBR[cChild]))));
-					}
+					Data* e = new Data(n->m_pDataLength[cChild], n->m_pData[cChild], *(n->m_ptrMBR[cChild]), n->m_pIdentifier[cChild]);
+					// we need to compare the query with the actual data entry here, so we call the
+					// appropriate getMinimumDistance method of NearestNeighborComparator.
+					queue.push(new NNEntry(n->m_pIdentifier[cChild], e, nnc.getMinimumDistance(query, *e)));
+				}
+				else
+				{
+					queue.push(new NNEntry(n->m_pIdentifier[cChild], 0, nnc.getMinimumDistance(query, *(n->m_ptrMBR[cChild]))));
 				}
 			}
-			else
-			{
-				v.visitData(*(static_cast<IData*>(pFirst->m_pEntry)));
-				++(m_stats.m_u64QueryResults);
-				++count;
-				knearest = pFirst->m_minDist;
-				delete pFirst->m_pEntry;
-			}
-
-			delete pFirst;
 		}
-
-		while (! queue.empty())
+		else
 		{
-			NNEntry* e = queue.top(); queue.pop();
-			if (e->m_pEntry != 0) delete e->m_pEntry;
-			delete e;
+			v.visitData(*(static_cast<IData*>(pFirst->m_pEntry)));
+			++(m_stats.m_u64QueryResults);
+			++count;
+			knearest = pFirst->m_minDist;
+			delete pFirst->m_pEntry;
 		}
 
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
+		delete pFirst;
 	}
-	catch (...)
+
+	while (! queue.empty())
 	{
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
-		throw;
+		NNEntry* e = queue.top(); queue.pop();
+		if (e->m_pEntry != 0) delete e->m_pEntry;
+		delete e;
 	}
 }
 
@@ -594,60 +541,26 @@ void SpatialIndex::RTree::RTree::selfJoinQuery(const IShape& query, IVisitor& v)
 
 #ifdef HAVE_PTHREAD_H
 	Tools::SharedLock lock(&m_rwLock);
-#else
-	if (m_rwLock == false) m_rwLock = true;
-	else throw Tools::ResourceLockedException("selfJoinQuery: cannot acquire a shared lock");
 #endif
 
-	try
-	{
-		RegionPtr mbr = m_regionPool.acquire();
-		query.getMBR(*mbr);
-		selfJoinQuery(m_rootID, m_rootID, *mbr, v);
-
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
-	}
-	catch (...)
-	{
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
-		throw;
-	}
+	RegionPtr mbr = m_regionPool.acquire();
+	query.getMBR(*mbr);
+	selfJoinQuery(m_rootID, m_rootID, *mbr, v);
 }
 
 void SpatialIndex::RTree::RTree::queryStrategy(IQueryStrategy& qs)
 {
 #ifdef HAVE_PTHREAD_H
 	Tools::SharedLock lock(&m_rwLock);
-#else
-	if (m_rwLock == false) m_rwLock = true;
-	else throw Tools::ResourceLockedException("queryStrategy: cannot acquire a shared lock");
 #endif
 
 	id_type next = m_rootID;
 	bool hasNext = true;
 
-	try
+	while (hasNext)
 	{
-		while (hasNext)
-		{
-			NodePtr n = readNode(next);
-			qs.getNextEntry(*n, next, hasNext);
-		}
-
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
-	}
-	catch (...)
-	{
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
-		throw;
+		NodePtr n = readNode(next);
+		qs.getNextEntry(*n, next, hasNext);
 	}
 }
 
@@ -1422,61 +1335,44 @@ void SpatialIndex::RTree::RTree::rangeQuery(RangeQueryType type, const IShape& q
 {
 #ifdef HAVE_PTHREAD_H
 	Tools::SharedLock lock(&m_rwLock);
-#else
-	if (m_rwLock == false) m_rwLock = true;
-	else throw Tools::ResourceLockedException("rangeQuery: cannot acquire a shared lock");
 #endif
 
-	try
+	std::stack<NodePtr> st;
+	NodePtr root = readNode(m_rootID);
+
+	if (root->m_children > 0 && query.intersectsShape(root->m_nodeMBR)) st.push(root);
+
+	while (! st.empty())
 	{
-		std::stack<NodePtr> st;
-		NodePtr root = readNode(m_rootID);
+		NodePtr n = st.top(); st.pop();
 
-		if (root->m_children > 0 && query.intersectsShape(root->m_nodeMBR)) st.push(root);
-
-		while (! st.empty())
+		if (n->m_level == 0)
 		{
-			NodePtr n = st.top(); st.pop();
+			v.visitNode(*n);
 
-			if (n->m_level == 0)
+			for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
 			{
-				v.visitNode(*n);
+				bool b;
+				if (type == ContainmentQuery) b = query.containsShape(*(n->m_ptrMBR[cChild]));
+				else b = query.intersectsShape(*(n->m_ptrMBR[cChild]));
 
-				for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
+				if (b)
 				{
-					bool b;
-					if (type == ContainmentQuery) b = query.containsShape(*(n->m_ptrMBR[cChild]));
-					else b = query.intersectsShape(*(n->m_ptrMBR[cChild]));
-
-					if (b)
-					{
-						Data data = Data(n->m_pDataLength[cChild], n->m_pData[cChild], *(n->m_ptrMBR[cChild]), n->m_pIdentifier[cChild]);
-						v.visitData(data);
-						++(m_stats.m_u64QueryResults);
-					}
-				}
-			}
-			else
-			{
-				v.visitNode(*n);
-
-				for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
-				{
-					if (query.intersectsShape(*(n->m_ptrMBR[cChild]))) st.push(readNode(n->m_pIdentifier[cChild]));
+					Data data = Data(n->m_pDataLength[cChild], n->m_pData[cChild], *(n->m_ptrMBR[cChild]), n->m_pIdentifier[cChild]);
+					v.visitData(data);
+					++(m_stats.m_u64QueryResults);
 				}
 			}
 		}
+		else
+		{
+			v.visitNode(*n);
 
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
-	}
-	catch (...)
-	{
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
-		throw;
+			for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
+			{
+				if (query.intersectsShape(*(n->m_ptrMBR[cChild]))) st.push(readNode(n->m_pIdentifier[cChild]));
+			}
+		}
 	}
 }
 

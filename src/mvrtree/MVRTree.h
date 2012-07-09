@@ -150,8 +150,6 @@ namespace SpatialIndex
 
 #ifdef HAVE_PTHREAD_H
 			pthread_rwlock_t m_rwLock;
-#else
-			bool m_rwLock;
 #endif
 
 			class RootEntry

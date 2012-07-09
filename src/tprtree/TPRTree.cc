@@ -217,8 +217,6 @@ SpatialIndex::TPRTree::TPRTree::TPRTree(IStorageManager& sm, Tools::PropertySet&
 {
 #ifdef HAVE_PTHREAD_H
 	pthread_rwlock_init(&m_rwLock, NULL);
-#else
-	m_rwLock = false;
 #endif
 
 	Tools::Variant var = ps.getProperty("IndexIdentifier");
@@ -265,52 +263,35 @@ void SpatialIndex::TPRTree::TPRTree::insertData(uint32_t len, const byte* pData,
 
 #ifdef HAVE_PTHREAD_H
 	Tools::ExclusiveLock lock(&m_rwLock);
-#else
-	if (m_rwLock == false) m_rwLock = true;
-	else throw Tools::ResourceLockedException("insertData: cannot acquire an exclusive lock");
 #endif
 
-	try
+	Region mbr;
+	shape.getMBR(mbr);
+	Region vbr;
+	es->getVMBR(vbr);
+	assert(mbr.m_dimension == vbr.m_dimension);
+
+	MovingRegionPtr mr = m_regionPool.acquire();
+	mr->makeDimension(mbr.m_dimension);
+
+	memcpy(mr->m_pLow, mbr.m_pLow, mbr.m_dimension * sizeof(double));
+	memcpy(mr->m_pHigh, mbr.m_pHigh, mbr.m_dimension * sizeof(double));
+	memcpy(mr->m_pVLow, vbr.m_pLow, vbr.m_dimension * sizeof(double));
+	memcpy(mr->m_pVHigh, vbr.m_pHigh, vbr.m_dimension * sizeof(double));
+	mr->m_startTime = pivI->getLowerBound();
+	mr->m_endTime = std::numeric_limits<double>::max();
+
+	byte* buffer = 0;
+
+	if (len > 0)
 	{
-		Region mbr;
-		shape.getMBR(mbr);
-		Region vbr;
-		es->getVMBR(vbr);
-		assert(mbr.m_dimension == vbr.m_dimension);
-
-		MovingRegionPtr mr = m_regionPool.acquire();
-		mr->makeDimension(mbr.m_dimension);
-
-		memcpy(mr->m_pLow, mbr.m_pLow, mbr.m_dimension * sizeof(double));
-		memcpy(mr->m_pHigh, mbr.m_pHigh, mbr.m_dimension * sizeof(double));
-		memcpy(mr->m_pVLow, vbr.m_pLow, vbr.m_dimension * sizeof(double));
-		memcpy(mr->m_pVHigh, vbr.m_pHigh, vbr.m_dimension * sizeof(double));
-		mr->m_startTime = pivI->getLowerBound();
-		mr->m_endTime = std::numeric_limits<double>::max();
-
-		byte* buffer = 0;
-
-		if (len > 0)
-		{
-			buffer = new byte[len];
-			memcpy(buffer, pData, len);
-		}
-
-		m_currentTime = mr->m_startTime;
-		insertData_impl(len, buffer, *mr, id);
-			// the buffer is stored in the tree. Do not delete here.
-
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
+		buffer = new byte[len];
+		memcpy(buffer, pData, len);
 	}
-	catch (...)
-	{
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
-		throw;
-	}
+
+	m_currentTime = mr->m_startTime;
+	insertData_impl(len, buffer, *mr, id);
+		// the buffer is stored in the tree. Do not delete here.
 }
 
 // shape.m_startTime should be the time when the object was inserted initially.
@@ -325,45 +306,28 @@ bool SpatialIndex::TPRTree::TPRTree::deleteData(const IShape& shape, id_type id)
 
 #ifdef HAVE_PTHREAD_H
 	Tools::ExclusiveLock lock(&m_rwLock);
-#else
-	if (m_rwLock == false) m_rwLock = true;
-	else throw Tools::ResourceLockedException("deleteData cannot acquire an exclusive lock");
 #endif
 
-	try
-	{
-		Region mbr;
-		shape.getMBR(mbr);
-		Region vbr;
-		es->getVMBR(vbr);
-		assert(mbr.m_dimension == vbr.m_dimension);
+	Region mbr;
+	shape.getMBR(mbr);
+	Region vbr;
+	es->getVMBR(vbr);
+	assert(mbr.m_dimension == vbr.m_dimension);
 
-		MovingRegionPtr mr = m_regionPool.acquire();
-		mr->makeDimension(mbr.m_dimension);
+	MovingRegionPtr mr = m_regionPool.acquire();
+	mr->makeDimension(mbr.m_dimension);
 
-		memcpy(mr->m_pLow, mbr.m_pLow, mbr.m_dimension * sizeof(double));
-		memcpy(mr->m_pHigh, mbr.m_pHigh, mbr.m_dimension * sizeof(double));
-		memcpy(mr->m_pVLow, vbr.m_pLow, vbr.m_dimension * sizeof(double));
-		memcpy(mr->m_pVHigh, vbr.m_pHigh, vbr.m_dimension * sizeof(double));
-		mr->m_startTime = pivI->getLowerBound();
-		mr->m_endTime = std::numeric_limits<double>::max();
+	memcpy(mr->m_pLow, mbr.m_pLow, mbr.m_dimension * sizeof(double));
+	memcpy(mr->m_pHigh, mbr.m_pHigh, mbr.m_dimension * sizeof(double));
+	memcpy(mr->m_pVLow, vbr.m_pLow, vbr.m_dimension * sizeof(double));
+	memcpy(mr->m_pVHigh, vbr.m_pHigh, vbr.m_dimension * sizeof(double));
+	mr->m_startTime = pivI->getLowerBound();
+	mr->m_endTime = std::numeric_limits<double>::max();
 
-		m_currentTime = pivI->getUpperBound();
-		bool ret = deleteData_impl(*mr, id);
+	m_currentTime = pivI->getUpperBound();
+	bool ret = deleteData_impl(*mr, id);
 
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
-
-		return ret;
-	}
-	catch (...)
-	{
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
-		throw;
-	}
+	return ret;
 }
 
 void SpatialIndex::TPRTree::TPRTree::containsWhatQuery(const IShape& query, IVisitor& v)
@@ -406,32 +370,15 @@ void SpatialIndex::TPRTree::TPRTree::queryStrategy(IQueryStrategy& qs)
 {
 #ifdef HAVE_PTHREAD_H
 	Tools::SharedLock lock(&m_rwLock);
-#else
-	if (m_rwLock == false) m_rwLock = true;
-	else throw Tools::ResourceLockedException("queryStrategy: cannot acquire a shared lock");
 #endif
 
 	id_type next = m_rootID;
 	bool hasNext = true;
 
-	try
+	while (hasNext)
 	{
-		while (hasNext)
-		{
-			NodePtr n = readNode(next);
-			qs.getNextEntry(*n, next, hasNext);
-		}
-
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
-	}
-	catch (...)
-	{
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
-		throw;
+		NodePtr n = readNode(next);
+		qs.getNextEntry(*n, next, hasNext);
 	}
 }
 
@@ -1259,61 +1206,44 @@ void SpatialIndex::TPRTree::TPRTree::rangeQuery(RangeQueryType type, const IShap
 
 #ifdef HAVE_PTHREAD_H
 	Tools::SharedLock lock(&m_rwLock);
-#else
-	if (m_rwLock == false) m_rwLock = true;
-	else throw Tools::ResourceLockedException("rangeQuery: cannot acquire a shared lock");
 #endif
 
-	try
+	std::stack<NodePtr> st;
+	NodePtr root = readNode(m_rootID);
+
+	if (root->m_children > 0 && mr->intersectsRegionInTime(root->m_nodeMBR)) st.push(root);
+
+	while (! st.empty())
 	{
-		std::stack<NodePtr> st;
-		NodePtr root = readNode(m_rootID);
+		NodePtr n = st.top(); st.pop();
 
-		if (root->m_children > 0 && mr->intersectsRegionInTime(root->m_nodeMBR)) st.push(root);
-
-		while (! st.empty())
+		if (n->m_level == 0)
 		{
-			NodePtr n = st.top(); st.pop();
+			v.visitNode(*n);
 
-			if (n->m_level == 0)
+			for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
 			{
-				v.visitNode(*n);
+				bool b;
+				if (type == ContainmentQuery) b = mr->containsRegionInTime(*(n->m_ptrMBR[cChild]));
+				else b = mr->intersectsRegionInTime(*(n->m_ptrMBR[cChild]));
 
-				for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
+				if (b)
 				{
-					bool b;
-					if (type == ContainmentQuery) b = mr->containsRegionInTime(*(n->m_ptrMBR[cChild]));
-					else b = mr->intersectsRegionInTime(*(n->m_ptrMBR[cChild]));
-
-					if (b)
-					{
-						Data data = Data(n->m_pDataLength[cChild], n->m_pData[cChild], *(n->m_ptrMBR[cChild]), n->m_pIdentifier[cChild]);
-						v.visitData(data);
-						++(m_stats.m_queryResults);
-					}
-				}
-			}
-			else
-			{
-				v.visitNode(*n);
-
-				for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
-				{
-					if (mr->intersectsRegionInTime(*(n->m_ptrMBR[cChild]))) st.push(readNode(n->m_pIdentifier[cChild]));
+					Data data = Data(n->m_pDataLength[cChild], n->m_pData[cChild], *(n->m_ptrMBR[cChild]), n->m_pIdentifier[cChild]);
+					v.visitData(data);
+					++(m_stats.m_queryResults);
 				}
 			}
 		}
+		else
+		{
+			v.visitNode(*n);
 
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
-	}
-	catch (...)
-	{
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
-		throw;
+			for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
+			{
+				if (mr->intersectsRegionInTime(*(n->m_ptrMBR[cChild]))) st.push(readNode(n->m_pIdentifier[cChild]));
+			}
+		}
 	}
 }
 

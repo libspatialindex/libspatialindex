@@ -92,28 +92,15 @@ Tools::Variant::Variant() : m_varType(VT_EMPTY)
 
 Tools::PropertySet::PropertySet(const byte* data)
 {
-#ifdef HAVE_PTHREAD_H
-	// pthread_rwlock_init(&m_rwLock, NULL);
-#else
-	m_rwLock = false;
-#endif
 	loadFromByteArray(data);
 }
 
-Tools::PropertySet::~PropertySet() 
+Tools::PropertySet::~PropertySet()
 {
-#ifdef HAVE_PTHREAD_H
-	// pthread_rwlock_destroy(&m_rwLock);
-#endif	
 }
 
 Tools::PropertySet::PropertySet()
 {
-#ifdef HAVE_PTHREAD_H
-	// pthread_rwlock_init(&m_rwLock, NULL);
-#else
-	m_rwLock = false;
-#endif	
 }
 void Tools::PropertySet::loadFromByteArray(const byte* ptr)
 {
@@ -346,89 +333,28 @@ void Tools::PropertySet::storeToByteArray(byte** data, uint32_t& length)
 
 Tools::Variant Tools::PropertySet::getProperty(std::string property)
 {
-// #ifdef HAVE_PTHREAD_H
-//     Tools::ExclusiveLock lock(&m_rwLock);
-// #else
-// 	if (m_rwLock == false) m_rwLock = true;
-// 	else throw Tools::IllegalStateException("getProperty: cannot acquire an shared lock");
-// #endif
+   	std::map<std::string, Variant>::iterator it = m_propertySet.find(property);
 
-	try
-	{
-    	std::map<std::string, Variant>::iterator it = m_propertySet.find(property);
-
-    	if (it != m_propertySet.end()) return (*it).second;
-    	else return Variant();
-	
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
-
-	}
-	catch (...)
-	{
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
-		throw;
-	}
+   	if (it != m_propertySet.end()) return (*it).second;
+   	else return Variant();
 }
 
 void Tools::PropertySet::setProperty(std::string property, Variant& v)
 {
-#ifdef HAVE_PTHREAD_H
-	// Tools::ExclusiveLock lock(&m_rwLock);
-#else
-	if (m_rwLock == false) m_rwLock = true;
-	else throw Tools::EndOfStreamException("setProperty: cannot acquire an exclusive lock");
-#endif
+	std::pair<std::map<std::string, Variant>::iterator, bool> ret;
+	std::map<std::string, Variant>::iterator it;
 
-	try
-	{
-    	std::pair<std::map<std::string, Variant>::iterator, bool> ret;
-    	std::map<std::string, Variant>::iterator it;
-	
-    	ret = m_propertySet.insert(std::pair<std::string, Variant>(property, v));
+	ret = m_propertySet.insert(std::pair<std::string, Variant>(property, v));
 
-    	// If we weren't able to insert because it is already in the map
-    	// update our existing value
-    	if (ret.second == false) ret.first->second = v;
-
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
-
-	}
-	catch (...)
-	{
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
-		throw;
-	}
+	// If we weren't able to insert because it is already in the map
+	// update our existing value
+	if (ret.second == false) ret.first->second = v;
 }
 
 void Tools::PropertySet::removeProperty(std::string property)
 {
-#ifdef HAVE_PTHREAD_H
-	// Tools::ExclusiveLock lock(&m_rwLock);
-#else
-	if (m_rwLock == false) m_rwLock = true;
-	else throw Tools::EndOfStreamException("setProperty: cannot acquire an exclusive lock");
-#endif
-
-	try
-	{
-	   	std::map<std::string, Variant>::iterator it = m_propertySet.find(property);
-	   	if (it != m_propertySet.end()) m_propertySet.erase(it);
-	}
-	catch (...)
-	{
-#ifndef HAVE_PTHREAD_H
-		m_rwLock = false;
-#endif
-		throw;
-	}
+   	std::map<std::string, Variant>::iterator it = m_propertySet.find(property);
+   	if (it != m_propertySet.end()) m_propertySet.erase(it);
 }
 
 Tools::Interval::Interval() : m_type(IT_RIGHTOPEN), m_low(0.0), m_high(0.0)
@@ -709,7 +635,7 @@ bool Tools::Random::flipCoin()
 
 #if HAVE_PTHREAD_H
 Tools::SharedLock::SharedLock(pthread_rwlock_t* pLock)
-	: m_pLock(pLock)
+ : m_pLock(pLock)
 {
 	pthread_rwlock_rdlock(m_pLock);
 }
@@ -720,7 +646,7 @@ Tools::SharedLock::~SharedLock()
 }
 
 Tools::ExclusiveLock::ExclusiveLock(pthread_rwlock_t* pLock)
-	: m_pLock(pLock)
+ : m_pLock(pLock)
 {
 	pthread_rwlock_wrlock(m_pLock);
 }
@@ -728,6 +654,40 @@ Tools::ExclusiveLock::ExclusiveLock(pthread_rwlock_t* pLock)
 Tools::ExclusiveLock::~ExclusiveLock()
 {
 	pthread_rwlock_unlock(m_pLock);
+}
+
+void Tools::SpinLock::lock()
+{
+	uint16_t i = 0;
+
+	while (__sync_bool_compare_and_swap(&m_lock, 0, 1) == false)
+	{
+		if (++i == 30)
+		{
+			i = 0;
+			pthread_yield();
+		}
+	};
+}
+
+bool Tools::SpinLock::try_lock()
+{
+	return __sync_bool_compare_and_swap(&m_lock, 0, 1);
+}
+
+void Tools::SpinLock::unlock()
+{
+	__sync_bool_compare_and_swap(&m_lock, 1, 0);
+}
+
+Tools::LockGuard::LockGuard(SpinLock& lock) : m_lock(lock)
+{
+	m_lock.lock();
+}
+
+Tools::LockGuard::~LockGuard()
+{
+	m_lock.unlock();
 }
 #endif
 
@@ -1144,7 +1104,7 @@ void Tools::BufferedFileWriter::write(uint32_t u32Len, byte* pData)
 //
 Tools::TemporaryFile::TemporaryFile()
 {
-    
+
 #ifdef _MSC_VER
 
 #ifndef L_tmpnam_s
@@ -1152,11 +1112,11 @@ Tools::TemporaryFile::TemporaryFile()
 
     char* tmpName = NULL;
     tmpName = tmpnam( NULL );
-    
+
     if (tmpName == NULL)
         throw std::ios_base::failure("Tools::TemporaryFile: Cannot create temporary file name.");
-     
-#else 
+
+#else
 	char tmpName[L_tmpnam_s];
 	errno_t err = tmpnam_s(tmpName, L_tmpnam_s);
 	if (err)

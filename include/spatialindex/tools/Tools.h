@@ -414,6 +414,33 @@ namespace Tools
 	#endif
 	}; // ExclusiveLock
 
+	class SIDX_DLL SpinLock
+	{
+	public:
+	#if HAVE_PTHREAD_H
+		SpinLock() : m_lock(0) {}
+
+		void lock();
+		bool try_lock();
+		void unlock();
+
+	private:
+		volatile uint32_t m_lock;
+	#endif
+	};
+
+	class SIDX_DLL LockGuard
+	{
+	public:
+	#if HAVE_PTHREAD_H
+		LockGuard(SpinLock& lock);
+		~LockGuard();
+
+	private:
+		SpinLock& m_lock;
+	#endif
+	};
+
 	class SIDX_DLL BufferedFile
 	{
 	public:
@@ -510,4 +537,3 @@ namespace Tools
 		BufferedFile* m_pFile;
 	};
 }
-
