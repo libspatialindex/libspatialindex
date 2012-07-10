@@ -25,6 +25,14 @@ namespace SpatialIndex
 {
 	class SIDX_DLL MovingRegion : public TimeRegion, public IEvolvingShape
 	{
+        using Region::getLow;
+        using Region::getHigh;
+        using TimeRegion::intersectsRegionInTime;
+        using TimeRegion::containsRegionInTime;
+        using TimeRegion::combineRegionInTime;
+        using TimeRegion::getCombinedRegionInTime;
+        using TimeRegion::containsPointInTime;
+        
 	public:
 		MovingRegion();
 		MovingRegion(
