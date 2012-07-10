@@ -29,6 +29,12 @@
 
 #include <cstring>
 
+#if HAVE_PTHREAD_H
+#if !defined(_POSIX_THREADS)
+#include <sched.h>	// for sched_yield()
+#endif
+#endif
+
 Tools::IndexOutOfBoundsException::IndexOutOfBoundsException(size_t i)
 {
 	std::ostringstream s;
@@ -665,7 +671,11 @@ void Tools::SpinLock::lock()
 		if (++i == 30)
 		{
 			i = 0;
+#if !defined(_POSIX_THREADS)
 			pthread_yield();
+#else
+            sched_yield();
+#endif
 		}
 	};
 }
