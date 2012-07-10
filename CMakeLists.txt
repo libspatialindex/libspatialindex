@@ -230,6 +230,8 @@ set(SIDX_LIB_DIR ${SIDX_LIB_SUBDIR})
 set(SIDX_INCLUDE_DIR ${SIDX_INCLUDE_SUBDIR})
 set(SIDX_DATA_DIR ${SIDX_DATA_SUBDIR})
 
+INCLUDE (CheckIncludeFiles)
+check_include_files(pthread.h HAVE_PTHREAD_H) 
 
 #------------------------------------------------------------------------------
 # subdirectory controls
