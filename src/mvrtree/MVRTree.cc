@@ -214,7 +214,7 @@ SpatialIndex::MVRTree::MVRTree::MVRTree(IStorageManager& sm, Tools::PropertySet&
 	m_leafPool(100)
 {
 #ifdef HAVE_PTHREAD_H
-	pthread_rwlock_init(&m_rwLock, NULL);
+	Tools::LockGuard lock(&m_lock);
 #endif
 
 	Tools::Variant var = ps.getProperty("IndexIdentifier");
@@ -239,7 +239,7 @@ SpatialIndex::MVRTree::MVRTree::MVRTree(IStorageManager& sm, Tools::PropertySet&
 SpatialIndex::MVRTree::MVRTree::~MVRTree()
 {
 #ifdef HAVE_PTHREAD_H
-	pthread_rwlock_destroy(&m_rwLock);
+	Tools::LockGuard lock(&m_lock);
 #endif
 
 	storeHeader();
@@ -257,7 +257,7 @@ void SpatialIndex::MVRTree::MVRTree::insertData(uint32_t len, const byte* pData,
 	if (ti->getLowerBound() < m_currentTime) throw Tools::IllegalArgumentException("insertData: Shape start time is older than tree current time.");
 
 #ifdef HAVE_PTHREAD_H
-	Tools::ExclusiveLock lock(&m_rwLock);
+	Tools::LockGuard lock(&m_lock);
 #endif
 
 	// convert the shape into a TimeRegion (R-Trees index regions only; i.e., approximations of the shapes).
@@ -291,7 +291,7 @@ bool SpatialIndex::MVRTree::MVRTree::deleteData(const IShape& shape, id_type id)
 	if (ti == 0) throw Tools::IllegalArgumentException("deleteData: Shape does not support the Tools::IInterval interface.");
 
 #ifdef HAVE_PTHREAD_H
-	Tools::ExclusiveLock lock(&m_rwLock);
+	Tools::LockGuard lock(&m_lock);
 #endif
 
 	Region mbrold;
@@ -351,7 +351,7 @@ void SpatialIndex::MVRTree::MVRTree::selfJoinQuery(const IShape& query, IVisitor
 void SpatialIndex::MVRTree::MVRTree::queryStrategy(IQueryStrategy& qs)
 {
 #ifdef HAVE_PTHREAD_H
-	Tools::SharedLock lock(&m_rwLock);
+	Tools::LockGuard lock(&m_lock);
 #endif
 
 	id_type next = m_roots[m_roots.size() - 1].m_id;
@@ -1233,7 +1233,7 @@ void SpatialIndex::MVRTree::MVRTree::rangeQuery(RangeQueryType type, const IShap
 	if (ti == 0) throw Tools::IllegalArgumentException("rangeQuery: Shape does not support the Tools::IInterval interface.");
 
 #ifdef HAVE_PTHREAD_H
-	Tools::SharedLock lock(&m_rwLock);
+	Tools::LockGuard lock(&m_lock);
 #endif
 
 	std::set<id_type> visitedNodes;

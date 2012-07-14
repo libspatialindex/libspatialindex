@@ -72,7 +72,7 @@ int main(int argc, char** argv)
 
 	if (simulationLength == 0)
 	{
-		for (size_t i = 0; i < 10; i++)
+		for (size_t i = 0; i < 1000; i++)
 		{
 			double stx = rnd.nextUniformDouble();
 			double sty = rnd.nextUniformDouble();

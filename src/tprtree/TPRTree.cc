@@ -216,7 +216,7 @@ SpatialIndex::TPRTree::TPRTree::TPRTree(IStorageManager& sm, Tools::PropertySet&
 	m_leafPool(100)
 {
 #ifdef HAVE_PTHREAD_H
-	pthread_rwlock_init(&m_rwLock, NULL);
+	pthread_mutex_init(&m_lock, NULL);
 #endif
 
 	Tools::Variant var = ps.getProperty("IndexIdentifier");
@@ -241,7 +241,7 @@ SpatialIndex::TPRTree::TPRTree::TPRTree(IStorageManager& sm, Tools::PropertySet&
 SpatialIndex::TPRTree::TPRTree::~TPRTree()
 {
 #ifdef HAVE_PTHREAD_H
-	pthread_rwlock_destroy(&m_rwLock);
+	pthread_mutex_destroy(&m_lock);
 #endif
 
 	storeHeader();
@@ -262,7 +262,7 @@ void SpatialIndex::TPRTree::TPRTree::insertData(uint32_t len, const byte* pData,
 	if (pivI->getLowerBound() < m_currentTime) throw Tools::IllegalArgumentException("insertData: Shape start time is older than tree current time.");
 
 #ifdef HAVE_PTHREAD_H
-	Tools::ExclusiveLock lock(&m_rwLock);
+	Tools::LockGuard lock(&m_lock);
 #endif
 
 	Region mbr;
@@ -305,7 +305,7 @@ bool SpatialIndex::TPRTree::TPRTree::deleteData(const IShape& shape, id_type id)
 	if (pivI == 0) throw Tools::IllegalArgumentException("insertData: Shape does not support the Tools::IInterval interface.");
 
 #ifdef HAVE_PTHREAD_H
-	Tools::ExclusiveLock lock(&m_rwLock);
+	Tools::LockGuard lock(&m_lock);
 #endif
 
 	Region mbr;
@@ -369,7 +369,7 @@ void SpatialIndex::TPRTree::TPRTree::selfJoinQuery(const IShape& query, IVisitor
 void SpatialIndex::TPRTree::TPRTree::queryStrategy(IQueryStrategy& qs)
 {
 #ifdef HAVE_PTHREAD_H
-	Tools::SharedLock lock(&m_rwLock);
+	Tools::LockGuard lock(&m_lock);
 #endif
 
 	id_type next = m_rootID;
@@ -1205,7 +1205,7 @@ void SpatialIndex::TPRTree::TPRTree::rangeQuery(RangeQueryType type, const IShap
 		throw Tools::IllegalArgumentException("rangeQuery: Query time interval does not intersect current horizon.");
 
 #ifdef HAVE_PTHREAD_H
-	Tools::SharedLock lock(&m_rwLock);
+	Tools::LockGuard lock(&m_lock);
 #endif
 
 	std::stack<NodePtr> st;

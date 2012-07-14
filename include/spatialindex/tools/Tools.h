@@ -390,56 +390,17 @@ namespace Tools
 		uint16_t* m_pBuffer;
 	}; // Random
 
-	class SIDX_DLL SharedLock
-	{
-	public:
 	#if HAVE_PTHREAD_H
-		SharedLock(pthread_rwlock_t* pLock);
-		~SharedLock();
-
-	private:
-		pthread_rwlock_t* m_pLock;
-	#endif
-	}; // SharedLock
-
-	class SIDX_DLL ExclusiveLock
-	{
-	public:
-	#if HAVE_PTHREAD_H
-		ExclusiveLock(pthread_rwlock_t* pLock);
-		~ExclusiveLock();
-
-	private:
-		pthread_rwlock_t* m_pLock;
-	#endif
-	}; // ExclusiveLock
-
-	class SIDX_DLL SpinLock
-	{
-	public:
-	#if HAVE_PTHREAD_H
-		SpinLock() : m_lock(0) {}
-
-		void lock();
-		bool try_lock();
-		void unlock();
-
-	private:
-		volatile uint32_t m_lock;
-	#endif
-	};
-
 	class SIDX_DLL LockGuard
 	{
 	public:
-	#if HAVE_PTHREAD_H
-		LockGuard(SpinLock& lock);
+		LockGuard(pthread_mutex_t* pLock);
 		~LockGuard();
 
 	private:
-		SpinLock& m_lock;
+		pthread_mutex_t* m_pLock;
+	}; // LockGuard
 	#endif
-	};
 
 	class SIDX_DLL BufferedFile
 	{

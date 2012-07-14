@@ -367,7 +367,7 @@ SpatialIndex::RTree::RTree::RTree(IStorageManager& sm, Tools::PropertySet& ps) :
 	m_leafPool(100)
 {
 #ifdef HAVE_PTHREAD_H
-	pthread_rwlock_init(&m_rwLock, NULL);
+	pthread_mutex_init(&m_lock, NULL);
 #endif
 
 	Tools::Variant var = ps.getProperty("IndexIdentifier");
@@ -392,7 +392,7 @@ SpatialIndex::RTree::RTree::RTree(IStorageManager& sm, Tools::PropertySet& ps) :
 SpatialIndex::RTree::RTree::~RTree()
 {
 #ifdef HAVE_PTHREAD_H
-	pthread_rwlock_destroy(&m_rwLock);
+	pthread_mutex_destroy(&m_lock);
 #endif
 
 	storeHeader();
@@ -407,7 +407,7 @@ void SpatialIndex::RTree::RTree::insertData(uint32_t len, const byte* pData, con
 	if (shape.getDimension() != m_dimension) throw Tools::IllegalArgumentException("insertData: Shape has the wrong number of dimensions.");
 
 #ifdef HAVE_PTHREAD_H
-	Tools::ExclusiveLock lock(&m_rwLock);
+	Tools::LockGuard lock(&m_lock);
 #endif
 
 	// convert the shape into a Region (R-Trees index regions only; i.e., approximations of the shapes).
@@ -431,7 +431,7 @@ bool SpatialIndex::RTree::RTree::deleteData(const IShape& shape, id_type id)
 	if (shape.getDimension() != m_dimension) throw Tools::IllegalArgumentException("deleteData: Shape has the wrong number of dimensions.");
 
 #ifdef HAVE_PTHREAD_H
-	Tools::ExclusiveLock lock(&m_rwLock);
+	Tools::LockGuard lock(&m_lock);
 #endif
 
 	RegionPtr mbr = m_regionPool.acquire();
@@ -465,7 +465,7 @@ void SpatialIndex::RTree::RTree::nearestNeighborQuery(uint32_t k, const IShape& 
 	if (query.getDimension() != m_dimension) throw Tools::IllegalArgumentException("nearestNeighborQuery: Shape has the wrong number of dimensions.");
 
 #ifdef HAVE_PTHREAD_H
-	Tools::SharedLock lock(&m_rwLock);
+	Tools::LockGuard lock(&m_lock);
 #endif
 
 	std::priority_queue<NNEntry*, std::vector<NNEntry*>, NNEntry::ascending> queue;
@@ -540,7 +540,7 @@ void SpatialIndex::RTree::RTree::selfJoinQuery(const IShape& query, IVisitor& v)
 		throw Tools::IllegalArgumentException("selfJoinQuery: Shape has the wrong number of dimensions.");
 
 #ifdef HAVE_PTHREAD_H
-	Tools::SharedLock lock(&m_rwLock);
+	Tools::LockGuard lock(&m_lock);
 #endif
 
 	RegionPtr mbr = m_regionPool.acquire();
@@ -551,7 +551,7 @@ void SpatialIndex::RTree::RTree::selfJoinQuery(const IShape& query, IVisitor& v)
 void SpatialIndex::RTree::RTree::queryStrategy(IQueryStrategy& qs)
 {
 #ifdef HAVE_PTHREAD_H
-	Tools::SharedLock lock(&m_rwLock);
+	Tools::LockGuard lock(&m_lock);
 #endif
 
 	id_type next = m_rootID;
@@ -1334,7 +1334,7 @@ void SpatialIndex::RTree::RTree::deleteNode(Node* n)
 void SpatialIndex::RTree::RTree::rangeQuery(RangeQueryType type, const IShape& query, IVisitor& v)
 {
 #ifdef HAVE_PTHREAD_H
-	Tools::SharedLock lock(&m_rwLock);
+	Tools::LockGuard lock(&m_lock);
 #endif
 
 	std::stack<NodePtr> st;

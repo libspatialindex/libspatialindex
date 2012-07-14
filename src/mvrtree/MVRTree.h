@@ -149,7 +149,7 @@ namespace SpatialIndex
 			std::vector<Tools::SmartPointer<ICommand> > m_deleteNodeCommands;
 
 #ifdef HAVE_PTHREAD_H
-			pthread_rwlock_t m_rwLock;
+			pthread_mutex_t m_lock;
 #endif
 
 			class RootEntry

@@ -640,64 +640,15 @@ bool Tools::Random::flipCoin()
 }
 
 #if HAVE_PTHREAD_H
-Tools::SharedLock::SharedLock(pthread_rwlock_t* pLock)
+Tools::LockGuard::LockGuard(pthread_mutex_t* pLock)
  : m_pLock(pLock)
 {
-	pthread_rwlock_rdlock(m_pLock);
-}
-
-Tools::SharedLock::~SharedLock()
-{
-	pthread_rwlock_unlock(m_pLock);
-}
-
-Tools::ExclusiveLock::ExclusiveLock(pthread_rwlock_t* pLock)
- : m_pLock(pLock)
-{
-	pthread_rwlock_wrlock(m_pLock);
-}
-
-Tools::ExclusiveLock::~ExclusiveLock()
-{
-	pthread_rwlock_unlock(m_pLock);
-}
-
-void Tools::SpinLock::lock()
-{
-	uint16_t i = 0;
-
-	while (__sync_bool_compare_and_swap(&m_lock, 0, 1) == false)
-	{
-		if (++i == 30)
-		{
-			i = 0;
-#if !defined(_POSIX_THREADS)
-			pthread_yield();
-#else
-            sched_yield();
-#endif
-		}
-	};
-}
-
-bool Tools::SpinLock::try_lock()
-{
-	return __sync_bool_compare_and_swap(&m_lock, 0, 1);
-}
-
-void Tools::SpinLock::unlock()
-{
-	__sync_bool_compare_and_swap(&m_lock, 1, 0);
-}
-
-Tools::LockGuard::LockGuard(SpinLock& lock) : m_lock(lock)
-{
-	m_lock.lock();
+	pthread_mutex_lock(m_pLock);
 }
 
 Tools::LockGuard::~LockGuard()
 {
-	m_lock.unlock();
+	pthread_mutex_unlock(m_pLock);
 }
 #endif
 
