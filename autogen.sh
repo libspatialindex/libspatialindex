@@ -14,11 +14,18 @@ giveup()
 OSTYPE=`uname -s`
 
 for libtoolize in glibtoolize libtoolize; do
-    LIBTOOLIZE=`which $libtoolize 2>/dev/null`
-    if test "$LIBTOOLIZE"; then
+    if which $libtoolize 1>/dev/null 2>/dev/null; then
+        LIBTOOLIZE=`which $libtoolize 2>/dev/null`
         break;
     fi
 done
+
+if test "$LIBTOOLIZE" = ""; then
+    echo
+    echo "  glibtoolize or libtoolize not found. Givinig up!"
+    echo
+    exit 1
+fi
 
 #AMFLAGS="--add-missing --copy --force-missing"
 AMFLAGS="--add-missing --copy"
