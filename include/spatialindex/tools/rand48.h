@@ -1,5 +1,8 @@
 #pragma once
 
+/* Only define this stuff if we're not ANDROID */
+#ifndef ANDROID
+
 #ifndef HAVE_SRAND48
 
 #if HAVE_FEATURES_H
@@ -49,3 +52,6 @@ extern double erand48(unsigned short xseed[3]) __THROW;
 extern double drand48(void) __THROW;
 
 #endif
+
+/* Only define this stuff if we're not ANDROID */
+#endif 
