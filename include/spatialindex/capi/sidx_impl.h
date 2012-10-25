@@ -32,15 +32,14 @@
 #include <sstream>
 #include <cstring>
 
-#include <spatialindex/capi/sidx_config.h>
-
-#include <spatialindex/capi/Utility.h>
-#include <spatialindex/capi/ObjVisitor.h>
-#include <spatialindex/capi/IdVisitor.h>
-#include <spatialindex/capi/CountVisitor.h>
-#include <spatialindex/capi/BoundsQuery.h>
-#include <spatialindex/capi/LeafQuery.h>
-#include <spatialindex/capi/Error.h>
-#include <spatialindex/capi/DataStream.h>
-#include <spatialindex/capi/Index.h>
-#include <spatialindex/capi/CustomStorage.h>
+#include "sidx_config.h"
+#include "Utility.h"
+#include "ObjVisitor.h"
+#include "IdVisitor.h"
+#include "CountVisitor.h"
+#include "BoundsQuery.h"
+#include "LeafQuery.h"
+#include "Error.h"
+#include "DataStream.h"
+#include "Index.h"
+#include "CustomStorage.h"

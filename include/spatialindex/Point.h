@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <spatialindex/tools/Tools.h>
+#include "tools/Tools.h"
 
 namespace SpatialIndex
 {
