@@ -97,7 +97,8 @@ namespace SpatialIndex
 
 			void rangeQuery(RangeQueryType type, const IShape& query, IVisitor& v);
 			void selfJoinQuery(id_type id1, id_type id2, const Region& r, IVisitor& vis);
-
+            void visitSubTree(NodePtr subTree, IVisitor& v);
+            
 			IStorageManager* m_pStorageManager;
 
 			id_type m_rootID, m_headerID;
