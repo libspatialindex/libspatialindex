@@ -1,6 +1,11 @@
-See http://libspatialindex.github.com for full documentation of the 
-libspatialindex library
+*****************************************************************************
+ libspatialindex
+*****************************************************************************
 
-.. include:: <./docs/source/introduction.txt>
-.. include:: <./docs/source/download.txt>
-.. include:: <./COPYING>
+
+:Author: Marios Hadjieleftheriou
+:Contact: mhadji@gmail.com
+:Revision: 1.8.0
+:Date: 11/30/2012
+
+See http://libspatialindex.github.com for full documentation.
