@@ -10,7 +10,7 @@
    Github <https://github.com/libspatialindex/libspatialindex>
    Mailing List <http://lists.gispython.org/mailman/listinfo/spatialindex>
    overview
-   Class Documentation <http://libspatialindex.github.com/doxygen/>
+   Class Documentation <http://libspatialindex.org/doxygen/>
    
    
 
