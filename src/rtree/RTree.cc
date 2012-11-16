@@ -453,7 +453,7 @@ void SpatialIndex::RTree::RTree::containsWhatQuery(const IShape& query, IVisitor
 	if (query.getDimension() != m_dimension) throw Tools::IllegalArgumentException("containsWhatQuery: Shape has the wrong number of dimensions.");
 
 #ifdef HAVE_PTHREAD_H
-	Tools::SharedLock lock(&m_lock);
+	Tools::LockGuard lock(&m_lock);
 #endif
 
 	try
