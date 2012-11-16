@@ -62,6 +62,10 @@ check_function_exists(memset HAVE_MEMSET)
 check_function_exists(memcpy HAVE_MEMCPY)
 check_function_exists(bcopy HAVE_BCOPY)
 
+INCLUDE (CheckIncludeFiles)
+check_include_files(pthread.h HAVE_PTHREAD_H) 
+
+
 if (HAVE_SRAND48)
     add_definitions(-DHAVE_SRAND48=1)
 endif()
@@ -84,6 +88,10 @@ endif()
 
 if (HAVE_BCOPY)
     add_definitions(-DHAVE_BCOPY=1)
+endif()
+
+if (HAVE_PTHREAD_H)
+    add_definitions(-DHAVE_PTHREAD_H=1)
 endif()
 
 # Choose to use pkg-config or not
@@ -229,9 +237,6 @@ set(SIDX_BIN_DIR ${SIDX_BIN_SUBDIR})
 set(SIDX_LIB_DIR ${SIDX_LIB_SUBDIR})
 set(SIDX_INCLUDE_DIR ${SIDX_INCLUDE_SUBDIR})
 set(SIDX_DATA_DIR ${SIDX_DATA_SUBDIR})
-
-INCLUDE (CheckIncludeFiles)
-check_include_files(pthread.h HAVE_PTHREAD_H) 
 
 #------------------------------------------------------------------------------
 # subdirectory controls
