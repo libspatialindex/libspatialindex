@@ -30,6 +30,7 @@
 #include <limits>
 
 #include <spatialindex/SpatialIndex.h>
+#include <spatialindex/GeomUtil.h>
 
 using namespace SpatialIndex;
 
@@ -163,6 +164,12 @@ void LineSegment::storeToByteArray(byte** data, uint32_t& len)
 //
 bool LineSegment::intersectsShape(const IShape& s) const
 {
+	const LineSegment* ps = dynamic_cast<const LineSegment*>(&s);
+	if (ps != 0) return intersectsLineSegment(*ps);
+
+	const Region* pr = dynamic_cast<const Region*>(&s);
+	if (pr != 0) return intersectsRegion(*pr);
+
 	throw Tools::IllegalStateException(
 		"LineSegment::intersectsShape: Not implemented yet!"
 	);
@@ -266,6 +273,42 @@ double LineSegment::getMinimumDistance(const Point& p) const
 	double y0 = p.m_pCoords[1];
 
 	return std::abs((x2 - x1) * (y1 - y0) - (x1 - x0) * (y2 - y1)) / (std::sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
+}
+
+bool LineSegment::intersectsRegion(const Region& r) const
+{
+	if (m_dimension != 2)
+		throw Tools::NotSupportedException(
+			"LineSegment::intersectsRegion: only supported for 2 dimensions"
+		);
+
+	if (m_dimension != r.m_dimension)
+		throw Tools::IllegalArgumentException(
+			"LineSegment::intersectsRegion: LineSegment and Region have different number of dimensions."
+		);
+
+    return r.intersectsLineSegment((*this));
+}
+
+bool LineSegment::intersectsLineSegment(const LineSegment& l) const
+{
+	if (m_dimension != 2)
+		throw Tools::NotSupportedException(
+			"LineSegment::intersectsLineSegment: only supported for 2 dimensions"
+		);
+
+	if (m_dimension != l.m_dimension)
+		throw Tools::IllegalArgumentException(
+			"LineSegment::intersectsLineSegment: LineSegments have different number of dimensions."
+		);
+
+    // use Geometry::intersects
+    Point p1, p2, p3, p4;
+    p1 = Point(m_pStartPoint, 2);
+    p2 = Point(m_pEndPoint, 2);
+    p3 = Point(l.m_pStartPoint, 2);
+    p4 = Point(l.m_pEndPoint, 2);
+    return GeomUtil::intersects(p1, p2, p3, p4);
 }
 
 // assuming moving from start to end, positive distance is from right hand side.
@@ -383,7 +426,7 @@ void LineSegment::makeDimension(uint32_t dimension)
 	}
 }
 
-std::ostream& operator<<(std::ostream& os, const LineSegment& l)
+std::ostream& SpatialIndex::operator<<(std::ostream& os, const LineSegment& l)
 {
 	for (uint32_t cDim = 0; cDim < l.m_dimension; ++cDim)
 	{
