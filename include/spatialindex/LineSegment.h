@@ -65,6 +65,8 @@ namespace SpatialIndex
 		virtual double getArea() const;
 		virtual double getMinimumDistance(const IShape& in) const;
 
+		virtual bool intersectsLineSegment(const LineSegment& l) const;
+		virtual bool intersectsRegion(const Region& p) const;
 		virtual double getMinimumDistance(const Point& p) const;
 		//virtual double getMinimumDistance(const Region& r) const;
 		virtual double getRelativeMinimumDistance(const Point& p) const;
