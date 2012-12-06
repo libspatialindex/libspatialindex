@@ -1,0 +1,8 @@
+#! /bin/bash
+
+echo Testing GeomUtil
+if ../Geom; then
+    echo "GeomUtil Test Passed"
+else
+    echo "GeomUtil Test Failed"
+fi
