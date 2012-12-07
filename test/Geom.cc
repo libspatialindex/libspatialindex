@@ -16,7 +16,7 @@ int main(int argc, char** argv) {
     double c3[2] = {2.0, 0.0};
     double c4[2] = {2.0, 4.0};
     double c5[2] = {1.0, 1.0};
-    double c6[2] = {2.0, 3.0};
+    double c6[2] = {2.5, 3.0};
     double c7[2] = {1.0, 2.0};
     Point p1 = Point(&c1[0], 2); 
     Point p2 = Point(&c2[0], 2); 
@@ -78,13 +78,13 @@ int main(int argc, char** argv) {
     Region r1 = Region(p5, p6);
     Region r2 = Region(p7, p6);
     
-    if (!r1.intersectsShape(ls1)) {
+    if (!r1.intersectsShape(ls1) || !ls1.intersectsShape(r1)) {
         cerr << "Test failed:  intersectsShape returned false, but should be true." << endl;
         cerr << r1 << ", " << ls1 << endl;
         return -1;
     }
 
-    if (r2.intersectsShape(ls1)) {
+    if (r2.intersectsShape(ls1) || ls1.intersectsShape(r2)) {
         cerr << "Test failed:  intersectsShape returned true, but should be false." << endl;
         cerr << r2 << ", " << ls1 << endl;
         return -1;
