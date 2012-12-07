@@ -426,6 +426,164 @@ SIDX_C_DLL RTError Index_Intersects_count(	  IndexH index,
 	return RT_None;
 }
 
+SIDX_C_DLL RTError Index_SegmentIntersects_obj(  IndexH index, 
+										double* pdStartPoint, 
+										double* pdEndPoint, 
+										uint32_t nDimension, 
+										IndexItemH** items, 
+										uint64_t* nResults)
+{
+	VALIDATE_POINTER1(index, "Index_Intersects_obj", RT_Failure);	   
+	Index* idx = static_cast<Index*>(index);
+
+	ObjVisitor* visitor = new ObjVisitor;
+	try {	 
+        SpatialIndex::LineSegment* l = new SpatialIndex::LineSegment(pdStartPoint, pdEndPoint, nDimension);
+		idx->index().intersectsWithQuery(	*l, 
+											*visitor);
+
+		*items = (SpatialIndex::IData**) malloc (visitor->GetResultCount() * sizeof(SpatialIndex::IData*));
+		
+		std::vector<SpatialIndex::IData*>& results = visitor->GetResults();
+
+		// copy the Items into the newly allocated item array
+		// we need to make sure to copy the actual Item instead 
+		// of just the pointers, as the visitor will nuke them 
+		// upon ~
+		for (uint32_t i=0; i < visitor->GetResultCount(); ++i)
+		{
+			SpatialIndex::IData* result =results[i];
+			(*items)[i] =  dynamic_cast<SpatialIndex::IData*>(result->clone());
+
+		}
+		*nResults = visitor->GetResultCount();
+		
+        delete l;
+		delete visitor;
+
+	} catch (Tools::Exception& e)
+	{
+		Error_PushError(RT_Failure, 
+						e.what().c_str(), 
+						"Index_Intersects_obj");
+		delete visitor;
+		return RT_Failure;
+	} catch (std::exception const& e)
+	{
+		Error_PushError(RT_Failure, 
+						e.what(), 
+						"Index_Intersects_obj");
+		delete visitor;
+		return RT_Failure;
+	} catch (...) {
+		Error_PushError(RT_Failure, 
+						"Unknown Error", 
+						"Index_Intersects_obj");
+		delete visitor;
+		return RT_Failure;		  
+	}
+	return RT_None;
+}
+
+SIDX_C_DLL RTError Index_SegmentIntersects_id(	  IndexH index, 
+										double* pdStartPoint, 
+										double* pdEndPoint, 
+										uint32_t nDimension, 
+										int64_t** ids, 
+										uint64_t* nResults)
+{
+	VALIDATE_POINTER1(index, "Index_Intersects_id", RT_Failure);	  
+	Index* idx = static_cast<Index*>(index);
+
+	IdVisitor* visitor = new IdVisitor;
+	try {
+        SpatialIndex::LineSegment* l = new SpatialIndex::LineSegment(pdStartPoint, pdEndPoint, nDimension);
+		idx->index().intersectsWithQuery(	*l, 
+											*visitor);
+
+		*nResults = visitor->GetResultCount();
+
+		*ids = (int64_t*) malloc (*nResults * sizeof(int64_t));
+		
+		std::vector<uint64_t>& results = visitor->GetResults();
+
+		for (uint32_t i=0; i < *nResults; ++i)
+		{
+			(*ids)[i] = results[i];
+
+		}
+
+        delete l;
+		delete visitor;
+
+	} catch (Tools::Exception& e)
+	{
+		Error_PushError(RT_Failure, 
+						e.what().c_str(), 
+						"Index_Intersects_id");
+		delete visitor;
+		return RT_Failure;
+	} catch (std::exception const& e)
+	{
+		Error_PushError(RT_Failure, 
+						e.what(), 
+						"Index_Intersects_id");
+		delete visitor;
+		return RT_Failure;
+	} catch (...) {
+		Error_PushError(RT_Failure, 
+						"Unknown Error", 
+						"Index_Intersects_id");
+		delete visitor;
+		return RT_Failure;		  
+	}
+	return RT_None;
+}
+
+SIDX_C_DLL RTError Index_SegmentIntersects_count(	  IndexH index, 
+										double* pdStartPoint, 
+										double* pdEndPoint, 
+										uint32_t nDimension, 
+										uint64_t* nResults)
+{
+	VALIDATE_POINTER1(index, "Index_Intersects_count", RT_Failure);	  
+	Index* idx = static_cast<Index*>(index);
+
+	CountVisitor* visitor = new CountVisitor;
+	try {
+        SpatialIndex::LineSegment* l = new SpatialIndex::LineSegment(pdStartPoint, pdEndPoint, nDimension);
+		idx->index().intersectsWithQuery(	*l, 
+											*visitor);
+
+		*nResults = visitor->GetResultCount();
+
+		delete l;
+		delete visitor;
+
+	} catch (Tools::Exception& e)
+	{
+		Error_PushError(RT_Failure, 
+						e.what().c_str(), 
+						"Index_Intersects_count");
+		delete visitor;
+		return RT_Failure;
+	} catch (std::exception const& e)
+	{
+		Error_PushError(RT_Failure, 
+						e.what(), 
+						"Index_Intersects_count");
+		delete visitor;
+		return RT_Failure;
+	} catch (...) {
+		Error_PushError(RT_Failure, 
+						"Unknown Error", 
+						"Index_Intersects_count");
+		delete visitor;
+		return RT_Failure;		  
+	}
+	return RT_None;
+}
+
 SIDX_C_DLL RTError Index_NearestNeighbors_id(IndexH index, 
 											double* pdMin, 
 											double* pdMax, 
