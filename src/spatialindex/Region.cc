@@ -365,8 +365,10 @@ bool Region::intersectsLineSegment(const LineSegment& in) const
     Point p1 = Point(in.m_pStartPoint, 2);
     Point p2 = Point(in.m_pEndPoint, 2);
 
-    //Check whether any of the bounding segments of the Region intersect the segment
-    return (GeomUtil::intersects(ll, ul, p1, p2) || GeomUtil::intersects(ul, ur, p1, p2) ||
+    //Check whether either or both the endpoints are within the region OR
+    //whether any of the bounding segments of the Region intersect the segment
+    return (containsPoint(p1) || containsPoint(p2) || 
+            GeomUtil::intersects(ll, ul, p1, p2) || GeomUtil::intersects(ul, ur, p1, p2) ||
             GeomUtil::intersects(ur, lr, p1, p2) || GeomUtil::intersects(lr, ll, p1, p2));
 
 }
