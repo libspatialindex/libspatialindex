@@ -26,7 +26,7 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules ${CMAKE_MODULE_PATH})
 SET(SIDX_VERSION_MAJOR "1")
 SET(SIDX_VERSION_MINOR "8")
 SET(SIDX_VERSION_PATCH "0")
-SET(SIDX_LIB_SOVERSION "2.0.0")
+SET(SIDX_LIB_SOVERSION "3.0.0")
 
 
 set(SIDX_VERSION_STRING "${SIDX_VERSION_MAJOR}.${SIDX_VERSION_MINOR}.${SIDX_VERSION_PATCH}")
@@ -245,13 +245,3 @@ set(SIDX_DATA_DIR ${SIDX_DATA_SUBDIR})
 add_subdirectory(src)
 add_subdirectory(test)
 
-
-
-
-#------------------------------------------------------------------------------
-# finally, generate the pdal_config.h header
-#------------------------------------------------------------------------------
-#
-# configure_file(
-#   "${PROJECT_SOURCE_DIR}/pdal_defines.h.in"
-#   "${PROJECT_SOURCE_DIR}/include/pdal/pdal_defines.h")
