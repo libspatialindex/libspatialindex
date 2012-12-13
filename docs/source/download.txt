@@ -2,7 +2,19 @@
 Download
 ------------------------------------------------------------------------------
 
-Current Release(s)
+Current Release (MIT)
+------------------------------------------------------------------------------
+
+* **2012-12-13** 
+
+  - `spatialindex-src-1.8.0-src.tar.gz  <http://download.osgeo.org/libspatialindex/spatialindex-src-1.8.0.tar.gz>`__ 
+    `(md5) <http://download.osgeo.org/libspatialindex/spatialindex-src-1.8.0.tar.gz.md5>`__ 
+
+  - `spatialindex-src-1.8.0-src.tar.bz2  <http://download.osgeo.org/libspatialindex/spatialindex-src-1.8.0.tar.bz2>`__ 
+    `(md5) <http://download.osgeo.org/libspatialindex/spatialindex-src-1.8.0.tar.bz2.md5>`__ 
+
+
+Past Release(s) (LGPL)
 ------------------------------------------------------------------------------
 
 * **2011-12-12** 

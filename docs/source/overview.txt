@@ -68,8 +68,8 @@ If, instead, the user specifies an already existing ID the storage manager
 overwrites the old data. An exception is thrown if the caller requests 
 an invalid ID to be overwritten.
 
-The loadByteArray method gets an entity ID and returns the associated byte 
-array along with its length. If an invalid ID is requested, an exception is thrown.
+The loadByteArray method gets an entity ID and returns the associated byte array
+along with its length. If an invalid ID is requested, an exception is thrown.
 
 The deleteByteArray method removes the requested entity from storage.
 
