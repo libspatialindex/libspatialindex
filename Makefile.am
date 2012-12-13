@@ -20,8 +20,7 @@ libspatialindex_c_la_LIBADD = \
 libspatialindex_la_LDFLAGS = -version-info 3:0:0 
 libspatialindex_c_la_LDFLAGS = -version-info 3:0:0 -lstdc++
 
-EXTRA_DIST = makefile.vc \
-             INSTALL.WIN \
+EXTRA_DIST = INSTALL.WIN \
              spatialindex.sln \
              spatialindex-vc/spatialindex.vcproj \
              CMakeLists.txt \
