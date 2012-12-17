@@ -1,18 +1,27 @@
 Licensing History
 ------------------------------------------------------------------------------
 
-Versions of libspatialindex prior to 1.8.0 were licensed LGPL 2.0, with the 
-license description on this file. The codebase has been been updated, with 
-licensing information replaced in headers and source files, to use the MIT 
-license as of the 1.8.0+ release.
 
-This change was made to support the inclusion of software depending on 
-libspatialindex in static linking-only environments such as embedded systems 
-and Apple's iOS. libspatialindex versions prior to 1.8.0 will continue to 
-live on as LGPL software, and developers can continue to contribute to them 
-under terms of that license, but the main development effort, and ongoing 
-maintenance, releases, and bug applications, will move forward using the 
-new MIT license at http://github.com/libspatialindex/libspatialindex
+.. note::
+    libspatialindex changed from a `LGPL`_ to a `MIT`_ license as of the 1.8.0
+    release. For most situations, this should have no impact on the library's
+    use, but it should open it up for usage in situations that otherwise might
+    have been problematic. Versions of libspatialindex prior to 1.8.0 were
+    licensed LGPL 2.0, with the license description on this file. The codebase
+    has been been updated, with licensing information replaced in headers and
+    source files, to use the MIT license as of the 1.8.0+ release.
+    
+    This change was made to support the inclusion of software depending on 
+    libspatialindex in static linking-only environments such as embedded systems 
+    and Apple's iOS. libspatialindex versions prior to 1.8.0 will continue to 
+    live on as LGPL software, and developers can continue to contribute to them 
+    under terms of that license, but the main development effort, and ongoing 
+    maintenance, releases, and bug applications, will move forward using the 
+    new MIT license at http://github.com/libspatialindex/libspatialindex
+
+.. _`LGPL`: http://opensource.org/licenses/lgpl-2.1.php
+.. _`MIT`: http://opensource.org/licenses/MIT
+
 
 
 License (MIT)

@@ -1,1415 +1,483 @@
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* Makefile.am: oops, need line separators
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* ChangeLog: update ChangeLog
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* Makefile.am: distribut test running scripts too
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* ChangeLog: update ChangeLog
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* src/tools/rand48.cc: newline
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* ChangeLog: update ChangeLog
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* include/spatialindex/Version.h: update release date
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* ChangeLog: update ChangeLog again
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* test/mvrtree/Exhaustive.cc, test/tprtree/Exhaustive.cc,
-	test/tprtree/RandomGenerator.h: fixes to be able to make things work
-	on msvc 10
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* include/spatialindex/capi/sidx_config.h: only redefine c++0x types
-	if we're <= msvc_ver 1500
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* CMakeLists.txt: add definition to make sure we export symbols in
-	windows land
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* include/spatialindex/capi/sidx_config.h, src/mvrtree/Index.cc,
-	src/mvrtree/Leaf.cc, src/mvrtree/Node.cc, src/rtree/BulkLoader.cc,
-	src/rtree/Index.cc, src/rtree/Leaf.cc, src/rtree/Node.cc,
-	src/storagemanager/RandomEvictionsBuffer.cc, src/tools/Tools.cc,
-	src/tools/rand48.cc, src/tprtree/Index.cc, src/tprtree/Leaf.cc,
-	src/tprtree/Node.cc: namespace usings and such to satisfy msvc 10
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* .gitignore: more ignores
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* makefile.vc: check for msvc 10
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* ChangeLog: update ChangeLog
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* include/Makefile.am: missing reference to file
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* include/Makefile.am: missing reference to file
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* src/spatialindex/Makefile.am: this file is now gone
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* .gitignore, configure.ac, src/Makefile.am,
-	src/libspatialindex.pc.in: add pkg-config script for libspatialindex
-	-- autoconf build only for now
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* src/CMakeLists.txt: typo
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* include/Makefile.am, include/spatialindex/Makefile.am: move
-	Makefile.am up
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* include/Makefile.am, include/spatialindex/Makefile.am,
-	include/spatialindex/capi/Makefile.am,
-	include/spatialindex/tools/Makefile.am: start fixing up automake
-	include structure
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* src/tools/Makefile.am: include was still busted
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* src/tools/Makefile.am: fix include path
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* CMakeLists.txt: add function detection to cmake config
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* docs/source/index.txt: point to doxygen output
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* docs/source/development.txt, docs/source/download.txt,
-	docs/source/index.txt, docs/source/install.txt,
-	docs/source/introduction.txt, docs/source/overview.txt: more doc
-	rearranging
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* docs/doxygen/doxygen.conf, docs/doxygen/doxygen.css: add doxygen
-	configuration -- run doxygen docs/doxygen/doxygen.conf from the top
-	level directory to get output
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* .gitignore: more ignore
-
-2011-10-14  Howard Butler <hobu.inc@gmail.com>
-
-	* .gitignore: more ignores
-
-2011-10-13  Howard Butler <hobu.inc@gmail.com>
-
-	* src/spatialindex/MovingPoint.cc: a little proposed whitespace
-	normalization -- my terminal isn't 250 characters long :)
-
-2011-10-13  Howard Butler <hobu.inc@gmail.com>
-
-	* include/spatialindex/MovingRegion.h,
-	include/spatialindex/Point.h, include/spatialindex/Region.h,
-	include/spatialindex/SpatialIndex.h,
-	include/spatialindex/TimeRegion.h, src/mvrtree/Index.cc,
-	src/mvrtree/Leaf.cc, src/mvrtree/MVRTree.cc, src/mvrtree/Node.cc,
-	src/mvrtree/Statistics.cc, src/rtree/BulkLoader.cc,
-	src/rtree/Index.cc, src/rtree/Leaf.cc, src/rtree/Node.cc,
-	src/rtree/PointerPoolNode.h, src/rtree/RTree.cc,
-	src/rtree/Statistics.cc, src/spatialindex/SpatialIndexImpl.cc,
-	src/spatialindex/SpatialIndexImpl.h, src/storagemanager/Buffer.cc,
-	src/storagemanager/DiskStorageManager.cc,
-	src/storagemanager/MemoryStorageManager.cc, src/tprtree/Index.cc,
-	src/tprtree/Leaf.cc, src/tprtree/Node.cc,
-	src/tprtree/PointerPoolNode.h, src/tprtree/Statistics.cc,
-	src/tprtree/TPRTree.cc: remove SpatialIndexImpl.h, which didn't seem
-	to be used to hide the implementation and was contributing to
-	relative include spaghetti
-
-2011-10-13  Howard Butler <hobu.inc@gmail.com>
-
-	* test/CMakeLists.txt, test/mvrtree/Generator.cc,
-	test/mvrtree/MVRTreeLoad.cc, test/mvrtree/MVRTreeQuery.cc,
-	test/rtree/Exhaustive.cc, test/rtree/Generator.cc,
-	test/rtree/RTreeBulkLoad.cc, test/rtree/RTreeLoad.cc,
-	test/rtree/RTreeQuery.cc, test/tprtree/RandomGenerator.h,
-	test/tprtree/TPRTreeLoad.cc, test/tprtree/TPRTreeQuery.cc: #include
-	file deck chair rearrangement
-
-2011-10-13  Howard Butler <hobu.inc@gmail.com>
-
-	* CMakeLists.txt, configure.ac, include/LineSegment.h,
-	include/MVRTree.h, include/Makefile.am, include/MovingPoint.h,
-	include/MovingRegion.h, include/Point.h, include/RTree.h,
-	include/Region.h, include/SpatialIndex.h, include/TPRTree.h,
-	include/TimePoint.h, include/TimeRegion.h, include/Version.h,
-	include/capi/BoundsQuery.h, include/capi/CountVisitor.h,
-	include/capi/CustomStorage.h, include/capi/DataStream.h,
-	include/capi/Error.h, include/capi/IdVisitor.h,
-	include/capi/Index.h, include/capi/LeafQuery.h,
-	include/capi/Makefile.am, include/capi/ObjVisitor.h,
-	include/capi/Utility.h, include/capi/sidx_api.h,
-	include/capi/sidx_config.h, include/capi/sidx_impl.h,
-	include/spatialindex/LineSegment.h, include/spatialindex/MVRTree.h,
-	include/spatialindex/Makefile.am,
-	include/spatialindex/MovingPoint.h,
-	include/spatialindex/MovingRegion.h, include/spatialindex/Point.h,
-	include/spatialindex/RTree.h, include/spatialindex/Region.h,
-	include/spatialindex/SpatialIndex.h,
-	include/spatialindex/TPRTree.h, include/spatialindex/TimePoint.h,
-	include/spatialindex/TimeRegion.h, include/spatialindex/Version.h,
-	include/spatialindex/capi/BoundsQuery.h,
-	include/spatialindex/capi/CountVisitor.h,
-	include/spatialindex/capi/CustomStorage.h,
-	include/spatialindex/capi/DataStream.h,
-	include/spatialindex/capi/Error.h,
-	include/spatialindex/capi/IdVisitor.h,
-	include/spatialindex/capi/Index.h,
-	include/spatialindex/capi/LeafQuery.h,
-	include/spatialindex/capi/Makefile.am,
-	include/spatialindex/capi/ObjVisitor.h,
-	include/spatialindex/capi/Utility.h,
-	include/spatialindex/capi/sidx_api.h,
-	include/spatialindex/capi/sidx_config.h,
-	include/spatialindex/capi/sidx_impl.h,
-	include/spatialindex/tools/Makefile.am,
-	include/spatialindex/tools/PointerPool.h,
-	include/spatialindex/tools/PoolPointer.h,
-	include/spatialindex/tools/SmartPointer.h,
-	include/spatialindex/tools/Tools.h,
-	include/spatialindex/tools/rand48.h, include/tools/Makefile.am,
-	include/tools/PointerPool.h, include/tools/PoolPointer.h,
-	include/tools/SmartPointer.h, include/tools/Tools.h,
-	include/tools/rand48.h, src/CMakeLists.txt,
-	src/capi/BoundsQuery.cc, src/capi/CountVisitor.cc,
-	src/capi/CustomStorage.cc, src/capi/DataStream.cc,
-	src/capi/Error.cc, src/capi/IdVisitor.cc, src/capi/Index.cc,
-	src/capi/LeafQuery.cc, src/capi/ObjVisitor.cc, src/capi/Utility.cc,
-	src/capi/sidx_api.cc, src/spatialindex/LineSegment.cc,
-	src/spatialindex/MovingPoint.cc, src/spatialindex/MovingRegion.cc,
-	src/spatialindex/Point.cc, src/spatialindex/Region.cc,
-	src/spatialindex/SpatialIndexImpl.h, src/spatialindex/TimePoint.cc,
-	src/spatialindex/TimeRegion.cc,
-	src/storagemanager/RandomEvictionsBuffer.cc, src/tools/Tools.cc: 
-	#include file deck chair rearrangement
-
-2011-10-13  Howard Butler <hobu.inc@gmail.com>
-
-	* CMakeLists.txt: don't add -ansi to clang compiles
-
-2011-10-13  Howard Butler <hobu.inc@gmail.com>
-
-	* src/mvrtree/Node.cc, src/rtree/Node.cc,
-	src/spatialindex/MovingPoint.cc, src/spatialindex/MovingRegion.cc,
-	src/spatialindex/Point.cc, src/tprtree/Node.cc: unsigned values can
-	never be <0, no need to test for this
-
-2011-10-13  Howard Butler <hobu.inc@gmail.com>
-
-	* include/capi/Error.h, include/capi/LeafQuery.h,
-	src/capi/CountVisitor.cc, src/capi/DataStream.cc,
-	src/capi/Index.cc, src/capi/Utility.cc: clean up some warnings that
-	clang found
-
-2011-10-13  Howard Butler <hobu.inc@gmail.com>
-
-	* src/spatialindex/Region.cc: unsigned values can never be <0, no
-	need to test for this
-
-2011-10-11  Howard Butler <hobu.inc@gmail.com>
-
-	* .gitignore: regressiontest directory changed names
-
-2011-10-11  Howard Butler <hobu.inc@gmail.com>
-
-	* CMakeLists.txt, Makefile.am, configure.ac,
-	regressiontest/CMakeLists.txt, regressiontest/Makefile.am,
-	regressiontest/mvrtree/Exhaustive.cc,
-	regressiontest/mvrtree/Generator.cc,
-	regressiontest/mvrtree/MVRTreeLoad.cc,
-	regressiontest/mvrtree/MVRTreeQuery.cc,
-	regressiontest/mvrtree/Makefile.am,
-	regressiontest/mvrtree/test1/run, regressiontest/mvrtree/test2/run,
-	regressiontest/rtree/Exhaustive.cc,
-	regressiontest/rtree/Generator.cc,
-	regressiontest/rtree/Makefile.am,
-	regressiontest/rtree/RTreeBulkLoad.cc,
-	regressiontest/rtree/RTreeBulkLoad.vcproj,
-	regressiontest/rtree/RTreeExhaustive.vcproj,
-	regressiontest/rtree/RTreeGenerator.vcproj,
-	regressiontest/rtree/RTreeLoad.cc,
-	regressiontest/rtree/RTreeLoad.vcproj,
-	regressiontest/rtree/RTreeQuery.cc,
-	regressiontest/rtree/RTreeQuery.vcproj,
-	regressiontest/rtree/test1/run, regressiontest/rtree/test2/run,
-	regressiontest/rtree/test3/run, regressiontest/rtree/test4/run,
-	regressiontest/tprtree/Exhaustive.cc,
-	regressiontest/tprtree/Generator.cc,
-	regressiontest/tprtree/Makefile.am,
-	regressiontest/tprtree/RandomGenerator.cc,
-	regressiontest/tprtree/RandomGenerator.h,
-	regressiontest/tprtree/TPRTreeLoad.cc,
-	regressiontest/tprtree/TPRTreeQuery.cc,
-	regressiontest/tprtree/test1/run, regressiontest/tprtree/test2/run,
-	test/CMakeLists.txt, test/Makefile.am, test/mvrtree/Exhaustive.cc,
-	test/mvrtree/Generator.cc, test/mvrtree/MVRTreeLoad.cc,
-	test/mvrtree/MVRTreeQuery.cc, test/mvrtree/Makefile.am,
-	test/mvrtree/test1/run, test/mvrtree/test2/run,
-	test/rtree/Exhaustive.cc, test/rtree/Generator.cc,
-	test/rtree/Makefile.am, test/rtree/RTreeBulkLoad.cc,
-	test/rtree/RTreeBulkLoad.vcproj, test/rtree/RTreeExhaustive.vcproj,
-	test/rtree/RTreeGenerator.vcproj, test/rtree/RTreeLoad.cc,
-	test/rtree/RTreeLoad.vcproj, test/rtree/RTreeQuery.cc,
-	test/rtree/RTreeQuery.vcproj, test/rtree/test1/run,
-	test/rtree/test2/run, test/rtree/test3/run, test/rtree/test4/run,
-	test/tprtree/Exhaustive.cc, test/tprtree/Generator.cc,
-	test/tprtree/Makefile.am, test/tprtree/RandomGenerator.cc,
-	test/tprtree/RandomGenerator.h, test/tprtree/TPRTreeLoad.cc,
-	test/tprtree/TPRTreeQuery.cc, test/tprtree/test1/run,
-	test/tprtree/test2/run: rename regressiontest directory to test/
-	directory for added clarity.  maybe next release we can have these
-	test be auto-run with 'make test'
-
-2011-10-11  Howard Butler <hobu.inc@gmail.com>
-
-	* CMakeLists.txt, configure.ac, include/tools/rand48.h,
-	src/CMakeLists.txt, src/storagemanager/RandomEvictionsBuffer.cc,
-	src/tools/Makefile.am, src/tools/Tools.cc, src/tools/rand48.cc: 
-	check for an existing srand48, and if we have it, don't use our
-	local one
-
-2011-10-11  Howard Butler <hobu.inc@gmail.com>
-
-	* regressiontest/CMakeLists.txt: CMake for regressiontests
-
-2011-10-10  Howard Butler <hobu.inc@gmail.com>
-
-	* docs/source/development.txt, docs/source/download.txt,
-	docs/source/index.txt, docs/source/install.txt,
-	docs/source/introduction.txt: start organizing docs
-
-2011-10-10  Howard Butler <hobu.inc@gmail.com>
-
-	* HOWTORELEASE.txt: update CMakeLists.txt when releasing too
-
-2011-10-10  Howard Butler <hobu.inc@gmail.com>
-
-	* CMakeLists.txt: c/p fix
-
-2011-10-10  Howard Butler <hobu.inc@gmail.com>
-
-	* docs/source/_static/dummy, docs/source/index.txt: add dummy file
-
-2011-10-10  Howard Butler <hobu.inc@gmail.com>
-
-	* docs/Makefile: makefile for sphinx
-
-2011-10-10  Howard Butler <hobu.inc@gmail.com>
-
-	* CMakeLists.txt, src/CMakeLists.txt: more cmake config
-
-2011-10-10  Howard Butler <hobu.inc@gmail.com>
-
-	* .gitignore: ignore more
-
-2011-10-10  Howard Butler <hobu.inc@gmail.com>
-
-	* src/capi/DataStream.cc: clean up warning
-
-2011-10-09  Howard Butler <hobu.inc@gmail.com>
-
-	* CMakeLists.txt, src/CMakeLists.txt: add cmake config
-
-2011-10-09  Howard Butler <hobu.inc@gmail.com>
-
-	* .gitignore: ignore cmake stuff
-
-2011-10-06  Howard Butler <hobu.inc@gmail.com>
-
-	* configure.ac, include/tools/rand48.h, src/tools/rand48.cc: attempt
-	2 on #1 to fix rand in stdlib on newer gcc's
-
-2011-10-06  Howard Butler <hobu.inc@gmail.com>
-
-	* include/tools/rand48.h: a fix for #1 because gcc 4.5.2 appears to
-	have these defined in stdlib.h
-
-2011-09-26  Howard Butler <hobu.inc@gmail.com>
-
-	* .gitignore, docs/source/conf.py, docs/source/index.txt: add
-	documentation for http://libspatialindex.github.com
-
-2011-09-25  Howard Butler <hobu.inc@gmail.com>
-
-	* configure.ac, include/Version.h, makefile.vc: increment versions
-	in preparation for release
-
-2011-07-15  Howard Butler <hobu.inc@gmail.com>
-
-	* include/capi/sidx_api.h, src/capi/sidx_api.cc: use int64_t for IDs
-	instead of uint64_t's
-
-2011-07-15  Howard Butler <hobu.inc@gmail.com>
-
-	* src/capi/sidx_api.cc: clean up warnings
-
-2011-07-15  Howard Butler <hobu.inc@gmail.com>
-
-	* src/rtree/RTree.cc: initialize variables to 0's before we use them
-
-2011-07-15  Howard Butler <hobu.inc@gmail.com>
-
-	* src/rtree/BulkLoader.h: fix up initialization order
-
-2011-07-15  Howard Butler <hobu.inc@gmail.com>
-
-	* configure.ac: use -pedantic for compilation
-
-2011-07-15  Howard Butler <hobu@ember.hobu.biz>
-
-	* .gitignore: add .gitignore
-
-2011-05-18  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* : 1	1	README -	-	spatialindex.suo
-
-2011-01-10  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* : 1	0	README
-
-2010-11-22  Sean Gillies <sean.gillies@gmail.com>
-
-	* src/capi/sidx_api.cc: Fix test of length value
-
-2010-11-22  Howard Butler <hobu.inc@gmail.com>
-
-	* src/capi/sidx_api.cc: whitespace normalization
-
-2010-11-22  Sean Gillies <sean.gillies@gmail.com>
-
-	* src/capi/sidx_api.cc: Add up deltas for multidimensional input
-
-2010-11-22  Sean Gillies <sean.gillies@gmail.com>
-
-	* src/capi/sidx_api.cc: Add up deltas for multidimensional input
-
-2010-11-22  Howard Butler <hobu.inc@gmail.com>
-
-	* src/capi/sidx_api.cc: revert r193
-
-2010-11-22  Howard Butler <hobu.inc@gmail.com>
-
-	* src/capi/sidx_api.cc: we should set isPoint to true if we pass our
-	epsilon test -- this didn't work before
-
-2010-10-14  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* include/tools/Tools.h, src/tools/Tools.cc: Removed
-	nextUnifromLongDouble. It was incorrect
-
-2010-10-13  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* include/tools/Tools.h, src/tools/Tools.cc: Added
-	nextUniformLongDouble
-
-2010-09-16  Howard Butler <hobu.inc@gmail.com>
-
-	* Makefile.am: fix #25 and include visual studio files in the
-	release
-
-2010-09-16  Howard Butler <hobu.inc@gmail.com>
-
-	* makefile.vc: bump versions in preparation for release
-
-2010-09-16  Howard Butler <hobu.inc@gmail.com>
-
-	* configure.ac, include/Version.h: bump versions in preparation for
-	release
-
-2010-06-19  Howard Butler <hobu.inc@gmail.com>
-
-	* include/capi/CustomStorage.h, include/capi/Index.h,
-	include/capi/Makefile.am, include/capi/sidx_api.h,
-	include/capi/sidx_config.h, include/capi/sidx_impl.h, makefile.vc,
-	src/capi/CustomStorage.cc, src/capi/Index.cc, src/capi/Makefile.am,
-	src/capi/Utility.cc, src/capi/sidx_api.cc: add Matthias'
-	CustomStorage backend for C API
-
-2010-04-21  Howard Butler <hobu.inc@gmail.com>
-
-	* README: Add Marios' pagesize diatribe to the docs
-
-2010-04-12  Howard Butler <hobu.inc@gmail.com>
-
-	* ChangeLog: update ChangeLog
-
-2010-04-12  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* : 1	1	regressiontest/rtree/Exhaustive.cc
-
-2010-03-31  Howard Butler <hobu.inc@gmail.com>
-
-	* src/capi/BoundsQuery.cc, src/capi/CountVisitor.cc,
-	src/capi/DataStream.cc, src/capi/IdVisitor.cc, src/capi/Index.cc,
-	src/capi/ObjVisitor.cc, src/capi/Utility.cc: format and layout
-	normalization
-
-2010-03-30  Howard Butler <hobu.inc@gmail.com>
-
-	* src/spatialindex/MovingRegion.cc: ensure that we instantiate the
-	ivOut with at least the ivIn so we have a properly constructed
-	Tools::Interval #16
-
-2010-03-05  Howard Butler <hobu.inc@gmail.com>
-
-	* HOWTORELEASE.txt: add doc describing how to release
-
-2010-03-05  Howard Butler <hobu.inc@gmail.com>
-
-	* : propsets to ignore test output:
-
-2010-03-05  Howard Butler <hobu.inc@gmail.com>
-
-	* include/Version.h: increment version info in preparation for
-	release
-
-2010-03-05  Howard Butler <hobu.inc@gmail.com>
-
-	* ChangeLog: update for release
-
-2010-03-04  Howard Butler <hobu.inc@gmail.com>
-
-	* include/capi/CountVisitor.h, include/capi/Makefile.am,
-	include/capi/sidx_api.h, include/capi/sidx_impl.h, makefile.vc,
-	src/capi/CountVisitor.cc, src/capi/Makefile.am,
-	src/capi/sidx_api.cc: add CountVisitor to the CAPI to provide a
-	cumulation of the number of hits that land within a query
-
-2010-03-03  Howard Butler <hobu.inc@gmail.com>
-
-	* include/capi/IdVisitor.h, include/capi/ObjVisitor.h,
-	include/capi/sidx_api.h, regressiontest/rtree/test3/run,
-	src/capi/LeafQuery.cc, src/capi/sidx_api.cc: use uint64_t for result
-	counts instead of uint32_t in C API
-
-2009-12-29  Howard Butler <hobu.inc@gmail.com>
-
-	* regressiontest/mvrtree/Exhaustive.cc,
-	regressiontest/rtree/Exhaustive.cc,
-	regressiontest/tprtree/Exhaustive.cc: fix up for gcc 4.4
-
-2009-12-04  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* : -	-	spatialindex.suo 18	0	src/spatialindex/Region.cc
-
-2009-11-05  Howard Butler <hobu.inc@gmail.com>
-
-	* src/spatialindex/Region.cc: don't thrown an error when -DDEBUG is
-	on and we initialize an infinite Region
-
-2009-11-03  Howard Butler <hobu.inc@gmail.com>
-
-	* src/capi/sidx_api.cc: pass in a reference for the query bounds
-
-2009-11-03  Howard Butler <hobu.inc@gmail.com>
-
-	* src/capi/sidx_api.cc: try to do no harm when calling Index_Free on
-	something that's null
-
-2009-11-03  Howard Butler <hobu.inc@gmail.com>
-
-	* src/capi/sidx_api.cc: pass in a reference for the query bounds
-
-2009-11-03  Howard Butler <hobu.inc@gmail.com>
-
-	* src/capi/sidx_api.cc: copy the array using memcpy because we can't
-	free() something created with new
-
-2009-11-03  Howard Butler <hobu.inc@gmail.com>
-
-	* src/capi/sidx_api.cc: put the data in a newly malloc'd array to
-	match our std::free call of Index_Delete
-
-2009-11-02  Howard Butler <hobu.inc@gmail.com>
-
-	* src/capi/LeafQuery.cc: make sure to delete our shape when we're
-	done
-
-2009-11-02  Howard Butler <hobu.inc@gmail.com>
-
-	* src/capi/sidx_api.cc: get dimension from the Region, no need to
-	fetch from index properties
-
-2009-11-02  Howard Butler <hobu.inc@gmail.com>
-
-	* src/capi/sidx_api.cc: make sure we clean up the bounds and region
-
-2009-11-02  Howard Butler <hobu.inc@gmail.com>
-
-	* regressiontest/mvrtree/Generator.cc,
-	regressiontest/rtree/Generator.cc,
-	regressiontest/tprtree/Generator.cc,
-	regressiontest/tprtree/TPRTreeLoad.cc,
-	regressiontest/tprtree/TPRTreeQuery.cc, src/capi/sidx_api.cc,
-	src/mvrtree/Index.cc, src/mvrtree/MVRTree.cc, src/mvrtree/Node.cc,
-	src/rtree/Index.cc, src/rtree/Node.cc, src/rtree/RTree.cc,
-	src/spatialindex/LineSegment.cc, src/spatialindex/MovingPoint.cc,
-	src/spatialindex/MovingRegion.cc, src/spatialindex/Point.cc,
-	src/spatialindex/Region.cc, src/spatialindex/TimePoint.cc,
-	src/spatialindex/TimeRegion.cc, src/tools/Tools.cc,
-	src/tprtree/Index.cc, src/tprtree/Node.cc, src/tprtree/TPRTree.cc: 
-	only #include <limits> where needed, and not in the global Tools.h
-	file
-
-2009-10-30  Howard Butler <hobu.inc@gmail.com>
-
-	* include/tools/Tools.h, regressiontest/mvrtree/Exhaustive.cc,
-	regressiontest/mvrtree/Generator.cc,
-	regressiontest/rtree/Exhaustive.cc,
-	regressiontest/rtree/Generator.cc,
-	regressiontest/tprtree/Generator.cc, src/mvrtree/Node.cc,
-	src/rtree/BulkLoader.cc, src/rtree/Node.cc, src/rtree/RTree.cc,
-	src/spatialindex/LineSegment.cc, src/spatialindex/MovingPoint.cc,
-	src/spatialindex/MovingRegion.cc, src/spatialindex/Point.cc,
-	src/spatialindex/Region.cc,
-	src/storagemanager/RandomEvictionsBuffer.cc, src/tprtree/Node.cc: 
-	remove <cmath> <limits> and <climits> from Tools.h and include them
-	seperately in each file that needs them
-
-2009-10-30  Howard Butler <hobu.inc@gmail.com>
-
-	* include/capi/sidx_api.h: define to denote we're C API
-
-2009-10-30  Howard Butler <hobu.inc@gmail.com>
-
-	* include/capi/sidx_config.h: add a newline
-
-2009-10-22  Howard Butler <hobu.inc@gmail.com>
-
-	* src/capi/sidx_api.cc: make sure we use new/delete instead of
-	new/free
-
-2009-10-21  Howard Butler <hobu.inc@gmail.com>
-
-	* include/LineSegment.h, include/Point.h, include/Region.h,
-	include/SpatialIndex.h, src/spatialindex/LineSegment.cc,
-	src/spatialindex/Point.cc, src/spatialindex/Region.cc: remove
-	namespace pollution of Tools:: into the globally include'd header
-	SpatialIndex.h
-
-2009-10-20  Howard Butler <hobu.inc@gmail.com>
-
-	* configure.ac, makefile.vc: bump versions in preparation for
-	release
-
-2009-10-19  Howard Butler <hobu.inc@gmail.com>
-
-	* include/capi/sidx_api.h: add SIDX_Version prototype
-
-2009-10-19  Howard Butler <hobu.inc@gmail.com>
-
-	* ltmain.sh: ltmain.sh doesn't belong in svn
-
-2009-10-19  Howard Butler <hobu.inc@gmail.com>
-
-	* include/capi/Makefile.in, src/capi/Makefile.in: Makefile.in's
-	don't belong in svn
-
-2009-10-19  Howard Butler <hobu.inc@gmail.com>
-
-	* makefile.vc: C API compilation fix
-
-2009-10-19  Howard Butler <hobu.inc@gmail.com>
-
-	* src/tools/Tools.cc: tmpname fixes so we compile on msvc2003
-
-2009-10-19  Howard Butler <hobu.inc@gmail.com>
-
-	* makefile.vc: don't define a variable to "" or cl will complain
-
-2009-10-08  Howard Butler <hobu.inc@gmail.com>
-
-	* src/rtree/BulkLoader.cc: bleaf and bindex switched around in
-	createLevel call
-
-2009-09-17  Howard Butler <hobu.inc@gmail.com>
-
-	* include/capi/LeafQuery.h, include/capi/sidx_api.h,
-	src/capi/LeafQuery.cc, src/capi/sidx_api.cc: more leaf querying code
-
-2009-09-16  Howard Butler <hobu.inc@gmail.com>
-
-	* include/capi/LeafQuery.h, include/capi/Makefile.am,
-	include/capi/Makefile.in, include/capi/sidx_impl.h,
-	src/capi/LeafQuery.cc, src/capi/Makefile.am, src/capi/Makefile.in,
-	src/capi/sidx_api.cc: add beginnings of leaf querying to C API
-
-2009-09-16  Howard Butler <hobu.inc@gmail.com>
-
-	* include/capi/Item.h, include/capi/ObjVisitor.h,
-	include/capi/sidx_config.h, include/capi/sidx_impl.h,
-	src/capi/Item.cc, src/capi/Makefile.am, src/capi/Makefile.in,
-	src/capi/ObjVisitor.cc, src/capi/sidx_api.cc: remove the duplicate
-	and unnecessary Item construct that was masking the already existing
-	IData interface
-
-2009-08-31  Howard Butler <hobu.inc@gmail.com>
-
-	* makefile.vc: support building the c api
-
-2009-08-24  Howard Butler <hobu.inc@gmail.com>
-
-	* regressiontest/mvrtree/Exhaustive.cc,
-	regressiontest/rtree/Exhaustive.cc,
-	regressiontest/tprtree/Exhaustive.cc: fix issue with uint32_t by
-	copying macros from Tools.h
-
-2009-08-19  Howard Butler <hobu.inc@gmail.com>
-
-	* Makefile.am: try to ensure -lstdc++ is linked
-
-2009-08-19  Howard Butler <hobu.inc@gmail.com>
-
-	* : ignores
-
-2009-08-19  Howard Butler <hobu.inc@gmail.com>
-
-	* : ignore propset
-
-2009-08-18  Howard Butler <hobu.inc@gmail.com>
-
-	* include/tools/Tools.h, src/tools/Tools.cc: locking for
-	Tools::PropertySet (commented out though because it doesn't work
-
-2009-08-14  Howard Butler <hobu.inc@gmail.com>
-
-	* src/tools/Tools.cc: comment out PropertySet locking for now
-
-2009-08-14  Howard Butler <hobu.inc@gmail.com>
-
-	* include/tools/Tools.h, src/mvrtree/MVRTree.cc,
-	src/mvrtree/MVRTree.h, src/rtree/RTree.cc, src/rtree/RTree.h,
-	src/tools/Tools.cc, src/tprtree/TPRTree.cc, src/tprtree/TPRTree.h: 
-	use HAVE_PTHREAD_H for #ifdef, make Tools::PropertySet threadsafe
-	for read/write
-
-2009-08-13  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* : -	-	spatialindex.suo 13	23	src/rtree/BulkLoader.cc 2	3
-	src/rtree/BulkLoader.h 1	1	src/rtree/RTree.cc
-
-2009-08-13  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* include/LineSegment.h, include/MVRTree.h, include/MovingPoint.h,
-	include/MovingRegion.h, include/Point.h, include/RTree.h,
-	include/Region.h, include/SpatialIndex.h, include/TPRTree.h,
-	include/TimePoint.h, include/TimeRegion.h,
-	include/tools/PointerPool.h, include/tools/Tools.h,
-	regressiontest/rtree/RTreeBulkLoad.cc,
-	regressiontest/rtree/RTreeQuery.cc, regressiontest/rtree/test1/run,
-	regressiontest/rtree/test2/run, src/mvrtree/Index.cc,
-	src/mvrtree/Index.h, src/mvrtree/Leaf.cc, src/mvrtree/Leaf.h,
-	src/mvrtree/MVRTree.cc, src/mvrtree/MVRTree.h, src/mvrtree/Node.cc,
-	src/mvrtree/Node.h, src/mvrtree/PointerPoolNode.h,
-	src/mvrtree/Statistics.cc, src/mvrtree/Statistics.h,
-	src/rtree/BulkLoader.cc, src/rtree/BulkLoader.h,
-	src/rtree/Index.cc, src/rtree/Index.h, src/rtree/Leaf.cc,
-	src/rtree/Leaf.h, src/rtree/Node.cc, src/rtree/Node.h,
-	src/rtree/PointerPoolNode.h, src/rtree/RTree.cc, src/rtree/RTree.h,
-	src/rtree/Statistics.cc, src/rtree/Statistics.h,
-	src/spatialindex/LineSegment.cc, src/spatialindex/MovingPoint.cc,
-	src/spatialindex/MovingRegion.cc, src/spatialindex/Point.cc,
-	src/spatialindex/Region.cc, src/spatialindex/TimePoint.cc,
-	src/spatialindex/TimeRegion.cc, src/storagemanager/Buffer.cc,
-	src/storagemanager/Buffer.h,
-	src/storagemanager/DiskStorageManager.cc,
-	src/storagemanager/DiskStorageManager.h,
-	src/storagemanager/MemoryStorageManager.cc,
-	src/storagemanager/MemoryStorageManager.h,
-	src/storagemanager/RandomEvictionsBuffer.cc, src/tools/Tools.cc,
-	src/tprtree/Index.cc, src/tprtree/Index.h, src/tprtree/Leaf.cc,
-	src/tprtree/Leaf.h, src/tprtree/Node.cc, src/tprtree/Node.h,
-	src/tprtree/PointerPoolNode.h, src/tprtree/Statistics.cc,
-	src/tprtree/Statistics.h, src/tprtree/TPRTree.cc,
-	src/tprtree/TPRTree.h: 1. Replace size_t with uint32_t to fix 64/32 bit compatibility
-	issues 2. Fixed memory bug related to data array and bulk loading for
-	RTree.
-
-2009-08-10  Howard Butler <hobu.inc@gmail.com>
-
-	* include/SpatialIndex.h, include/tools/Tools.h: remove #define
-	interface, use class
-
-2009-08-06  Howard Butler <hobu.inc@gmail.com>
-
-	* makefile.vc: osgeo4w packaging
-
-2009-08-05  Howard Butler <hobu.inc@gmail.com>
-
-	* include/tools/Tools.h: don't redefine interface if it is already
-	defined (/me scowls at windows
-
-2009-08-05  Howard Butler <hobu.inc@gmail.com>
-
-	* src/rtree/BulkLoader.cc: comment out record deletion entirely
-
-2009-08-05  Howard Butler <hobu.inc@gmail.com>
-
-	* src/rtree/BulkLoader.cc: guard against invalid delete
-
-2009-07-30  Howard Butler <hobu.inc@gmail.com>
-
-	* Makefile.am, configure.ac: bump version to 1.4.0 in prep for
-	release, add a windows docs to the dist
-
-2009-07-30  Howard Butler <hobu.inc@gmail.com>
-
-	* src/storagemanager/DiskStorageManager.cc: Add a
-	CheckFilesExists(Tools::PropertySet&) method instead of the cheap
-	way we were checking for existence before.  This takes into account
-	the file extensions and only returns true if both files exist
-
-2009-07-30  Howard Butler <hobu.inc@gmail.com>
-
-	* include/tools/Tools.h: move the warning about 4251 down into
-	_MSC_VER
-
-2009-07-30  Howard Butler <hobu.inc@gmail.com>
-
-	* ChangeLog, configure.ac: new changelog
-
-2009-07-30  Howard Butler <hobu.inc@gmail.com>
-
-	* makefile.vc: update for new layout.  make sure to build dll
-	appropriately
-
-2009-07-29  Howard Butler <hobu.inc@gmail.com>
-
-	* include/tools/Tools.h: turn off warning 4251
-
-2009-07-29  Howard Butler <hobu.inc@gmail.com>
-
-	* include/Makefile.am, include/SpatialIndex.h, include/Version.h: 
-	fix #15 and provide a way to determine the library version at
-	compile time
-
-2009-07-29  Howard Butler <hobu.inc@gmail.com>
-
-	* makefile.vc: add back makefile.vc
-
-2009-07-22  Howard Butler <hobu.inc@gmail.com>
-
-	* src/spatialindex/Region.cc: a note about the debugging lint that
-	is incorrect when the bounds are infinity
-
-2009-07-22  Howard Butler <hobu.inc@gmail.com>
-
-	* regressiontest/rtree/Exhaustive.cc: make sure to #include
-	<cstring> to satisfy gcc 4.3+
-
-2009-07-22  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* : 2	2	regressiontest/rtree/RTreeBulkLoad.vcproj 2	2
-	regressiontest/rtree/RTreeExhaustive.vcproj 2	2
-	regressiontest/rtree/RTreeGenerator.vcproj 2	2
-	regressiontest/rtree/RTreeLoad.vcproj 2	2
-	regressiontest/rtree/RTreeQuery.vcproj 2	2
-	spatialindex-vc/spatialindex.vcproj -	-	spatialindex.suo
-
-2009-07-21  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* : 2	6	src/tools/Tools.cc
-
-2009-07-20  Howard Butler <hobu.inc@gmail.com>
-
-	* src/tools/Tools.cc: make sure to update existing values in
-	setProperties instead of assuming it doesn't exist in the map
-
-2009-07-20  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* : -	-	spatialindex.suo 5	2	src/mvrtree/MVRTree.cc 6	3
-	src/rtree/RTree.cc 5	2	src/tprtree/TPRTree.cc
-
-2009-07-19  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* : 8	5	INSTALL.WIN
-
-2009-07-19  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* : -	-	spatialindex.suo
-
-2009-07-19  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* : 25	0	INSTALL.WIN 167	4	regressiontest/rtree/RTreeBulkLoad.vcproj
-	166	4	regressiontest/rtree/RTreeExhaustive.vcproj 169	4
-	regressiontest/rtree/RTreeGenerator.vcproj 167	4
-	regressiontest/rtree/RTreeLoad.vcproj 167	4
-	regressiontest/rtree/RTreeQuery.vcproj 1	1
-	regressiontest/rtree/test3/run 309	3
-	spatialindex-vc/spatialindex.vcproj 76	0	spatialindex.sln -	-
-	 spatialindex.suo create mode 100644 INSTALL.WIN  create mode 100755 spatialindex.sln  create mode 100755 spatialindex.suo
-
-2009-07-18  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* : 0	65	spatialindex-vc/spatialindex.vcproj.RESEARCH.marioh.user  delete mode 100755
-	 spatialindex-vc/spatialindex.vcproj.RESEARCH.marioh.user
-
-2009-07-15  Howard Butler <hobu.inc@gmail.com>
-
-	* include/SpatialIndex.h, src/mvrtree/Node.cc, src/mvrtree/Node.h,
-	src/rtree/Node.cc, src/rtree/Node.h, src/rtree/RTree.cc,
-	src/rtree/RTree.h, src/tprtree/Node.cc, src/tprtree/Node.h: apply
-	Willem's patch for #14
-
-2009-07-06  Howard Butler <hobu.inc@gmail.com>
-
-	* src/rtree/RTree.cc: more descriptive and separate exception
-	descriptions for FillFactor inconsistencies
-
-2009-07-06  Howard Butler <hobu.inc@gmail.com>
-
-	* include/SpatialIndex.h, ltmain.sh: silence warnings about windows
-	compiler complaints on non-windows systems
-
-2009-05-28  Howard Butler <hobu.inc@gmail.com>
-
-	* makefile.vc: rename dlls to not have lib* in front of them
-
-2009-05-28  Howard Butler <hobu.inc@gmail.com>
-
-	* makefile.vc: A much improved windows makefile based in libLAS'
-
-2009-05-28  Howard Butler <hobu.inc@gmail.com>
-
-	* include/SpatialIndex.h: On MSVC, just about every class complains
-	about 4250, inheritance by dominance.  We'll just shut that up for
-	now.
-
-2009-05-14  Howard Butler <hobu.inc@gmail.com>
-
-	* src/tools/TemporaryFile.cc: apply Patrick Mézard's patch for the
-	inverted use of mktemp on windows #13
-
-2009-05-14  Howard Butler <hobu.inc@gmail.com>
-
-	* src/tools/Tools.cc: Fix #12, add time.h so msvc9 works
-
-2009-05-04  Howard Butler <hobu.inc@gmail.com>
-
-	* regressiontest/mvrtree/Exhaustive.cc,
-	regressiontest/mvrtree/MVRTreeLoad.cc,
-	regressiontest/mvrtree/MVRTreeQuery.cc,
-	regressiontest/rtree/Exhaustive.cc,
-	regressiontest/rtree/RTreeLoad.cc,
-	regressiontest/rtree/RTreeQuery.cc,
-	regressiontest/tprtree/Generator.cc, src/mvrtree/MVRTree.cc,
-	src/mvrtree/Node.cc, src/rtree/BulkLoader.cc, src/rtree/Leaf.cc,
-	src/rtree/Node.cc, src/rtree/RTree.cc,
-	src/spatialindex/LineSegment.cc, src/spatialindex/MovingPoint.cc,
-	src/spatialindex/MovingRegion.cc, src/spatialindex/Point.cc,
-	src/spatialindex/Region.cc, src/spatialindex/TimePoint.cc,
-	src/spatialindex/TimeRegion.cc, src/storagemanager/Buffer.cc,
-	src/storagemanager/Buffer.h,
-	src/storagemanager/DiskStorageManager.cc,
-	src/storagemanager/MemoryStorageManager.cc,
-	src/storagemanager/MemoryStorageManager.h, src/tools/Tools.cc,
-	src/tprtree/Leaf.cc, src/tprtree/Node.cc, src/tprtree/TPRTree.cc: 
-	apply the patch for #11 - cstring and limits includes so gcc 4.3+
-	works
-
-2008-05-30  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* : 1	1	src/tools/Makefile.am 1	1	src/tools/Tools.cc
-
-2008-05-23  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* : 1	1	configure.ac
-
-2008-05-18  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* : 416	853	ltmain.sh
-
-2008-04-30  Howard Butler <hobu.inc@gmail.com>
-
-	* aclocal.m4: aclocal.m4 is autogenerated.  removing
-
-2008-04-30  Howard Butler <hobu.inc@gmail.com>
-
-	* : set svn:ignore properties for autogenerated files and automake
-	cruft
-
-2008-04-30  Howard Butler <hobu.inc@gmail.com>
-
-	* include/tools/Makefile.am: add rand48.h to dist target
-
-2008-04-29  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* : 0	11000	regressiontest/rtree/test1/data 0	100
-	 regressiontest/rtree/test1/queries delete mode 100644
-	 regressiontest/rtree/test1/data delete mode 100644
-	regressiontest/rtree/test1/queries
-
-2008-04-29  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* : 16	0	include/tools/rand48.h  create mode 100644 include/tools/rand48.h
-
-2008-04-29  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* : 1	11	makefile.vc
-
-2008-04-29  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* : 58	83	src/Makefile.in 59	70	src/mvrtree/Makefile.in 5	5
-	src/mvrtree/Node.cc 59	70	src/rtree/Makefile.in 5	5
-	src/spatialindex/LineSegment.cc 59	70	src/spatialindex/Makefile.in 2
-	2	src/spatialindex/MovingRegion.cc 59	70
-	src/storagemanager/Makefile.in 0	1
-	src/storagemanager/RandomEvictionsBuffer.cc 59	70
-	src/tools/Makefile.in 59	70	src/tprtree/Makefile.in
-
-2008-04-29  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* src/spatialindex/LineSegment.cc: Fixed malloc memory leak
-
-2008-02-26  Howard Butler <hobu.inc@gmail.com>
-
-	* src/tools/rand48.cc: oops.  Add missing file
-
-2008-02-26  Howard Butler <hobu.inc@gmail.com>
-
-	* include/tools/rand48.hpp: oops.  Add missing file
-
-2008-01-25  Howard Butler <hobu.inc@gmail.com>
-
-	* include/MVRTree.h, include/RTree.h, include/SpatialIndex.h,
-	include/TPRTree.h, include/tools/Tools.h, makefile.vc,
-	src/mvrtree/Index.cc, src/mvrtree/Leaf.cc, src/mvrtree/Node.cc,
-	src/rtree/BulkLoader.cc, src/rtree/Index.cc, src/rtree/Leaf.cc,
-	src/rtree/Node.cc, src/spatialindex/LineSegment.cc,
-	src/spatialindex/MovingRegion.cc, src/storagemanager/Buffer.cc,
-	src/storagemanager/DiskStorageManager.cc,
-	src/storagemanager/RandomEvictionsBuffer.cc,
-	src/tools/ExternalSort.cc, src/tools/ExternalSort.h,
-	src/tools/TemporaryFile.cc, src/tools/Tools.cc,
-	src/tprtree/Index.cc, src/tprtree/Leaf.cc, src/tprtree/Node.cc: 
-	Initial push of windows patches
-
-2008-01-23  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* : 1	1	INSTALL
-
-2008-01-19  Howard Butler <hobu.inc@gmail.com>
-
-	* configure.ac, makefile.vc: bump version to 1.3
-
-2008-01-19  Howard Butler <hobu.inc@gmail.com>
-
-	* ChangeLog: Add an auto-generated ChangeLog
-
-2008-01-19  Howard Butler <hobu.inc@gmail.com>
-
-	* AUTHORS: add myself and some notes
-
-2008-01-19  Howard Butler <hobu.inc@gmail.com>
-
-	* INSTALL: update to ReST
-
-2008-01-19  Howard Butler <hobu.inc@gmail.com>
-
-	* README: update ReST
-
-2008-01-19  Howard Butler <hobu.inc@gmail.com>
-
-	* README: update ReST
-
-2008-01-19  Howard Butler <hobu.inc@gmail.com>
-
-	* README: update ReST
-
-2008-01-19  Howard Butler <hobu.inc@gmail.com>
-
-	* README: update ReST
-
-2008-01-19  Howard Butler <hobu.inc@gmail.com>
-
-	* README: update ReST
-
-2008-01-19  Howard Butler <hobu.inc@gmail.com>
-
-	* README: update ReST
-
-2008-01-19  Howard Butler <hobu.inc@gmail.com>
-
-	* README: update ReST
-
-2008-01-19  Howard Butler <hobu.inc@gmail.com>
-
-	* README: update ReST
-
-2008-01-19  Howard Butler <hobu.inc@gmail.com>
-
-	* README: update ReST
-
-2008-01-19  Howard Butler <hobu.inc@gmail.com>
-
-	* README: update ReST
-
-2008-01-19  Howard Butler <hobu.inc@gmail.com>
-
-	* README: update ReST
-
-2008-01-19  Howard Butler <hobu.inc@gmail.com>
-
-	* README: update ReST
-
-2008-01-19  Howard Butler <hobu.inc@gmail.com>
-
-	* README: update ReST
-
-2008-01-19  Howard Butler <hobu.inc@gmail.com>
-
-	* README: update to ReST
-
-2008-01-19  Howard Butler <hobu.inc@gmail.com>
-
-	* : set mimetype to reStructured text so Trac will render it for us
-	in the browser
-
-2008-01-17  Howard Butler <hobu.inc@gmail.com>
-
-	* Makefile.in, aclocal.m4, autogen.sh, include/Makefile.in,
-	include/tools/Makefile.in, ltmain.sh, regressiontest/Makefile.in,
-	regressiontest/mvrtree/Makefile.in,
-	regressiontest/rtree/Makefile.in,
-	regressiontest/tprtree/Makefile.in, src/Makefile.in,
-	src/mvrtree/Makefile.in, src/rtree/Makefile.in,
-	src/spatialindex/Makefile.in, src/storagemanager/Makefile.in,
-	src/tools/Makefile.in, src/tprtree/Makefile.in: add autogen.sh to
-	simplify auto stuff
-
-2008-01-17  Howard Butler <hobu.inc@gmail.com>
-
-	* debian/README, debian/README.Debian, debian/changelog,
-	debian/compat, debian/control, debian/copyright, debian/dirs,
-	debian/docs, debian/libspatialindex1-dev.dirs,
-	debian/libspatialindex1-dev.install, debian/libspatialindex1.dirs,
-	debian/libspatialindex1.doc-base.EX,
-	debian/libspatialindex1.install, debian/rules: move debian packaging
-	stuff out of trunk
-
-2008-01-15  Howard Butler <hobu.inc@gmail.com>
-
-	* makefile.vc: add nmake makefile
-
-2007-12-07  Kenneth Christiansen <kenneth.christiansen@openbossa.org>
-
-	* debian/libspatialindex1.dirs, debian/libspatialindex1.install,
-	debian/libspatialindex11.dirs, debian/libspatialindex11.install: 
-	Wrong names
-
-2007-12-07  Kenneth Christiansen <kenneth.christiansen@openbossa.org>
-
-	* configure, debian/rules: Fixed rules file
-
-2007-12-07  Kenneth Christiansen <kenneth.christiansen@openbossa.org>
-
-	* config.guess, config.sub, debian/control: Updates to the control
-	file (packaging) Removal of files that shouldn't be in SVN
-
-2007-11-30  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* : 1	1	Makefile.in 4	4	configure 2	2	configure.ac
-
-2007-11-29  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* : 6	14	INSTALL 10	10	configure 1	1	configure.ac
-
-2007-11-29  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* : 2	2	Makefile.am 76	108	Makefile.in 928	1222	aclocal.m4 9629	9881
-	configure 13	2	configure.ac 3	0	include/Makefile.am 62	84
-	include/Makefile.in 5	5	include/MovingPoint.h 9	9
-	include/MovingRegion.h 47	18	include/SpatialIndex.h 11	11
-	include/TimePoint.h 11	11	include/TimeRegion.h 1	4
-	include/tools/Makefile.am 42	55	include/tools/Makefile.in 1	1
-	include/tools/PointerPool.h 1	1	include/tools/PoolPointer.h 1	1
-	include/tools/SmartPointer.h 1	1	include/tools/TemporaryFile.h 10
-	375	include/tools/Tools.h 58	83	regressiontest/Makefile.in 57	67
-	regressiontest/mvrtree/Makefile.in 58	68
-	regressiontest/rtree/Makefile.in 1	26
-	regressiontest/tprtree/Generator.cc 57	67
-	regressiontest/tprtree/Makefile.in 6	33
-	regressiontest/tprtree/RandomGenerator.cc 1	5
-	regressiontest/tprtree/RandomGenerator.h 58	83	src/Makefile.in 1	5
-	src/mvrtree/Index.cc 1	5	src/mvrtree/Leaf.cc 11	18
-	src/mvrtree/MVRTree.cc 54	64	src/mvrtree/Makefile.in 11	15
-	src/mvrtree/Node.cc 14	17	src/mvrtree/Statistics.cc 0	2
-	src/rtree/BulkLoader.cc 1	5	src/rtree/Index.cc 2	7	src/rtree/Leaf.cc
-	54	64	src/rtree/Makefile.in 6	8	src/rtree/Node.cc 6	12
-	src/rtree/RTree.cc 11	13	src/rtree/Statistics.cc 1	1
-	src/spatialindex/Makefile.am 61	67	src/spatialindex/Makefile.in 4	4
-	src/spatialindex/MovingPoint.cc 5	5	src/spatialindex/MovingRegion.cc
-	3	9	src/spatialindex/SpatialIndexImpl.h 1	1
-	src/spatialindex/TimePoint.cc 1	2	src/spatialindex/TimeRegion.cc 0	1
-	src/storagemanager/Buffer.cc 7	10
-	src/storagemanager/DiskStorageManager.cc 54	64
-	src/storagemanager/Makefile.in 1	4
-	src/storagemanager/MemoryStorageManager.cc 1	3
-	src/storagemanager/RandomEvictionsBuffer.cc 3	1
-	src/tools/Makefile.am 148	196	src/tools/Makefile.in 0	381
-	src/tools/geometry/LineSegment.cc 0	4	src/tools/geometry/Makefile.am
-	0	432	src/tools/geometry/Makefile.in 0	256
-	src/tools/geometry/Point.cc 0	545	src/tools/geometry/Region.cc 0	299
-	src/tools/tools/ExternalSort.cc 0	93	src/tools/tools/ExternalSort.h
-	0	4	src/tools/tools/Makefile.am 0	443	src/tools/tools/Makefile.in 0
-	410	src/tools/tools/SHA1.cc 0	75	src/tools/tools/SHA1.h 0	239
-	src/tools/tools/TemporaryFile.cc 0	1905	src/tools/tools/Tools.cc 1	5
-	src/tprtree/Index.cc 2	6	src/tprtree/Leaf.cc 54	64
-	src/tprtree/Makefile.in 5	8	src/tprtree/Node.cc 11	14
-	src/tprtree/Statistics.cc 9	15	src/tprtree/TPRTree.cc  delete mode 100755 src/tools/geometry/LineSegment.cc  delete mode 100755 src/tools/geometry/Makefile.am  delete mode 100644 src/tools/geometry/Makefile.in  delete mode 100755 src/tools/geometry/Point.cc  delete mode 100755 src/tools/geometry/Region.cc  delete mode 100755 src/tools/tools/ExternalSort.cc  delete mode 100755 src/tools/tools/ExternalSort.h  delete mode 100755 src/tools/tools/Makefile.am  delete mode 100644 src/tools/tools/Makefile.in  delete mode 100755 src/tools/tools/SHA1.cc  delete mode 100755 src/tools/tools/SHA1.h  delete mode 100755 src/tools/tools/TemporaryFile.cc  delete mode 100755 src/tools/tools/Tools.cc
-
-2007-11-29  Howard Butler <hobu.inc@gmail.com>
-
-	* Makefile.am, Makefile.in: use -version-info instead of -release
-
-2007-11-29  Howard Butler <hobu.inc@gmail.com>
-
-	* include/Makefile.in, include/tools/Makefile.in: include
-	Makefile.in's
-
-2007-11-29  Howard Butler <hobu.inc@gmail.com>
-
-	* Makefile.am, Makefile.in:  use .'s to separate version info and don't do -no-undefined
-
-2007-11-29  Howard Butler <hobu.inc@gmail.com>
-
-	* Makefile.am: tweak formatting
-
-2007-11-29  Sean Gillies <sean.gillies@gmail.com>
-
-	* Makefile.am: Add version-info to Makefile.am
-
-2007-11-28  Howard Butler <hobu.inc@gmail.com>
-
-	* Makefile.am, Makefile.in, include/Makefile.am,
-	include/tools/Makefile.am: finish incorporating -ltools
-
-2007-11-28  Howard Butler <hobu.inc@gmail.com>
-
-	* Makefile.am, Makefile.in, configure, configure.ac,
-	include/Makefile.am, include/tools/Makefile.am: more progress on
-	automake for includes directories... close, but not quite
-
-2007-11-28  Howard Butler <hobu.inc@gmail.com>
-
-	* include/Makefile.am, include/tools/Makefile.am: Add automake files
-	for includes
-
-2007-11-28  Howard Butler <hobu.inc@gmail.com>
-
-	* Makefile.am, Makefile.in, aclocal.m4, configure, configure.ac,
-	include/tools/LineSegment.h, include/tools/Point.h,
-	include/tools/PointerPool.h, include/tools/PoolPointer.h,
-	include/tools/Region.h, include/tools/SmartPointer.h,
-	include/tools/TemporaryFile.h, include/tools/Tools.h,
-	regressiontest/Makefile.in, regressiontest/mvrtree/Makefile.in,
-	regressiontest/rtree/Makefile.in,
-	regressiontest/tprtree/Makefile.in, src/Makefile.am,
-	src/Makefile.in, src/mvrtree/Makefile.in, src/rtree/Makefile.in,
-	src/spatialindex/Makefile.in, src/storagemanager/Makefile.in,
-	src/tools/Makefile.am, src/tools/Makefile.in,
-	src/tools/geometry/LineSegment.cc, src/tools/geometry/Makefile.am,
-	src/tools/geometry/Makefile.in, src/tools/geometry/Point.cc,
-	src/tools/geometry/Region.cc, src/tools/tools/ExternalSort.cc,
-	src/tools/tools/ExternalSort.h, src/tools/tools/Makefile.am,
-	src/tools/tools/Makefile.in, src/tools/tools/SHA1.cc,
-	src/tools/tools/SHA1.h, src/tools/tools/TemporaryFile.cc,
-	src/tools/tools/Tools.cc, src/tprtree/Makefile.in: start
-	incorporating -ltools into the tree
-
-2007-08-30  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* INSTALL, a: README should be INSTALL, and INSTALL should be README
-
-2007-08-30  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* INSTALL, README: README should be INSTALL, and INSTALL should be
-	README
-
-2007-08-30  Marios Hadjieleftheriou <mhadji@gmail.com>
-
-	* README, a: README file should be INSTALL, and INSTALL should be
-	README
-
-2007-08-02  Howard Butler <hobu.inc@gmail.com>
-
-	* src/storagemanager/DiskStorageManager.cc: revert r9
-
-2007-08-02  Howard Butler <hobu.inc@gmail.com>
-
-	* src/rtree/Leaf.cc: revert r10
-
-2007-08-02  Howard Butler <hobu.inc@gmail.com>
-
-	* src/rtree/Node.cc: revert r11
-
-2007-08-02  Howard Butler <hobu.inc@gmail.com>
-
-	* src/rtree/RTree.cc: revert r12
-
-2007-08-02  Howard Butler <hobu.inc@gmail.com>
-
-	* src/mvrtree/MVRTree.cc: revert r13
-
-2007-08-02  Howard Butler <hobu.inc@gmail.com>
-
-	* src/spatialindex/SpatialIndexImpl.h: add strings.h
-
-2007-08-02  Howard Butler <hobu.inc@gmail.com>
-
-	* src/mvrtree/MVRTree.cc: add strings.h
-
-2007-08-02  Howard Butler <hobu.inc@gmail.com>
-
-	* src/rtree/RTree.cc: add strings.h
-
-2007-08-02  Howard Butler <hobu.inc@gmail.com>
-
-	* src/rtree/Node.cc: add strings.h
-
-2007-08-02  Howard Butler <hobu.inc@gmail.com>
-
-	* src/rtree/Leaf.cc: include <strings.h>
-
-2007-08-02  Howard Butler <hobu.inc@gmail.com>
-
-	* src/storagemanager/DiskStorageManager.cc: include <strings.h> in
-	DiskStorageManager (this is not available on Solaris by default)
-
-2007-08-01  Howard Butler <hobu.inc@gmail.com>
-
-	* regressiontest/rtree/test1/data,
-	regressiontest/rtree/test1/queries: add data and queries for tests
-
-2007-08-01  Howard Butler <hobu.inc@gmail.com>
-
-	* INSTALL, Makefile.in, README, aclocal.m4,
-	regressiontest/Makefile.in, regressiontest/mvrtree/Makefile.in,
-	regressiontest/rtree/Makefile.in,
-	regressiontest/rtree/RTreeLoad.cc,
-	regressiontest/rtree/RTreeQuery.cc,
-	regressiontest/tprtree/Makefile.in, src/Makefile.in,
-	src/mvrtree/Makefile.in, src/rtree/Makefile.in,
-	src/spatialindex/Makefile.in, src/storagemanager/Makefile.in,
-	src/tprtree/Makefile.in: add Marios' latest updates
-
-2007-08-01  Howard Butler <hobu.inc@gmail.com>
-
-	* : oops, don't include zip files
-
-2007-08-01  Howard Butler <hobu.inc@gmail.com>
-
-	* AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am, Makefile.in,
-	NEWS, README, aclocal.m4, config.guess, config.sub, configure,
-	configure.ac, depcomp, include/MVRTree.h, include/MovingPoint.h,
-	include/MovingRegion.h, include/RTree.h, include/SpatialIndex.h,
-	include/TPRTree.h, include/TimePoint.h, include/TimeRegion.h,
-	install-sh, ltmain.sh, missing, mkinstalldirs,
-	regressiontest/Makefile.am, regressiontest/Makefile.in,
-	regressiontest/mvrtree/Exhaustive.cc,
-	regressiontest/mvrtree/Generator.cc,
-	regressiontest/mvrtree/MVRTreeLoad.cc,
-	regressiontest/mvrtree/MVRTreeQuery.cc,
-	regressiontest/mvrtree/Makefile.am,
-	regressiontest/mvrtree/Makefile.in,
-	regressiontest/mvrtree/test1/run, regressiontest/mvrtree/test2/run,
-	regressiontest/rtree/Exhaustive.cc,
-	regressiontest/rtree/Generator.cc,
-	regressiontest/rtree/Makefile.am, regressiontest/rtree/Makefile.in,
-	regressiontest/rtree/RTreeBulkLoad.cc,
-	regressiontest/rtree/RTreeLoad.cc,
-	regressiontest/rtree/RTreeQuery.cc, regressiontest/rtree/test1/run,
-	regressiontest/rtree/test2/run, regressiontest/rtree/test3/run,
-	regressiontest/rtree/test4/run,
-	regressiontest/tprtree/Exhaustive.cc,
-	regressiontest/tprtree/Generator.cc,
-	regressiontest/tprtree/Makefile.am,
-	regressiontest/tprtree/Makefile.in,
-	regressiontest/tprtree/RandomGenerator.cc,
-	regressiontest/tprtree/RandomGenerator.h,
-	regressiontest/tprtree/TPRTreeLoad.cc,
-	regressiontest/tprtree/TPRTreeQuery.cc,
-	regressiontest/tprtree/test1/run, regressiontest/tprtree/test2/run,
-	src/Makefile.am, src/Makefile.in, src/mvrtree/Index.cc,
-	src/mvrtree/Index.h, src/mvrtree/Leaf.cc, src/mvrtree/Leaf.h,
-	src/mvrtree/MVRTree.cc, src/mvrtree/MVRTree.h,
-	src/mvrtree/Makefile.am, src/mvrtree/Makefile.in,
-	src/mvrtree/Node.cc, src/mvrtree/Node.h,
-	src/mvrtree/PointerPoolNode.h, src/mvrtree/Statistics.cc,
-	src/mvrtree/Statistics.h, src/rtree/BulkLoader.cc,
-	src/rtree/BulkLoader.h, src/rtree/Index.cc, src/rtree/Index.h,
-	src/rtree/Leaf.cc, src/rtree/Leaf.h, src/rtree/Makefile.am,
-	src/rtree/Makefile.in, src/rtree/Node.cc, src/rtree/Node.h,
-	src/rtree/PointerPoolNode.h, src/rtree/RTree.cc, src/rtree/RTree.h,
-	src/rtree/Statistics.cc, src/rtree/Statistics.h,
-	src/spatialindex/Makefile.am, src/spatialindex/Makefile.in,
-	src/spatialindex/MovingPoint.cc, src/spatialindex/MovingRegion.cc,
-	src/spatialindex/SpatialIndexImpl.cc,
-	src/spatialindex/SpatialIndexImpl.h, src/spatialindex/TimePoint.cc,
-	src/spatialindex/TimeRegion.cc, src/storagemanager/Buffer.cc,
-	src/storagemanager/Buffer.h,
-	src/storagemanager/DiskStorageManager.cc,
-	src/storagemanager/DiskStorageManager.h,
-	src/storagemanager/Makefile.am, src/storagemanager/Makefile.in,
-	src/storagemanager/MemoryStorageManager.cc,
-	src/storagemanager/MemoryStorageManager.h,
-	src/storagemanager/RandomEvictionsBuffer.cc,
-	src/storagemanager/RandomEvictionsBuffer.h, src/tprtree/Index.cc,
-	src/tprtree/Index.h, src/tprtree/Leaf.cc, src/tprtree/Leaf.h,
-	src/tprtree/Makefile.am, src/tprtree/Makefile.in,
-	src/tprtree/Node.cc, src/tprtree/Node.h,
-	src/tprtree/PointerPoolNode.h, src/tprtree/Statistics.cc,
-	src/tprtree/Statistics.h, src/tprtree/TPRTree.cc,
-	src/tprtree/TPRTree.h: add 1.1.1 version of library
-
-2007-08-01  Howard Butler <hobu.inc@gmail.com>
-
-	* basic layout
+2012-11-16
+	* Howard Butler <hobu.inc@gmail.com> define pthread when we have it (11:34:50)
+	* Howard Butler <hobu.inc@gmail.com> SharedLock was renamed to LockGuard - fix up patch for #15 (11:15:13)
+
+2012-11-15
+	* Howard Butler <hobu.inc@gmail.com> Merge branch 'containsWhatQuery' (15:17:18)
+
+2012-11-12
+	* Howard Butler <hobu.inc@gmail.com> link to libspatialindex.org (11:02:13)
+
+2012-11-04
+	* Howard Butler <hobu.inc@gmail.com> point to http://libspatialindex.org as our new URL (14:10:54)
+	* Howard Butler <hobu.inc@gmail.com> update to point to http://libspatialindex.github.com (14:06:00)
+	* Howard Butler <hobu.inc@gmail.com> try again (13:54:58)
+	* Howard Butler <hobu.inc@gmail.com> adapt a patch for #15 to be able to incorporate a more efficient containsWhatQuery method (12:43:28)
+	* Howard Butler <hobu.inc@gmail.com> update versions to 1.8.0 in prep for upcoming release (12:31:13)
+	* Howard Butler <hobu.inc@gmail.com> update versions to 1.8.0 in prep for upcoming release (12:31:03)
+	* Howard Butler <hobu.inc@gmail.com> update main page to try to get github includes working (11:03:21)
+	* Howard Butler <hobu.inc@gmail.com> use CMake if you want windows makefiles builds (11:02:30)
+	* Howard Butler <hobu.inc@gmail.com> update AUTHORS with links to Mattias and Leonard (11:00:53)
+
+2012-10-25
+	* Howard Butler <hobu.inc@gmail.com> update licensing of base library to MIT, update docs accordingly (14:06:08)
+	* Howard Butler <hobu.inc@gmail.com> update licensing of C API (12:18:19)
+	* Howard Butler <hobu.inc@gmail.com> use local imports for public within-tree public includes #14 (10:49:20)
+	* Howard Butler <hobu.inc@gmail.com> adapt a patch to fix #12 -- allow cross-compilation on ANDROID (10:22:46)
+	* Howard Butler <hobu.inc@gmail.com> Merge pull request #8 from booo/master (10:03:27)
+
+2012-07-14
+	* Marios Hadjieleftheriou <mhadji@gmail.com> Reverted to using pthread mutex and exlusively lock all queries, since fine grain locking using spinlocks was too slow. (09:57:39)
+	* Marios Hadjieleftheriou <mhadji@gmail.com> Reverted to using pthread mutex for all queries, since fine grain locking using spinlocks was too slow. (09:52:34)
+
+2012-07-10
+	* Howard Butler <hobu.inc@gmail.com> attempt to use sched_yield for instances where pthread_yield doesn't exist (osx) -- please check this marios (15:54:01)
+	* Howard Butler <hobu.inc@gmail.com> put #ifdef guards around LockGuard which is only implemented for pthread for now (15:52:32)
+	* Howard Butler <hobu.inc@gmail.com> add check for pthread (15:52:09)
+	* Howard Butler <hobu.inc@gmail.com> be explicit about which overloads should be used to silence the warning about implementation hiding (15:51:32)
+
+2012-07-09
+	* Marios Hadjieleftheriou <mhadji@gmail.com> Added SpinLock to fix multi-threaded support bug. Removed silly non atomic m_rwLock when pthreads is not found. (10:00:41)
+
+2012-04-17
+	* Howard Butler <hobu.inc@gmail.com> make sure _c library gets soversion and that we install in include/spatialindex instead of install/libspatialindex (15:36:27)
+
+2012-04-09
+	* booo <borgers@mi.fu-berlin.de> src/CMakeLists.txt: fix issue #6 (16:28:50)
+	* booo <borgers@mi.fu-berlin.de> Merge branch 'master' of https://github.com/libspatialindex/libspatialindex (16:26:48)
+
+2012-04-03
+	* Marios Hadjieleftheriou <mhadji@gmail.com> Added flush() in IStorageManger interface. (13:10:45)
+
+2012-03-03
+	* booo <borgers@mi.fu-berlin.de> autogen.sh: check if libtoolize exists (08:03:59)
+
+2012-02-16
+	* Marios Hadjieleftheriou <mhadji@gmail.com> replace bzero with memset (09:18:13)
+
+2012-02-07
+	* Howard Butler <hobu.inc@gmail.com> add bit depth prefix to library name output (18:19:48)
+
+2011-12-29
+	* Howard Butler <hobu.inc@gmail.com> add explicit links to download (08:20:41)
+
+2011-12-09
+	* Howard Butler <hobu.inc@gmail.com> add back (copy) of README to placate automake (20:16:38)
+	* Howard Butler <hobu.inc@gmail.com> increment versions to 1.7.1 in preparation for release (20:11:06)
+	* Howard Butler <hobu.inc@gmail.com> rename so github renders it (20:08:51)
+
+2011-12-06
+	* Howard Butler <hobu.inc@gmail.com> increment soversion for both cmake and autoconf builds (12:32:52)
+
+2011-10-19
+	* Howard Butler <hobu.inc@gmail.com> update permissions for #3 (12:41:36)
+	* Howard Butler <hobu.inc@gmail.com> apply variation of patch in #4 (12:36:34)
+	* Howard Butler <hobu.inc@gmail.com> update packaging script for #7 (12:33:25)
+
+2011-10-14
+	* Howard Butler <hobu.inc@gmail.com> update ChangeLog (12:44:43)
+	* Howard Butler <hobu.inc@gmail.com> oops, need line separators (12:44:38)
+	* Howard Butler <hobu.inc@gmail.com> update ChangeLog (12:43:43)
+	* Howard Butler <hobu.inc@gmail.com> distribut test running scripts too (12:43:33)
+	* Howard Butler <hobu.inc@gmail.com> update ChangeLog (12:34:57)
+	* Howard Butler <hobu.inc@gmail.com> newline (12:34:48)
+	* Howard Butler <hobu.inc@gmail.com> update ChangeLog (12:31:54)
+	* Howard Butler <hobu.inc@gmail.com> update release date (12:31:43)
+	* Howard Butler <hobu.inc@gmail.com> update ChangeLog again (12:15:57)
+	* Howard Butler <hobu.inc@gmail.com> fixes to be able to make things work on msvc 10 (12:12:54)
+	* Howard Butler <hobu.inc@gmail.com> only redefine c++0x types if we're <= msvc_ver 1500 (12:12:36)
+	* Howard Butler <hobu.inc@gmail.com> add definition to make sure we export symbols in windows land (12:11:51)
+	* Howard Butler <hobu.inc@gmail.com> namespace usings and such to satisfy msvc 10 (11:49:40)
+	* Howard Butler <hobu.inc@gmail.com> more ignores (11:49:24)
+	* Howard Butler <hobu.inc@gmail.com> check for msvc 10 (11:40:45)
+	* Howard Butler <hobu.inc@gmail.com> update ChangeLog (11:26:39)
+	* Howard Butler <hobu.inc@gmail.com> missing reference to file (11:20:14)
+	* Howard Butler <hobu.inc@gmail.com> missing reference to file (11:19:02)
+	* Howard Butler <hobu.inc@gmail.com> this file is now gone (11:17:10)
+	* Howard Butler <hobu.inc@gmail.com> add pkg-config script for libspatialindex -- autoconf build only for now (11:01:17)
+	* Howard Butler <hobu.inc@gmail.com> typo (10:28:04)
+	* Howard Butler <hobu.inc@gmail.com> move Makefile.am up (10:23:23)
+	* Howard Butler <hobu.inc@gmail.com> start fixing up automake include structure (10:20:16)
+	* Howard Butler <hobu.inc@gmail.com> include was still busted (10:06:05)
+	* Howard Butler <hobu.inc@gmail.com> fix include path (10:04:08)
+	* Howard Butler <hobu.inc@gmail.com> add function detection to cmake config (09:25:08)
+	* Howard Butler <hobu.inc@gmail.com> point to doxygen output (09:14:18)
+	* Howard Butler <hobu.inc@gmail.com> more doc rearranging (08:53:17)
+	* Howard Butler <hobu.inc@gmail.com> add doxygen configuration -- run doxygen docs/doxygen/doxygen.conf from the top level directory to get output (08:38:07)
+	* Howard Butler <hobu.inc@gmail.com> more ignore (08:37:39)
+	* Howard Butler <hobu.inc@gmail.com> more ignores (08:36:45)
+
+2011-10-13
+	* Howard Butler <hobu.inc@gmail.com> a little proposed whitespace normalization -- my terminal isn't 250 characters long :) (21:18:10)
+	* Howard Butler <hobu.inc@gmail.com> remove SpatialIndexImpl.h, which didn't seem to be used to hide the implementation and was contributing to relative include spaghetti (21:14:01)
+	* Howard Butler <hobu.inc@gmail.com> #include file deck chair rearrangement (20:54:22)
+	* Howard Butler <hobu.inc@gmail.com> #include file deck chair rearrangement (20:49:45)
+	* Howard Butler <hobu.inc@gmail.com> don't add -ansi to clang compiles (16:31:05)
+	* Howard Butler <hobu.inc@gmail.com> unsigned values can never be <0, no need to test for this (16:30:50)
+	* Howard Butler <hobu.inc@gmail.com> clean up some warnings that clang found (16:25:05)
+	* Howard Butler <hobu.inc@gmail.com> unsigned values can never be <0, no need to test for this (16:24:46)
+
+2011-10-11
+	* Howard Butler <hobu.inc@gmail.com> regressiontest directory changed names (11:33:56)
+	* Howard Butler <hobu.inc@gmail.com> rename regressiontest directory to test/ directory for added clarity.  maybe next release we can have these test be auto-run with 'make test' (11:20:47)
+	* Howard Butler <hobu.inc@gmail.com> check for an existing srand48, and if we have it, don't use our local one (11:03:21)
+	* Howard Butler <hobu.inc@gmail.com> CMake for regressiontests (11:02:45)
+
+2011-10-10
+	* Howard Butler <hobu.inc@gmail.com> start organizing docs (23:01:48)
+	* Howard Butler <hobu.inc@gmail.com> update CMakeLists.txt when releasing too (23:01:37)
+	* Howard Butler <hobu.inc@gmail.com> c/p fix (23:01:23)
+	* Howard Butler <hobu.inc@gmail.com> add dummy file (22:38:19)
+	* Howard Butler <hobu.inc@gmail.com> makefile for sphinx (22:37:20)
+	* Howard Butler <hobu.inc@gmail.com> more cmake config (22:31:04)
+	* Howard Butler <hobu.inc@gmail.com> ignore more (22:31:00)
+	* Howard Butler <hobu.inc@gmail.com> clean up warning (22:30:22)
+
+2011-10-09
+	* Howard Butler <hobu.inc@gmail.com> add cmake config (22:59:20)
+	* Howard Butler <hobu.inc@gmail.com> ignore cmake stuff (22:58:56)
+
+2011-10-06
+	* Howard Butler <hobu.inc@gmail.com> attempt 2 on #1 to fix rand in stdlib on newer gcc's (14:32:42)
+	* Howard Butler <hobu.inc@gmail.com> a fix for #1 because gcc 4.5.2 appears to have these defined in stdlib.h (13:41:09)
+
+2011-09-26
+	* Howard Butler <hobu.inc@gmail.com> add documentation for http://libspatialindex.github.com (16:10:17)
+
+2011-09-25
+	* Howard Butler <hobu.inc@gmail.com> increment versions in preparation for release (20:44:57)
+
+2011-07-15
+	* Howard Butler <hobu.inc@gmail.com> use int64_t for IDs instead of uint64_t's (12:12:48)
+	* Howard Butler <hobu.inc@gmail.com> clean up warnings (10:55:15)
+	* Howard Butler <hobu.inc@gmail.com> initialize variables to 0's before we use them (10:51:50)
+	* Howard Butler <hobu.inc@gmail.com> fix up initialization order (10:48:07)
+	* Howard Butler <hobu.inc@gmail.com> use -pedantic for compilation (10:42:11)
+	* Howard Butler <hobu@ember.hobu.biz> add .gitignore (10:40:44)
+
+2011-05-18
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (10:20:08)
+
+2011-03-01
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (08:50:59)
+
+2011-01-10
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (09:53:08)
+
+2010-12-04
+	* Howard Butler <hobu.inc@gmail.com> bump version in prep for 1.6.1 release (15:22:32)
+
+2010-11-22
+	* Sean Gillies <sean.gillies@gmail.com> Fix test of length value (13:53:16)
+	* Howard Butler <hobu.inc@gmail.com> whitespace normalization (13:23:02)
+	* Sean Gillies <sean.gillies@gmail.com> Add up deltas for multidimensional input (13:00:24)
+	* Sean Gillies <sean.gillies@gmail.com> Add up deltas for multidimensional input (12:49:10)
+	* Howard Butler <hobu.inc@gmail.com> revert r193 (12:46:06)
+	* Howard Butler <hobu.inc@gmail.com> we should set isPoint to true if we pass our epsilon test -- this didn't work before (10:02:47)
+
+2010-10-14
+	* Marios Hadjieleftheriou <mhadji@gmail.com> Removed nextUnifromLongDouble. It was incorrect (08:18:23)
+
+2010-10-13
+	* Marios Hadjieleftheriou <mhadji@gmail.com> Added nextUniformLongDouble (10:10:35)
+
+2010-09-16
+	* Howard Butler <hobu.inc@gmail.com> fix #25 and include visual studio files in the release (08:56:14)
+	* Howard Butler <hobu.inc@gmail.com> bump versions in preparation for release (08:53:22)
+	* Howard Butler <hobu.inc@gmail.com> bump versions in preparation for release (08:52:38)
+
+2010-06-19
+	* Howard Butler <hobu.inc@gmail.com> add Matthias' CustomStorage backend for C API (15:34:19)
+
+2010-04-21
+	* Howard Butler <hobu.inc@gmail.com> Add Marios' pagesize diatribe to the docs (13:50:02)
+
+2010-04-12
+	* Howard Butler <hobu.inc@gmail.com> update ChangeLog (14:56:52)
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (12:17:47)
+	* Marios Hadjieleftheriou <mhadji@gmail.com> Fixed rtree/BulkLoader infinit loop bug (12:07:13)
+
+2010-03-31
+	* Howard Butler <hobu.inc@gmail.com> format and layout normalization (10:33:43)
+
+2010-03-30
+	* Howard Butler <hobu.inc@gmail.com> ensure that we instantiate the ivOut with at least the ivIn so we have a properly constructed Tools::Interval #16 (15:18:40)
+
+2010-03-05
+	* Howard Butler <hobu.inc@gmail.com> add doc describing how to release (08:19:51)
+
+2010-03-04
+	* Howard Butler <hobu.inc@gmail.com> propsets to ignore test output: (20:56:08)
+	* Howard Butler <hobu.inc@gmail.com> use subdir-objects for automake and rename the make dist output to spatialindex-src (20:53:18)
+	* Howard Butler <hobu.inc@gmail.com> increment version info in preparation for release (20:52:47)
+	* Howard Butler <hobu.inc@gmail.com> update for release (19:59:41)
+	* Howard Butler <hobu.inc@gmail.com> add CountVisitor to the CAPI to provide a cumulation of the number of hits that land within a query (10:33:28)
+
+2010-03-03
+	* Howard Butler <hobu.inc@gmail.com> use uint64_t for result counts instead of uint32_t in C API (15:55:09)
+
+2009-12-28
+	* Howard Butler <hobu.inc@gmail.com> fix up for gcc 4.4 (20:35:01)
+
+2009-12-04
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (15:57:15)
+	* Marios Hadjieleftheriou <mhadji@gmail.com> Fixed Region::touchesRegion member function bug. (12:46:19)
+
+2009-11-05
+	* Howard Butler <hobu.inc@gmail.com> don't thrown an error when -DDEBUG is on and we initialize an infinite Region (10:26:45)
+
+2009-11-02
+	* Howard Butler <hobu.inc@gmail.com> pass in a reference for the query bounds (21:10:46)
+	* Howard Butler <hobu.inc@gmail.com> try to do no harm when calling Index_Free on something that's null (21:04:49)
+	* Howard Butler <hobu.inc@gmail.com> pass in a reference for the query bounds (21:00:54)
+	* Howard Butler <hobu.inc@gmail.com> copy the array using memcpy because we can't free() something created with new (20:15:41)
+	* Howard Butler <hobu.inc@gmail.com> put the data in a newly malloc'd array to match our std::free call of Index_Delete (19:48:00)
+	* Howard Butler <hobu.inc@gmail.com> make sure to delete our shape when we're done (15:32:57)
+	* Howard Butler <hobu.inc@gmail.com> get dimension from the Region, no need to fetch from index properties (15:32:26)
+	* Howard Butler <hobu.inc@gmail.com> make sure we clean up the bounds and region (14:53:30)
+	* Howard Butler <hobu.inc@gmail.com> only #include <limits> where needed, and not in the global Tools.h file (14:08:16)
+
+2009-10-30
+	* Howard Butler <hobu.inc@gmail.com> remove <cmath> <limits> and <climits> from Tools.h and include them seperately in each file that needs them (12:09:14)
+	* Howard Butler <hobu.inc@gmail.com> define to denote we're C API (11:37:11)
+	* Howard Butler <hobu.inc@gmail.com> add a newline (10:03:47)
+
+2009-10-21
+	* Howard Butler <hobu.inc@gmail.com> make sure we use new/delete instead of new/free (21:42:21)
+	* Howard Butler <hobu.inc@gmail.com> remove namespace pollution of Tools:: into the globally include'd header SpatialIndex.h (12:35:24)
+
+2009-10-20
+	* Howard Butler <hobu.inc@gmail.com> bump versions in preparation for release (10:24:18)
+
+2009-10-19
+	* Howard Butler <hobu.inc@gmail.com> add SIDX_Version prototype (15:31:14)
+	* Howard Butler <hobu.inc@gmail.com> ltmain.sh doesn't belong in svn (15:23:59)
+	* Howard Butler <hobu.inc@gmail.com> Makefile.in's don't belong in svn (15:23:48)
+	* Howard Butler <hobu.inc@gmail.com> C API compilation fix (13:50:42)
+	* Howard Butler <hobu.inc@gmail.com> tmpname fixes so we compile on msvc2003 (13:50:31)
+	* Howard Butler <hobu.inc@gmail.com> don't define a variable to "" or cl will complain (13:29:17)
+
+2009-10-08
+	* Howard Butler <hobu.inc@gmail.com> bleaf and bindex switched around in createLevel call (14:32:03)
+
+2009-09-17
+	* Howard Butler <hobu.inc@gmail.com> more leaf querying code (15:40:25)
+
+2009-09-16
+	* Howard Butler <hobu.inc@gmail.com> add beginnings of leaf querying to C API (13:45:57)
+
+2009-09-15
+	* Howard Butler <hobu.inc@gmail.com> remove the duplicate and unnecessary Item construct that was masking the already existing IData interface (22:34:14)
+
+2009-08-31
+	* Howard Butler <hobu.inc@gmail.com> support building the c api (10:32:06)
+
+2009-08-24
+	* Howard Butler <hobu.inc@gmail.com> fix issue with uint32_t by copying macros from Tools.h (08:25:53)
+
+2009-08-19
+	* Howard Butler <hobu.inc@gmail.com> try to ensure -lstdc++ is linked (15:47:58)
+	* Howard Butler <hobu.inc@gmail.com> ignores (14:56:31)
+	* Howard Butler <hobu.inc@gmail.com> add C API (not currently built on windows) (11:37:50)
+	* Howard Butler <hobu.inc@gmail.com> ignore propset (10:25:06)
+	* Howard Butler <hobu.inc@gmail.com> propsets to ignore test results (10:24:15)
+
+2009-08-18
+	* Howard Butler <hobu.inc@gmail.com> locking for Tools::PropertySet (commented out though because it doesn't work (13:07:34)
+
+2009-08-14
+	* Howard Butler <hobu.inc@gmail.com> comment out PropertySet locking for now (12:41:31)
+	* Howard Butler <hobu.inc@gmail.com> use HAVE_PTHREAD_H for #ifdef, make Tools::PropertySet threadsafe for read/write (10:19:40)
+
+2009-08-13
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (14:10:02)
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (10:42:43)
+	* Marios Hadjieleftheriou <mhadji@gmail.com> 1. Replace size_t with uint32_t to fix 64/32 bit compatibility issues 2. Fixed memory bug related to data array and bulk loading for RTree. (10:24:35)
+
+2009-08-10
+	* Howard Butler <hobu.inc@gmail.com> remove #define interface, use class (08:35:22)
+
+2009-08-05
+	* Howard Butler <hobu.inc@gmail.com> osgeo4w packaging (20:11:54)
+	* Howard Butler <hobu.inc@gmail.com> don't redefine interface if it is already defined (/me scowls at windows (15:21:47)
+	* Howard Butler <hobu.inc@gmail.com> comment out record deletion entirely (14:27:33)
+	* Howard Butler <hobu.inc@gmail.com> guard against invalid delete (12:58:43)
+
+2009-07-30
+	* Howard Butler <hobu.inc@gmail.com> bump version to 1.4.0 in prep for release, add a windows docs to the dist (13:48:52)
+	* Howard Butler <hobu.inc@gmail.com> Add a CheckFilesExists(Tools::PropertySet&) method instead of the cheap way we were checking for existence before.  This takes into account the file extensions and only returns true if both files exist (11:57:21)
+	* Howard Butler <hobu.inc@gmail.com> move the warning about 4251 down into _MSC_VER (11:56:37)
+
+2009-07-29
+	* Howard Butler <hobu.inc@gmail.com> new changelog (22:10:27)
+	* Howard Butler <hobu.inc@gmail.com> update for new layout.  make sure to build dll appropriately (21:32:41)
+	* Howard Butler <hobu.inc@gmail.com> turn off warning 4251 (16:24:23)
+	* Howard Butler <hobu.inc@gmail.com> fix #15 and provide a way to determine the library version at compile time (15:57:26)
+	* Howard Butler <hobu.inc@gmail.com> add back makefile.vc (15:50:19)
+
+2009-07-22
+	* Howard Butler <hobu.inc@gmail.com> a note about the debugging lint that is incorrect when the bounds are infinity (14:29:35)
+	* Howard Butler <hobu.inc@gmail.com> make sure to #include <cstring> to satisfy gcc 4.3+ (14:24:28)
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (10:23:22)
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (10:18:42)
+
+2009-07-21
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (08:11:09)
+
+2009-07-20
+	* Howard Butler <hobu.inc@gmail.com> attempt to fix #8 and allow users to specify extensions for the dat and idx files of the diskstorage manager (15:32:50)
+	* Howard Butler <hobu.inc@gmail.com> make sure to update existing values in setProperties instead of assuming it doesn't exist in the map (12:35:36)
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (10:01:52)
+
+2009-07-19
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (09:51:46)
+
+2009-07-18
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (20:26:54)
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (20:15:51)
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (20:13:28)
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (20:09:59)
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (20:02:29)
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (17:52:03)
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (17:19:51)
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (17:19:07)
+
+2009-07-15
+	* Howard Butler <hobu.inc@gmail.com> apply Willem's patch for #14 (09:39:07)
+
+2009-07-06
+	* Howard Butler <hobu.inc@gmail.com> more descriptive and separate exception descriptions for FillFactor inconsistencies (17:23:39)
+	* Howard Butler <hobu.inc@gmail.com> silence warnings about windows compiler complaints on non-windows systems (09:38:20)
+
+2009-05-28
+	* Howard Butler <hobu.inc@gmail.com> rename dlls to not have lib* in front of them (12:52:06)
+	* Howard Butler <hobu.inc@gmail.com> A much improved windows makefile based in libLAS' (11:31:33)
+	* Howard Butler <hobu.inc@gmail.com> On MSVC, just about every class complains about 4250, inheritance by dominance.  We'll just shut that up for now. (11:31:04)
+
+2009-05-14
+	* Howard Butler <hobu.inc@gmail.com> apply Patrick Mézard's patch for the inverted use of mktemp on windows #13 (13:26:54)
+	* Howard Butler <hobu.inc@gmail.com> Fix #12, add time.h so msvc9 works (13:21:20)
+
+2009-05-04
+	* Howard Butler <hobu.inc@gmail.com> apply the patch for #11 - cstring and limits includes so gcc 4.3+ works (12:10:20)
+
+2008-05-30
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (14:42:57)
+
+2008-05-23
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (13:27:25)
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (12:55:19)
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (12:28:17)
+
+2008-05-18
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (07:35:58)
+
+2008-04-30
+	* Howard Butler <hobu.inc@gmail.com> propset to ignore aclocal.m4 (00:39:52)
+	* Howard Butler <hobu.inc@gmail.com> aclocal.m4 is autogenerated.  removing (00:39:18)
+	* Howard Butler <hobu.inc@gmail.com> set svn:ignore properties for autogenerated files and automake cruft (00:35:53)
+	* Howard Butler <hobu.inc@gmail.com> delete Makefile.in's from source tree.  Use autogen.sh to remake them if building from svn source yourself (00:27:52)
+	* Howard Butler <hobu.inc@gmail.com> add rand48.h to dist target (00:26:18)
+
+2008-04-29
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (14:47:25)
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (13:17:22)
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (13:06:31)
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (13:03:50)
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (11:36:51)
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (11:36:38)
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (11:36:22)
+	* Marios Hadjieleftheriou <mhadji@gmail.com> Fixex malloc memory leak. (10:40:31)
+	* Marios Hadjieleftheriou <mhadji@gmail.com> Fixed malloc memory leak (10:40:11)
+
+2008-02-26
+	* Howard Butler <hobu.inc@gmail.com> oops.  Add missing file (10:15:43)
+	* Howard Butler <hobu.inc@gmail.com> oops.  Add missing file (10:14:56)
+
+2008-01-25
+	* Howard Butler <hobu.inc@gmail.com> Initial push of windows patches (13:43:36)
+
+2008-01-23
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (10:25:52)
+
+2008-01-21
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (08:19:44)
+
+2008-01-19
+	* Howard Butler <hobu.inc@gmail.com> bump version to 1.3 (14:51:44)
+	* Howard Butler <hobu.inc@gmail.com> Add an auto-generated ChangeLog (12:42:27)
+	* Howard Butler <hobu.inc@gmail.com> add myself and some notes (12:37:39)
+	* Howard Butler <hobu.inc@gmail.com> update to ReST (12:36:26)
+	* Howard Butler <hobu.inc@gmail.com> update ReST (12:09:45)
+	* Howard Butler <hobu.inc@gmail.com> update ReST (12:09:16)
+	* Howard Butler <hobu.inc@gmail.com> update ReST (12:03:40)
+	* Howard Butler <hobu.inc@gmail.com> update ReST (12:02:48)
+	* Howard Butler <hobu.inc@gmail.com> update ReST (12:02:10)
+	* Howard Butler <hobu.inc@gmail.com> update ReST (12:01:58)
+	* Howard Butler <hobu.inc@gmail.com> update ReST (11:59:42)
+	* Howard Butler <hobu.inc@gmail.com> update ReST (11:59:10)
+	* Howard Butler <hobu.inc@gmail.com> update ReST (11:58:53)
+	* Howard Butler <hobu.inc@gmail.com> update ReST (11:58:13)
+	* Howard Butler <hobu.inc@gmail.com> update ReST (11:56:33)
+	* Howard Butler <hobu.inc@gmail.com> update ReST (11:55:11)
+	* Howard Butler <hobu.inc@gmail.com> update ReST (11:29:26)
+	* Howard Butler <hobu.inc@gmail.com> update to ReST (11:26:06)
+	* Howard Butler <hobu.inc@gmail.com> set mimetype to reStructured text so Trac will render it for us in the browser (11:02:56)
+
+2008-01-17
+	* Howard Butler <hobu.inc@gmail.com> add internal headers to the _SOURCES targets so they get included in make dist (17:34:01)
+	* Howard Butler <hobu.inc@gmail.com> add autogen.sh to simplify auto stuff (11:06:18)
+	* Howard Butler <hobu.inc@gmail.com> move debian packaging stuff out of trunk (11:04:16)
+
+2008-01-15
+	* Howard Butler <hobu.inc@gmail.com> add nmake makefile (13:33:39)
+
+2007-12-07
+	* Kenneth Christiansen <kenneth.christiansen@openbossa.org> Wrong names (14:44:52)
+	* Kenneth Christiansen <kenneth.christiansen@openbossa.org> Fixed rules file (13:58:13)
+	* Kenneth Christiansen <kenneth.christiansen@openbossa.org> Updates to the control file (packaging) Removal of files that shouldn't be in SVN (12:10:46)
+
+2007-11-30
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (12:04:00)
+	* Sean Gillies <sean.gillies@gmail.com> Version info to 1:0:0 (10:50:02)
+
+2007-11-29
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (16:26:44)
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (15:54:08)
+	* Marios Hadjieleftheriou <mhadji@gmail.com>  (15:48:42)
+	* Sean Gillies <sean.gillies@gmail.com> Add debian directory created by dh_make (12:00:13)
+
+2007-11-28
+	* Howard Butler <hobu.inc@gmail.com> use -version-info instead of -release (22:05:27)
+	* Howard Butler <hobu.inc@gmail.com> include Makefile.in's (18:59:56)
+	* Howard Butler <hobu.inc@gmail.com>  use .'s to separate version info and don't do -no-undefined (18:55:06)
+	* Howard Butler <hobu.inc@gmail.com> tweak formatting (18:19:42)
+	* Sean Gillies <sean.gillies@gmail.com> Add version-info to Makefile.am (18:11:46)
+	* Howard Butler <hobu.inc@gmail.com> finish incorporating -ltools (17:54:30)
+	* Howard Butler <hobu.inc@gmail.com> more progress on automake for includes directories... close, but not quite (16:48:19)
+	* Howard Butler <hobu.inc@gmail.com> Add automake files for includes (16:38:55)
+	* Howard Butler <hobu.inc@gmail.com> start incorporating -ltools into the tree (15:03:45)
+
+2007-08-30
+	* Marios Hadjieleftheriou <mhadji@gmail.com> README should be INSTALL, and INSTALL should be README (10:16:33)
+	* Marios Hadjieleftheriou <mhadji@gmail.com> README should be INSTALL, and INSTALL should be README (10:15:49)
+	* Marios Hadjieleftheriou <mhadji@gmail.com> README file should be INSTALL, and INSTALL should be README (10:13:34)
+
+2007-08-01
+	* Howard Butler <hobu.inc@gmail.com> revert r9 (23:37:29)
+	* Howard Butler <hobu.inc@gmail.com> revert r10 (23:37:03)
+	* Howard Butler <hobu.inc@gmail.com> revert r11 (23:36:42)
+	* Howard Butler <hobu.inc@gmail.com> revert r12 (23:36:19)
+	* Howard Butler <hobu.inc@gmail.com> revert r13 (23:35:52)
+	* Howard Butler <hobu.inc@gmail.com> add strings.h (23:34:57)
+	* Howard Butler <hobu.inc@gmail.com> add strings.h (23:27:45)
+	* Howard Butler <hobu.inc@gmail.com> add strings.h (23:26:36)
+	* Howard Butler <hobu.inc@gmail.com> add strings.h (23:25:26)
+	* Howard Butler <hobu.inc@gmail.com> include <strings.h> (21:23:28)
+	* Howard Butler <hobu.inc@gmail.com> include <strings.h> in DiskStorageManager (this is not available on Solaris by default) (21:21:34)
+	* Howard Butler <hobu.inc@gmail.com> add data and queries for tests (15:49:33)
+	* Howard Butler <hobu.inc@gmail.com> add Marios' latest updates (15:48:13)
+	* Howard Butler <hobu.inc@gmail.com> oops, don't include zip files (15:40:50)
+	* Howard Butler <hobu.inc@gmail.com> add 1.1.1 version of library (15:37:49)
+	* Howard Butler <hobu.inc@gmail.com> basic layout (15:32:49)
 

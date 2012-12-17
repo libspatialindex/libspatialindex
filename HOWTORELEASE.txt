@@ -20,7 +20,7 @@ Release Process
     * sidx_version_major
     * sidx_version_minor
     * sidx_version_micro
-  - include/Version.h
+  - include/spatialindex/Version.h
     * SIDX_VERSION_MAJOR
     * SIDX_VERSION_MINOR
     * SIDX_VERSION_REV 
@@ -29,26 +29,60 @@ Release Process
     * SET(SIDX_VERSION_MAJOR "1")
     * SET(SIDX_VERSION_MINOR "7")
     * SET(SIDX_VERSION_PATCH "0")
-  - makefile.vc's
-    *PACKAGE_VERSION
+
 
 2) Update README to include any relevant info about the release that 
    might have changed.
 
-3) Update ChangeLog with svn2cl
+3) Update ChangeLog with git2cl
+
+  * git2cl . > ChangeLog
 
 4) Run the regression tests.  Really.
 
 5) Build Windows version
 
-  - Issue nmake and nmake install commands
-  
-  ::
-      
-      nmake /f makefile.vc clean
-      nmake /f makefile.vc
-      nmake /f makefile.vc install
-      nmake /f makefile.vc package
+    * 64 bit 2010 project
+        - Delete CMakeCache.txt
+        - Regenerate with cmake-gui
+        - Build project
+        - Copy files to safe place
+            * bin\Release\spatialindex-64.dll 
+            * bin\Release\spatialindex-64.lib 
+            * bin\Release\spatialindex_c-64.dll
+            * bin\Release\spatialindex_c-64.lib
+
+    * 32 bit 2008 project
+        - Delete CMakeCache.txt
+        - Regenerate with cmake-gui
+        - Build project
+        - Copy files to safe place
+            * bin\Release\spatialindex-32.dll 
+            * bin\Release\spatialindex-32.lib 
+            * bin\Release\spatialindex_c-32.dll
+            * bin\Release\spatialindex_c-32.lib
+
+
+    * 64 bit 2008 project
+        - Delete CMakeCache.txt
+        - Regenerate with cmake-gui
+        - Build project
+        - Copy files to safe place
+            * bin\Release\spatialindex-64.dll 
+            * bin\Release\spatialindex-64.lib 
+            * bin\Release\spatialindex_c-64.dll
+            * bin\Release\spatialindex_c-64.lib
+
+    * 32 bit 2008 project
+        - Delete CMakeCache.txt
+        - Regenerate with cmake-gui
+        - Build project
+        - Copy files to safe place
+            * bin\Release\spatialindex-32.dll 
+            * bin\Release\spatialindex-32.lib 
+            * bin\Release\spatialindex_c-32.dll
+            * bin\Release\spatialindex_c-32.lib            
+
     
 
 6) Make the source distribution
