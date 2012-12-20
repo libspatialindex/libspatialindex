@@ -65,6 +65,8 @@ namespace SpatialIndex
 		virtual double getArea() const;
 		virtual double getMinimumDistance(const IShape& in) const;
 
+		virtual bool intersectsLineSegment(const LineSegment& l) const;
+		virtual bool intersectsRegion(const Region& p) const;
 		virtual double getMinimumDistance(const Point& p) const;
 		//virtual double getMinimumDistance(const Region& r) const;
 		virtual double getRelativeMinimumDistance(const Point& p) const;
@@ -73,7 +75,7 @@ namespace SpatialIndex
 
 		virtual void makeInfinite(uint32_t dimension);
 		virtual void makeDimension(uint32_t dimension);
-
+        
 	public:
 		uint32_t m_dimension;
 		double* m_pStartPoint;
@@ -82,7 +84,19 @@ namespace SpatialIndex
 		friend class Region;
 		friend class Point;
 		friend SIDX_DLL std::ostream& operator<<(std::ostream& os, const LineSegment& pt);
-	}; // Point
+
+    protected:
+
+        //some helpers for intersects methods
+        static double doubleAreaTriangle(const Point& a, const Point& b, const Point& c); 
+        static bool leftOf(const Point& a, const Point& b, const Point& c); 
+        static bool collinear(const Point& a, const Point& b, const Point& c); 
+        static bool between(const Point& a, const Point& b, const Point& c); 
+        static bool between(double a, double b, double c); 
+        static bool intersectsProper(const Point& a, const Point& b, const Point& c, const Point& d); 
+        static bool intersects(const Point& a, const Point& b, const Point& c, const Point& d); 
+
+	}; // LineSegment
 
 	SIDX_DLL std::ostream& operator<<(std::ostream& os, const LineSegment& pt);
 }

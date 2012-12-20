@@ -163,6 +163,12 @@ void LineSegment::storeToByteArray(byte** data, uint32_t& len)
 //
 bool LineSegment::intersectsShape(const IShape& s) const
 {
+	const LineSegment* ps = dynamic_cast<const LineSegment*>(&s);
+	if (ps != 0) return intersectsLineSegment(*ps);
+
+	const Region* pr = dynamic_cast<const Region*>(&s);
+	if (pr != 0) return intersectsRegion(*pr);
+
 	throw Tools::IllegalStateException(
 		"LineSegment::intersectsShape: Not implemented yet!"
 	);
@@ -266,6 +272,42 @@ double LineSegment::getMinimumDistance(const Point& p) const
 	double y0 = p.m_pCoords[1];
 
 	return std::abs((x2 - x1) * (y1 - y0) - (x1 - x0) * (y2 - y1)) / (std::sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
+}
+
+bool LineSegment::intersectsRegion(const Region& r) const
+{
+	if (m_dimension != 2)
+		throw Tools::NotSupportedException(
+			"LineSegment::intersectsRegion: only supported for 2 dimensions"
+		);
+
+	if (m_dimension != r.m_dimension)
+		throw Tools::IllegalArgumentException(
+			"LineSegment::intersectsRegion: LineSegment and Region have different number of dimensions."
+		);
+
+    return r.intersectsLineSegment((*this));
+}
+
+bool LineSegment::intersectsLineSegment(const LineSegment& l) const
+{
+	if (m_dimension != 2)
+		throw Tools::NotSupportedException(
+			"LineSegment::intersectsLineSegment: only supported for 2 dimensions"
+		);
+
+	if (m_dimension != l.m_dimension)
+		throw Tools::IllegalArgumentException(
+			"LineSegment::intersectsLineSegment: LineSegments have different number of dimensions."
+		);
+
+    // use Geometry::intersects
+    Point p1, p2, p3, p4;
+    p1 = Point(m_pStartPoint, 2);
+    p2 = Point(m_pEndPoint, 2);
+    p3 = Point(l.m_pStartPoint, 2);
+    p4 = Point(l.m_pEndPoint, 2);
+    return intersects(p1, p2, p3, p4);
 }
 
 // assuming moving from start to end, positive distance is from right hand side.
@@ -383,7 +425,66 @@ void LineSegment::makeDimension(uint32_t dimension)
 	}
 }
 
-std::ostream& operator<<(std::ostream& os, const LineSegment& l)
+// compute double the area of the triangle created by points a, b and c (only for 2 dimensional points)
+double LineSegment::doubleAreaTriangle(const SpatialIndex::Point &a, const SpatialIndex::Point &b, const SpatialIndex::Point &c) {
+    double *pA, *pB, *pC;
+    pA = a.m_pCoords; pB = b.m_pCoords; pC = c.m_pCoords;
+    return (((pB[0] - pA[0]) * (pC[1] - pA[1])) - ((pC[0] - pA[0]) * (pB[1] - pA[1])));
+}
+
+// determine whether point c is to the left of the segment comprised of points a & b (2-d only)
+bool LineSegment::leftOf(const SpatialIndex::Point &a, const SpatialIndex::Point &b, const SpatialIndex::Point &c) {
+    return (doubleAreaTriangle(a, b, c) > 0);
+}
+
+// determine whether all 3 points are on the same line
+bool LineSegment::collinear(const SpatialIndex::Point &a, const SpatialIndex::Point &b, const SpatialIndex::Point &c) {
+    return (doubleAreaTriangle(a, b, c) == 0);
+}
+
+// determine whether the segment comprised of a, b and segment of c, d intersect (exclusive of their endpoints..hence the "Proper")
+bool LineSegment::intersectsProper(const SpatialIndex::Point &a, const SpatialIndex::Point &b, const SpatialIndex::Point &c, const SpatialIndex::Point &d) {
+    if ( collinear(a, b, c) || collinear(a, b, d) ||
+         collinear(c, d, a) || collinear(c, d, b)) {
+        return false;
+    }
+    return ((leftOf(a, b, c) ^ leftOf(a, b, d)) &&
+            (leftOf(c, d, a) ^ leftOf(c, d, b)));
+}
+
+// if the points are collinear, is c between a & b
+bool LineSegment::between(const SpatialIndex::Point &a, const SpatialIndex::Point &b, const SpatialIndex::Point &c) {
+    if ( !collinear(a, b, c) ) {
+        return false;
+    }
+    double *pA, *pB, *pC;
+    pA = a.m_pCoords; pB = b.m_pCoords; pC = c.m_pCoords;
+    if ( pA[0] != pB[0] ) { // a & b are not on the same vertical, compare on x axis
+        return  between(pA[0], pB[0], pC[0]);
+    } else { // a & b are a vertical segment, we need to compare on y axis
+        return between(pA[1], pB[1], pC[1]);
+    }
+}
+
+bool LineSegment::between(double a, double b, double c) {
+    return ( ((a <= c) && (c <= b)) || ((a >= c) && (c >= b)) );
+}
+
+// intersection test, including endpoints
+bool LineSegment::intersects(const SpatialIndex::Point &a, const SpatialIndex::Point &b, const SpatialIndex::Point &c, const SpatialIndex::Point &d) {
+    if (intersectsProper(a, b, c, d)) {
+        return true;
+    } 
+    else if ( between(a, b, c) || between(a, b, d) ||
+              between(c, d, a) || between(c, d, b) ) { 
+        return true;
+    }
+    else { 
+        return false;
+    }
+}
+
+std::ostream& SpatialIndex::operator<<(std::ostream& os, const LineSegment& l)
 {
 	for (uint32_t cDim = 0; cDim < l.m_dimension; ++cDim)
 	{

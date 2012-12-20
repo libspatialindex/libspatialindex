@@ -36,6 +36,7 @@
 namespace SpatialIndex
 {
 	class Point;
+	class LineSegment;
 	class Region;
 
 

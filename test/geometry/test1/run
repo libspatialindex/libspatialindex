@@ -1,0 +1,8 @@
+#! /bin/bash
+
+echo Testing Intersection
+if ../Intersection ; then
+    echo "Intersection Test Passed"
+else
+    echo "Intersection Test Failed"
+fi

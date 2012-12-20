@@ -182,6 +182,9 @@ bool Region::intersectsShape(const IShape& s) const
 	const Region* pr = dynamic_cast<const Region*>(&s);
 	if (pr != 0) return intersectsRegion(*pr);
 
+	const LineSegment* pls = dynamic_cast<const LineSegment*>(&s);
+	if (pls != 0) return intersectsLineSegment(*pls);
+
 	const Point* ppt = dynamic_cast<const Point*>(&s);
 	if (ppt != 0) return containsPoint(*ppt);
 
@@ -307,6 +310,7 @@ bool Region::touchesRegion(const Region& r) const
 	return true;
 }
 
+
 double Region::getMinimumDistance(const Region& r) const
 {
 	if (m_dimension != r.m_dimension)
@@ -333,6 +337,40 @@ double Region::getMinimumDistance(const Region& r) const
 	}
 
 	return std::sqrt(ret);
+}
+
+bool Region::intersectsLineSegment(const LineSegment& in) const
+{
+	if (m_dimension != 2)
+		throw Tools::NotSupportedException(
+			"Region::intersectsLineSegment: only supported for 2 dimensions"
+		);
+
+	if (m_dimension != in.m_dimension)
+		throw Tools::IllegalArgumentException(
+			"Region::intersectsRegion: Region and LineSegment have different number of dimensions."
+		);
+
+    // there may be a more efficient method, but this suffices for now
+    Point ll = Point(m_pLow, 2);
+    Point ur = Point(m_pHigh, 2);
+    // fabricate ul and lr coordinates and points
+    double c_ul[2] = {m_pLow[0], m_pHigh[1]};
+    double c_lr[2] = {m_pHigh[0], m_pLow[1]};
+    Point ul = Point(&c_ul[0], 2);
+    Point lr = Point(&c_lr[0], 2);
+
+    // Points/LineSegment for the segment
+    Point p1 = Point(in.m_pStartPoint, 2);
+    Point p2 = Point(in.m_pEndPoint, 2);
+    
+
+    //Check whether either or both the endpoints are within the region OR
+    //whether any of the bounding segments of the Region intersect the segment
+    return (containsPoint(p1) || containsPoint(p2) || 
+            in.intersectsShape(LineSegment(ll, ul)) || in.intersectsShape(LineSegment(ul, ur)) ||
+            in.intersectsShape(LineSegment(ur, lr)) || in.intersectsShape(LineSegment(lr, ll)));
+
 }
 
 bool Region::containsPoint(const Point& p) const
