@@ -73,6 +73,7 @@ AC_CONFIG_FILES([	Makefile
 					src/tprtree/Makefile
 		 			src/tools/Makefile
 		 			test/Makefile
+					test/geometry/Makefile
 					test/rtree/Makefile
 					test/mvrtree/Makefile
 					test/tprtree/Makefile])
