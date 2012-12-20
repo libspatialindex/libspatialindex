@@ -21,6 +21,7 @@ config.sub
 configure
 libtool
 ltmain.sh
+test/geometry/Intersection
 test/mvrtree/Exhaustive
 test/mvrtree/Generator
 regressiontest/mvrtree/MVRTreeLoad

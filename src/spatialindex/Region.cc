@@ -26,7 +26,6 @@
 ******************************************************************************/
 
 #include <spatialindex/SpatialIndex.h>
-#include <spatialindex/GeomUtil.h>
 
 #include <cstring>
 #include <cmath>
@@ -361,15 +360,16 @@ bool Region::intersectsLineSegment(const LineSegment& in) const
     Point ul = Point(&c_ul[0], 2);
     Point lr = Point(&c_lr[0], 2);
 
-    // Points for the segment
+    // Points/LineSegment for the segment
     Point p1 = Point(in.m_pStartPoint, 2);
     Point p2 = Point(in.m_pEndPoint, 2);
+    
 
     //Check whether either or both the endpoints are within the region OR
     //whether any of the bounding segments of the Region intersect the segment
     return (containsPoint(p1) || containsPoint(p2) || 
-            GeomUtil::intersects(ll, ul, p1, p2) || GeomUtil::intersects(ul, ur, p1, p2) ||
-            GeomUtil::intersects(ur, lr, p1, p2) || GeomUtil::intersects(lr, ll, p1, p2));
+            in.intersectsShape(LineSegment(ll, ul)) || in.intersectsShape(LineSegment(ul, ur)) ||
+            in.intersectsShape(LineSegment(ur, lr)) || in.intersectsShape(LineSegment(lr, ll)));
 
 }
 

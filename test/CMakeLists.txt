@@ -1,5 +1,15 @@
 include_directories(../include)
 
+set (DIR geometry)
+set (SOURCES 
+        Geom 
+        )
+
+foreach (test ${SOURCES})
+    add_executable(test-${DIR}-${test} ${DIR}/${test}.cc)
+    target_link_libraries(test-${DIR}-${test} ${SIDX_LIB_NAME})
+endforeach()
+
 set (DIR rtree)
 set (SOURCES 
         Exhaustive

@@ -22,7 +22,7 @@ done
 
 if test "$LIBTOOLIZE" = ""; then
     echo
-    echo "  glibtoolize or libtoolize not found. Givinig up!"
+    echo "  glibtoolize or libtoolize not found. Giving up!"
     echo
     exit 1
 fi
