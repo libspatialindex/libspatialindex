@@ -2,7 +2,7 @@ include_directories(../include)
 
 set (DIR geometry)
 set (SOURCES 
-        Geom 
+        Intersection 
         )
 
 foreach (test ${SOURCES})
