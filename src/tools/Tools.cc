@@ -35,6 +35,11 @@
 
 #include <cstring>
 
+#if (defined _WIN32 || defined _WIN64 || defined WIN32 || defined WIN64)
+#include <direct.h>
+#define mkdir _mkdir
+#endif
+
 #if HAVE_PTHREAD_H
 #if !defined(_POSIX_THREADS)
 #include <sched.h>	// for sched_yield()

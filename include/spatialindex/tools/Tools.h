@@ -27,7 +27,7 @@
 
 #pragma once
 
-#if defined _WIN32 || defined _WIN64 || defined WIN32 || defined WIN64
+#if (defined _WIN32 || defined _WIN64 || defined WIN32 || defined WIN64) && !defined __GNUC__
   typedef __int8 int8_t;
   typedef __int16 int16_t;
   typedef __int32 int32_t;
@@ -44,7 +44,7 @@
   #include <stdint.h>
 #endif
 
-#if defined _WIN32 || defined _WIN64 || defined WIN32 || defined WIN64
+#if (defined _WIN32 || defined _WIN64 || defined WIN32 || defined WIN64) && !defined __GNUC__
   #ifdef SPATIALINDEX_CREATE_DLL
     #define SIDX_DLL __declspec(dllexport)
   #else
