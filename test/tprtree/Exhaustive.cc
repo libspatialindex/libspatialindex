@@ -39,7 +39,7 @@ using namespace std;
 #define DELETE 0
 #define QUERY 2
 
-#if defined _WIN32 || defined _WIN64 || defined WIN32 || defined WIN64
+#if (defined _WIN32 || defined _WIN64 || defined WIN32 || defined WIN64) && !defined __GNUC__
 #if _MSC_VER <= 1500
   typedef __int8 int8_t;
   typedef __int16 int16_t;
