@@ -214,7 +214,7 @@ SIDX_DLL uint64_t IndexProperty_GetResultSetLimit(IndexPropertyH iprop);
 
 SIDX_C_DLL char* SIDX_Version();
 
-SIDX_C_DLL char* Error_GetLastErrorMsg(void);
+SIDX_C_DLL char* Error_GetLastErrorMsg(void); 
 
 IDX_C_END
 
