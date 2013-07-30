@@ -380,3 +380,28 @@ void Index::SetIndexVariant(RTStorageType v)
 		m_properties.setProperty("TreeVariant", var);	
 	}
 }
+
+uint64_t Index::GetResultSetLimit()
+{
+    Tools::Variant var;
+    var = m_properties.getProperty("ResultSetLimit");
+
+    if (var.m_varType != Tools::VT_EMPTY)
+    {
+        if (var.m_varType != Tools::VT_ULONG)
+            throw std::runtime_error("Index::ResultSetLimit: "
+                                     "Property ResultSetLimit must be Tools::VT_ULONG");
+        return var.m_val.ulVal;
+    }
+    
+    // if we didn't get anything, we're returning 0 as there is no limit
+    return 0;
+}
+
+void Index::SetResultSetLimit(uint64_t v)
+{
+    Tools::Variant var;
+    var.m_varType = Tools::VT_ULONG;
+    var.m_val.ulVal = v;
+    m_properties.setProperty("ResultSetLimit", var);
+}
