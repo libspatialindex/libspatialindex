@@ -166,6 +166,17 @@ SIDX_C_DLL void Index_Destroy(IndexH index)
 	if (idx) delete idx;
 }
 
+SIDX_C_DLL void Index_Flush(IndexH index)
+{
+	VALIDATE_POINTER0(index, "Index_Flush");
+	Index* idx = (Index*) index;
+	if (idx)
+	{
+		idx->flush();
+	}
+}
+
+
 SIDX_C_DLL RTError Index_DeleteData(  IndexH index, 
 									int64_t id, 
 									double* pdMin, 
@@ -277,9 +288,10 @@ SIDX_C_DLL RTError Index_Intersects_obj(  IndexH index,
 {
 	VALIDATE_POINTER1(index, "Index_Intersects_obj", RT_Failure);	   
 	Index* idx = static_cast<Index*>(index);
-	uint64_t nResultLimit, nResultCount, nStart;
+	uint64_t nResultLimit, nResultCount, nResultOffset;
 
 	nResultLimit = idx->GetResultSetLimit();
+	nResultOffset = idx->GetResultSetOffset();
 
 	ObjVisitor* visitor = new ObjVisitor;
 	try {	 
@@ -291,20 +303,21 @@ SIDX_C_DLL RTError Index_Intersects_obj(  IndexH index,
 
 		if (nResultLimit == 0)
 		{
-
+			// no offset paging
 			nResultLimit = visitor->GetResultCount();
-			nStart = 0;
+			nResultOffset = 0;
 		}
 		else
 		{
-			if ((nResultCount - nResultLimit) < 0)
+			if ((nResultCount - (nResultOffset + nResultLimit)) < 0)
 			{
-				nStart = 0;
-				nResultLimit = nResultCount;
+				// not enough results to fill nResultCount
+				nResultOffset = std::min(nResultOffset, nResultCount);
+				nResultCount = nResultOffset + std::min(nResultLimit, nResultCount - nResultOffset);
 			}
 			else
 			{
-				nStart = nResultCount - nResultLimit;
+				nResultCount = std::min(nResultCount, nResultOffset + nResultLimit);
 			}
 		}
 
@@ -316,12 +329,12 @@ SIDX_C_DLL RTError Index_Intersects_obj(  IndexH index,
 		// we need to make sure to copy the actual Item instead 
 		// of just the pointers, as the visitor will nuke them 
 		// upon ~
-		for (uint64_t i=nStart; i < nResultCount; ++i)
+		for (uint64_t i=nResultOffset; i < nResultCount; ++i)
 		{
 			SpatialIndex::IData* result =results[i];
-			(*items)[i - nStart] =  dynamic_cast<SpatialIndex::IData*>(result->clone());
+			(*items)[i - nResultOffset] =  dynamic_cast<SpatialIndex::IData*>(result->clone());
 		}
-		*nResults = nResultLimit;
+		*nResults = nResultCount - nResultOffset;
 		
         delete r;
 		delete visitor;
@@ -801,6 +814,30 @@ SIDX_C_DLL RTError Index_GetBounds(	  IndexH index,
 		return RT_Failure;		  
 	}
 	return RT_None;
+}
+
+SIDX_DLL RTError Index_SetResultSetOffset(IndexH index, uint64_t value)
+{
+	try
+	{
+		VALIDATE_POINTER1(index, "Index_SetResultSetOffset", RT_Failure); 
+		Index* idx = static_cast<Index*>(index);
+		idx->SetResultSetOffset(value);
+	}
+	catch (...) {
+		Error_PushError(RT_Failure, 
+						"Unknown Error", 
+						"Index_SetResultSetOffset");
+		return RT_Failure;		  
+	}
+	return RT_None;
+}
+
+SIDX_DLL uint64_t Index_GetResultSetOffset(IndexH index)
+{
+	VALIDATE_POINTER1(index, "Index_GetResultSetOffset", 0); 
+	Index* idx = static_cast<Index*>(index);
+	return idx->GetResultSetOffset();
 }
 
 SIDX_DLL RTError Index_SetResultSetLimit(IndexH index, uint64_t value)

@@ -381,6 +381,32 @@ void Index::SetIndexVariant(RTStorageType v)
 	}
 }
 
+uint64_t Index::GetResultSetOffset()
+{
+    Tools::Variant var;
+    var = m_properties.getProperty("ResultSetOffset");
+
+    if (var.m_varType != Tools::VT_EMPTY)
+    {
+        if (var.m_varType != Tools::VT_ULONG)
+            throw std::runtime_error("Index::ResultSetOffset: "
+                                     "Property ResultSetOffset must be Tools::VT_ULONG");
+        return var.m_val.ulVal;
+    }
+    
+    // if we didn't get anything, we're returning 0 as there is no limit
+    return 0;
+}
+
+void Index::SetResultSetOffset(uint64_t v)
+{
+    Tools::Variant var;
+    var.m_varType = Tools::VT_ULONG;
+    var.m_val.ulVal = v;
+    m_properties.setProperty("ResultSetOffset", var);
+}
+
+
 uint64_t Index::GetResultSetLimit()
 {
     Tools::Variant var;
@@ -404,4 +430,9 @@ void Index::SetResultSetLimit(uint64_t v)
     var.m_varType = Tools::VT_ULONG;
     var.m_val.ulVal = v;
     m_properties.setProperty("ResultSetLimit", var);
+}
+
+void Index::flush()
+{
+	m_storage->flush();
 }
