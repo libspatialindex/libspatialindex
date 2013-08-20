@@ -50,6 +50,7 @@ namespace SpatialIndex
 				std::vector<id_type> m_pages;
 			};
 
+		protected:
 			std::fstream m_dataFile;
 			std::fstream m_indexFile;
 			uint32_t m_pageSize;

@@ -108,9 +108,16 @@ SIDX_C_DLL RTError Index_GetLeaves( IndexH index,
 									double*** pppdMax, 
 									uint32_t* nDimension);
 
+SIDX_DLL RTError Index_SetResultSetOffset(IndexH index, uint64_t value);
+SIDX_DLL uint64_t Index_GetResultSetOffset(IndexH index);
+
+SIDX_DLL RTError Index_SetResultSetLimit(IndexH index, uint64_t value);
+SIDX_DLL uint64_t Index_GetResultSetLimit(IndexH index);
+
 SIDX_DLL void Index_DestroyObjResults(IndexItemH* results, uint32_t nResults);
 SIDX_DLL void Index_ClearBuffer(IndexH index);
 SIDX_DLL void Index_Free(void* object);
+SIDX_DLL void Index_Flush(IndexH index);
 
 SIDX_DLL void IndexItem_Destroy(IndexItemH item);
 SIDX_DLL int64_t IndexItem_GetID(IndexItemH item);
@@ -206,7 +213,12 @@ SIDX_DLL int64_t IndexProperty_GetIndexID(IndexPropertyH iprop);
 SIDX_C_DLL void* SIDX_NewBuffer(size_t bytes);
 SIDX_C_DLL void  SIDX_DeleteBuffer(void* buffer);
 
+SIDX_DLL RTError IndexProperty_SetResultSetLimit(IndexPropertyH iprop, uint64_t value);
+SIDX_DLL uint64_t IndexProperty_GetResultSetLimit(IndexPropertyH iprop);
+
 SIDX_C_DLL char* SIDX_Version();
+
+SIDX_C_DLL char* Error_GetLastErrorMsg(void); 
 
 IDX_C_END
 
