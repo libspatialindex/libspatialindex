@@ -118,6 +118,10 @@ Tools::PropertySet* GetDefaults()
 	var.m_varType = Tools::VT_ULONG;
 	var.m_val.ulVal = 4096;
 	ps->setProperty("PageSize", var);
+
+	var.m_varType = Tools::VT_ULONG;
+	var.m_val.ulVal = 0;
+	ps->setProperty("ResultSetLimit", var);
 	
 	// Our custom properties related to whether 
 	// or not we are using a disk or memory storage manager

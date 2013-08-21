@@ -48,7 +48,15 @@ public:
     
     RTIndexVariant GetIndexVariant();
     void SetIndexVariant(RTStorageType v);
-    
+
+    uint64_t GetResultSetOffset();
+    void SetResultSetOffset(uint64_t v);
+
+    uint64_t GetResultSetLimit();
+    void SetResultSetLimit(uint64_t v);
+
+    void flush();
+
     SpatialIndex::ISpatialIndex& index() {return *m_rtree;}
     SpatialIndex::StorageManager::IBuffer& buffer() {return *m_buffer;}
 
@@ -60,7 +68,6 @@ private:
     SpatialIndex::ISpatialIndex* m_rtree;
     
     Tools::PropertySet m_properties;
-
 
     void Setup();
     SpatialIndex::IStorageManager* CreateStorage();
