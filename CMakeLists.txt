@@ -138,6 +138,7 @@ if(WIN32)
       add_definitions(-D_CRT_NONSTDC_NO_WARNING)
       add_definitions(-D_SCL_SECURE_NO_WARNINGS)
       add_definitions(-DSPATIALINDEX_CREATE_DLL=1)
+      add_definitions(-DNOMINMAX)
 
       set(SIDX_COMPILER_MSVC 1)
       if (MSVC11)
