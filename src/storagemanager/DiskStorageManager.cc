@@ -127,6 +127,9 @@ DiskStorageManager::DiskStorageManager(Tools::PropertySet& ps) : m_pageSize(0), 
 
 	// Open/Create flag.
 	bool bOverwrite = false;
+	bool bFileExists = false;
+	int length = 0;
+	
 	var = ps.getProperty("Overwrite");
 
 	if (var.m_varType != Tools::VT_EMPTY)
@@ -157,7 +160,7 @@ DiskStorageManager::DiskStorageManager(Tools::PropertySet& ps) : m_pageSize(0), 
 		std::string sDataFile = std::string(var.m_val.pcVal) + "." + dat;
 
 		// check if file exists.
-		bool bFileExists = CheckFilesExists(ps);
+		bFileExists = CheckFilesExists(ps);
 
 		// check if file can be read/written.
 		if (bFileExists == true && bOverwrite == false)
@@ -183,8 +186,13 @@ DiskStorageManager::DiskStorageManager(Tools::PropertySet& ps) : m_pageSize(0), 
 		throw Tools::IllegalArgumentException("SpatialIndex::DiskStorageManager: Property FileName was not specified.");
 	}
 
+	// get current length of file
+	m_indexFile.seekg (0, m_indexFile.end);
+	length = m_indexFile.tellg();
+	m_indexFile.seekg (0, m_indexFile.beg);
+
 	// find page size.
-	if (bOverwrite == true)
+	if ((bOverwrite == true) || (length == 0) || (bFileExists == false))
 	{
 		var = ps.getProperty("PageSize");
 
@@ -215,7 +223,7 @@ DiskStorageManager::DiskStorageManager(Tools::PropertySet& ps) : m_pageSize(0), 
 	m_buffer = new byte[m_pageSize];
 	memset(m_buffer, 0, m_pageSize);
 
-	if (bOverwrite == false)
+	if ((bOverwrite == false) && (length > 0))
 	{
 		uint32_t count;
 		id_type page, id;
