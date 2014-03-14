@@ -288,7 +288,7 @@ SIDX_C_DLL RTError Index_Intersects_obj(  IndexH index,
 {
 	VALIDATE_POINTER1(index, "Index_Intersects_obj", RT_Failure);	   
 	Index* idx = static_cast<Index*>(index);
-	uint64_t nResultLimit, nResultCount, nResultOffset;
+	int64_t nResultLimit, nResultCount, nResultOffset;
 
 	nResultLimit = idx->GetResultSetLimit();
 	nResultOffset = idx->GetResultSetOffset();
@@ -373,7 +373,7 @@ SIDX_C_DLL RTError Index_Intersects_id(	  IndexH index,
 	VALIDATE_POINTER1(index, "Index_Intersects_id", RT_Failure);	  
 	Index* idx = static_cast<Index*>(index);
 
-	uint64_t nResultLimit, nResultCount, nStart;;
+	int64_t nResultLimit, nResultCount, nStart;
 
 	nResultLimit = idx->GetResultSetLimit();
 
