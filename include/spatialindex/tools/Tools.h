@@ -321,11 +321,11 @@ namespace Tools
 
 	private:
 		std::map<std::string, Variant> m_propertySet;
-#ifdef HAVE_PTHREAD_H
-			pthread_rwlock_t m_rwLock;
-#else
-			bool m_rwLock;
-#endif
+// #ifdef HAVE_PTHREAD_H
+//             pthread_rwlock_t m_rwLock;
+// #else
+//             bool m_rwLock;
+// #endif
 		friend SIDX_DLL std::ostream& Tools::operator<<(std::ostream& os, const Tools::PropertySet& p);
 	}; // PropertySet
 
