@@ -6,7 +6,7 @@
  * Copyright (c) 2009, Howard Butler
  *
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
@@ -26,7 +26,12 @@
  * DEALINGS IN THE SOFTWARE.
 ******************************************************************************/
 
+#include "ObjVisitor.h"
+#include "IdVisitor.h"
 
 #pragma once
 
 Tools::PropertySet* GetDefaults();
+
+void Page_ResultSet_Ids(IdVisitor& visitor, int64_t** ids, int64_t nStart, int64_t nResultLimit, uint64_t* nResults);
+void Page_ResultSet_Obj(ObjVisitor& visitor, IndexItemH** items, int64_t nStart, int64_t nResultLimit, uint64_t* nResults);
