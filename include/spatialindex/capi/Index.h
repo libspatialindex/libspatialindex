@@ -6,7 +6,7 @@
  * Copyright (c) 2009, Howard Butler
  *
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
@@ -39,21 +39,21 @@ public:
     const Tools::PropertySet& GetProperties() { return m_properties; }
 
     bool insertFeature(uint64_t id, double *min, double *max);
-    
+
     RTIndexType GetIndexType();
     void SetIndexType(RTIndexType v);
 
     RTStorageType GetIndexStorage();
     void SetIndexStorage(RTStorageType v);
-    
+
     RTIndexVariant GetIndexVariant();
     void SetIndexVariant(RTStorageType v);
 
-    uint64_t GetResultSetOffset();
-    void SetResultSetOffset(uint64_t v);
+    int64_t GetResultSetOffset();
+    void SetResultSetOffset(int64_t v);
 
-    uint64_t GetResultSetLimit();
-    void SetResultSetLimit(uint64_t v);
+    int64_t GetResultSetLimit();
+    void SetResultSetLimit(int64_t v);
 
     void flush();
 
@@ -66,7 +66,7 @@ private:
     SpatialIndex::IStorageManager* m_storage;
     SpatialIndex::StorageManager::IBuffer* m_buffer;
     SpatialIndex::ISpatialIndex* m_rtree;
-    
+
     Tools::PropertySet m_properties;
 
     void Setup();
