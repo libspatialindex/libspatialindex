@@ -110,7 +110,7 @@ endif()
 set(SIDX_BUILD_TYPE ${CMAKE_BUILD_TYPE})
 
 # TODO: Still testing the output paths --mloskot
-set(SIDX_BUILD_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
+set(SIDX_BUILD_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/bin")
 
 # Output directory in which to build RUNTIME target files.
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${SIDX_BUILD_OUTPUT_DIRECTORY})
