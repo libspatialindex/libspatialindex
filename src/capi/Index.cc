@@ -85,13 +85,9 @@ Index::Index(const Tools::PropertySet& poProperties)
 
 Index::~Index()
 {
-	if (m_rtree != 0)
-		delete m_rtree;
-	if (m_buffer != 0)
-		delete m_buffer;
-	if (m_storage != 0)
-		delete m_storage;
-
+	delete m_rtree;
+	delete m_buffer;
+	delete m_storage;
 }
 
 Index::Index(	const Tools::PropertySet& poProperties,
