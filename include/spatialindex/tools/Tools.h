@@ -69,9 +69,7 @@
 #include <stack>
 #include <list>
 #include <algorithm>
-// #include <cmath>
-// #include <limits>
-// #include <climits>
+#include <cwchar>
 
 #if HAVE_PTHREAD_H
   #include <pthread.h>
@@ -110,8 +108,9 @@ namespace Tools
 		VT_PVOID,
 		VT_EMPTY,
 		VT_LONGLONG,
-		VT_ULONGLONG
-	};
+		VT_ULONGLONG,
+        VT_PWCHAR
+    };
 
 	SIDX_DLL enum FileMode
 	{
@@ -298,6 +297,7 @@ namespace Tools
 			bool blVal;                // VT_BOOL
 			char* pcVal;               // VT_PCHAR
 			void* pvVal;               // VT_PVOID
+            wchar_t* pwcVal;
 		} m_val;
 	}; // Variant
 
