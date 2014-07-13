@@ -7,6 +7,6 @@ Name: libspatialindex
 Description: Generic C/C++ library for spatial indexing
 Requires: 
 Version: @PACKAGE_VERSION@
-Libs: -L@libdir@ @LDFLAGS@
+Libs: -L@libdir@
 Cflags: -I${includedir}/spatialindex @CFLAGS@ @CPPFLAGS@
 
