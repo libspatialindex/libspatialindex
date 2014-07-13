@@ -94,10 +94,6 @@ if (HAVE_PTHREAD_H)
     add_definitions(-DHAVE_PTHREAD_H=1)
 endif()
 
-# Choose to use pkg-config or not
-#set(WITH_PKGCONFIG FALSE CACHE BOOL
-#  "Choose whether a pkgconfig file (PDAL.pc) should be installed")
-
 #------------------------------------------------------------------------------
 # General build settings
 #------------------------------------------------------------------------------
@@ -132,7 +128,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${SIDX_BUILD_OUTPUT_DIRECTORY})
 
 if(WIN32)
   if (MSVC)
-    if (MSVC80 OR MSVC90 OR MSVC10 OR MSVC11)
+    if (MSVC80 OR MSVC90 OR MSVC10 OR MSVC11 OR MSVC12 OR MSVC13)
       add_definitions(-D_CRT_SECURE_NO_DEPRECATE)
       add_definitions(-D_CRT_SECURE_NO_WARNINGS)
       add_definitions(-D_CRT_NONSTDC_NO_WARNING)
@@ -141,15 +137,6 @@ if(WIN32)
       add_definitions(-DNOMINMAX)
 
       set(SIDX_COMPILER_MSVC 1)
-      if (MSVC11)
-        set(SIDX_COMPILER_VC11 1)
-      elseif (MSVC10)
-        set(SIDX_COMPILER_VC10 1)
-      elseif (MSVC9)
-        set(SIDX_COMPILER_VC9 1)
-      elseif (MSVC8)
-        set(SIDX_COMPILER_VC8 1)
-      endif()
     endif()
 
     if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
