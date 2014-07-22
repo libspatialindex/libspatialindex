@@ -17,7 +17,7 @@ mark_as_advanced(CMAKE_VERBOSE_MAKEFILE)
 
 # Path to additional CMake modules
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/modules" ${CMAKE_MODULE_PATH})
-
+cmake_policy(SET CMP0042 OLD) # osx rpath
 
 #------------------------------------------------------------------------------
 # libspatialindex general settings
