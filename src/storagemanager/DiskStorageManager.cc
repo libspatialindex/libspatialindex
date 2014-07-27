@@ -144,8 +144,8 @@ DiskStorageManager::DiskStorageManager(Tools::PropertySet& ps) : m_pageSize(0), 
 
 	if (var.m_varType != Tools::VT_EMPTY)
 	{
-		if (var.m_varType != Tools::VT_PCHAR ||
-            var.m_varType != Tools::VT_PWCHAR)
+		if (!(var.m_varType == Tools::VT_PCHAR ||
+            var.m_varType == Tools::VT_PWCHAR))
 			throw Tools::IllegalArgumentException("SpatialIndex::DiskStorageManager: Property FileName must be Tools::VT_PCHAR or Tools::VT_PWCHAR");
 
 		std::string idx("idx");
