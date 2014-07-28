@@ -863,7 +863,7 @@ SIDX_C_DLL RTError Index_TPNearestNeighbors_id(IndexH index,
 
   try {
     SpatialIndex::MovingRegion* r = new SpatialIndex::MovingRegion(pdMin, pdMax, pdVMin, pdVMax, tStart, tEnd, nDimension);
-    idx->index().nearestNeighborQuery(	*nResults,
+    idx->index().nearestNeighborQuery(	static_cast<uint32_t>(*nResults),
                       *r,
                       *visitor);
 
@@ -915,7 +915,7 @@ SIDX_C_DLL RTError Index_NearestNeighbors_id(IndexH index,
 	try {
     SpatialIndex::Region* r = new SpatialIndex::Region(pdMin, pdMax, nDimension);
 
-		idx->index().nearestNeighborQuery(	*nResults,
+		idx->index().nearestNeighborQuery(	static_cast<uint32_t>(*nResults),
 											*r,
 											*visitor);
 
@@ -971,7 +971,7 @@ SIDX_C_DLL RTError Index_TPNearestNeighbors_obj(IndexH index,
   try {
     SpatialIndex::MovingRegion* r = new SpatialIndex::MovingRegion(pdMin, pdMax, pdVMin, pdVMax, tStart, tEnd, nDimension);
 
-    idx->index().nearestNeighborQuery(	*nResults,
+    idx->index().nearestNeighborQuery(	static_cast<uint32_t>(*nResults),
                       *r,
                       *visitor);
 
@@ -1023,7 +1023,7 @@ SIDX_C_DLL RTError Index_NearestNeighbors_obj(IndexH index,
 	try {
     SpatialIndex::Region* r = new SpatialIndex::Region(pdMin, pdMax, nDimension);
 
-		idx->index().nearestNeighborQuery(	*nResults,
+		idx->index().nearestNeighborQuery(	static_cast<uint32_t>(*nResults),
 											*r,
 											*visitor);
 
