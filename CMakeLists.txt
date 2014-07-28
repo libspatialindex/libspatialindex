@@ -20,15 +20,15 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/modules" ${CMAKE_MODULE_PATH}
 
 if (CMAKE_MAJOR_VERSION GREATER 2)
     cmake_policy(SET CMP0042 OLD) # osx rpath
-endif(CMAKE_MAJOR_VERSION)
+endif()
 #------------------------------------------------------------------------------
 # libspatialindex general settings
 #------------------------------------------------------------------------------
 
 SET(SIDX_VERSION_MAJOR "1")
 SET(SIDX_VERSION_MINOR "8")
-SET(SIDX_VERSION_PATCH "1")
-SET(SIDX_LIB_SOVERSION "3.0.0")
+SET(SIDX_VERSION_PATCH "2")
+SET(SIDX_LIB_SOVERSION "3.1.0")
 
 
 set(SIDX_VERSION_STRING "${SIDX_VERSION_MAJOR}.${SIDX_VERSION_MINOR}.${SIDX_VERSION_PATCH}")
