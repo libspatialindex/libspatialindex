@@ -41,7 +41,7 @@ ObjVisitor::~ObjVisitor()
 
 }
 
-void ObjVisitor::visitNode(const SpatialIndex::INode& n)
+void ObjVisitor::visitNode(const SpatialIndex::INode& )
 {
 }
 
@@ -55,7 +55,7 @@ void ObjVisitor::visitData(const SpatialIndex::IData& d)
 	m_vector.push_back(item);
 }
 
-void ObjVisitor::visitData(std::vector<const SpatialIndex::IData*>& v)
+void ObjVisitor::visitData(std::vector<const SpatialIndex::IData*>& )
 {
 }
 

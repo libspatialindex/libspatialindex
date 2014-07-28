@@ -37,16 +37,16 @@ CountVisitor::~CountVisitor()
 
 }
 
-void CountVisitor::visitNode(const SpatialIndex::INode& n)
+void CountVisitor::visitNode(const SpatialIndex::INode& )
 {
 
 }
 
-void CountVisitor::visitData(const SpatialIndex::IData& d)
+void CountVisitor::visitData(const SpatialIndex::IData& )
 {
    nResults += 1;
 }
 
-void CountVisitor::visitData(std::vector<const SpatialIndex::IData*>& v)
+void CountVisitor::visitData(std::vector<const SpatialIndex::IData*>& )
 {
 }

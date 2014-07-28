@@ -37,7 +37,7 @@ IdVisitor::~IdVisitor()
 
 }
 
-void IdVisitor::visitNode(const SpatialIndex::INode& n)
+void IdVisitor::visitNode(const SpatialIndex::INode& )
 {
 
 }
@@ -49,6 +49,6 @@ void IdVisitor::visitData(const SpatialIndex::IData& d)
 	m_vector.push_back(d.getIdentifier());
 }
 
-void IdVisitor::visitData(std::vector<const SpatialIndex::IData*>& v)
+void IdVisitor::visitData(std::vector<const SpatialIndex::IData*>& )
 {
 }
