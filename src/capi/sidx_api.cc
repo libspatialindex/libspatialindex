@@ -32,6 +32,12 @@
 
 static std::stack<Error> errors;
 
+
+#ifdef _WIN32
+#  pragma warning(push)
+#  pragma warning(disable: 4127)  // assignment operator could not be generated
+#endif
+
 #define VALIDATE_POINTER0(ptr, func) \
    do { if( NULL == ptr ) { \
 		RTError const ret = RT_Failure; \
@@ -3135,3 +3141,9 @@ SIDX_C_DLL char* SIDX_Version()
 
 }
 IDX_C_END
+
+#ifdef _WIN32
+#  pragma warning(pop)
+#endif
+
+	
