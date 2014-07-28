@@ -1493,7 +1493,7 @@ SIDX_C_DLL RTError IndexProperty_SetDimension(IndexPropertyH hProp, uint32_t val
 
 SIDX_C_DLL uint32_t IndexProperty_GetDimension(IndexPropertyH hProp)
 {
-	VALIDATE_POINTER1(hProp, "IndexProperty_GetDimension", RT_InvalidIndexType);
+	VALIDATE_POINTER1(hProp, "IndexProperty_GetDimension", 0);
 	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
@@ -2233,7 +2233,7 @@ SIDX_C_DLL RTError IndexProperty_SetEnsureTightMBRs(  IndexPropertyH hProp,
 		}
 		Tools::Variant var;
 		var.m_varType = Tools::VT_BOOL;
-		var.m_val.blVal = (bool)value;
+		var.m_val.blVal = value != 0;
 		prop->setProperty("EnsureTightMBRs", var);
 	} catch (Tools::Exception& e)
 	{
@@ -2299,7 +2299,7 @@ SIDX_C_DLL RTError IndexProperty_SetWriteThrough(IndexPropertyH hProp,
 		}
 		Tools::Variant var;
 		var.m_varType = Tools::VT_BOOL;
-		var.m_val.blVal = value;
+		var.m_val.blVal = value != 0;
 		prop->setProperty("WriteThrough", var);
 	} catch (Tools::Exception& e)
 	{
@@ -2365,7 +2365,7 @@ SIDX_C_DLL RTError IndexProperty_SetOverwrite(IndexPropertyH hProp,
 		}
 		Tools::Variant var;
 		var.m_varType = Tools::VT_BOOL;
-		var.m_val.blVal = value;
+		var.m_val.blVal = value != 0;
 		prop->setProperty("Overwrite", var);
 	} catch (Tools::Exception& e)
 	{
