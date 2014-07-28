@@ -41,7 +41,7 @@ LeafQueryResult get_results(const SpatialIndex::INode* n)
 	n->getShape(&ps);
 	SpatialIndex::Region* pr = dynamic_cast<SpatialIndex::Region*>(ps);
 	std::vector<SpatialIndex::id_type> ids;
-	for (size_t cChild = 0; cChild < n->getChildrenCount(); cChild++)
+	for (uint32_t cChild = 0; cChild < n->getChildrenCount(); cChild++)
 	{
 		ids.push_back(n->getChildIdentifier(cChild));
 	}
