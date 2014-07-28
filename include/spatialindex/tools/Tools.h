@@ -311,8 +311,8 @@ namespace Tools
 		PropertySet(const byte* data);
 		virtual ~PropertySet();
 
-		Variant getProperty(std::string property);
-		void setProperty(std::string property, Variant& v);
+		Variant getProperty(std::string property) const;
+		void setProperty(std::string property, Variant const& v);
 		void removeProperty(std::string property);
 
 		virtual uint32_t getByteArraySize();
