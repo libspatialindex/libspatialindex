@@ -55,7 +55,7 @@ private:
     SpatialIndex::id_type m_id;
     LeafQueryResult();
 public:
-    LeafQueryResult(uint32_t id) : bounds(0), m_id(id){}
+    LeafQueryResult(SpatialIndex::id_type id) : bounds(0), m_id(id){}
     ~LeafQueryResult() {if (bounds!=0) delete bounds;}
 
     /// Copy constructor.
@@ -68,6 +68,6 @@ public:
     void SetIDs(std::vector<SpatialIndex::id_type>& v);
     const SpatialIndex::Region* GetBounds() const;
     void SetBounds(const SpatialIndex::Region*  b);
-    uint32_t getIdentifier() const {return m_id;}
+    SpatialIndex::id_type getIdentifier() const {return m_id;}
     void setIdentifier(uint32_t v) {m_id = v;}
 };
