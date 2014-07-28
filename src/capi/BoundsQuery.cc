@@ -34,7 +34,7 @@ BoundsQuery::BoundsQuery()
 }
 
 void BoundsQuery::getNextEntry( const SpatialIndex::IEntry& entry, 
-								SpatialIndex::id_type& nextEntry, 
+								SpatialIndex::id_type&, 
 								bool& hasNext) 
 {
 	SpatialIndex::IShape* ps;
