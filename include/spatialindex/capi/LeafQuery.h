@@ -52,7 +52,7 @@ class SIDX_DLL LeafQueryResult
 private:
     std::vector<SpatialIndex::id_type> ids;
     SpatialIndex::Region* bounds;
-    uint32_t m_id;
+    SpatialIndex::id_type m_id;
     LeafQueryResult();
 public:
     LeafQueryResult(uint32_t id) : bounds(0), m_id(id){}
