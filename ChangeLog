@@ -1,4 +1,71 @@
+2014-07-22
+	* Howard Butler <hobu.inc@gmail.com> only do policy check for CMAKE > 2.x (11:25:02)
+	* Howard Butler <hobu.inc@gmail.com> turn off osx rpath cmake complaint (11:05:29)
+
+2014-07-14
+	* Howard Butler <hobu.inc@gmail.com> more cmake quoting #27 (16:07:21)
+	* Howard Butler <hobu.inc@gmail.com> fix up unfixed LGPL file from test suite (16:07:04)
+
+2014-07-12
+	* Howard Butler <hobu.inc@gmail.com> add BUILD_WITH_INSTALL_RPATH target property for OSX (23:59:03)
+	* Howard Butler <hobu.inc@gmail.com> CMake config quoting #27 (23:50:05)
+	* Howard Butler <hobu.inc@gmail.com> FSF postal adress update #5 (23:38:24)
+	* Howard Butler <hobu.inc@gmail.com> support wide character as possible tools::Variant type -- doesn't work yet though (23:32:19)
+	* Howard Butler <hobu.inc@gmail.com> add VT_PWCHAR to support wide character pointer for the Variant type (23:31:15)
+	* Howard Butler <hobu.inc@gmail.com> add MSVC 2013 and 2014 defns (23:27:45)
+	* Howard Butler <hobu.inc@gmail.com> fix redundant checks in destructor #28 (23:25:39)
+	* Howard Butler <hobu.inc@gmail.com> Remove LDFLAGS from Libs for pkg-config #23 (23:24:32)
+
+2014-05-12
+	* Howard Butler <howard@hobu.co> Merge pull request #38 from cloudant/c_tpr (10:22:16)
+
+2014-05-10
+	* Norman Barker <norman@cloudant.com> added temporal function to capi (16:49:28)
+
+2014-05-08
+	* Howard Butler <howard@hobu.co> Merge pull request #37 from cloudant/paging (13:48:51)
+
+2014-05-07
+	* Norman Barker <norman@cloudant.com> added paging to all indexes (19:11:58)
+
+2014-03-13
+	* Howard Butler <hobu.inc@gmail.com> turn off the unused m_rwLock for now (21:15:39)
+	* Howard Butler <hobu.inc@gmail.com> switch to int64_t instead of uint64_t when checking result counts (21:15:14)
+	* Howard Butler <hobu.inc@gmail.com> add newline to end of file (21:07:45)
+
+2014-02-13
+	* Howard Butler <howard@hobu.co> Merge pull request #32 from cloudant/empty_index (19:00:32)
+	* Howard Butler <howard@hobu.co> Merge pull request #33 from mlt/nominmax (19:00:07)
+
+2014-02-12
+	* Mikhail Titov <mlt@gmx.us> Prevent min/max from windef.h interference (15:09:53)
+
+2014-02-11
+	* Norman Barker <norman@cloudant.com> Added support for empty index files (17:46:14)
+
+2013-09-09
+	* Howard Butler <howard@hobu.co> update download location for new release (12:07:03)
+
+2013-08-21
+	* Howard Butler <howard@hobu.co> Merge pull request #26 from cloudant/skip_results (15:32:33)
+
+2013-08-19
+	* Norman Barker <norman@cloudant.com> made files protected variables (21:37:25)
+	* Norman Barker <norman@cloudant.com> added paging and flushing (21:35:32)
+
+2013-07-29
+	* Norman Barker <norman@cloudant.com> Added error handling to the C API (20:52:47)
+
+2013-07-25
+	* Norman Barker <norman@cloudant.com> Added Result Set Limit so that the number of items can be controlled. (17:58:54)
+
 2013-06-26
+	* Howard Butler <hobu.inc@gmail.com> fixups for MSVC2008 compilation (14:17:28)
+	* Howard Butler <hobu.inc@gmail.com> updates for v1.8.1 release (13:51:45)
+	* Howard Butler <hobu.inc@gmail.com> Merge branch 'master' of github.com:libspatialindex/libspatialindex (13:44:32)
+	* Howard Butler <hobu.inc@gmail.com> increment versions in preparation for 1.8.1 release (13:43:28)
+	* Howard Butler <hobu.inc@gmail.com> Merge pull request #22 from libspatialindex/issues/22-lgpl-fixups (13:40:35)
+	* Howard Butler <hobu.inc@gmail.com> update licenses for #22 (13:39:34)
 	* Howard Butler <hobu.inc@gmail.com> Merge branch 'libspatialindex-issues/19-mingw64' (13:26:44)
 
 2013-06-04
