@@ -144,7 +144,7 @@ bool Point::intersectsShape(const IShape& s) const
 	);
 }
 
-bool Point::containsShape(const IShape& s) const
+bool Point::containsShape(const IShape&) const
 {
 	return false;
 }

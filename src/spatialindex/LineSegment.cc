@@ -174,12 +174,12 @@ bool LineSegment::intersectsShape(const IShape& s) const
 	);
 }
 
-bool LineSegment::containsShape(const IShape& s) const
+bool LineSegment::containsShape(const IShape&) const
 {
 	return false;
 }
 
-bool LineSegment::touchesShape(const IShape& s) const
+bool LineSegment::touchesShape(const IShape&) const
 {
 	throw Tools::IllegalStateException(
 		"LineSegment::touchesShape: Not implemented yet!"

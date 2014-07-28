@@ -1159,7 +1159,7 @@ double MovingRegion::getIntersectingAreaInTime(const ITimeShape& r) const
 	return getIntersectingAreaInTime(r, r);
 }
 
-double MovingRegion::getIntersectingAreaInTime(const IInterval& ivI, const ITimeShape& in) const
+double MovingRegion::getIntersectingAreaInTime(const IInterval&, const ITimeShape& in) const
 {
 	const MovingRegion* pr = dynamic_cast<const MovingRegion*>(&in);
 	if (pr != 0) return getIntersectingAreaInTime(*pr);
