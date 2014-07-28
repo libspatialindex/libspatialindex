@@ -91,17 +91,17 @@ SpatialIndex::IData* DataStream::getNext()
 	return ret;
 }
 
-bool DataStream::hasNext() throw (Tools::NotSupportedException)
+bool DataStream::hasNext()
 {
 	return (m_pNext != 0);
 }
 
-uint32_t DataStream::size() throw (Tools::NotSupportedException)
+uint32_t DataStream::size()
 {
 	throw Tools::NotSupportedException("Operation not supported.");
 }
 
-void DataStream::rewind() throw (Tools::NotSupportedException)
+void DataStream::rewind()
 {
 	throw Tools::NotSupportedException("Operation not supported.");
 

@@ -37,10 +37,10 @@ public:
     ~DataStream();
 
     SpatialIndex::IData* getNext();
-    bool hasNext() throw (Tools::NotSupportedException);
+    bool hasNext();
 
-    uint32_t size() throw (Tools::NotSupportedException);
-    void rewind() throw (Tools::NotSupportedException);
+    uint32_t size();
+    void rewind();
 
 protected:
     SpatialIndex::RTree::Data* m_pNext;
