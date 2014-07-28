@@ -46,7 +46,7 @@ SpatialIndex::IStorageManager* SpatialIndex::StorageManager::createNewMemoryStor
 	return returnMemoryStorageManager(ps);
 }
 
-MemoryStorageManager::MemoryStorageManager(Tools::PropertySet& ps)
+MemoryStorageManager::MemoryStorageManager(Tools::PropertySet&)
 {
 }
 

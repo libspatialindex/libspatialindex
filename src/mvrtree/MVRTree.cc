@@ -337,7 +337,7 @@ void SpatialIndex::MVRTree::MVRTree::pointLocationQuery(const Point& query, IVis
 	rangeQuery(IntersectionQuery, r, v);
 }
 
-void SpatialIndex::MVRTree::MVRTree::nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v, INearestNeighborComparator& nnc)
+void SpatialIndex::MVRTree::MVRTree::nearestNeighborQuery(uint32_t, const IShape&, IVisitor&, INearestNeighborComparator&)
 {
 	throw Tools::IllegalStateException("nearestNeighborQuery: not impelmented yet.");
 }
@@ -349,7 +349,7 @@ void SpatialIndex::MVRTree::MVRTree::nearestNeighborQuery(uint32_t k, const ISha
 	nearestNeighborQuery(k, query, v, nnc);
 }
 
-void SpatialIndex::MVRTree::MVRTree::selfJoinQuery(const IShape& query, IVisitor& v)
+void SpatialIndex::MVRTree::MVRTree::selfJoinQuery(const IShape&, IVisitor&)
 {
 	throw Tools::IllegalStateException("selfJoinQuery: not impelmented yet.");
 }

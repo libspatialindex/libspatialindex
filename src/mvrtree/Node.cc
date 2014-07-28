@@ -309,7 +309,7 @@ Node::~Node()
 	if (m_pIdentifier != 0) delete[] m_pIdentifier;
 }
 
-Node& Node::operator=(const Node& n)
+Node& Node::operator=(const Node&)
 {
 	throw Tools::IllegalStateException("operator =: This should never be called.");
 }

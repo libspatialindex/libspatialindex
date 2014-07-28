@@ -42,14 +42,14 @@ Leaf::Leaf(SpatialIndex::MVRTree::MVRTree* pTree, id_type id): Node(pTree, id, 0
 {
 }
 
-NodePtr Leaf::chooseSubtree(const TimeRegion& mbr, uint32_t level, std::stack<id_type>& pathBuffer)
+NodePtr Leaf::chooseSubtree(const TimeRegion&, uint32_t, std::stack<id_type>&)
 {
 	// should make sure to relinquish other PoolPointer lists that might be pointing to the
 	// same leaf.
 	return NodePtr(this, &(m_pTree->m_leafPool));
 }
 
-NodePtr Leaf::findLeaf(const TimeRegion& mbr, id_type id, std::stack<id_type>& pathBuffer)
+NodePtr Leaf::findLeaf(const TimeRegion& mbr, id_type id, std::stack<id_type>&)
 {
 	for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 	{

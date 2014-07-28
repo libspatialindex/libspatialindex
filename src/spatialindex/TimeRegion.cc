@@ -262,7 +262,7 @@ bool TimeRegion::intersectsShapeInTime(const ITimeShape& in) const
 	throw Tools::IllegalStateException("intersectsShapeInTime: Not implemented yet!");
 }
 
-bool TimeRegion::intersectsShapeInTime(const IInterval& ivI, const ITimeShape& in) const
+bool TimeRegion::intersectsShapeInTime(const IInterval&, const ITimeShape&) const
 {
 	throw Tools::IllegalStateException("intersectsShapeInTime: Not implemented yet!");
 }
@@ -278,7 +278,7 @@ bool TimeRegion::containsShapeInTime(const ITimeShape& in) const
 	throw Tools::IllegalStateException("containsShapeInTime: Not implemented yet!");
 }
 
-bool TimeRegion::containsShapeInTime(const IInterval& ivI, const ITimeShape& in) const
+bool TimeRegion::containsShapeInTime(const IInterval&, const ITimeShape&) const
 {
 	throw Tools::IllegalStateException("containsShapeInTime: Not implemented yet!");
 }
@@ -291,7 +291,7 @@ bool TimeRegion::touchesShapeInTime(const ITimeShape& in) const
 	throw Tools::IllegalStateException("touchesShapeInTime: Not implemented yet!");
 }
 
-bool TimeRegion::touchesShapeInTime(const IInterval& ivI, const ITimeShape& in) const
+bool TimeRegion::touchesShapeInTime(const IInterval&, const ITimeShape&) const
 {
 	throw Tools::IllegalStateException("touchesShapeInTime: Not implemented yet!");
 }
@@ -301,17 +301,17 @@ double TimeRegion::getAreaInTime() const
 	throw Tools::IllegalStateException("getAreaInTime: Not implemented yet!");
 }
 
-double TimeRegion::getAreaInTime(const IInterval& ivI) const
+double TimeRegion::getAreaInTime(const IInterval&) const
 {
 	throw Tools::IllegalStateException("getAreaInTime: Not implemented yet!");
 }
 
-double TimeRegion::getIntersectingAreaInTime(const ITimeShape& r) const
+double TimeRegion::getIntersectingAreaInTime(const ITimeShape&) const
 {
 	throw Tools::IllegalStateException("getIntersectingAreaInTime: Not implemented yet!");
 }
 
-double TimeRegion::getIntersectingAreaInTime(const IInterval& ivI, const ITimeShape& r) const
+double TimeRegion::getIntersectingAreaInTime(const IInterval&, const ITimeShape&) const
 {
 	throw Tools::IllegalStateException("getIntersectingAreaInTime: Not implemented yet!");
 }

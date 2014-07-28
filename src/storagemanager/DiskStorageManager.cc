@@ -128,7 +128,7 @@ DiskStorageManager::DiskStorageManager(Tools::PropertySet& ps) : m_pageSize(0), 
 	// Open/Create flag.
 	bool bOverwrite = false;
 	bool bFileExists = false;
-	int length = 0;
+	std::streamoff length = 0;
 	
 	var = ps.getProperty("Overwrite");
 

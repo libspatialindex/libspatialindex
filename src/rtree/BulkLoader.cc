@@ -360,7 +360,7 @@ void BulkLoader::bulkLoadUsingSTR(
 	// create index levels.
 	uint32_t level = 0;
 
-	while (true)
+	while (1)
 	{
 		#ifndef NDEBUG
 		std::cerr << "RTree::BulkLoader: Building level " << level << std::endl;
@@ -400,7 +400,7 @@ void BulkLoader::createLevel(
 		std::vector<ExternalSorter::Record*> node;
 		ExternalSorter::Record* r;
 
-		while (true)
+		while (1)
 		{
 			try { r = es->getNextRecord(); } catch (Tools::EndOfStreamException) { break; }
 			node.push_back(r);
