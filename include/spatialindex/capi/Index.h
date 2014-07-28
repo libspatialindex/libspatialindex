@@ -64,6 +64,9 @@ public:
 
 private:
 
+    Index& operator=(const Index&);
+    Index();
+    
     void Initialize();
     SpatialIndex::IStorageManager* m_storage;
     SpatialIndex::StorageManager::IBuffer* m_buffer;
