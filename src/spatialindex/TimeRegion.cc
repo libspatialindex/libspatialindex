@@ -353,7 +353,7 @@ bool TimeRegion::intersectsInterval(const IInterval& ti) const
 	return intersectsInterval(ti.getIntervalType(), ti.getLowerBound(), ti.getUpperBound());
 }
 
-bool TimeRegion::intersectsInterval(Tools::IntervalType t, const double start, const double end) const
+bool TimeRegion::intersectsInterval(Tools::IntervalType, const double start, const double end) const
 {
 	//if (m_startTime != start &&
 	//		(m_startTime >= end || m_endTime <= start)) return false;
