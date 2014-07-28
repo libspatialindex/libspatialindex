@@ -46,7 +46,7 @@ using namespace std;
 class MyVisitor : public IVisitor
 {
 public:
-	void visitNode(const INode& n) {}
+	void visitNode(const INode& ) {}
 
 	void visitData(const IData& d)
 	{
@@ -54,7 +54,7 @@ public:
 			// the ID of this data entry is an answer to the query. I will just print it to stdout.
 	}
 
-	void visitData(std::vector<const IData*>& v) {}
+	void visitData(std::vector<const IData*>& ) {}
 };
 
 int main(int argc, char** argv)

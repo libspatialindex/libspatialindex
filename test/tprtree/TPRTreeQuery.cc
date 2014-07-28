@@ -78,7 +78,7 @@ public:
 			// the ID of this data entry is an answer to the query. I will just print it to stdout.
 	}
 
-	void visitData(std::vector<const IData*>& v) {}
+	void visitData(std::vector<const IData*>& ) {}
 };
 
 // example of a Strategy pattern.
@@ -109,7 +109,7 @@ public:
 		// traverse only index nodes at levels 2 and higher.
 		if (n != 0 && n->getLevel() > 1)
 		{
-			for (size_t cChild = 0; cChild < n->getChildrenCount(); cChild++)
+			for (uint32_t cChild = 0; cChild < n->getChildrenCount(); cChild++)
 			{
 				ids.push(n->getChildIdentifier(cChild));
 			}
@@ -135,7 +135,7 @@ public:
 	Region m_indexedSpace;
 
 public:
-	void getNextEntry(const IEntry& entry, id_type& nextEntry, bool& hasNext)
+	void getNextEntry(const IEntry& entry, id_type&, bool& hasNext)
 	{
 		// the first time we are called, entry points to the root.
 
