@@ -1246,7 +1246,7 @@ SIDX_C_DLL RTError Index_GetLeaves(	IndexH index,
 
 		const std::vector<LeafQueryResult>& results = query->GetResults();
 
-		*nNumLeafNodes = results.size();
+		*nNumLeafNodes = (uint32_t)results.size();
 
 		*nLeafSizes = (uint32_t*) malloc (*nNumLeafNodes * sizeof(uint32_t));
 		*nLeafIDs = (int64_t*) malloc (*nNumLeafNodes * sizeof(int64_t));
@@ -1262,7 +1262,7 @@ SIDX_C_DLL RTError Index_GetLeaves(	IndexH index,
 			const SpatialIndex::Region* b = (*i).GetBounds();
 
 			(*nLeafIDs)[k] = (*i).getIdentifier();
-			(*nLeafSizes)[k] = ids.size();
+			(*nLeafSizes)[k] = (uint32_t)ids.size();
 
 			(*nLeafChildIDs)[k] = (int64_t*) malloc( (*nLeafSizes)[k] * sizeof(int64_t));
 			(*pppdMin)[k] = (double*) malloc ( (*nLeafSizes)[k] *  sizeof(double));
