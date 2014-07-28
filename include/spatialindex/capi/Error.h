@@ -28,7 +28,9 @@
 
 #pragma once
 
-class Error
+#include "sidx_export.h"
+
+class SIDX_DLL Error
 {
 public:
 

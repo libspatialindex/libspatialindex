@@ -28,10 +28,11 @@
 
 #include "ObjVisitor.h"
 #include "IdVisitor.h"
+#include "sidx_export.h"
 
 #pragma once
 
-Tools::PropertySet* GetDefaults();
+SIDX_DLL Tools::PropertySet* GetDefaults();
 
-void Page_ResultSet_Ids(IdVisitor& visitor, int64_t** ids, int64_t nStart, int64_t nResultLimit, uint64_t* nResults);
-void Page_ResultSet_Obj(ObjVisitor& visitor, IndexItemH** items, int64_t nStart, int64_t nResultLimit, uint64_t* nResults);
+SIDX_DLL void Page_ResultSet_Ids(IdVisitor& visitor, int64_t** ids, int64_t nStart, int64_t nResultLimit, uint64_t* nResults);
+SIDX_DLL void Page_ResultSet_Obj(ObjVisitor& visitor, IndexItemH** items, int64_t nStart, int64_t nResultLimit, uint64_t* nResults);

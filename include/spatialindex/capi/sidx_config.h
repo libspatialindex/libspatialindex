@@ -59,7 +59,7 @@
 
 #include <sys/stat.h>
 
-
+#include "sidx_export.h"
 
 class Item;
 class Index;
@@ -110,17 +110,6 @@ typedef Index *IndexH;
 typedef SpatialIndex::IData *IndexItemH;
 typedef Tools::PropertySet *IndexPropertyH;
 
-#ifndef SIDX_C_DLL
-#if defined(_MSC_VER)
-#  define SIDX_C_DLL     __declspec(dllexport)
-#else
-#  if defined(USE_GCC_VISIBILITY_FLAG)
-#    define SIDX_C_DLL     __attribute__ ((visibility("default")))
-#  else
-#    define SIDX_C_DLL
-#  endif
-#endif
-#endif
 
 
 #endif

@@ -28,7 +28,9 @@
 
 #pragma once
 
-class IdVisitor : public SpatialIndex::IVisitor
+#include "sidx_export.h"
+
+class SIDX_DLL IdVisitor : public SpatialIndex::IVisitor
 {
 private:
     std::vector<uint64_t> m_vector;

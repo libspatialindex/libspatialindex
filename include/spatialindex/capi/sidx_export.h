@@ -1,9 +1,9 @@
 /******************************************************************************
  * Project:  libsidx - A C API wrapper around libspatialindex
- * Purpose:  C++ object declarations to implement the object visitor.
+ * Purpose:  C++ object declarations to implement utilities.
  * Author:   Howard Butler, hobu.inc@gmail.com
  ******************************************************************************
- * Copyright (c) 2009, Howard Butler
+ * Copyright (c) 2014, Howard Butler
  *
  * All rights reserved.
  * 
@@ -28,24 +28,17 @@
 
 #pragma once
 
-#include "sidx_export.h"
-
-class SIDX_DLL ObjVisitor : public SpatialIndex::IVisitor
-{
-private:
-    std::vector<SpatialIndex::IData*> m_vector;
-    uint64_t nResults;
-
-public:
-
-    ObjVisitor();
-    ~ObjVisitor();
-
-    uint64_t GetResultCount() const { return nResults; }
-    std::vector<SpatialIndex::IData*>& GetResults()  { return m_vector; }
-    
-    void visitNode(const SpatialIndex::INode& n);
-    void visitData(const SpatialIndex::IData& d);
-    void visitData(std::vector<const SpatialIndex::IData*>& v);
-};
-
+#ifndef SIDX_C_DLL
+#if defined(_MSC_VER)
+#  define SIDX_C_DLL     __declspec(dllexport)
+#  define SIDX_DLL     __declspec(dllexport)
+#else
+#  if defined(USE_GCC_VISIBILITY_FLAG)
+#    define SIDX_C_DLL     __attribute__ ((visibility("default")))
+#    define SIDX_DLL     __attribute__ ((visibility("default")))
+#  else
+#    define SIDX_C_DLL
+#    define SIDX_DLL
+#  endif
+#endif
+#endif

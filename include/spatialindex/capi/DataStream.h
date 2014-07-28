@@ -28,7 +28,9 @@
  
 #pragma once
 
-class DataStream : public SpatialIndex::IDataStream
+#include "sidx_export.h"
+
+class SIDX_DLL DataStream : public SpatialIndex::IDataStream
 {
 public:
     DataStream(int (*readNext)(SpatialIndex::id_type* id, double **pMin, double **pMax, uint32_t *nDimension, const uint8_t **pData, uint32_t *nDataLength));

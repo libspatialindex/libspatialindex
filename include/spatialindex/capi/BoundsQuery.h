@@ -28,7 +28,9 @@
 
 #pragma once
 
-class BoundsQuery : public SpatialIndex::IQueryStrategy
+#include "sidx_export.h"
+
+class SIDX_DLL BoundsQuery : public SpatialIndex::IQueryStrategy
 {
 private:
     SpatialIndex::Region* m_bounds;

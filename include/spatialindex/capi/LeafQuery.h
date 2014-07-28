@@ -28,9 +28,11 @@
 
 #pragma once
 
+#include "sidx_export.h"
+
 class LeafQueryResult;
 
-class LeafQuery : public SpatialIndex::IQueryStrategy
+class SIDX_DLL LeafQuery : public SpatialIndex::IQueryStrategy
 {
 private:
 	std::queue<SpatialIndex::id_type> m_ids;
@@ -45,7 +47,7 @@ public:
 	std::vector<LeafQueryResult> const& GetResults() const {return m_results;}
 };
 
-class LeafQueryResult 
+class SIDX_DLL LeafQueryResult 
 {
 private:
     std::vector<SpatialIndex::id_type> ids;

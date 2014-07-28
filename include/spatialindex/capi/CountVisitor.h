@@ -28,7 +28,9 @@
 
 #pragma once
 
-class CountVisitor : public SpatialIndex::IVisitor
+#include "sidx_export.h"
+
+class SIDX_DLL CountVisitor : public SpatialIndex::IVisitor
 {
 private:
    uint64_t nResults;

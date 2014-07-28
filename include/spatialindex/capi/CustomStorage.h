@@ -28,11 +28,13 @@
 
 #pragma once
 
+#include "sidx_export.h"
+
 namespace SpatialIndex
 {
 	namespace StorageManager
 	{
-        struct CustomStorageManagerCallbacks
+        struct SIDX_DLL CustomStorageManagerCallbacks
         {
             CustomStorageManagerCallbacks() 
             : context(0)
@@ -52,7 +54,7 @@ namespace SpatialIndex
             void (*deleteByteArrayCallback)( const void* context, const id_type page, int* errorCode );
         };
 
-        class CustomStorageManager : public SpatialIndex::IStorageManager
+        class SIDX_DLL CustomStorageManager : public SpatialIndex::IStorageManager
         {
         public:
             // I'd like this to be an enum, but casting between enums and ints is not nice
