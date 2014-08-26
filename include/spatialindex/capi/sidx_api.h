@@ -166,7 +166,7 @@ SIDX_C_DLL RTError Index_TPIntersects_count(	  IndexH index,
                     uint32_t nDimension,
                     uint64_t* nResults);
 
-SIDX_C_DLL RTError Index_MVIntersects_count(	  IndexH index,
+SIDX_C_DLL RTError Index_MVRIntersects_count(	  IndexH index,
 										double* pdMin,
 										double* pdMax,
 										double tStart,
