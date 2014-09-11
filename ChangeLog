@@ -1,3 +1,22 @@
+2014-07-28
+	* Howard Butler <hobu.inc@gmail.com> clean up C API for numResults being a uint64_t when it is only possible to specify uint32_t of nResults (09:53:36)
+	* Howard Butler <hobu.inc@gmail.com> leaf node counts are uint32_t, not size_t (09:34:41)
+	* Howard Butler <hobu@hobu.co> silence condition expression warning 4127 on msvc (09:20:58)
+	* Howard Butler <hobu.inc@gmail.com> nuke assignment and empty constructor of C API Index class (09:13:01)
+	* Howard Butler <hobu.inc@gmail.com> children count is uint32_t (09:11:04)
+	* Howard Butler <hobu.inc@gmail.com> clean up LeafQuery visitor id management (09:09:20)
+	* Howard Butler <hobu.inc@gmail.com> clean up more unused parameters (08:37:24)
+	* Howard Butler <hobu.inc@gmail.com> fix mismatched type warning (using uint32_t as an id instead of SpatialIndex::id_type (08:37:15)
+	* Howard Butler <hobu.inc@gmail.com> remove unused and potentially problematic throw specification for DataStream (08:28:49)
+	* Howard Butler <hobu.inc@gmail.com> export all C API stuff to the DLL (08:23:49)
+
+2014-07-27
+	* Howard Butler <howard@hobu.co> Merge pull request #40 from libspatialindex/issues/40-capi-property-copying (23:03:04)
+	* Howard Butler <hobu.inc@gmail.com> clean up file open mode (23:02:48)
+	* Howard Butler <hobu.inc@gmail.com> Update ChangeLog in preparation for release (22:59:21)
+	* Howard Butler <hobu.inc@gmail.com> add Norman to AUTHORS (22:57:12)
+	* Howard Butler <hobu.inc@gmail.com> Implement a fix for #40 to maintain pointers to IndexProperty references rather than copying (18:15:38)
+
 2014-07-22
 	* Howard Butler <hobu.inc@gmail.com> only do policy check for CMAKE > 2.x (11:25:02)
 	* Howard Butler <hobu.inc@gmail.com> turn off osx rpath cmake complaint (11:05:29)
