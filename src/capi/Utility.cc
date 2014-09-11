@@ -184,7 +184,7 @@ void Page_ResultSet_Ids(IdVisitor& visitor, int64_t** ids, int64_t nStart, int64
 
   std::vector<uint64_t>& results = visitor.GetResults();
 
-  for (int32_t i = nStart; i < nResultCount; ++i)
+  for (int64_t i = nStart; i < nResultCount; ++i)
   {
     (*ids)[i - nStart] = results[i];
   }
