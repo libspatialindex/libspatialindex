@@ -1,7 +1,26 @@
+2014-09-11
+	* Howard Butler <howard@hobu.co> Changelog update (10:57:08)
+	* Howard Butler <howard@hobu.co> clean up integer warning (10:56:53)
+	* Howard Butler <howard@hobu.co> Merge pull request #42 from libspatialindex/issues/42-automake-exports (10:54:58)
+	* Howard Butler <howard@hobu.co> Add sidx_export to Makefile.am #42 (10:54:07)
+
+2014-08-27
+	* Howard Butler <howard@hobu.co> Merge pull request #41 from cloudant/capi_mvrtree (10:20:03)
+
+2014-08-26
+	* Norman Barker <norman@cloudant.com> fixed typo in MVRIntersects_Count (17:18:32)
+	* Norman Barker <norman@cloudant.com> added MVR index type to the C API (17:16:03)
+
+2014-08-03
+	* Howard Butler <hobu.inc@gmail.com> fix up Release name (14:14:35)
+
 2014-07-28
+	* Howard Butler <hobu.inc@gmail.com> unused parameters (10:04:59)
 	* Howard Butler <hobu.inc@gmail.com> clean up C API for numResults being a uint64_t when it is only possible to specify uint32_t of nResults (09:53:36)
+	* Howard Butler <hobu.inc@gmail.com> more C API warning cleanups (09:50:55)
 	* Howard Butler <hobu.inc@gmail.com> leaf node counts are uint32_t, not size_t (09:34:41)
 	* Howard Butler <hobu@hobu.co> silence condition expression warning 4127 on msvc (09:20:58)
+	* Howard Butler <hobu.inc@gmail.com> unreferenced parameter cleanup (09:13:36)
 	* Howard Butler <hobu.inc@gmail.com> nuke assignment and empty constructor of C API Index class (09:13:01)
 	* Howard Butler <hobu.inc@gmail.com> children count is uint32_t (09:11:04)
 	* Howard Butler <hobu.inc@gmail.com> clean up LeafQuery visitor id management (09:09:20)
@@ -11,8 +30,17 @@
 	* Howard Butler <hobu.inc@gmail.com> export all C API stuff to the DLL (08:23:49)
 
 2014-07-27
+	* Howard Butler <hobu.inc@gmail.com> more unreferenced parameter cleanups (23:37:25)
+	* Howard Butler <hobu.inc@gmail.com> screw 20ad010a1b55a4437b73c805270837c294b57251 and MSVC's dumb C4127 warning (23:36:15)
+	* Howard Butler <hobu.inc@gmail.com> more unreferenced parameter warnings (23:34:20)
+	* Howard Butler <hobu.inc@gmail.com> use ;; to denote looping forever to silence C4127 warning on MSVC (23:34:11)
+	* Howard Butler <hobu@hobu.co> support MSVC 2012 and 2013 (23:30:59)
+	* Howard Butler <hobu.inc@gmail.com> big unreferenced variable cleanup (23:30:35)
+	* Howard Butler <hobu.inc@gmail.com> clean up some unreferenced parameters warnings (23:17:14)
+	* Howard Butler <hobu.inc@gmail.com> Merge branch 'master' of github.com:libspatialindex/libspatialindex (23:03:10)
 	* Howard Butler <howard@hobu.co> Merge pull request #40 from libspatialindex/issues/40-capi-property-copying (23:03:04)
 	* Howard Butler <hobu.inc@gmail.com> clean up file open mode (23:02:48)
+	* Howard Butler <hobu.inc@gmail.com> bump versions to 1.8.2 in preparation for release (22:59:49)
 	* Howard Butler <hobu.inc@gmail.com> Update ChangeLog in preparation for release (22:59:21)
 	* Howard Butler <hobu.inc@gmail.com> add Norman to AUTHORS (22:57:12)
 	* Howard Butler <hobu.inc@gmail.com> Implement a fix for #40 to maintain pointers to IndexProperty references rather than copying (18:15:38)
