@@ -27,8 +27,8 @@ endif()
 
 SET(SIDX_VERSION_MAJOR "1")
 SET(SIDX_VERSION_MINOR "8")
-SET(SIDX_VERSION_PATCH "2")
-SET(SIDX_LIB_SOVERSION "3.1.0")
+SET(SIDX_VERSION_PATCH "3")
+SET(SIDX_LIB_SOVERSION "3.2.0")
 
 
 set(SIDX_VERSION_STRING "${SIDX_VERSION_MAJOR}.${SIDX_VERSION_MINOR}.${SIDX_VERSION_PATCH}")
@@ -65,7 +65,7 @@ check_function_exists(memcpy HAVE_MEMCPY)
 check_function_exists(bcopy HAVE_BCOPY)
 
 INCLUDE (CheckIncludeFiles)
-check_include_files(pthread.h HAVE_PTHREAD_H) 
+check_include_files(pthread.h HAVE_PTHREAD_H)
 
 
 if (HAVE_SRAND48)
