@@ -27,11 +27,12 @@ Release Process
     * SIDX_RELEASE_NAME
   - CMakeLists.txt
     * SET(SIDX_VERSION_MAJOR "1")
-    * SET(SIDX_VERSION_MINOR "7")
-    * SET(SIDX_VERSION_PATCH "0")
-    * SET(SIDX_LIB_SOVERSION "3.2.0")
+    * SET(SIDX_VERSION_MINOR "8")
+    * SET(SIDX_VERSION_PATCH "3")
+    * SET(SIDX_LIB_VERSION "3.2.0")
+    * SET(SIDX_LIB_SOVERSION "4")
   - Makefile.am
-    * version-info 3:2:0
+    * version-info 4:0:0
 
 2) Update README to include any relevant info about the release that
    might have changed.
