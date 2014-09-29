@@ -5,13 +5,13 @@ Download
 Current Release (MIT)
 ------------------------------------------------------------------------------
 
-* **2014-09-20**
+* **2014-09-29**
 
-  - `spatialindex-src-1.8.3-src.tar.gz  <http://download.osgeo.org/libspatialindex/spatialindex-src-1.8.3.tar.gz>`__
-    `(md5) <http://download.osgeo.org/libspatialindex/spatialindex-src-1.8.3.tar.gz.md5>`__
+  - `spatialindex-src-1.8.4-src.tar.gz  <http://download.osgeo.org/libspatialindex/spatialindex-src-1.8.4.tar.gz>`__
+    `(md5) <http://download.osgeo.org/libspatialindex/spatialindex-src-1.8.4.tar.gz.md5>`__
 
-  - `spatialindex-src-1.8.3-src.tar.bz2  <http://download.osgeo.org/libspatialindex/spatialindex-src-1.8.3.tar.bz2>`__
-    `(md5) <http://download.osgeo.org/libspatialindex/spatialindex-src-1.8.3.tar.bz2.md5>`__
+  - `spatialindex-src-1.8.4-src.tar.bz2  <http://download.osgeo.org/libspatialindex/spatialindex-src-1.8.4.tar.bz2>`__
+    `(md5) <http://download.osgeo.org/libspatialindex/spatialindex-src-1.8.4.tar.bz2.md5>`__
 
 Windows Builds
 ..............................................................................
@@ -20,11 +20,11 @@ Windows builds are provided for convenience. The full matrix might not be
 complete, and you will have to compile yourself using your favorite compiler
 configuration and cmake if something is missing.
 
-- `libspatialindex-1.8.3-win-msvc-2008-x64-x32.zip <http://download.osgeo.org/libspatialindex/libspatialindex-1.8.3-win-msvc-2008-x64-x32.zip>`__
-  `(md5) <http://download.osgeo.org/libspatialindex/libspatialindex-1.8.3-win-msvc-2008-x64-x32.zip.md5>`__
+- `libspatialindex-1.8.4-win-msvc-2008-x64-x32.zip <http://download.osgeo.org/libspatialindex/libspatialindex-1.8.4-win-msvc-2008-x64-x32.zip>`__
+  `(md5) <http://download.osgeo.org/libspatialindex/libspatialindex-1.8.4-win-msvc-2008-x64-x32.zip.md5>`__
 
-- `libspatialindex-1.8.3-win-msvc-2010-x64-x32.zip  <http://download.osgeo.org/libspatialindex/libspatialindex-1.8.3-win-msvc-2010-x64-x32.zip>`__
-  `(md5) <http://download.osgeo.org/libspatialindex/libspatialindex-1.8.3-win-msvc-2010-x64-x32.zip.md5>`__
+- `libspatialindex-1.8.4-win-msvc-2010-x64-x32.zip  <http://download.osgeo.org/libspatialindex/libspatialindex-1.8.4-win-msvc-2010-x64-x32.zip>`__
+  `(md5) <http://download.osgeo.org/libspatialindex/libspatialindex-1.8.4-win-msvc-2010-x64-x32.zip.md5>`__
 
 
 
