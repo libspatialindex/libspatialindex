@@ -2,8 +2,8 @@
 
 :Author: Marios Hadjieleftheriou
 :Contact: mhadji@gmail.com
-:Revision: 1.8.1
-:Date: 06/26/2013
+:Revision: 1.8.4
+:Date: 09/29/2014
 
 ------------------------------------------------------------------------------
 Introduction
@@ -22,11 +22,11 @@ The purpose of this library is to provide:
     nearest neighbor and k-nearest neighbor as well as parametric
     queries (defined by spatial constraints) should be easy to deploy and run.
  3. Easy to use interfaces for inserting, deleting and updating information.
- 4. Wide variety of customization capabilities. Basic index and storage 
-    characteristics like the page size, node capacity, minimum fan-out, 
+ 4. Wide variety of customization capabilities. Basic index and storage
+    characteristics like the page size, node capacity, minimum fan-out,
     splitting algorithm, etc. should be easy to customize.
- 5. Index persistence. Internal memory and external memory structures 
-    should be supported.  Clustered and non-clustered indices should 
+ 5. Index persistence. Internal memory and external memory structures
+    should be supported.  Clustered and non-clustered indices should
     be easy to be persisted.
 
 Features
