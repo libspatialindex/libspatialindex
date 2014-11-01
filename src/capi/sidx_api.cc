@@ -1537,8 +1537,11 @@ SIDX_C_DLL IndexPropertyH Index_GetProperties(IndexH index)
 	VALIDATE_POINTER1(index, "Index_GetProperties", 0);
 	Index* idx = static_cast<Index*>(index);
 	Tools::PropertySet* ps = new Tools::PropertySet;
+	*ps = idx->GetProperties();
 
-	idx->index().getIndexProperties(*ps);
+	Tools::PropertySet base_props;
+	idx->index().getIndexProperties(base_props);
+	ps->setProperty("IndexIdentifier", base_props.getProperty("IndexIdentifier"));
 	return (IndexPropertyH)ps;
 }
 
@@ -3511,4 +3514,4 @@ IDX_C_END
 #  pragma warning(pop)
 #endif
 
-	
+
