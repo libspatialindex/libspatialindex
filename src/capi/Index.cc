@@ -73,7 +73,7 @@ SpatialIndex::ISpatialIndex* Index::CreateIndex()
 }
 
 
-Index::Index(Tools::PropertySet& poProperties): m_properties(poProperties)
+Index::Index(const Tools::PropertySet& poProperties): m_properties(poProperties)
 {
 	Setup();
 
@@ -88,7 +88,7 @@ Index::~Index()
 	delete m_storage;
 }
 
-Index::Index(	Tools::PropertySet& poProperties,
+Index::Index(	const Tools::PropertySet& poProperties,
 				int (*readNext)(SpatialIndex::id_type *id,
 								double **pMin,
 								double **pMax,

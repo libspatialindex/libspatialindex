@@ -34,11 +34,11 @@ class SIDX_DLL Index
 {
 
 public:
-    Index(Tools::PropertySet& poProperties);
-    Index(Tools::PropertySet& poProperties, int (*readNext)(SpatialIndex::id_type *id, double **pMin, double **pMax, uint32_t *nDimension, const uint8_t **pData, uint32_t *nDataLength));
+    Index(const Tools::PropertySet& poProperties);
+    Index(const Tools::PropertySet& poProperties, int (*readNext)(SpatialIndex::id_type *id, double **pMin, double **pMax, uint32_t *nDimension, const uint8_t **pData, uint32_t *nDataLength));
     ~Index();
 
-    const Tools::PropertySet& GetProperties() { return m_properties; }
+    const Tools::PropertySet GetProperties() { index().getIndexProperties(m_properties);  return m_properties;}
 
     bool insertFeature(uint64_t id, double *min, double *max);
 
@@ -66,13 +66,13 @@ private:
 
     Index& operator=(const Index&);
     Index();
-    
+
     void Initialize();
     SpatialIndex::IStorageManager* m_storage;
     SpatialIndex::StorageManager::IBuffer* m_buffer;
     SpatialIndex::ISpatialIndex* m_rtree;
 
-    Tools::PropertySet& m_properties;
+    Tools::PropertySet m_properties;
 
     void Setup();
     SpatialIndex::IStorageManager* CreateStorage();
