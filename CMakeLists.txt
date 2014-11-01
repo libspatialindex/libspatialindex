@@ -42,7 +42,7 @@ set(SIDX_C_LIB_NAME spatialindex_c)
 
 if(WIN32)
   if (MSVC)
-    if (MSVC80 OR MSVC90 OR MSVC10 OR MSVC11 OR MSVC12)
+    if (MSVC80 OR MSVC90 OR MSVC10 OR MSVC11 OR MSVC12 OR MSVC13)
         if( CMAKE_SIZEOF_VOID_P EQUAL 8 )
             set( SIDX_LIB_NAME "spatialindex-64" )
             set( SIDX_C_LIB_NAME "spatialindex_c-64" )
