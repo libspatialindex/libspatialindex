@@ -8,6 +8,7 @@ m4_define([sidx_version_minor], [8])
 m4_define([sidx_version_micro], [5])
 m4_define([sidx_version],
           [sidx_version_major.sidx_version_minor.sidx_version_micro])
+AC_CONFIG_MACRO_DIR([m4])
 
 AC_INIT([spatialindex], [sidx_version], [mhadji@gmail.com], [spatialindex-src])
 AC_CANONICAL_BUILD

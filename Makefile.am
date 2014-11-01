@@ -1,6 +1,7 @@
 ## Makefile.am -- Process this file with automake to produce Makefile.in
 SUBDIRS = src . test include
 
+ACLOCAL_AMFLAGS= -I m4
 lib_LTLIBRARIES = libspatialindex.la libspatialindex_c.la
 
 libspatialindex_la_SOURCES =
