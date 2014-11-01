@@ -209,7 +209,7 @@ set_target_properties(${SIDX_LIB_NAME}
                SOVERSION "${SIDX_LIB_SOVERSION}"  )
 
 set_target_properties(${SIDX_C_LIB_NAME}
-    PROPERTIES VERSION "{SIDX_LIB_VERSION}"
+    PROPERTIES VERSION "${SIDX_LIB_VERSION}"
                SOVERSION "${SIDX_LIB_SOVERSION}" )
 
 
