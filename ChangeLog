@@ -1,3 +1,20 @@
+2014-10-31
+	* Howard Butler <howard@hobu.co> CAPI: revert #40, which could cause inconsistent object lifetime behavior (23:53:04)
+	* Howard Butler <howard@hobu.co> missed a variable substitution on SIDX_LIB_VERSION (21:38:14)
+
+2014-09-29
+	* Howard Butler <howard@hobu.co> Merge pull request #45 from sebastic/soversion (16:26:19)
+	* Bas Couwenberg <sebastic@xs4all.nl> Fix separate library VERSION and SOVERSION variables. (16:14:43)
+	* Howard Butler <howard@hobu.co> doc tweak (08:49:07)
+	* Howard Butler <howard@hobu.co> fix up library SOVERSION'ing and issue new release 1.8.4 #44 (08:45:00)
+
+2014-09-20
+	* Howard Butler <howard@hobu.co> point to 1.8.3 release (16:41:15)
+	* Howard Butler <howard@hobu.co> increment and prepare for 1.8.3 release (16:27:48)
+
+2014-09-13
+	* Howard Butler <howard@hobu.co> update ChangeLog (18:46:21)
+
 2014-09-11
 	* Howard Butler <howard@hobu.co> Changelog update (10:57:08)
 	* Howard Butler <howard@hobu.co> clean up integer warning (10:56:53)

@@ -17,8 +17,8 @@ libspatialindex_c_la_LIBADD = \
 	libspatialindex.la \
 	src/capi/libsidxc.la
 
-libspatialindex_la_LDFLAGS = -version-info 4:0:0 -no-undefined -lstdc++
-libspatialindex_c_la_LDFLAGS = -version-info 4:0:0 -no-undefined -lstdc++
+libspatialindex_la_LDFLAGS = -version-info 4:1:0 -no-undefined -lstdc++
+libspatialindex_c_la_LDFLAGS = -version-info 4:1:0 -no-undefined -lstdc++
 
 EXTRA_DIST = INSTALL.WIN \
              spatialindex.sln \
