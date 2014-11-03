@@ -5,7 +5,7 @@
  * Copyright (c) 2002, Marios Hadjieleftheriou
  *
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
@@ -461,6 +461,11 @@ void SpatialIndex::TPRTree::TPRTree::getIndexProperties(Tools::PropertySet& out)
 	var.m_varType = Tools::VT_ULONG;
 	var.m_val.ulVal = m_pointPool.getCapacity();
 	out.setProperty("PointPoolCapacity", var);
+
+	var.m_varType = Tools::VT_LONGLONG;
+	var.m_val.llVal = m_headerID;
+	out.setProperty("IndexIdentifier", var);
+
 }
 
 void SpatialIndex::TPRTree::TPRTree::addCommand(ICommand* pCommand, CommandType ct)

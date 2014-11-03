@@ -5,7 +5,7 @@
  * Copyright (c) 2002, Marios Hadjieleftheriou
  *
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
@@ -453,6 +453,10 @@ void SpatialIndex::MVRTree::MVRTree::getIndexProperties(Tools::PropertySet& out)
 	var.m_varType = Tools::VT_DOUBLE;
 	var.m_val.dblVal = m_versionUnderflow;
 	out.setProperty("VersionUnderflow", var);
+
+	var.m_varType = Tools::VT_LONGLONG;
+	var.m_val.llVal = m_headerID;
+	out.setProperty("IndexIdentifier", var);
 }
 
 void SpatialIndex::MVRTree::MVRTree::addCommand(ICommand* pCommand, CommandType ct)

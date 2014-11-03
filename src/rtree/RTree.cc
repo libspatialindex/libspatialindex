@@ -689,6 +689,11 @@ void SpatialIndex::RTree::RTree::getIndexProperties(Tools::PropertySet& out) con
 	var.m_varType = Tools::VT_ULONG;
 	var.m_val.ulVal = m_pointPool.getCapacity();
 	out.setProperty("PointPoolCapacity", var);
+
+	var.m_varType = Tools::VT_LONGLONG;
+	var.m_val.llVal = m_headerID;
+	out.setProperty("IndexIdentifier", var);
+
 }
 
 void SpatialIndex::RTree::RTree::addCommand(ICommand* pCommand, CommandType ct)
