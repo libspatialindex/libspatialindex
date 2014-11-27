@@ -76,7 +76,6 @@
   #include <pthread.h>
 #endif
 
-#include "SmartPointer.h"
 #include "PointerPool.h"
 #include "PoolPointer.h"
 

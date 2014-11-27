@@ -5,7 +5,7 @@
  * Copyright (c) 2002, Marios Hadjieleftheriou
  *
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
@@ -141,9 +141,9 @@ namespace SpatialIndex
 			Tools::PointerPool<Node> m_indexPool;
 			Tools::PointerPool<Node> m_leafPool;
 
-			std::vector<Tools::SmartPointer<ICommand> > m_writeNodeCommands;
-			std::vector<Tools::SmartPointer<ICommand> > m_readNodeCommands;
-			std::vector<Tools::SmartPointer<ICommand> > m_deleteNodeCommands;
+			std::vector<std::shared_ptr<ICommand> > m_writeNodeCommands;
+			std::vector<std::shared_ptr<ICommand> > m_readNodeCommands;
+			std::vector<std::shared_ptr<ICommand> > m_deleteNodeCommands;
 
 #ifdef HAVE_PTHREAD_H
 			pthread_mutex_t m_lock;
