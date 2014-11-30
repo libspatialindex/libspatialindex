@@ -551,7 +551,7 @@ bool SpatialIndex::TPRTree::TPRTree::isIndexValid()
 				NodePtr ptrN = readNode(e.m_pNode->m_pIdentifier[cChild]);
 				ValidateEntry tmpEntry(*(e.m_pNode->m_ptrMBR[cChild]), ptrN);
 
-				std::map<uint32_t, uint32_t>::iterator itNodes = nodesInLevel.find(tmpEntry.m_pNode->m_level);
+				auto itNodes = nodesInLevel.find(tmpEntry.m_pNode->m_level);
 
 				if (itNodes == nodesInLevel.end())
 				{

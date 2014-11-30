@@ -5,7 +5,7 @@
  * Copyright (c) 2004, Marios Hadjieleftheriou
  *
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
@@ -217,9 +217,8 @@ void Tools::PropertySet::loadFromByteArray(const byte* ptr)
 uint32_t Tools::PropertySet::getByteArraySize()
 {
 	uint32_t size = sizeof(uint32_t);
-	std::map<std::string, Variant>::iterator it;
 
-	for (it = m_propertySet.begin(); it != m_propertySet.end(); ++it)
+	for (auto it = m_propertySet.begin(); it != m_propertySet.end(); ++it)
 	{
 		switch ((*it).second.m_varType)
 		{
@@ -277,9 +276,8 @@ void Tools::PropertySet::storeToByteArray(byte** data, uint32_t& length)
 	memcpy(ptr, &numberOfProperties, sizeof(uint32_t));
 	ptr += sizeof(uint32_t);
 
-	std::map<std::string, Variant>::iterator it;
 
-	for (it = m_propertySet.begin(); it != m_propertySet.end(); ++it)
+	for (auto it = m_propertySet.begin(); it != m_propertySet.end(); ++it)
 	{
 		size_t strSize = (*it).first.size();
 		memcpy(ptr, (*it).first.c_str(), strSize);
@@ -350,7 +348,7 @@ void Tools::PropertySet::storeToByteArray(byte** data, uint32_t& length)
 
 Tools::Variant Tools::PropertySet::getProperty(std::string property) const
 {
-   	std::map<std::string, Variant>::const_iterator it = m_propertySet.find(property);
+   	const auto& it = m_propertySet.find(property);
 
    	if (it != m_propertySet.end()) return (*it).second;
    	else return Variant();
@@ -370,7 +368,7 @@ void Tools::PropertySet::setProperty(std::string property, Variant const& v)
 
 void Tools::PropertySet::removeProperty(std::string property)
 {
-   	std::map<std::string, Variant>::iterator it = m_propertySet.find(property);
+   	auto it = m_propertySet.find(property);
    	if (it != m_propertySet.end()) m_propertySet.erase(it);
 }
 
@@ -665,9 +663,8 @@ Tools::LockGuard::~LockGuard()
 
 std::ostream& Tools::operator<<(std::ostream& os, const Tools::PropertySet& p)
 {
-	std::map<std::string, Variant>::const_iterator it;
 
-	for (it = p.m_propertySet.begin(); it != p.m_propertySet.end(); ++it)
+	for (auto it = p.m_propertySet.begin(); it != p.m_propertySet.end(); ++it)
 	{
 		if (it != p.m_propertySet.begin()) os << ", ";
 

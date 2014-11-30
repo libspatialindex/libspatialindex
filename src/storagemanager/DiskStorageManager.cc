@@ -5,7 +5,7 @@
  * Copyright (c) 2002, Marios Hadjieleftheriou
  *
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
@@ -133,7 +133,7 @@ DiskStorageManager::DiskStorageManager(Tools::PropertySet& ps) : m_pageSize(0), 
 	bool bOverwrite = false;
 	bool bFileExists = false;
 	std::streamoff length = 0;
-	
+
 	var = ps.getProperty("Overwrite");
 
 	if (var.m_varType != Tools::VT_EMPTY)
@@ -289,8 +289,8 @@ DiskStorageManager::~DiskStorageManager()
 	m_dataFile.close();
 	if (m_buffer != 0) delete[] m_buffer;
 
-	std::map<id_type, Entry*>::iterator it;
-	for (it = m_pageIndex.begin(); it != m_pageIndex.end(); ++it) delete (*it).second;
+	for (auto& v: m_pageIndex)
+		delete v.second;
 }
 
 void DiskStorageManager::flush()
