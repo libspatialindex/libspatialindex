@@ -79,6 +79,7 @@ namespace SpatialIndex
 			virtual void addCommand(ICommand* pCommand, CommandType ct);
 			virtual bool isIndexValid();
 			virtual void getStatistics(IStatistics** out) const;
+			virtual void flush();
 
 		private:
 			void initNew(Tools::PropertySet&);

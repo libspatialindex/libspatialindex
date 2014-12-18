@@ -204,6 +204,7 @@ namespace SpatialIndex
 		virtual void addCommand(ICommand* in, CommandType ct) = 0;
 		virtual bool isIndexValid() = 0;
 		virtual void getStatistics(IStatistics** out) const = 0;
+		virtual void flush() = 0;
 		virtual ~ISpatialIndex() {}
 
 	}; // ISpatialIndex
