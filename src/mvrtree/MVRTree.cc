@@ -570,6 +570,11 @@ void SpatialIndex::MVRTree::MVRTree::getStatistics(IStatistics** out) const
 	*out = new Statistics(m_stats);
 }
 
+void SpatialIndex::MVRTree::MVRTree::flush()
+{
+	storeHeader();
+}
+
 void SpatialIndex::MVRTree::MVRTree::initNew(Tools::PropertySet& ps)
 {
 	Tools::Variant var;

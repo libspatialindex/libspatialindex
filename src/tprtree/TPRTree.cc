@@ -593,6 +593,11 @@ void SpatialIndex::TPRTree::TPRTree::getStatistics(IStatistics** out) const
 	*out = new Statistics(m_stats);
 }
 
+void SpatialIndex::TPRTree::TPRTree::flush()
+{
+	storeHeader();
+}
+
 void SpatialIndex::TPRTree::TPRTree::initNew(Tools::PropertySet& ps)
 {
 	Tools::Variant var;
