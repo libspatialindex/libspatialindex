@@ -220,7 +220,7 @@ SpatialIndex::MVRTree::MVRTree::MVRTree(IStorageManager& sm, Tools::PropertySet&
 	m_leafPool(100)
 {
 #ifdef HAVE_PTHREAD_H
-	Tools::LockGuard lock(&m_lock);
+	pthread_mutex_init(&m_lock, NULL);
 #endif
 
 	Tools::Variant var = ps.getProperty("IndexIdentifier");
@@ -245,7 +245,7 @@ SpatialIndex::MVRTree::MVRTree::MVRTree(IStorageManager& sm, Tools::PropertySet&
 SpatialIndex::MVRTree::MVRTree::~MVRTree()
 {
 #ifdef HAVE_PTHREAD_H
-	Tools::LockGuard lock(&m_lock);
+	pthread_mutex_destroy(&m_lock);
 #endif
 
 	storeHeader();
