@@ -34,4 +34,5 @@ EXTRA_DIST = INSTALL.WIN \
              test/rtree/test3/run \
              test/rtree/test4/run \
              test/tprtree/test1/run \
-             test/tprtree/test2/run
+             test/tprtree/test2/run \
+             test/gtest
