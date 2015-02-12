@@ -13,7 +13,7 @@ AC_INIT([spatialindex], [sidx_version], [mhadji@gmail.com], [spatialindex-src])
 AC_CANONICAL_BUILD
 AC_CONFIG_MACRO_DIR([m4])
 
-debug_default="no"
+debug_default="no"	
 
 CFLAGS="-Wall -Wno-long-long -pedantic $CFLAGS"
 CXXFLAGS="-Wall -Wno-long-long -pedantic -std=c++98 $CXXFLAGS"
@@ -77,7 +77,8 @@ AC_CONFIG_FILES([	Makefile
 					test/geometry/Makefile
 					test/rtree/Makefile
 					test/mvrtree/Makefile
-					test/tprtree/Makefile])
+					test/tprtree/Makefile
+					test/gtest/Makefile])
 
 AC_OUTPUT
 
