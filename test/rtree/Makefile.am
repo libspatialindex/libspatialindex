@@ -1,5 +1,5 @@
 ## Makefile.am -- Process this file with automake to produce Makefile.in
-noinst_PROGRAMS = Generator Exhaustive RTreeLoad RTreeQuery RTreeBulkLoad
+noinst_PROGRAMS = Generator Exhaustive RTreeLoad RTreeQuery RTreeBulkLoad CRTree
 INCLUDES = -I../../include 
 Generator_SOURCES = Generator.cc 
 Generator_LDADD = ../../libspatialindex.la
@@ -11,3 +11,5 @@ RTreeQuery_SOURCES = RTreeQuery.cc
 RTreeQuery_LDADD = ../../libspatialindex.la
 RTreeBulkLoad_SOURCES = RTreeBulkLoad.cc 
 RTreeBulkLoad_LDADD = ../../libspatialindex.la
+CRTree_SOURCES = CRTree.cc
+CRTree_LDADD = ../../libspatialindex_c.la
