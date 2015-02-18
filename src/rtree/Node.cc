@@ -589,15 +589,20 @@ void Node::reinsertData(uint32_t dataLength, byte* pData, Region& mbr, id_type i
 
 	uint32_t cCount;
 
-	for (cCount = 0; cCount < cReinsert; ++cCount)
+    // Keep all but cReinsert nodes
+	for (cCount = 0; cCount < m_capacity + 1 - cReinsert; ++cCount)
 	{
-		reinsert.push_back(v[cCount]->m_index);
+		keep.push_back(v[cCount]->m_index);
 		delete v[cCount];
 	}
 
-	for (cCount = cReinsert; cCount < m_capacity + 1; ++cCount)
+    // Remove cReinsert nodes which will be
+    // reinserted into the tree. Since our array
+    // is already sorted in ascending order this
+    // matches the order suggested in the paper.
+	for (cCount = m_capacity + 1 - cReinsert; cCount < m_capacity + 1; ++cCount)
 	{
-		keep.push_back(v[cCount]->m_index);
+		reinsert.push_back(v[cCount]->m_index);
 		delete v[cCount];
 	}
 
