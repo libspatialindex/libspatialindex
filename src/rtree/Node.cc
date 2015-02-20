@@ -471,7 +471,7 @@ bool Node::insertData(uint32_t dataLength, byte* pData, Region& mbr, id_type id,
 		id_type cParent = pathBuffer.top(); pathBuffer.pop();
 		NodePtr ptrN = m_pTree->readNode(cParent);
 		Index* p = static_cast<Index*>(ptrN.get());
-		p->adjustTree(this, pathBuffer);
+		p->adjustTree(this, pathBuffer, true);
 
 		for (cIndex = 0; cIndex < lReinsert; ++cIndex)
 		{
