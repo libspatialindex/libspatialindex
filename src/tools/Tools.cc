@@ -648,19 +648,6 @@ bool Tools::Random::flipCoin()
 	return false;
 }
 
-#if HAVE_PTHREAD_H
-Tools::LockGuard::LockGuard(pthread_mutex_t* pLock)
- : m_pLock(pLock)
-{
-	pthread_mutex_lock(m_pLock);
-}
-
-Tools::LockGuard::~LockGuard()
-{
-	pthread_mutex_unlock(m_pLock);
-}
-#endif
-
 std::ostream& Tools::operator<<(std::ostream& os, const Tools::PropertySet& p)
 {
 

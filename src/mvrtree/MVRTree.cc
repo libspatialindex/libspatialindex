@@ -219,9 +219,6 @@ SpatialIndex::MVRTree::MVRTree::MVRTree(IStorageManager& sm, Tools::PropertySet&
 	m_indexPool(100),
 	m_leafPool(100)
 {
-#ifdef HAVE_PTHREAD_H
-	pthread_mutex_init(&m_lock, NULL);
-#endif
 
 	Tools::Variant var = ps.getProperty("IndexIdentifier");
 	if (var.m_varType != Tools::VT_EMPTY)
@@ -244,10 +241,6 @@ SpatialIndex::MVRTree::MVRTree::MVRTree(IStorageManager& sm, Tools::PropertySet&
 
 SpatialIndex::MVRTree::MVRTree::~MVRTree()
 {
-#ifdef HAVE_PTHREAD_H
-	pthread_mutex_destroy(&m_lock);
-#endif
-
 	storeHeader();
 }
 
@@ -261,10 +254,6 @@ void SpatialIndex::MVRTree::MVRTree::insertData(uint32_t len, const byte* pData,
 	const Tools::IInterval* ti = dynamic_cast<const Tools::IInterval*>(&shape);
 	if (ti == 0) throw Tools::IllegalArgumentException("insertData: Shape does not support the Tools::IInterval interface.");
 	if (ti->getLowerBound() < m_currentTime) throw Tools::IllegalArgumentException("insertData: Shape start time is older than tree current time.");
-
-#ifdef HAVE_PTHREAD_H
-	Tools::LockGuard lock(&m_lock);
-#endif
 
 	// convert the shape into a TimeRegion (R-Trees index regions only; i.e., approximations of the shapes).
 	Region mbrold;
@@ -295,10 +284,6 @@ bool SpatialIndex::MVRTree::MVRTree::deleteData(const IShape& shape, id_type id)
 	if (shape.getDimension() != m_dimension) throw Tools::IllegalArgumentException("deleteData: Shape has the wrong number of dimensions.");
 	const Tools::IInterval* ti = dynamic_cast<const Tools::IInterval*>(&shape);
 	if (ti == 0) throw Tools::IllegalArgumentException("deleteData: Shape does not support the Tools::IInterval interface.");
-
-#ifdef HAVE_PTHREAD_H
-	Tools::LockGuard lock(&m_lock);
-#endif
 
 	Region mbrold;
 	shape.getMBR(mbrold);
@@ -356,10 +341,6 @@ void SpatialIndex::MVRTree::MVRTree::selfJoinQuery(const IShape&, IVisitor&)
 
 void SpatialIndex::MVRTree::MVRTree::queryStrategy(IQueryStrategy& qs)
 {
-#ifdef HAVE_PTHREAD_H
-	Tools::LockGuard lock(&m_lock);
-#endif
-
 	id_type next = m_roots[m_roots.size() - 1].m_id;
 	bool hasNext = true;
 
@@ -1246,10 +1227,6 @@ void SpatialIndex::MVRTree::MVRTree::rangeQuery(RangeQueryType type, const IShap
 
 	const Tools::IInterval* ti = dynamic_cast<const Tools::IInterval*>(&query);
 	if (ti == 0) throw Tools::IllegalArgumentException("rangeQuery: Shape does not support the Tools::IInterval interface.");
-
-#ifdef HAVE_PTHREAD_H
-	Tools::LockGuard lock(&m_lock);
-#endif
 
 	std::set<id_type> visitedNodes;
 	std::set<id_type> visitedData;

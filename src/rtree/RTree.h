@@ -144,10 +144,6 @@ namespace SpatialIndex
 			std::vector<std::shared_ptr<ICommand> > m_readNodeCommands;
 			std::vector<std::shared_ptr<ICommand> > m_deleteNodeCommands;
 
-#ifdef HAVE_PTHREAD_H
-			pthread_mutex_t m_lock;
-#endif
-
 			class NNEntry
 			{
 			public:

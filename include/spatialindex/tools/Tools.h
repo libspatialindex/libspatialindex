@@ -72,10 +72,6 @@
 #include <algorithm>
 #include <cwchar>
 
-#if HAVE_PTHREAD_H
-  #include <pthread.h>
-#endif
-
 #include "PointerPool.h"
 #include "PoolPointer.h"
 

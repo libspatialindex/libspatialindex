@@ -221,10 +221,6 @@ SpatialIndex::TPRTree::TPRTree::TPRTree(IStorageManager& sm, Tools::PropertySet&
 	m_indexPool(100),
 	m_leafPool(100)
 {
-#ifdef HAVE_PTHREAD_H
-	pthread_mutex_init(&m_lock, NULL);
-#endif
-
 	Tools::Variant var = ps.getProperty("IndexIdentifier");
 	if (var.m_varType != Tools::VT_EMPTY)
 	{
@@ -246,10 +242,6 @@ SpatialIndex::TPRTree::TPRTree::TPRTree(IStorageManager& sm, Tools::PropertySet&
 
 SpatialIndex::TPRTree::TPRTree::~TPRTree()
 {
-#ifdef HAVE_PTHREAD_H
-	pthread_mutex_destroy(&m_lock);
-#endif
-
 	storeHeader();
 }
 
@@ -266,10 +258,6 @@ void SpatialIndex::TPRTree::TPRTree::insertData(uint32_t len, const byte* pData,
 	if (pivI == 0) throw Tools::IllegalArgumentException("insertData: Shape does not support the Tools::IInterval interface.");
 
 	if (pivI->getLowerBound() < m_currentTime) throw Tools::IllegalArgumentException("insertData: Shape start time is older than tree current time.");
-
-#ifdef HAVE_PTHREAD_H
-	Tools::LockGuard lock(&m_lock);
-#endif
 
 	Region mbr;
 	shape.getMBR(mbr);
@@ -309,10 +297,6 @@ bool SpatialIndex::TPRTree::TPRTree::deleteData(const IShape& shape, id_type id)
 	if (es == 0) throw Tools::IllegalArgumentException("insertData: Shape does not support the Tools::IEvolvingShape interface.");
 	const Tools::IInterval *pivI  = dynamic_cast<const Tools::IInterval*>(&shape);
 	if (pivI == 0) throw Tools::IllegalArgumentException("insertData: Shape does not support the Tools::IInterval interface.");
-
-#ifdef HAVE_PTHREAD_H
-	Tools::LockGuard lock(&m_lock);
-#endif
 
 	Region mbr;
 	shape.getMBR(mbr);
@@ -374,10 +358,6 @@ void SpatialIndex::TPRTree::TPRTree::selfJoinQuery(const IShape&, IVisitor&)
 
 void SpatialIndex::TPRTree::TPRTree::queryStrategy(IQueryStrategy& qs)
 {
-#ifdef HAVE_PTHREAD_H
-	Tools::LockGuard lock(&m_lock);
-#endif
-
 	id_type next = m_rootID;
 	bool hasNext = true;
 
@@ -1219,10 +1199,6 @@ void SpatialIndex::TPRTree::TPRTree::rangeQuery(RangeQueryType type, const IShap
 	if (mr == 0) throw Tools::IllegalArgumentException("rangeQuery: Shape has to be a moving region.");
 	if (mr->m_startTime < m_currentTime || mr->m_endTime >= m_currentTime + m_horizon)
 		throw Tools::IllegalArgumentException("rangeQuery: Query time interval does not intersect current horizon.");
-
-#ifdef HAVE_PTHREAD_H
-	Tools::LockGuard lock(&m_lock);
-#endif
 
 	std::stack<NodePtr> st;
 	NodePtr root = readNode(m_rootID);
