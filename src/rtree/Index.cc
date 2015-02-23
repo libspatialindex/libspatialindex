@@ -340,7 +340,7 @@ void Index::adjustTree(Node* n1, Node* n2, std::stack<id_type>& pathBuffer, byte
 	// MBR needs recalculation if either:
 	//   1. the NEW child MBR is not contained.
 	//   2. the OLD child MBR is touching.
-	bool bContained = m_nodeMBR.containsRegion(n1->m_nodeMBR);
+	bool bContained = m_nodeMBR.containsRegion(n2->m_nodeMBR);
 	bool bTouches = m_nodeMBR.touchesRegion(*(m_ptrMBR[child]));
 	bool bRecompute = (! bContained || (bTouches && m_pTree->m_bTightMBRs));
 
