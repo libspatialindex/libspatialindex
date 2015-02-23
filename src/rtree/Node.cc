@@ -1033,6 +1033,27 @@ void Node::condenseTree(std::stack<NodePtr>& toReinsert, std::stack<id_type>& pa
 			// HACK: pending deleteNode for deleted child will decrease nodesInLevel, later on.
 			m_pTree->m_stats.m_nodesInLevel[m_pTree->m_stats.m_u32TreeHeight - 1] = 2;
 		}
+		else
+		{
+			// due to data removal.
+			if (m_pTree->m_bTightMBRs)
+			{
+				for (uint32_t cDim = 0; cDim < m_nodeMBR.m_dimension; ++cDim)
+				{
+					m_nodeMBR.m_pLow[cDim] = std::numeric_limits<double>::max();
+					m_nodeMBR.m_pHigh[cDim] = -std::numeric_limits<double>::max();
+
+					for (uint32_t u32Child = 0; u32Child < m_children; ++u32Child)
+					{
+						m_nodeMBR.m_pLow[cDim] = std::min(m_nodeMBR.m_pLow[cDim], m_ptrMBR[u32Child]->m_pLow[cDim]);
+						m_nodeMBR.m_pHigh[cDim] = std::max(m_nodeMBR.m_pHigh[cDim], m_ptrMBR[u32Child]->m_pHigh[cDim]);
+					}
+				}
+			}
+
+            // write parent node back to storage.
+			m_pTree->writeNode(this);
+		}
 	}
 	else
 	{
