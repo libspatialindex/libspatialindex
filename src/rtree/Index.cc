@@ -280,7 +280,7 @@ uint32_t Index::findLeastOverlap(const Region& r) const
 	return ret;
 }
 
-void Index::adjustTree(Node* n, std::stack<id_type>& pathBuffer)
+void Index::adjustTree(Node* n, std::stack<id_type>& pathBuffer, bool force)
 {
 	++(m_pTree->m_stats.m_u64Adjustments);
 
@@ -300,7 +300,7 @@ void Index::adjustTree(Node* n, std::stack<id_type>& pathBuffer)
 
 	*(m_ptrMBR[child]) = n->m_nodeMBR;
 
-	if (bRecompute)
+	if (bRecompute || force)
 	{
 		for (uint32_t cDim = 0; cDim < m_nodeMBR.m_dimension; ++cDim)
 		{
@@ -317,12 +317,12 @@ void Index::adjustTree(Node* n, std::stack<id_type>& pathBuffer)
 
 	m_pTree->writeNode(this);
 
-	if (bRecompute && (! pathBuffer.empty()))
+	if ((bRecompute || force) && (! pathBuffer.empty()))
 	{
 		id_type cParent = pathBuffer.top(); pathBuffer.pop();
 		NodePtr ptrN = m_pTree->readNode(cParent);
 		Index* p = static_cast<Index*>(ptrN.get());
-		p->adjustTree(this, pathBuffer);
+		p->adjustTree(this, pathBuffer, force);
 	}
 }
 
