@@ -3,7 +3,7 @@
 #
 # (based originally on the libLAS files copyright Mateusz Loskot)
 
-cmake_minimum_required(VERSION 2.6.0)
+cmake_minimum_required(VERSION 2.8.4)
 project(spatialindex)
 
 #------------------------------------------------------------------------------
@@ -17,6 +17,8 @@ mark_as_advanced(CMAKE_VERBOSE_MAKEFILE)
 
 # Path to additional CMake modules
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/modules" ${CMAKE_MODULE_PATH})
+
+cmake_policy(SET CMP0054 NEW) # Make string comparison behave like you'd expect
 
 if (CMAKE_MAJOR_VERSION GREATER 2)
     cmake_policy(SET CMP0042 OLD) # osx rpath
@@ -64,6 +66,7 @@ check_function_exists(gettimeofday HAVE_GETTIMEOFDAY)
 check_function_exists(memset HAVE_MEMSET)
 check_function_exists(memcpy HAVE_MEMCPY)
 check_function_exists(bcopy HAVE_BCOPY)
+
 
 INCLUDE (CheckIncludeFiles)
 check_include_files(pthread.h HAVE_PTHREAD_H)
@@ -166,7 +169,7 @@ else()
   if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
 
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SIDX_COMMON_CXX_FLAGS}")
-    if (CMAKE_COMPILER_IS_GNUCXX)
+    if (CMAKE_COMPILER_IS_GNUCXX AND NOT CMAKE_SYSTEM_NAME STREQUAL "CYGWIN")
       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++98 -ansi")
     endif()
 
