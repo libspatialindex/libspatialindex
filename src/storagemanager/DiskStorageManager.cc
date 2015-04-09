@@ -171,7 +171,7 @@ DiskStorageManager::DiskStorageManager(Tools::PropertySet& ps) : m_pageSize(0), 
 			m_dataFile.open(sDataFile.c_str(), mode);
 
 			if (m_indexFile.fail() || m_dataFile.fail())
-				throw Tools::IllegalArgumentException("SpatialIndex::DiskStorageManager: Index/Data file cannot be read/writen.");
+				throw Tools::IllegalArgumentException("SpatialIndex::DiskStorageManager: Index/Data file cannot be read/written.");
 		}
 		else
 		{
