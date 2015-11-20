@@ -5,7 +5,7 @@
  * Copyright (c) 2004, Marios Hadjieleftheriou
  *
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
@@ -28,7 +28,7 @@
 #pragma once
 
 
-#if (defined _WIN32 || defined _WIN64 || defined WIN32 || defined WIN64) && !defined __GNUC__
+#if (defined(_MSC_VER) && _MSC_VER < 1700) && !defined __GNUC__
   typedef __int8 int8_t;
   typedef __int16 int16_t;
   typedef __int32 int32_t;
