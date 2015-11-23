@@ -38,9 +38,6 @@
   typedef unsigned __int32 uint32_t;
   typedef unsigned __int64 uint64_t;
 
-// Nuke this annoying warning.  See http://www.unknownroad.com/rtfm/VisualStudio/warningC4251.html
-#pragma warning( disable: 4251 )
-
 #else
   #include <stdint.h>
 #endif
