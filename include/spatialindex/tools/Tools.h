@@ -51,6 +51,10 @@
   #else
     #define SIDX_DLL __declspec(dllimport)
   #endif
+
+  // Nuke this annoying warning.  See http://www.unknownroad.com/rtfm/VisualStudio/warningC4251.html
+#pragma warning( disable: 4251 )
+
 #else
   #define SIDX_DLL
 #endif
