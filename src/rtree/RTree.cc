@@ -1265,7 +1265,7 @@ bool SpatialIndex::RTree::RTree::deleteData_impl(const Region& mbr, id_type id)
 	if (l.get() != 0)
 	{
 		Leaf* pL = static_cast<Leaf*>(l.get());
-		pL->deleteData(id, pathBuffer);
+		pL->deleteData(mbr, id, pathBuffer);
 		--(m_stats.m_u64Data);
 		return true;
 	}
