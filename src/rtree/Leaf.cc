@@ -109,13 +109,13 @@ void Leaf::split(uint32_t dataLength, byte* pData, Region& mbr, id_type id, Node
 	}
 }
 
-void Leaf::deleteData(id_type id, std::stack<id_type>& pathBuffer)
+void Leaf::deleteData(const Region& mbr, id_type id, std::stack<id_type>& pathBuffer)
 {
 	uint32_t child;
 
 	for (child = 0; child < m_children; ++child)
 	{
-		if (m_pIdentifier[child] == id) break;
+		if (m_pIdentifier[child] == id && mbr == *(m_ptrMBR[child])) break;
 	}
 
 	deleteEntry(child);
