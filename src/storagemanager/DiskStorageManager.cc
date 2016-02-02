@@ -31,6 +31,10 @@
 // For checking if a file exists - hobu
 #include <sys/stat.h>
 
+#ifdef WIN32
+#define stat _stat64
+#endif
+
 #include <spatialindex/SpatialIndex.h>
 #include "DiskStorageManager.h"
 #include <spatialindex/tools/Tools.h>
