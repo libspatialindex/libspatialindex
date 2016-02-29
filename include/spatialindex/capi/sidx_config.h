@@ -46,23 +46,18 @@
 
    #include <windows.h>
    #define STRDUP _strdup
-   #include <spatialindex/SpatialIndex.h>
    #include <windows.h>
 
 #else
 
    #include <stdint.h>
    #define SIDX_THREAD  __thread
-   #include <spatialindex/SpatialIndex.h>
    #define STRDUP strdup
 #endif
 
 #include <sys/stat.h>
 
 #include "sidx_export.h"
-
-class Item;
-class Index;
 
 typedef enum
 {
@@ -106,9 +101,9 @@ typedef enum
 #  define IDX_C_END
 #endif
 
-typedef Index *IndexH;
-typedef SpatialIndex::IData *IndexItemH;
-typedef Tools::PropertySet *IndexPropertyH;
+typedef struct Index *IndexH;
+typedef struct SpatialIndex_IData *IndexItemH;
+typedef struct Tools_PropertySet *IndexPropertyH;
 
 
 

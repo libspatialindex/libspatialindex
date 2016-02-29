@@ -109,7 +109,7 @@ SIDX_C_DLL int Error_GetErrorCount(void) {
 SIDX_C_DLL IndexH Index_Create(IndexPropertyH hProp)
 {
 	VALIDATE_POINTER1(hProp, "Index_Create", NULL);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try {
 		return (IndexH) new Index(*prop);
@@ -139,7 +139,7 @@ SIDX_C_DLL IndexH Index_CreateWithStream( IndexPropertyH hProp,
 									   )
 {
 	VALIDATE_POINTER1(hProp, "Index_CreateWithStream", NULL);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 
 	try {
@@ -195,7 +195,7 @@ SIDX_C_DLL RTError Index_DeleteTPData( IndexH index,
 {
   VALIDATE_POINTER1(index, "Index_DeleteTPData", RT_Failure);
 
-  Index* idx = static_cast<Index*>(index);
+  Index* idx = reinterpret_cast<Index*>(index);
 
   try {
     idx->index().deleteData(SpatialIndex::MovingRegion(pdMin, pdMax, pdVMin, pdVMax, tStart, tEnd, nDimension), id);
@@ -232,7 +232,7 @@ SIDX_C_DLL RTError Index_DeleteMVRData( IndexH index,
 {
   VALIDATE_POINTER1(index, "Index_DeleteMVRData", RT_Failure);
 
-  Index* idx = static_cast<Index*>(index);
+  Index* idx = reinterpret_cast<Index*>(index);
 
   try {
     idx->index().deleteData(SpatialIndex::TimeRegion(pdMin, pdMax, tStart, tEnd, nDimension), id);
@@ -266,7 +266,7 @@ SIDX_C_DLL RTError Index_DeleteData(  IndexH index,
 {
 	VALIDATE_POINTER1(index, "Index_DeleteData", RT_Failure);
 
-	Index* idx = static_cast<Index*>(index);
+	Index* idx = reinterpret_cast<Index*>(index);
 
 	try {
 		idx->index().deleteData(SpatialIndex::Region(pdMin, pdMax, nDimension), id);
@@ -307,7 +307,7 @@ SIDX_C_DLL RTError Index_InsertTPData( IndexH index,
 {
   VALIDATE_POINTER1(index, "Index_InsertTPData", RT_Failure);
 
-  Index* idx = static_cast<Index*>(index);
+  Index* idx = reinterpret_cast<Index*>(index);
 
   // Test the data and check for the case when mins equal maxs (x,y,z,v)
   // In that case, we will insert a SpatialIndex::MovingPoint
@@ -382,7 +382,7 @@ SIDX_C_DLL RTError Index_InsertMVRData( IndexH index,
 {
   VALIDATE_POINTER1(index, "Index_InsertMVRData", RT_Failure);
 
-  Index* idx = static_cast<Index*>(index);
+  Index* idx = reinterpret_cast<Index*>(index);
 
   // Test the data and check for the case when mins equal maxs
   // In that case, we will insert a SpatialIndex::TimePoint
@@ -451,7 +451,7 @@ SIDX_C_DLL RTError Index_InsertData(  IndexH index,
 {
 	VALIDATE_POINTER1(index, "Index_InsertData", RT_Failure);
 
-	Index* idx = static_cast<Index*>(index);
+	Index* idx = reinterpret_cast<Index*>(index);
 
 	// Test the data and check for the case when minx == maxx, miny == maxy
 	// and minz == maxz.  In that case, we will insert a SpatialIndex::Point
@@ -521,7 +521,7 @@ SIDX_C_DLL RTError Index_TPIntersects_obj(  IndexH index,
                     uint64_t* nResults)
 {
   VALIDATE_POINTER1(index, "Index_TPIntersects_obj", RT_Failure);
-  Index* idx = static_cast<Index*>(index);
+  Index* idx = reinterpret_cast<Index*>(index);
   int64_t nResultLimit, nStart;
 
   nResultLimit = idx->GetResultSetLimit();
@@ -572,7 +572,7 @@ SIDX_C_DLL RTError Index_MVRIntersects_obj(  IndexH index,
                     uint64_t* nResults)
 {
   VALIDATE_POINTER1(index, "Index_MVRIntersects_obj", RT_Failure);
-  Index* idx = static_cast<Index*>(index);
+  Index* idx = reinterpret_cast<Index*>(index);
   int64_t nResultLimit, nStart;
 
   nResultLimit = idx->GetResultSetLimit();
@@ -621,7 +621,7 @@ SIDX_C_DLL RTError Index_Intersects_obj(  IndexH index,
 										uint64_t* nResults)
 {
 	VALIDATE_POINTER1(index, "Index_Intersects_obj", RT_Failure);
-	Index* idx = static_cast<Index*>(index);
+	Index* idx = reinterpret_cast<Index*>(index);
 	int64_t nResultLimit, nStart;
 
 	nResultLimit = idx->GetResultSetLimit();
@@ -674,7 +674,7 @@ SIDX_C_DLL RTError Index_TPIntersects_id(  IndexH index,
                     uint64_t* nResults)
 {
   VALIDATE_POINTER1(index, "Index_TPIntersects_id", RT_Failure);
-  Index* idx = static_cast<Index*>(index);
+  Index* idx = reinterpret_cast<Index*>(index);
 
   int64_t nResultLimit, nStart;
 
@@ -726,7 +726,7 @@ SIDX_C_DLL RTError Index_MVRIntersects_id(  IndexH index,
                     uint64_t* nResults)
 {
   VALIDATE_POINTER1(index, "Index_MVRIntersects_id", RT_Failure);
-  Index* idx = static_cast<Index*>(index);
+  Index* idx = reinterpret_cast<Index*>(index);
 
   int64_t nResultLimit, nStart;
 
@@ -776,7 +776,7 @@ SIDX_C_DLL RTError Index_Intersects_id(	  IndexH index,
 										uint64_t* nResults)
 {
 	VALIDATE_POINTER1(index, "Index_Intersects_id", RT_Failure);
-	Index* idx = static_cast<Index*>(index);
+	Index* idx = reinterpret_cast<Index*>(index);
 
 	int64_t nResultLimit, nStart;
 
@@ -829,7 +829,7 @@ SIDX_C_DLL RTError Index_TPIntersects_count(	  IndexH index,
                     uint64_t* nResults)
 {
   VALIDATE_POINTER1(index, "Index_TPIntersects_count", RT_Failure);
-  Index* idx = static_cast<Index*>(index);
+  Index* idx = reinterpret_cast<Index*>(index);
 
   CountVisitor* visitor = new CountVisitor;
   try {
@@ -875,7 +875,7 @@ SIDX_C_DLL RTError Index_MVRIntersects_count(	  IndexH index,
                     uint64_t* nResults)
 {
   VALIDATE_POINTER1(index, "Index_MVRIntersects_count", RT_Failure);
-  Index* idx = static_cast<Index*>(index);
+  Index* idx = reinterpret_cast<Index*>(index);
 
   CountVisitor* visitor = new CountVisitor;
   try {
@@ -919,7 +919,7 @@ SIDX_C_DLL RTError Index_Intersects_count(	  IndexH index,
 										uint64_t* nResults)
 {
 	VALIDATE_POINTER1(index, "Index_Intersects_count", RT_Failure);
-	Index* idx = static_cast<Index*>(index);
+	Index* idx = reinterpret_cast<Index*>(index);
 
 	CountVisitor* visitor = new CountVisitor;
 	try {
@@ -964,7 +964,7 @@ SIDX_C_DLL RTError Index_SegmentIntersects_obj(  IndexH index,
 										uint64_t* nResults)
 {
 	VALIDATE_POINTER1(index, "Index_Intersects_obj", RT_Failure);
-	Index* idx = static_cast<Index*>(index);
+	Index* idx = reinterpret_cast<Index*>(index);
 
   int64_t nResultLimit, nStart;
 
@@ -1014,7 +1014,7 @@ SIDX_C_DLL RTError Index_SegmentIntersects_id(	  IndexH index,
 										uint64_t* nResults)
 {
 	VALIDATE_POINTER1(index, "Index_Intersects_id", RT_Failure);
-	Index* idx = static_cast<Index*>(index);
+	Index* idx = reinterpret_cast<Index*>(index);
   int64_t nResultLimit, nStart;
 
   nResultLimit = idx->GetResultSetLimit();
@@ -1062,7 +1062,7 @@ SIDX_C_DLL RTError Index_SegmentIntersects_count(	  IndexH index,
 										uint64_t* nResults)
 {
 	VALIDATE_POINTER1(index, "Index_Intersects_count", RT_Failure);
-	Index* idx = static_cast<Index*>(index);
+	Index* idx = reinterpret_cast<Index*>(index);
 
 	CountVisitor* visitor = new CountVisitor;
 	try {
@@ -1111,7 +1111,7 @@ SIDX_C_DLL RTError Index_TPNearestNeighbors_id(IndexH index,
                       uint64_t* nResults)
 {
   VALIDATE_POINTER1(index, "Index_TPNearestNeighbors_id", RT_Failure);
-  Index* idx = static_cast<Index*>(index);
+  Index* idx = reinterpret_cast<Index*>(index);
   int64_t nResultLimit, nStart;
 
   nResultLimit = idx->GetResultSetLimit();
@@ -1164,7 +1164,7 @@ SIDX_C_DLL RTError Index_MVRNearestNeighbors_id(IndexH index,
                       uint64_t* nResults)
 {
   VALIDATE_POINTER1(index, "Index_MVRNearestNeighbors_id", RT_Failure);
-  Index* idx = static_cast<Index*>(index);
+  Index* idx = reinterpret_cast<Index*>(index);
   int64_t nResultLimit, nStart;
 
   nResultLimit = idx->GetResultSetLimit();
@@ -1215,7 +1215,7 @@ SIDX_C_DLL RTError Index_NearestNeighbors_id(IndexH index,
 											uint64_t* nResults)
 {
 	VALIDATE_POINTER1(index, "Index_NearestNeighbors_id", RT_Failure);
-	Index* idx = static_cast<Index*>(index);
+	Index* idx = reinterpret_cast<Index*>(index);
   int64_t nResultLimit, nStart;
 
   nResultLimit = idx->GetResultSetLimit();
@@ -1271,7 +1271,7 @@ SIDX_C_DLL RTError Index_TPNearestNeighbors_obj(IndexH index,
                       uint64_t* nResults)
 {
   VALIDATE_POINTER1(index, "Index_TPNearestNeighbors_obj", RT_Failure);
-  Index* idx = static_cast<Index*>(index);
+  Index* idx = reinterpret_cast<Index*>(index);
 
   int64_t nResultLimit, nStart;
 
@@ -1325,7 +1325,7 @@ SIDX_C_DLL RTError Index_MVRNearestNeighbors_obj(IndexH index,
                       uint64_t* nResults)
 {
   VALIDATE_POINTER1(index, "Index_MVRNearestNeighbors_obj", RT_Failure);
-  Index* idx = static_cast<Index*>(index);
+  Index* idx = reinterpret_cast<Index*>(index);
 
   int64_t nResultLimit, nStart;
 
@@ -1377,7 +1377,7 @@ SIDX_C_DLL RTError Index_NearestNeighbors_obj(IndexH index,
 											uint64_t* nResults)
 {
 	VALIDATE_POINTER1(index, "Index_NearestNeighbors_obj", RT_Failure);
-	Index* idx = static_cast<Index*>(index);
+	Index* idx = reinterpret_cast<Index*>(index);
 
   int64_t nResultLimit, nStart;
 
@@ -1427,7 +1427,7 @@ SIDX_C_DLL RTError Index_GetBounds(	  IndexH index,
 									uint32_t* nDimension)
 {
 	VALIDATE_POINTER1(index, "Index_GetBounds", RT_Failure);
-	Index* idx = static_cast<Index*>(index);
+	Index* idx = reinterpret_cast<Index*>(index);
 
 	BoundsQuery* query = new BoundsQuery;
 
@@ -1482,7 +1482,7 @@ SIDX_DLL RTError Index_SetResultSetOffset(IndexH index, int64_t value)
 	try
 	{
 		VALIDATE_POINTER1(index, "Index_SetResultSetOffset", RT_Failure);
-		Index* idx = static_cast<Index*>(index);
+		Index* idx = reinterpret_cast<Index*>(index);
 		idx->SetResultSetOffset(value);
 	}
 	catch (...) {
@@ -1497,7 +1497,7 @@ SIDX_DLL RTError Index_SetResultSetOffset(IndexH index, int64_t value)
 SIDX_DLL int64_t Index_GetResultSetOffset(IndexH index)
 {
 	VALIDATE_POINTER1(index, "Index_GetResultSetOffset", 0);
-	Index* idx = static_cast<Index*>(index);
+	Index* idx = reinterpret_cast<Index*>(index);
 	return idx->GetResultSetOffset();
 }
 
@@ -1506,7 +1506,7 @@ SIDX_DLL RTError Index_SetResultSetLimit(IndexH index, int64_t value)
 	try
 	{
 		VALIDATE_POINTER1(index, "Index_SetResultSetLimit", RT_Failure);
-		Index* idx = static_cast<Index*>(index);
+		Index* idx = reinterpret_cast<Index*>(index);
 		idx->SetResultSetLimit(value);
 	}
 	catch (...) {
@@ -1521,21 +1521,21 @@ SIDX_DLL RTError Index_SetResultSetLimit(IndexH index, int64_t value)
 SIDX_DLL int64_t Index_GetResultSetLimit(IndexH index)
 {
 	VALIDATE_POINTER1(index, "Index_GetResultSetLimit", 0);
-	Index* idx = static_cast<Index*>(index);
+	Index* idx = reinterpret_cast<Index*>(index);
 	return idx->GetResultSetLimit();
 }
 
 SIDX_C_DLL uint32_t Index_IsValid(IndexH index)
 {
 	VALIDATE_POINTER1(index, "Index_IsValid", 0);
-	Index* idx = static_cast<Index*>(index);
+	Index* idx = reinterpret_cast<Index*>(index);
 	return static_cast<uint32_t>(idx->index().isIndexValid());
 }
 
 SIDX_C_DLL IndexPropertyH Index_GetProperties(IndexH index)
 {
 	VALIDATE_POINTER1(index, "Index_GetProperties", 0);
-	Index* idx = static_cast<Index*>(index);
+	Index* idx = reinterpret_cast<Index*>(index);
 	Tools::PropertySet* ps = new Tools::PropertySet;
 	*ps = idx->GetProperties();
 
@@ -1548,7 +1548,7 @@ SIDX_C_DLL IndexPropertyH Index_GetProperties(IndexH index)
 SIDX_C_DLL void Index_ClearBuffer(IndexH index)
 {
 	VALIDATE_POINTER0(index, "Index_ClearBuffer");
-	Index* idx = static_cast<Index*>(index);
+	Index* idx = reinterpret_cast<Index*>(index);
 	idx->buffer().clear();
 }
 
@@ -1558,7 +1558,7 @@ SIDX_C_DLL void Index_DestroyObjResults(IndexItemH* results, uint32_t nResults)
 	SpatialIndex::IData* it;
 	for (uint32_t i=0; i< nResults; ++i) {
 		if (results[i] != NULL) {
-			it = static_cast<SpatialIndex::IData*>(results[i]);
+			it = reinterpret_cast<SpatialIndex::IData*>(results[i]);
 			if (it != 0)
 				delete it;
 		}
@@ -1585,7 +1585,7 @@ SIDX_C_DLL RTError Index_GetLeaves(	IndexH index,
 									uint32_t* nDimension)
 {
 	VALIDATE_POINTER1(index, "Index_GetLeaves", RT_Failure);
-	Index* idx = static_cast<Index*>(index);
+	Index* idx = reinterpret_cast<Index*>(index);
 
 	std::vector<LeafQueryResult>::const_iterator i;
 	LeafQuery* query = new LeafQuery;
@@ -1677,7 +1677,7 @@ SIDX_C_DLL RTError Index_GetLeaves(	IndexH index,
 SIDX_C_DLL void IndexItem_Destroy(IndexItemH item)
 {
 	VALIDATE_POINTER0(item, "IndexItem_Destroy");
-	SpatialIndex::IData* it = static_cast<SpatialIndex::IData*>(item);
+	SpatialIndex::IData* it = reinterpret_cast<SpatialIndex::IData*>(item);
 	if (it != 0) delete it;
 }
 
@@ -1686,7 +1686,7 @@ SIDX_C_DLL RTError IndexItem_GetData( IndexItemH item,
 									uint64_t* length)
 {
 	VALIDATE_POINTER1(item, "IndexItem_GetData", RT_Failure);
-	SpatialIndex::IData* it = static_cast<SpatialIndex::IData*>(item);
+	SpatialIndex::IData* it = reinterpret_cast<SpatialIndex::IData*>(item);
     uint8_t* p_data;
     uint32_t* l= new uint32_t;
 
@@ -1704,7 +1704,7 @@ SIDX_C_DLL RTError IndexItem_GetData( IndexItemH item,
 SIDX_C_DLL int64_t IndexItem_GetID(IndexItemH item)
 {
 	VALIDATE_POINTER1(item, "IndexItem_GetID",0);
-	SpatialIndex::IData* it = static_cast<SpatialIndex::IData*>(item);
+	SpatialIndex::IData* it = reinterpret_cast<SpatialIndex::IData*>(item);
 	int64_t value = it->getIdentifier();
 	return value;
 }
@@ -1715,7 +1715,7 @@ SIDX_C_DLL RTError IndexItem_GetBounds(	  IndexItemH item,
 										uint32_t* nDimension)
 {
 	VALIDATE_POINTER1(item, "IndexItem_GetBounds", RT_Failure);
-	SpatialIndex::IData* it = static_cast<SpatialIndex::IData*>(item);
+	SpatialIndex::IData* it = reinterpret_cast<SpatialIndex::IData*>(item);
 
 	SpatialIndex::IShape* s;
     it->getShape(&s);
@@ -1759,7 +1759,7 @@ SIDX_C_DLL IndexPropertyH IndexProperty_Create()
 SIDX_C_DLL void IndexProperty_Destroy(IndexPropertyH hProp)
 {
 	VALIDATE_POINTER0(hProp, "IndexProperty_Destroy");
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 	if (prop != 0) delete prop;
 }
 
@@ -1767,7 +1767,7 @@ SIDX_C_DLL RTError IndexProperty_SetIndexType(IndexPropertyH hProp,
 											RTIndexType value)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_SetIndexType", RT_Failure);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try
 	{
@@ -1804,7 +1804,7 @@ SIDX_C_DLL RTError IndexProperty_SetIndexType(IndexPropertyH hProp,
 SIDX_C_DLL RTIndexType IndexProperty_GetIndexType(IndexPropertyH hProp)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_GetIndexType", RT_InvalidIndexType);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
 	var = prop->getProperty("IndexType");
@@ -1830,7 +1830,7 @@ SIDX_C_DLL RTIndexType IndexProperty_GetIndexType(IndexPropertyH hProp)
 SIDX_C_DLL RTError IndexProperty_SetDimension(IndexPropertyH hProp, uint32_t value)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_SetDimension", RT_Failure);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try
 	{
@@ -1862,7 +1862,7 @@ SIDX_C_DLL RTError IndexProperty_SetDimension(IndexPropertyH hProp, uint32_t val
 SIDX_C_DLL uint32_t IndexProperty_GetDimension(IndexPropertyH hProp)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_GetDimension", 0);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
 	var = prop->getProperty("Dimension");
@@ -1892,7 +1892,7 @@ SIDX_C_DLL RTError IndexProperty_SetIndexVariant( IndexPropertyH hProp,
 	using namespace SpatialIndex;
 
 	VALIDATE_POINTER1(hProp, "IndexProperty_SetIndexVariant", RT_Failure);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
 
@@ -1949,7 +1949,7 @@ SIDX_C_DLL RTIndexVariant IndexProperty_GetIndexVariant(IndexPropertyH hProp)
 						"IndexProperty_GetIndexVariant",
 						RT_InvalidIndexVariant);
 
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
 	var = prop->getProperty("TreeVariant");
@@ -1979,7 +1979,7 @@ SIDX_C_DLL RTError IndexProperty_SetIndexStorage( IndexPropertyH hProp,
 												RTStorageType value)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_SetIndexStorage", RT_Failure);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try
 	{
@@ -2017,7 +2017,7 @@ SIDX_C_DLL RTStorageType IndexProperty_GetIndexStorage(IndexPropertyH hProp)
 						"IndexProperty_GetIndexStorage",
 						RT_InvalidStorageType);
 
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
 	var = prop->getProperty("IndexStorageType");
@@ -2046,7 +2046,7 @@ SIDX_C_DLL RTError IndexProperty_SetIndexCapacity(IndexPropertyH hProp,
 												uint32_t value)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_SetIndexCapacity", RT_Failure);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try
 	{
@@ -2078,7 +2078,7 @@ SIDX_C_DLL RTError IndexProperty_SetIndexCapacity(IndexPropertyH hProp,
 SIDX_C_DLL uint32_t IndexProperty_GetIndexCapacity(IndexPropertyH hProp)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_GetIndexCapacity", 0);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
 	var = prop->getProperty("IndexCapacity");
@@ -2106,7 +2106,7 @@ SIDX_C_DLL RTError IndexProperty_SetLeafCapacity( IndexPropertyH hProp,
 												uint32_t value)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_SetLeafCapacity", RT_Failure);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try
 	{
@@ -2138,7 +2138,7 @@ SIDX_C_DLL RTError IndexProperty_SetLeafCapacity( IndexPropertyH hProp,
 SIDX_C_DLL uint32_t IndexProperty_GetLeafCapacity(IndexPropertyH hProp)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_GetLeafCapacity", 0);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
 	var = prop->getProperty("LeafCapacity");
@@ -2166,7 +2166,7 @@ SIDX_C_DLL RTError IndexProperty_SetPagesize( IndexPropertyH hProp,
 											uint32_t value)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_SetPagesize", RT_Failure);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try
 	{
@@ -2198,7 +2198,7 @@ SIDX_C_DLL RTError IndexProperty_SetPagesize( IndexPropertyH hProp,
 SIDX_C_DLL uint32_t IndexProperty_GetPagesize(IndexPropertyH hProp)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_GetPagesize", 0);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
 	var = prop->getProperty("PageSize");
@@ -2226,7 +2226,7 @@ SIDX_C_DLL RTError IndexProperty_SetLeafPoolCapacity( IndexPropertyH hProp,
 													uint32_t value)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_SetLeafPoolCapacity", RT_Failure);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try
 	{
@@ -2258,7 +2258,7 @@ SIDX_C_DLL RTError IndexProperty_SetLeafPoolCapacity( IndexPropertyH hProp,
 SIDX_C_DLL uint32_t IndexProperty_GetLeafPoolCapacity(IndexPropertyH hProp)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_GetLeafPoolCapacity", 0);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
 	var = prop->getProperty("LeafPoolCapacity");
@@ -2286,7 +2286,7 @@ SIDX_C_DLL RTError IndexProperty_SetIndexPoolCapacity(IndexPropertyH hProp,
 													uint32_t value)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_SetIndexPoolCapacity", RT_Failure);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try
 	{
@@ -2318,7 +2318,7 @@ SIDX_C_DLL RTError IndexProperty_SetIndexPoolCapacity(IndexPropertyH hProp,
 SIDX_C_DLL uint32_t IndexProperty_GetIndexPoolCapacity(IndexPropertyH hProp)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_GetIndexPoolCapacity", 0);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
 	var = prop->getProperty("IndexPoolCapacity");
@@ -2346,7 +2346,7 @@ SIDX_C_DLL RTError IndexProperty_SetRegionPoolCapacity(IndexPropertyH hProp,
 													uint32_t value)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_SetRegionPoolCapacity", RT_Failure);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try
 	{
@@ -2378,7 +2378,7 @@ SIDX_C_DLL RTError IndexProperty_SetRegionPoolCapacity(IndexPropertyH hProp,
 SIDX_C_DLL uint32_t IndexProperty_GetRegionPoolCapacity(IndexPropertyH hProp)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_GetRegionPoolCapacity", 0);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
 	var = prop->getProperty("RegionPoolCapacity");
@@ -2406,7 +2406,7 @@ SIDX_C_DLL RTError IndexProperty_SetPointPoolCapacity(IndexPropertyH hProp,
 													uint32_t value)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_SetPointPoolCapacity", RT_Failure);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try
 	{
@@ -2438,7 +2438,7 @@ SIDX_C_DLL RTError IndexProperty_SetPointPoolCapacity(IndexPropertyH hProp,
 SIDX_C_DLL uint32_t IndexProperty_GetPointPoolCapacity(IndexPropertyH hProp)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_GetPointPoolCapacity", 0);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
 	var = prop->getProperty("PointPoolCapacity");
@@ -2468,7 +2468,7 @@ SIDX_C_DLL RTError IndexProperty_SetNearMinimumOverlapFactor( IndexPropertyH hPr
 	VALIDATE_POINTER1(	hProp,
 						"IndexProperty_SetNearMinimumOverlapFactor",
 						RT_Failure);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try
 	{
@@ -2500,7 +2500,7 @@ SIDX_C_DLL RTError IndexProperty_SetNearMinimumOverlapFactor( IndexPropertyH hPr
 SIDX_C_DLL uint32_t IndexProperty_GetNearMinimumOverlapFactor(IndexPropertyH hProp)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_GetNearMinimumOverlapFactor", 0);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
 	var = prop->getProperty("NearMinimumOverlapFactor");
@@ -2529,7 +2529,7 @@ SIDX_C_DLL RTError IndexProperty_SetBufferingCapacity(IndexPropertyH hProp,
 												uint32_t value)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_SetBufferingCapacity", RT_Failure);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try
 	{
@@ -2561,7 +2561,7 @@ SIDX_C_DLL RTError IndexProperty_SetBufferingCapacity(IndexPropertyH hProp,
 SIDX_C_DLL uint32_t IndexProperty_GetBufferingCapacity(IndexPropertyH hProp)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_GetBufferingCapacity", 0);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
 	var = prop->getProperty("Capacity");
@@ -2589,7 +2589,7 @@ SIDX_C_DLL RTError IndexProperty_SetEnsureTightMBRs(  IndexPropertyH hProp,
 													uint32_t value)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_SetEnsureTightMBRs", RT_Failure);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try
 	{
@@ -2627,7 +2627,7 @@ SIDX_C_DLL RTError IndexProperty_SetEnsureTightMBRs(  IndexPropertyH hProp,
 SIDX_C_DLL uint32_t IndexProperty_GetEnsureTightMBRs(IndexPropertyH hProp)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_GetEnsureTightMBRs", 0);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
 	var = prop->getProperty("EnsureTightMBRs");
@@ -2655,7 +2655,7 @@ SIDX_C_DLL RTError IndexProperty_SetWriteThrough(IndexPropertyH hProp,
 													uint32_t value)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_SetWriteThrough", RT_Failure);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try
 	{
@@ -2693,7 +2693,7 @@ SIDX_C_DLL RTError IndexProperty_SetWriteThrough(IndexPropertyH hProp,
 SIDX_C_DLL uint32_t IndexProperty_GetWriteThrough(IndexPropertyH hProp)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_GetWriteThrough", 0);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
 	var = prop->getProperty("WriteThrough");
@@ -2721,7 +2721,7 @@ SIDX_C_DLL RTError IndexProperty_SetOverwrite(IndexPropertyH hProp,
 											uint32_t value)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_SetOverwrite", RT_Failure);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try
 	{
@@ -2759,7 +2759,7 @@ SIDX_C_DLL RTError IndexProperty_SetOverwrite(IndexPropertyH hProp,
 SIDX_C_DLL uint32_t IndexProperty_GetOverwrite(IndexPropertyH hProp)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_GetOverwrite", 0);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
 	var = prop->getProperty("Overwrite");
@@ -2788,7 +2788,7 @@ SIDX_C_DLL RTError IndexProperty_SetFillFactor(	  IndexPropertyH hProp,
 												double value)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_SetFillFactor", RT_Failure);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try
 	{
@@ -2820,7 +2820,7 @@ SIDX_C_DLL RTError IndexProperty_SetFillFactor(	  IndexPropertyH hProp,
 SIDX_C_DLL double IndexProperty_GetFillFactor(IndexPropertyH hProp)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_GetFillFactor", 0);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
 	var = prop->getProperty("FillFactor");
@@ -2850,7 +2850,7 @@ SIDX_C_DLL RTError IndexProperty_SetSplitDistributionFactor(  IndexPropertyH hPr
 	VALIDATE_POINTER1(	hProp,
 						"IndexProperty_SetSplitDistributionFactor",
 						RT_Failure);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try
 	{
@@ -2882,7 +2882,7 @@ SIDX_C_DLL RTError IndexProperty_SetSplitDistributionFactor(  IndexPropertyH hPr
 SIDX_C_DLL double IndexProperty_GetSplitDistributionFactor(IndexPropertyH hProp)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_GetSplitDistributionFactor", 0);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
 	var = prop->getProperty("SplitDistributionFactor");
@@ -2912,7 +2912,7 @@ SIDX_C_DLL RTError IndexProperty_SetTPRHorizon(IndexPropertyH hProp,
 	VALIDATE_POINTER1(	hProp,
 						"IndexProperty_SetTPRHorizon",
 						RT_Failure);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try
 	{
@@ -2944,7 +2944,7 @@ SIDX_C_DLL RTError IndexProperty_SetTPRHorizon(IndexPropertyH hProp,
 SIDX_C_DLL double IndexProperty_GetTPRHorizon(IndexPropertyH hProp)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_GetTPRHorizon", 0);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
 	var = prop->getProperty("Horizon");
@@ -2974,7 +2974,7 @@ SIDX_C_DLL RTError IndexProperty_SetReinsertFactor(	  IndexPropertyH hProp,
 	VALIDATE_POINTER1(	hProp,
 						"IndexProperty_SetReinsertFactor",
 						RT_Failure);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try
 	{
@@ -3006,7 +3006,7 @@ SIDX_C_DLL RTError IndexProperty_SetReinsertFactor(	  IndexPropertyH hProp,
 SIDX_C_DLL double IndexProperty_GetReinsertFactor(IndexPropertyH hProp)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_GetReinsertFactor", 0);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
 	var = prop->getProperty("ReinsertFactor");
@@ -3036,7 +3036,7 @@ SIDX_C_DLL RTError IndexProperty_SetFileName( IndexPropertyH hProp,
 	VALIDATE_POINTER1(	hProp,
 						"IndexProperty_SetFileName",
 						RT_Failure);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try
 	{
@@ -3068,7 +3068,7 @@ SIDX_C_DLL RTError IndexProperty_SetFileName( IndexPropertyH hProp,
 SIDX_C_DLL char* IndexProperty_GetFileName(IndexPropertyH hProp)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_GetFileName", 0);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
 	var = prop->getProperty("FileName");
@@ -3099,7 +3099,7 @@ SIDX_C_DLL RTError IndexProperty_SetFileNameExtensionDat( IndexPropertyH hProp,
 	VALIDATE_POINTER1(	hProp,
 						"IndexProperty_SetFileNameExtensionDat",
 						RT_Failure);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try
 	{
@@ -3132,7 +3132,7 @@ SIDX_C_DLL RTError IndexProperty_SetFileNameExtensionDat( IndexPropertyH hProp,
 SIDX_C_DLL char* IndexProperty_GetFileNameExtensionDat(IndexPropertyH hProp)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_GetFileNameExtensionDat", 0);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
 	var = prop->getProperty("FileNameDat");
@@ -3162,7 +3162,7 @@ SIDX_C_DLL RTError IndexProperty_SetFileNameExtensionIdx( IndexPropertyH hProp,
 	VALIDATE_POINTER1(	hProp,
 						"IndexProperty_SetFileNameExtensionIdx",
 						RT_Failure);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try
 	{
@@ -3195,7 +3195,7 @@ SIDX_C_DLL RTError IndexProperty_SetFileNameExtensionIdx( IndexPropertyH hProp,
 SIDX_C_DLL char* IndexProperty_GetFileNameExtensionIdx(IndexPropertyH hProp)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_GetFileNameExtensionIdx", 0);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
 	var = prop->getProperty("FileNameIdx");
@@ -3223,7 +3223,7 @@ SIDX_C_DLL RTError IndexProperty_SetCustomStorageCallbacksSize(IndexPropertyH hP
 												uint32_t value)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_SetCustomStorageCallbacksSize", RT_Failure);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try
 	{
@@ -3255,7 +3255,7 @@ SIDX_C_DLL RTError IndexProperty_SetCustomStorageCallbacksSize(IndexPropertyH hP
 SIDX_C_DLL uint32_t IndexProperty_GetCustomStorageCallbacksSize(IndexPropertyH hProp)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_GetCustomStorageCallbacksSize", 0);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
 	var = prop->getProperty("CustomStorageCallbacksSize");
@@ -3285,7 +3285,7 @@ SIDX_C_DLL RTError IndexProperty_SetCustomStorageCallbacks( IndexPropertyH hProp
 	VALIDATE_POINTER1(	hProp,
 						"IndexProperty_SetCustomStorageCallbacks",
 						RT_Failure);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
     // check if the CustomStorageCallbacksSize is alright, so we can make a copy of the passed in structure
   	Tools::Variant varSize;
@@ -3337,7 +3337,7 @@ SIDX_C_DLL RTError IndexProperty_SetCustomStorageCallbacks( IndexPropertyH hProp
 SIDX_C_DLL void* IndexProperty_GetCustomStorageCallbacks(IndexPropertyH hProp)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_GetCustomStorageCallbacks", 0);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
 	var = prop->getProperty("CustomStorageCallbacks");
@@ -3365,7 +3365,7 @@ SIDX_C_DLL RTError IndexProperty_SetIndexID(IndexPropertyH hProp,
 											int64_t value)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_SetIndexID", RT_Failure);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try
 	{
@@ -3397,7 +3397,7 @@ SIDX_C_DLL RTError IndexProperty_SetIndexID(IndexPropertyH hProp,
 SIDX_C_DLL int64_t IndexProperty_GetIndexID(IndexPropertyH hProp)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_GetIndexID", 0);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
 	var = prop->getProperty("IndexIdentifier");
@@ -3430,7 +3430,7 @@ SIDX_DLL RTError IndexProperty_SetResultSetLimit(IndexPropertyH hProp, int64_t v
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_SetResultSetLimit", RT_Failure);
 
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try
 	{
@@ -3462,7 +3462,7 @@ SIDX_DLL RTError IndexProperty_SetResultSetLimit(IndexPropertyH hProp, int64_t v
 SIDX_DLL int64_t IndexProperty_GetResultSetLimit(IndexPropertyH hProp)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_GetResultSetLimit", 0);
-	Tools::PropertySet* prop = static_cast<Tools::PropertySet*>(hProp);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	Tools::Variant var;
 	var = prop->getProperty("ResultSetLimit");
