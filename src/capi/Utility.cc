@@ -218,7 +218,7 @@ void Page_ResultSet_Obj(ObjVisitor& visitor, IndexItemH** items, int64_t nStart,
 		}
 	}
 
-	*items = (SpatialIndex::IData**) malloc (nResultLimit * sizeof(SpatialIndex::IData*));
+	*items = (IndexItemH*) malloc (nResultLimit * sizeof(SpatialIndex::IData*));
 
 	std::vector<SpatialIndex::IData*>& results = visitor.GetResults();
 
@@ -229,7 +229,7 @@ void Page_ResultSet_Obj(ObjVisitor& visitor, IndexItemH** items, int64_t nStart,
 	for (int64_t i = nStart; i < nResultCount; ++i)
 	{
 		SpatialIndex::IData* result =results[i];
-		(*items)[i - nStart] =  dynamic_cast<SpatialIndex::IData*>(result->clone());
+		(*items)[i - nStart] =  (IndexItemH)dynamic_cast<SpatialIndex::IData*>(result->clone());
 	}
 	*nResults = nResultCount - nStart;
 }

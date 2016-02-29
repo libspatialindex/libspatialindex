@@ -26,6 +26,7 @@
 ******************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <spatialindex/capi/sidx_api.h>
 
 void load(IndexH idx);
