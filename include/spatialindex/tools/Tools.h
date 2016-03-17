@@ -28,7 +28,7 @@
 #pragma once
 
 
-#if (defined(_MSC_VER) && _MSC_VER < 1700) && !defined __GNUC__
+#if (defined(_MSC_VER) && _MSC_VER < 1600) && !defined __GNUC__
   typedef __int8 int8_t;
   typedef __int16 int16_t;
   typedef __int32 int32_t;
