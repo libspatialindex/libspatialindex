@@ -8,8 +8,6 @@ set (SOURCES
     sidx_api_test.h
     main.cc )
 
-
-
 add_executable(libsidxtest ${SOURCES})
 target_link_libraries(libsidxtest ${SIDX_C_LIB_NAME} gtest)
 
