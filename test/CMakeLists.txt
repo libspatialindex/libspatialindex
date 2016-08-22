@@ -1,8 +1,8 @@
 include_directories(../include)
 
 set (DIR geometry)
-set (SOURCES 
-        Intersection 
+set (SOURCES
+        Intersection
         )
 
 foreach (test ${SOURCES})
@@ -11,7 +11,7 @@ foreach (test ${SOURCES})
 endforeach()
 
 set (DIR rtree)
-set (SOURCES 
+set (SOURCES
         Exhaustive
         Generator
         RTreeBulkLoad
@@ -25,7 +25,7 @@ foreach (test ${SOURCES})
 endforeach()
 
 set (DIR mvrtree)
-set (SOURCES 
+set (SOURCES
         Exhaustive
         Generator
         MVRTreeLoad
@@ -39,7 +39,7 @@ foreach (test ${SOURCES})
 endforeach()
 
 set (DIR tprtree)
-set (SOURCES 
+set (SOURCES
         Exhaustive
         Generator
         TPRTreeLoad
@@ -51,3 +51,5 @@ foreach (test ${SOURCES})
     add_executable(test-${DIR}-${test} ${DIR}/${test}.cc ${DIR}/RandomGenerator.cc)
     target_link_libraries(test-${DIR}-${test} ${SIDX_LIB_NAME})
 endforeach()
+
+add_subdirectory(gtest)

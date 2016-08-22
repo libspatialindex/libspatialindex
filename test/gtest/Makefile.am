@@ -3,8 +3,8 @@ SUBDIRS = gtest-1.7.0
 
 AM_CPPFLAGS = -I$(srcdir)/gtest-1.7.0
 
-noinst_PROGRAMS = test
+noinst_PROGRAMS = libsidxtest
 INCLUDES = -I../../include -I./gtest-1.7.0/include
-test_SOURCES = main.cc
-test_LDADD = ../../libspatialindex_c.la
-test_LDFLAGS = -lpthread -L./gtest-1.7.0/lib -lgtest
+libsidxtest_SOURCES = main.cc
+libsidxtest_LDADD = ../../libspatialindex_c.la
+libsidxtest_LDFLAGS = -lpthread -L./gtest-1.7.0/lib -lgtest
