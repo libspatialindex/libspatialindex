@@ -28,10 +28,28 @@
 
 #include <cmath>
 #include <limits>
+#include <cassert>
+#include <cstring>
 #include <spatialindex/capi/sidx_impl.h>
 
+#ifdef __GNUC__
+# define LAST_ERROR_BUFFER_SIZE 1024
+/*
+ * __thread is gcc specific extension for thread-local storage, that does not allow complex
+ * constructor. We can't use any of std containers for storing mutliple error messages, but we
+ * could at least get latest error message safely. The error count will be at most 1. The finer
+ * solution would be to use thread-local storage from C++11, but since this library is compiled
+ * with C++98 flag, this option is not available yet.
+ */
+static __thread struct
+{
+    int code;
+    char message[LAST_ERROR_BUFFER_SIZE];
+    char method[LAST_ERROR_BUFFER_SIZE];
+} last_error = {0};
+#else
 static std::stack<Error> errors;
-
+#endif
 
 #ifdef _WIN32
 #  pragma warning(push)
@@ -61,49 +79,90 @@ static std::stack<Error> errors;
 IDX_C_START
 
 SIDX_C_DLL void Error_Reset(void) {
+#ifdef __GNUC__
+    last_error.code = 0;
+#else
 	if (errors.empty()) return;
 	for (std::size_t i=0;i<errors.size();i++) errors.pop();
+#endif
 }
 
 SIDX_C_DLL void Error_Pop(void) {
+#ifdef __GNUC__
+    last_error.code = 0;
+#else
 	if (errors.empty()) return;
 	errors.pop();
+#endif
 }
 
 SIDX_C_DLL int Error_GetLastErrorNum(void){
+#ifdef __GNUC__
+    return last_error.code;
+#else
 	if (errors.empty())
 		return 0;
 	else {
 		Error err = errors.top();
 		return err.GetCode();
 	}
+#endif
 }
 
 SIDX_C_DLL char* Error_GetLastErrorMsg(void){
+#ifdef __GNUC__
+    if (last_error.code) {
+        return STRDUP(last_error.message);
+    } else {
+        return NULL;
+    }
+#else
 	if (errors.empty())
 		return NULL;
 	else {
 		Error err = errors.top();
 		return STRDUP(err.GetMessage());
 	}
+#endif
 }
 
 SIDX_C_DLL char* Error_GetLastErrorMethod(void){
+#ifdef __GNUC__
+    if (last_error.code) {
+        return STRDUP(last_error.method);
+    } else {
+        return NULL;
+    }
+#else
 	if (errors.empty())
 		return NULL;
 	else {
 		Error err = errors.top();
 		return STRDUP(err.GetMethod());
 	}
+#endif
 }
 
 SIDX_C_DLL void Error_PushError(int code, const char *message, const char *method) {
+#ifdef __GNUC__
+    assert(code != 0);
+    last_error.code = code;
+    strncpy(last_error.message, message, LAST_ERROR_BUFFER_SIZE);
+    strncpy(last_error.method, method, LAST_ERROR_BUFFER_SIZE);
+    last_error.message[LAST_ERROR_BUFFER_SIZE-1] = '\0';
+    last_error.method[LAST_ERROR_BUFFER_SIZE-1] = '\0';
+#else
 	Error err = Error(code, std::string(message), std::string(method));
 	errors.push(err);
+#endif
 }
 
 SIDX_C_DLL int Error_GetErrorCount(void) {
+#ifdef __GNUC__
+    return last_error.code ? 1 : 0;
+#else
 	return static_cast<int>(errors.size());
+#endif
 }
 
 SIDX_C_DLL IndexH Index_Create(IndexPropertyH hProp)
