@@ -27,23 +27,32 @@ if test "$LIBTOOLIZE" = ""; then
     exit 1
 fi
 
-#AMFLAGS="--add-missing --copy --force-missing"
-AMFLAGS="--add-missing --copy"
-if test "$OSTYPE" = "IRIX" -o "$OSTYPE" = "IRIX64"; then
-   AMFLAGS=$AMFLAGS" --include-deps";
-fi
 
-echo "Running aclocal"
-aclocal || giveup
-#echo "Running autoheader"
-#autoheader || giveup
-echo "Running libtoolize"
-$LIBTOOLIZE --force --copy || giveup
-echo "Running automake"
-automake $AMFLAGS # || giveup
-echo "Running autoconf"
-autoconf || giveup
+doit()
+{
 
-echo "======================================"
-echo "Now you are ready to run './configure'"
-echo "======================================"
+	#AMFLAGS="--add-missing --copy --force-missing"
+	AMFLAGS="--add-missing --copy"
+	if test "$OSTYPE" = "IRIX" -o "$OSTYPE" = "IRIX64"; then
+	   AMFLAGS=$AMFLAGS" --include-deps";
+	fi
+
+	cd $1
+	echo "Running aclocal"
+	aclocal || giveup
+	#echo "Running autoheader"
+	#autoheader || giveup
+	echo "Running libtoolize"
+	$LIBTOOLIZE --force --copy || giveup
+	echo "Running automake"
+	automake $AMFLAGS # || giveup
+	echo "Running autoconf"
+	autoconf || giveup
+
+	echo "======================================"
+	echo "Now you are ready to run './configure'"
+	echo "======================================"
+}
+
+doit "test/gtest/gtest-1.7.0"
+doit "."

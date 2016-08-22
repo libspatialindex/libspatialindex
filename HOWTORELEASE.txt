@@ -1,11 +1,9 @@
 
-Steps for Making a libLAS Release
+Steps for Making a libspatialindex Release
 ==============================================================================
 
 :Author: Howard Butler
-:Contact: hobu.inc@gmail.com
-:Revision: $Revision$
-:Date: $Date$
+:Contact: howard@hobu.co
 
 This document describes the process for releasing a new version of libspatialindex.
 

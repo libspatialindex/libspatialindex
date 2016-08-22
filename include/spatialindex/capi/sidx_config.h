@@ -6,7 +6,7 @@
  * Copyright (c) 2009, Howard Butler
  *
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
@@ -101,7 +101,7 @@ typedef enum
 #  define IDX_C_END
 #endif
 
-typedef struct Index *IndexH;
+typedef struct IndexS *IndexH;
 typedef struct SpatialIndex_IData *IndexItemH;
 typedef struct Tools_PropertySet *IndexPropertyH;
 
