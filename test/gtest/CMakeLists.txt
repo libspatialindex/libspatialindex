@@ -1,5 +1,3 @@
-
-
 add_subdirectory(gtest-1.7.0)
 include_directories(./gtest-1.7.0/include)
 
@@ -8,6 +6,9 @@ set (SOURCES
     sidx_api_test.h
     main.cc )
 
-add_executable(libsidxtest ${SOURCES})
-target_link_libraries(libsidxtest ${SIDX_C_LIB_NAME} gtest)
+set (TESTNAME libsidxtest)
+add_executable(${TESTNAME} ${SOURCES})
+target_link_libraries(${TESTNAME} ${SIDX_C_LIB_NAME} gtest)
+
+add_test(${TESTNAME} "${PROJECT_BINARY_DIR}/bin/${TESTNAME}" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/..")
 
