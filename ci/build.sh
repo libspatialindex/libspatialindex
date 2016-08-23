@@ -3,6 +3,8 @@
 mkdir -p _build
 cd _build
 
+tmstamp() { echo -n "[$(date '+%H:%M:%S')]" ; }
+
 echo "$(tmstamp) *** script::cmake-config starting $(date) ***"
 cmake .. -DCMAKE_BUILD_TYPE=Debug
 echo "$(tmstamp) *** script::cmake-config finished $(date) ***"
