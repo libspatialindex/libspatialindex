@@ -52,6 +52,7 @@ doit()
 	echo "======================================"
 	echo "Now you are ready to run './configure'"
 	echo "======================================"
+	cd -
 }
 
 doit "test/gtest/gtest-1.7.0"
