@@ -38,7 +38,7 @@ IDX_C_START
 SIDX_DLL IndexH Index_Create(IndexPropertyH properties);
 
 SIDX_DLL IndexH Index_CreateWithStream( IndexPropertyH properties,
-										int (*readNext)(int64_t *id, double **pMin, double **pMax, uint32_t *nDimension, const uint8_t **pData, size_t *nDataLength)
+										int (*readNext)(int64_t *id, double **pMin, double **pMax, uint32_t *nDimension, const uint8_t **pData, uint32_t *nDataLength)
 									   );
 
 SIDX_DLL void Index_Destroy(IndexH index);
@@ -76,7 +76,7 @@ SIDX_DLL RTError Index_InsertData(	IndexH index,
 									double* pdMax,
 									uint32_t nDimension,
 									const uint8_t* pData,
-									size_t nDataLength);
+									uint32_t nDataLength);
 
 SIDX_C_DLL RTError Index_InsertTPData( IndexH index,
   int64_t id,
@@ -88,7 +88,7 @@ SIDX_C_DLL RTError Index_InsertTPData( IndexH index,
   double tEnd,
   uint32_t nDimension,
   const uint8_t* pData,
-  size_t nDataLength);
+  uint32_t nDataLength);
 
 SIDX_C_DLL RTError Index_InsertMVRData( IndexH index,
 	int64_t id,
@@ -98,7 +98,7 @@ SIDX_C_DLL RTError Index_InsertMVRData( IndexH index,
 	double tEnd,
 	uint32_t nDimension,
 	const uint8_t* pData,
-	size_t nDataLength);
+	uint32_t nDataLength);
 
 SIDX_DLL uint32_t Index_IsValid(IndexH index);
 
@@ -354,8 +354,8 @@ SIDX_DLL int64_t IndexProperty_GetIndexID(IndexPropertyH iprop);
 SIDX_C_DLL void* SIDX_NewBuffer(size_t bytes);
 SIDX_C_DLL void  SIDX_DeleteBuffer(void* buffer);
 
-SIDX_DLL RTError IndexProperty_SetResultSetLimit(IndexPropertyH iprop, uint64_t value);
-SIDX_DLL uint64_t IndexProperty_GetResultSetLimit(IndexPropertyH iprop);
+SIDX_DLL RTError IndexProperty_SetResultSetLimit(IndexPropertyH iprop, int64_t value);
+SIDX_DLL int64_t IndexProperty_GetResultSetLimit(IndexPropertyH iprop);
 
 SIDX_C_DLL char* SIDX_Version();
 
