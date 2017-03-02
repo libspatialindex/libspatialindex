@@ -30,6 +30,7 @@
 #include <limits>
 #include <cassert>
 #include <cstring>
+#include <spatialindex/capi/sidx_api.h>
 #include <spatialindex/capi/sidx_impl.h>
 
 #ifdef __GNUC__
