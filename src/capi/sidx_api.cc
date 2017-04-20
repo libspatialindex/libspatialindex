@@ -30,6 +30,7 @@
 #include <limits>
 #include <cassert>
 #include <cstring>
+#include <spatialindex/capi/sidx_api.h>
 #include <spatialindex/capi/sidx_impl.h>
 
 #ifdef __GNUC__
@@ -194,7 +195,7 @@ SIDX_C_DLL IndexH Index_Create(IndexPropertyH hProp)
 }
 
 SIDX_C_DLL IndexH Index_CreateWithStream( IndexPropertyH hProp,
-										int (*readNext)(SpatialIndex::id_type *id, double **pMin, double **pMax, uint32_t *nDimension, const uint8_t **pData, uint32_t *nDataLength)
+										int (*readNext)(SpatialIndex::id_type *id, double **pMin, double **pMax, uint32_t *nDimension, const uint8_t **pData, size_t *nDataLength)
 									   )
 {
 	VALIDATE_POINTER1(hProp, "Index_CreateWithStream", NULL);
@@ -361,7 +362,7 @@ SIDX_C_DLL RTError Index_InsertTPData( IndexH index,
   double tEnd,
   uint32_t nDimension,
   const uint8_t* pData,
-  uint32_t nDataLength
+  size_t nDataLength
   )
 {
   VALIDATE_POINTER1(index, "Index_InsertTPData", RT_Failure);
@@ -436,7 +437,7 @@ SIDX_C_DLL RTError Index_InsertMVRData( IndexH index,
   double tEnd,
   uint32_t nDimension,
   const uint8_t* pData,
-  uint32_t nDataLength
+  size_t nDataLength
   )
 {
   VALIDATE_POINTER1(index, "Index_InsertMVRData", RT_Failure);
@@ -506,7 +507,7 @@ SIDX_C_DLL RTError Index_InsertData(  IndexH index,
 									double* pdMax,
 									uint32_t nDimension,
 									const uint8_t* pData,
-									uint32_t nDataLength)
+									size_t nDataLength)
 {
 	VALIDATE_POINTER1(index, "Index_InsertData", RT_Failure);
 
@@ -3485,7 +3486,7 @@ SIDX_C_DLL void* SIDX_NewBuffer(size_t length)
     return new char[length];
 }
 
-SIDX_DLL RTError IndexProperty_SetResultSetLimit(IndexPropertyH hProp, int64_t value)
+SIDX_DLL RTError IndexProperty_SetResultSetLimit(IndexPropertyH hProp, uint64_t value)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_SetResultSetLimit", RT_Failure);
 
@@ -3518,7 +3519,7 @@ SIDX_DLL RTError IndexProperty_SetResultSetLimit(IndexPropertyH hProp, int64_t v
 	return RT_None;
 }
 
-SIDX_DLL int64_t IndexProperty_GetResultSetLimit(IndexPropertyH hProp)
+SIDX_DLL uint64_t IndexProperty_GetResultSetLimit(IndexPropertyH hProp)
 {
 	VALIDATE_POINTER1(hProp, "IndexProperty_GetResultSetLimit", 0);
 	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
