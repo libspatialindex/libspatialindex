@@ -53,7 +53,7 @@ if test "x$enable_debug" = "xyes"; then
 	CXXFLAGS="$CXXFLAGS -g -DDEBUG"
 	AC_MSG_RESULT(checking wether debug information is enabled... yes)
 else
-	CXXFLAGS="$CXXFLAGS -O2 -DNDEBUG"
+	CXXFLAGS="$CXXFLAGS -DNDEBUG"
 	AC_MSG_RESULT(checking wether debug information is enabled... no)
 fi
 
