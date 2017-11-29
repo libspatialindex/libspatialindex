@@ -1693,8 +1693,8 @@ SIDX_C_DLL RTError Index_GetLeaves(	IndexH index,
 			(*nLeafSizes)[k] = (uint32_t)ids.size();
 
 			(*nLeafChildIDs)[k] = (int64_t*) malloc( (*nLeafSizes)[k] * sizeof(int64_t));
-			(*pppdMin)[k] = (double*) malloc ( (*nLeafSizes)[k] *  sizeof(double));
-			(*pppdMax)[k] = (double*) malloc ( (*nLeafSizes)[k] *  sizeof(double));
+			(*pppdMin)[k] = (double*) malloc (*nDimension * sizeof(double));
+			(*pppdMax)[k] = (double*) malloc (*nDimension * sizeof(double));
 			for (uint32_t i=0; i< *nDimension; ++i) {
 				(*pppdMin)[k][i] = b->getLow(i);
 				(*pppdMax)[k][i] = b->getHigh(i);
