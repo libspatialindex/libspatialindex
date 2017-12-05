@@ -1660,6 +1660,8 @@ SIDX_C_DLL RTError Index_GetLeaves(	IndexH index,
 	if (var.m_varType != Tools::VT_EMPTY)
 	{
 		if (var.m_varType != Tools::VT_ULONG) {
+			delete query;
+
 			Error_PushError(RT_Failure,
 							"Property Dimension must be Tools::VT_ULONG",
 							"Index_GetLeaves");
