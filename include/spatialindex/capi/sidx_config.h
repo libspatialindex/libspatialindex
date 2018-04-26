@@ -44,6 +44,10 @@
   typedef unsigned __int64 uint64_t;
 #endif
 
+#if _MSC_VER >= 1900
+   #include <cinttypes>
+#endif
+
    #include <windows.h>
    #define STRDUP _strdup
    #include <windows.h>
