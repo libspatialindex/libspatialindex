@@ -36,6 +36,12 @@ SET(SIDX_LIB_SOVERSION "4")
 
 set(SIDX_VERSION_STRING "${SIDX_VERSION_MAJOR}.${SIDX_VERSION_MINOR}.${SIDX_VERSION_PATCH}")
 
+#------------------------------------------------------------------------------
+# libspatialindex general cmake options
+#------------------------------------------------------------------------------
+
+option(SIDX_BUILD_TESTS "Enables integrated test suites" ON)
+
 
 # Name of C++ library
 
@@ -241,5 +247,7 @@ set(SIDX_DATA_DIR ${SIDX_DATA_SUBDIR})
 #------------------------------------------------------------------------------
 
 add_subdirectory(src)
-add_subdirectory(test)
 
+if(SIDX_BUILD_TESTS)
+  add_subdirectory(test)
+endif()
