@@ -1,3 +1,6 @@
+2018-04-26
+	* Michael Herwig <michael.herwig@hotmail.de> Added cmake support for 'Visual Studio 15 2017 [Win64]' generator (12:32:00)
+
 2014-10-31
 	* Howard Butler <howard@hobu.co> CAPI: revert #40, which could cause inconsistent object lifetime behavior (23:53:04)
 	* Howard Butler <howard@hobu.co> missed a variable substitution on SIDX_LIB_VERSION (21:38:14)

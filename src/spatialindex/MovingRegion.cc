@@ -611,6 +611,9 @@ double MovingRegion::getCenterDistanceInTime(const IInterval& ivI, const MovingR
 		c += dx[cDim] * dx[cDim];
 	}
 
+	delete[] dx;
+	delete[] dv;
+
 	if (a == 0.0 && c == 0.0) return 0.0;
 	if (a == 0.0) return H * std::sqrt(c);
 	if (c == 0.0) return H * H * std::sqrt(a) / 2.0;
@@ -619,9 +622,6 @@ double MovingRegion::getCenterDistanceInTime(const IInterval& ivI, const MovingR
 	l = 2.0 * a * H + b;
 	m = 4.0 * a * c - b * b;
 	n = 2.0 * std::sqrt(a);
-
-	delete[] dx;
-	delete[] dv;
 
 	return (l * f + log(l / n + f) * m / n - b * std::sqrt(c) - std::log(b / n + std::sqrt(c)) * m / n) / (4.0 * a);
 }
