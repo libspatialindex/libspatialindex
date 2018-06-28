@@ -19,6 +19,7 @@ nobase_spatialindex_HEADERS =			spatialindex/SpatialIndex.h \
 								spatialindex/capi/Error.h \
 								spatialindex/capi/IdVisitor.h \
 								spatialindex/capi/Index.h \
+								spatialindex/capi/InternalVisitor.h \
 								spatialindex/capi/LeafQuery.h \
 								spatialindex/capi/ObjVisitor.h \
 								spatialindex/capi/sidx_api.h \

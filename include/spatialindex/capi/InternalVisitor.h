@@ -1,9 +1,9 @@
 /******************************************************************************
  * Project:  libsidx - A C API wrapper around libspatialindex
- * Purpose:  C++ object declarations to implement utilities.
- * Author:   Howard Butler, hobu.inc@gmail.com
+ * Purpose:  C++ object declarations to implement the internal visitor.
+ * Author:   dagal, dagal@vivaldi.net
  ******************************************************************************
- * Copyright (c) 2009, Howard Butler
+ * Copyright (c) 2018, dagal
  *
  * All rights reserved.
  * 
@@ -26,23 +26,26 @@
  * DEALINGS IN THE SOFTWARE.
 ******************************************************************************/
 
-#include <stack>
-#include <string>
-#include <vector>
-#include <stdexcept>
-#include <sstream>
-#include <cstring>
+#pragma once
 
-#include "../SpatialIndex.h"
-#include "sidx_config.h"
-#include "Utility.h"
-#include "ObjVisitor.h"
-#include "IdVisitor.h"
-#include "CountVisitor.h"
-#include "InternalVisitor.h"
-#include "BoundsQuery.h"
-#include "LeafQuery.h"
-#include "Error.h"
-#include "DataStream.h"
-#include "Index.h"
-#include "CustomStorage.h"
+#include "sidx_export.h"
+
+class SIDX_DLL InternalVisitor : public SpatialIndex::IVisitor
+{
+private:
+    std::vector<uint64_t> m_vector;
+    uint64_t nResults;
+
+public:
+
+    InternalVisitor();
+    ~InternalVisitor();
+
+    uint64_t GetResultCount() const { return nResults; }
+    std::vector<uint64_t>& GetResults()  { return m_vector; }
+    
+    void visitNode(const SpatialIndex::INode& n);
+    void visitData(const SpatialIndex::IData& d);
+    void visitData(std::vector<const SpatialIndex::IData*>& v);
+};
+

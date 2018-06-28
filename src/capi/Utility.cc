@@ -233,3 +233,41 @@ void Page_ResultSet_Obj(ObjVisitor& visitor, IndexItemH** items, int64_t nStart,
 	}
 	*nResults = nResultCount - nStart;
 }
+
+void Page_ResultSet_Internal(InternalVisitor& visitor, int64_t** ids, int64_t nStart, int64_t nResultLimit, uint64_t* nResults)
+{
+  int64_t nResultCount;
+
+  nResultCount = visitor.GetResultCount();
+
+  if (nResultLimit == 0)
+  {
+    // no offset paging
+    nResultLimit = nResultCount;
+    nStart = 0;
+  }
+  else
+  {
+    if ((nResultCount - (nStart + nResultLimit)) < 0)
+    {
+      // not enough results to fill nResultCount
+      nStart = std::min(nStart, nResultCount);
+      nResultCount = nStart + std::min(nResultLimit, nResultCount - nStart);
+    }
+    else
+    {
+      nResultCount = std::min(nResultCount, nStart + nResultLimit);
+    }
+  }
+
+  *ids = (int64_t*) malloc (nResultLimit * sizeof(int64_t));
+
+  std::vector<uint64_t>& results = visitor.GetResults();
+
+  for (int64_t i = nStart; i < nResultCount; ++i)
+  {
+    (*ids)[i - nStart] = results[i];
+  }
+
+  *nResults = nResultCount - nStart;
+}
