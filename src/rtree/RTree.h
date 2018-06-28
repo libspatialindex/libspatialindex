@@ -69,6 +69,7 @@ namespace SpatialIndex
 			//
 			virtual void insertData(uint32_t len, const byte* pData, const IShape& shape, id_type shapeIdentifier);
 			virtual bool deleteData(const IShape& shape, id_type id);
+			virtual void internalNodesQuery(const IShape& query, IVisitor& v);
 			virtual void containsWhatQuery(const IShape& query, IVisitor& v);
 			virtual void intersectsWithQuery(const IShape& query, IVisitor& v);
 			virtual void pointLocationQuery(const Point& query, IVisitor& v);
@@ -98,8 +99,8 @@ namespace SpatialIndex
 
 			void rangeQuery(RangeQueryType type, const IShape& query, IVisitor& v);
 			void selfJoinQuery(id_type id1, id_type id2, const Region& r, IVisitor& vis);
-            void visitSubTree(NodePtr subTree, IVisitor& v);
-            
+			void visitSubTree(NodePtr subTree, IVisitor& v);
+
 			IStorageManager* m_pStorageManager;
 
 			id_type m_rootID, m_headerID;

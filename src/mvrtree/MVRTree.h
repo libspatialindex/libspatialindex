@@ -70,6 +70,7 @@ namespace SpatialIndex
 			//
 			virtual void insertData(uint32_t len, const byte* pData, const IShape& shape, id_type id);
 			virtual bool deleteData(const IShape& shape, id_type id);
+			virtual void internalNodesQuery(const IShape& query, IVisitor& v);
 			virtual void containsWhatQuery(const IShape& query, IVisitor& v);
 			virtual void intersectsWithQuery(const IShape& query, IVisitor& v);
 			virtual void pointLocationQuery(const Point& query, IVisitor& v);
