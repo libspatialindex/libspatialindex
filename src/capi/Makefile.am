@@ -8,7 +8,6 @@ libsidxc_la_SOURCES =	BoundsQuery.cc \
 						Error.cc \
 						IdVisitor.cc \
 						Index.cc \
-						InternalVisitor.cc \
 						LeafQuery.cc \
 						ObjVisitor.cc \
 						sidx_api.cc \

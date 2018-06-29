@@ -238,7 +238,7 @@ SIDX_DLL RTError Index_Intersects_internal(	IndexH index,
 											double* pdMin,
 											double* pdMax,
 											uint32_t nDimension,
-											int64_t** items,
+											IndexItemH** items,
 											uint64_t* nResults);
 
 SIDX_DLL RTError Index_GetBounds(	IndexH index,

@@ -49,7 +49,6 @@ set(SIDX_CAPI_HPP
   "${SIDX_HEADERS_CAPI_DIR}/Error.h"
   "${SIDX_HEADERS_CAPI_DIR}/IdVisitor.h"
   "${SIDX_HEADERS_CAPI_DIR}/Index.h"
-  "${SIDX_HEADERS_CAPI_DIR}/InternalVisitor.h"
   "${SIDX_HEADERS_CAPI_DIR}/LeafQuery.h"
   "${SIDX_HEADERS_CAPI_DIR}/ObjVisitor.h"
   "${SIDX_HEADERS_CAPI_DIR}/sidx_api.h"
@@ -67,13 +66,12 @@ set(SIDX_CAPI_CPP
   "${SIDX_CAPI_DIR}/Error.cc"
   "${SIDX_CAPI_DIR}/IdVisitor.cc"
   "${SIDX_CAPI_DIR}/Index.cc"
-  "${SIDX_CAPI_DIR}/InternalVisitor.cc"
   "${SIDX_CAPI_DIR}/LeafQuery.cc"
   "${SIDX_CAPI_DIR}/ObjVisitor.cc"
   "${SIDX_CAPI_DIR}/sidx_api.cc"
   "${SIDX_CAPI_DIR}/Utility.cc"
 )
-
+list (APPEND SIDX_CPP ${SIDX_CAPI_CPP} )
 
 set(SIDX_SPATIALINDEX_CPP
   "${SIDX_SRC_DIR}/spatialindex/LineSegment.cc"

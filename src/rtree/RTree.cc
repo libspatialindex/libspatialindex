@@ -30,6 +30,7 @@
 #include <limits>
 
 #include <spatialindex/SpatialIndex.h>
+#include <spatialindex/capi/IdVisitor.h>
 #include "Node.h"
 #include "Leaf.h"
 #include "Index.h"
@@ -468,7 +469,14 @@ void SpatialIndex::RTree::RTree::internalNodesQuery(const IShape& query, IVisito
 
 			if(query.containsShape(n->m_nodeMBR))
 			{
-				v.visitNode(*n);
+				IdVisitor vId = IdVisitor();
+				visitSubTree(n, vId);
+				const uint64_t nObj = vId.GetResultCount();
+				uint64_t *obj = new uint64_t[nObj];
+				std::copy(vId.GetResults().begin(), vId.GetResults().end(), obj);
+
+				Data data = Data(sizeof(uint64_t) * nObj, (byte *) obj, n->m_nodeMBR, n->getIdentifier());
+				v.visitData(data);
 				++(m_stats.m_u64QueryResults);
 			}
 			else
@@ -479,7 +487,7 @@ void SpatialIndex::RTree::RTree::internalNodesQuery(const IShape& query, IVisito
 					{
 						if(query.containsShape(*(n->m_ptrMBR[cChild])))
 						{
-							Data data = Data(n->m_pDataLength[cChild], n->m_pData[cChild], *(n->m_ptrMBR[cChild]), n->m_pIdentifier[cChild]);
+							Data data = Data(sizeof(id_type), (byte *) &n->m_pIdentifier[cChild], *(n->m_ptrMBR[cChild]), n->getIdentifier());
 							v.visitData(data);
 							++(m_stats.m_u64QueryResults);
 						}

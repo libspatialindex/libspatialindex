@@ -39,7 +39,6 @@
 #include "ObjVisitor.h"
 #include "IdVisitor.h"
 #include "CountVisitor.h"
-#include "InternalVisitor.h"
 #include "BoundsQuery.h"
 #include "LeafQuery.h"
 #include "Error.h"

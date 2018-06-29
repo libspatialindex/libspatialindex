@@ -1485,7 +1485,7 @@ SIDX_C_DLL RTError Index_Intersects_internal(	IndexH index,
 												double* pdMin,
 												double* pdMax,
 												uint32_t nDimension,
-												int64_t** ids,
+												IndexItemH** ids,
 												uint64_t* nResults)
 {
 	VALIDATE_POINTER1(index, "Index_Intersects_internal", RT_Failure);
@@ -1496,13 +1496,13 @@ SIDX_C_DLL RTError Index_Intersects_internal(	IndexH index,
 	nResultLimit = idx->GetResultSetLimit();
 	nStart = idx->GetResultSetOffset();
 
-	InternalVisitor* visitor = new InternalVisitor;
+	ObjVisitor* visitor = new ObjVisitor;
 	try {
     SpatialIndex::Region* r = new SpatialIndex::Region(pdMin, pdMax, nDimension);
 		idx->index().internalNodesQuery(	*r,
 											*visitor);
 
-    Page_ResultSet_Internal(*visitor, ids, nStart, nResultLimit, nResults);
+    Page_ResultSet_Obj(*visitor, ids, nStart, nResultLimit, nResults);
 
     delete r;
 		delete visitor;
