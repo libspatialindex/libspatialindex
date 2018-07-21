@@ -30,6 +30,7 @@
 #include "Statistics.h"
 #include "Node.h"
 #include "PointerPoolNode.h"
+#include <memory>
 
 namespace SpatialIndex
 {
