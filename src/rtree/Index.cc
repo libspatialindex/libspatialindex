@@ -37,8 +37,7 @@ using namespace SpatialIndex;
 using namespace SpatialIndex::RTree;
 
 Index::~Index()
-{
-}
+= default;
 
 Index::Index(SpatialIndex::RTree::RTree* pTree, id_type id, uint32_t level) : Node(pTree, id, level, pTree->m_indexCapacity)
 {

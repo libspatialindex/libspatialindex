@@ -35,8 +35,7 @@ using namespace SpatialIndex;
 using namespace SpatialIndex::MVRTree;
 
 Leaf::~Leaf()
-{
-}
+= default;
 
 Leaf::Leaf(SpatialIndex::MVRTree::MVRTree* pTree, id_type id): Node(pTree, id, 0, pTree->m_leafCapacity)
 {

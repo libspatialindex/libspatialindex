@@ -154,7 +154,7 @@ namespace SpatialIndex
 				double m_minDist;
 
 				NNEntry(id_type id, IEntry* e, double f) : m_id(id), m_pEntry(e), m_minDist(f) {}
-				~NNEntry() {}
+				~NNEntry() = default;
 
 				struct ascending : public std::binary_function<NNEntry*, NNEntry*, bool>
 				{

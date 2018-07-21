@@ -34,8 +34,7 @@
 using namespace SpatialIndex;
 
 Region::Region()
-{
-}
+= default;
 
 Region::Region(const double* pLow, const double* pHigh, uint32_t dimension)
 {

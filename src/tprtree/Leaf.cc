@@ -38,8 +38,7 @@ using namespace SpatialIndex;
 using namespace SpatialIndex::TPRTree;
 
 Leaf::~Leaf()
-{
-}
+= default;
 
 Leaf::Leaf(SpatialIndex::TPRTree::TPRTree* pTree, id_type id)
 	: Node(pTree, id, 0, pTree->m_leafCapacity)

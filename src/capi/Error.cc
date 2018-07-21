@@ -36,11 +36,10 @@ Error::Error(int code, std::string const& message, std::string const& method) :
 }
 
 Error::Error(Error const& other) :
-    m_code(other.m_code),
-    m_message(other.m_message),
-    m_method(other.m_method)
-{
-}
+    ,
+    ,
+    
+= default;
 
 Error& Error::operator=(Error const& rhs)
 {

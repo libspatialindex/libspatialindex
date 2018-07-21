@@ -94,8 +94,7 @@ TimeRegion::TimeRegion(const TimeRegion& r)
 }
 
 TimeRegion::~TimeRegion()
-{
-}
+= default;
 
 TimeRegion& TimeRegion::operator=(const TimeRegion& r)
 {

@@ -66,8 +66,7 @@ RandomEvictionsBuffer::RandomEvictionsBuffer(IStorageManager& sm, Tools::Propert
 }
 
 RandomEvictionsBuffer::~RandomEvictionsBuffer()
-{
-}
+= default;
 
 void RandomEvictionsBuffer::addEntry(id_type page, Entry* e)
 {

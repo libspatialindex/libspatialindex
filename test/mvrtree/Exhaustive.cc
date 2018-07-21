@@ -50,7 +50,7 @@ public:
 	double m_xmin, m_ymin, m_xmax, m_ymax;
 	double m_startTime, m_endTime;
 
-	TimeRegion() {}
+	TimeRegion() = default;
 
 	TimeRegion(double x1, double y1, double x2, double y2, double t1, double t2)
 	{

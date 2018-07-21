@@ -121,14 +121,14 @@ namespace Tools
 	{
 	public:
 		virtual std::string what() = 0;
-		virtual ~Exception() {}
+		virtual ~Exception() = default;
 	};
 
 	class SIDX_DLL IndexOutOfBoundsException : public Exception
 	{
 	public:
 		IndexOutOfBoundsException(size_t i);
-		~IndexOutOfBoundsException() override {}
+		~IndexOutOfBoundsException() override = default;
 		std::string what() override;
 
 	private:
@@ -139,7 +139,7 @@ namespace Tools
 	{
 	public:
 		IllegalArgumentException(std::string s);
-		~IllegalArgumentException() override {}
+		~IllegalArgumentException() override = default;
 		std::string what() override;
 
 	private:
@@ -150,7 +150,7 @@ namespace Tools
 	{
 	public:
 		IllegalStateException(std::string s);
-		~IllegalStateException() override {}
+		~IllegalStateException() override = default;
 		std::string what() override;
 
 	private:
@@ -161,7 +161,7 @@ namespace Tools
 	{
 	public:
 		EndOfStreamException(std::string s);
-		~EndOfStreamException() override {}
+		~EndOfStreamException() override = default;
 		std::string what() override;
 
 	private:
@@ -172,7 +172,7 @@ namespace Tools
 	{
 	public:
 		ResourceLockedException(std::string s);
-		~ResourceLockedException() override {}
+		~ResourceLockedException() override = default;
 		std::string what() override;
 
 	private:
@@ -183,7 +183,7 @@ namespace Tools
 	{
 	public:
 		NotSupportedException(std::string s);
-		~NotSupportedException() override {}
+		~NotSupportedException() override = default;
 		std::string what() override;
 
 	private:
@@ -196,7 +196,7 @@ namespace Tools
 	class SIDX_DLL IInterval
 	{
 	public:
-		virtual ~IInterval() {}
+		virtual ~IInterval() = default;
 
 		virtual double getLowerBound() const = 0;
 		virtual double getUpperBound() const = 0;
@@ -210,7 +210,7 @@ namespace Tools
 	class SIDX_DLL IObject
 	{
 	public:
-		virtual ~IObject() {}
+		virtual ~IObject() = default;
 
 		virtual IObject* clone() = 0;
 			// return a new object that is an exact copy of this one.
@@ -220,7 +220,7 @@ namespace Tools
 	class SIDX_DLL ISerializable
 	{
 	public:
-		virtual ~ISerializable() {}
+		virtual ~ISerializable() = default;
 
 		virtual uint32_t getByteArraySize() = 0;
 			// returns the size of the required byte array.
@@ -233,7 +233,7 @@ namespace Tools
 	class SIDX_DLL IComparable
 	{
 	public:
-		virtual ~IComparable() {}
+		virtual ~IComparable() = default;
 
 		virtual bool operator<(const IComparable& o) const = 0;
 		virtual bool operator>(const IComparable& o) const = 0;
@@ -243,7 +243,7 @@ namespace Tools
 	class SIDX_DLL IObjectComparator
 	{
 	public:
-		virtual ~IObjectComparator() {}
+		virtual ~IObjectComparator() = default;
 
 		virtual int compare(IObject* o1, IObject* o2) = 0;
 	}; // IObjectComparator
@@ -251,7 +251,7 @@ namespace Tools
 	class SIDX_DLL IObjectStream
 	{
 	public:
-		virtual ~IObjectStream() {}
+		virtual ~IObjectStream() = default;
 
 		virtual IObject* getNext() = 0;
 			// returns a pointer to the next entry in the
@@ -333,7 +333,7 @@ namespace Tools
 		Interval(IntervalType, double, double);
 		Interval(double, double);
 		Interval(const Interval&);
-		~Interval() override {}
+		~Interval() override = default;
 		virtual IInterval& operator=(const IInterval&);
 
 		virtual bool operator==(const Interval&) const;

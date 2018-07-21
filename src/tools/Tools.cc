@@ -104,8 +104,7 @@ std::string Tools::NotSupportedException::what()
 }
 
 Tools::Variant::Variant()
-{
-}
+= default;
 
 Tools::PropertySet::PropertySet(const byte* data)
 {
@@ -113,12 +112,10 @@ Tools::PropertySet::PropertySet(const byte* data)
 }
 
 Tools::PropertySet::~PropertySet()
-{
-}
+= default;
 
 Tools::PropertySet::PropertySet()
-{
-}
+= default;
 void Tools::PropertySet::loadFromByteArray(const byte* ptr)
 {
 	m_propertySet.clear();
@@ -373,8 +370,7 @@ void Tools::PropertySet::removeProperty(std::string property)
 }
 
 Tools::Interval::Interval()
-{
-}
+= default;
 
 Tools::Interval::Interval(IntervalType t, double l, double h) : m_type(t), m_low(l), m_high(h)
 {
@@ -741,8 +737,7 @@ bool Tools::BufferedFile::eof()
 // BufferedFileReader
 //
 Tools::BufferedFileReader::BufferedFileReader()
-{
-}
+= default;
 
 Tools::BufferedFileReader::BufferedFileReader(const std::string& sFileName, uint32_t u32BufferSize)
 : BufferedFile(u32BufferSize)
@@ -764,8 +759,7 @@ void Tools::BufferedFileReader::open(const std::string& sFileName)
 }
 
 Tools::BufferedFileReader::~BufferedFileReader()
-{
-}
+= default;
 
 void Tools::BufferedFileReader::rewind()
 {

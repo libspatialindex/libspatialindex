@@ -433,14 +433,14 @@ GTEST_API_ TypeId GetTestTypeId();
 // of a Test object.
 class TestFactoryBase {
  public:
-  virtual ~TestFactoryBase() {}
+  virtual ~TestFactoryBase() = default;
 
   // Creates a test instance to run. The instance is both created and destroyed
   // within TestInfoImpl::Run()
   virtual Test* CreateTest() = 0;
 
  protected:
-  TestFactoryBase() {}
+  TestFactoryBase() = default;
 
  private:
   GTEST_DISALLOW_COPY_AND_ASSIGN_(TestFactoryBase);
@@ -508,7 +508,7 @@ GTEST_API_ bool SkipPrefix(const char* prefix, const char** pstr);
 // State of the definition of a type-parameterized test case.
 class GTEST_API_ TypedTestCasePState {
  public:
-  TypedTestCasePState() {}
+  TypedTestCasePState() = default;
 
   // Adds the given test name to defined_test_names_ and return true
   // if the test case hasn't been registered; otherwise aborts the

@@ -29,9 +29,7 @@
 #include <spatialindex/capi/sidx_impl.h>
 
 LeafQuery::LeafQuery() 
-{
-
-}
+= default;
 
 LeafQueryResult get_results(const SpatialIndex::INode* n)
 {

@@ -67,8 +67,7 @@ TimePoint::TimePoint(const TimePoint& p)
 }
 
 TimePoint::~TimePoint()
-{
-}
+= default;
 
 TimePoint& TimePoint::operator=(const TimePoint& p)
 {

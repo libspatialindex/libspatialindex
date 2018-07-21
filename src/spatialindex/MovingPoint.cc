@@ -34,8 +34,7 @@
 using namespace SpatialIndex;
 
 MovingPoint::MovingPoint()
-{
-}
+= default;
 
 MovingPoint::MovingPoint(	const double* pCoords, 
 							const double* pVCoords, 

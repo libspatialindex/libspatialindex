@@ -38,8 +38,7 @@ using namespace SpatialIndex;
 using namespace SpatialIndex::MVRTree;
 
 Index::~Index()
-{
-}
+= default;
 
 Index::Index(SpatialIndex::MVRTree::MVRTree* pTree, id_type id, uint32_t level) : Node(pTree, id, level, pTree->m_indexCapacity)
 {

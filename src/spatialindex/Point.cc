@@ -34,8 +34,7 @@
 using namespace SpatialIndex;
 
 Point::Point()
-{
-}
+= default;
 
 Point::Point(const double* pCoords, uint32_t dimension)
 	: m_dimension(dimension)

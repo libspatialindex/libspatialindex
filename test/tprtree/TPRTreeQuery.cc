@@ -50,7 +50,7 @@ public:
 	size_t m_leafIO{0};
 
 public:
-    MyVisitor() {}
+    MyVisitor() = default;
 
 	void visitNode(const INode& n) override
 	{

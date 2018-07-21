@@ -248,8 +248,7 @@ bool Node::isIndex() const
 //
 
 Node::Node()
-{
-}
+= default;
 
 	Node::Node(SpatialIndex::MVRTree::MVRTree* pTree, id_type id, uint32_t level, uint32_t capacity) :
 	m_pTree(pTree),

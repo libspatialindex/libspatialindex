@@ -1692,12 +1692,10 @@ std::string AppendUserMessage(const std::string& gtest_msg,
 
 // Creates an empty TestResult.
 TestResult::TestResult()
-      {
-}
+      = default;
 
 // D'tor.
-TestResult::~TestResult() {
-}
+TestResult::~TestResult() = default;
 
 // Returns the i-th test part result among all the results. i can
 // range from 0 to total_part_count() - 1. If i is not in that range,
@@ -2690,7 +2688,7 @@ void PrintFullTestCommentIfPresent(const TestInfo& test_info) {
 // Class PrettyUnitTestResultPrinter is copyable.
 class PrettyUnitTestResultPrinter : public TestEventListener {
  public:
-  PrettyUnitTestResultPrinter() {}
+  PrettyUnitTestResultPrinter() = default;
   static void PrintTestName(const char * test_case, const char * test) {
     printf("%s.%s", test_case, test);
   }
@@ -2897,7 +2895,7 @@ void PrettyUnitTestResultPrinter::OnTestIterationEnd(const UnitTest& unit_test,
 // This class forwards events to other event listeners.
 class TestEventRepeater : public TestEventListener {
  public:
-  TestEventRepeater() {}
+  TestEventRepeater() = default;
   ~TestEventRepeater() override;
   void Append(TestEventListener *listener);
   TestEventListener* Release(TestEventListener* listener);

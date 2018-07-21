@@ -159,7 +159,7 @@ namespace SpatialIndex
 			class RootEntry
 			{
 			public:
-				RootEntry() {}
+				RootEntry() = default;
 				RootEntry(id_type id, double s, double e) : m_id(id), m_startTime(s), m_endTime(e) {}
 
 				id_type m_id;
@@ -175,7 +175,7 @@ namespace SpatialIndex
 				double m_minDist;
 
 				NNEntry(id_type id, IEntry* e, double f) : m_id(id), m_pEntry(e), m_minDist(f) {}
-				~NNEntry() {}
+				~NNEntry() = default;
 
 				struct greater : public std::binary_function<NNEntry*, NNEntry*, bool>
 				{

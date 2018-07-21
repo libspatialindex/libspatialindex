@@ -37,7 +37,7 @@ namespace SpatialIndex
         struct SIDX_DLL CustomStorageManagerCallbacks
         {
             CustomStorageManagerCallbacks() 
-            {}
+            = default;
 
             void* context{nullptr};
             void (*createCallback)( const void* context, int* errorCode ){nullptr};
