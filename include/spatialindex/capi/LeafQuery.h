@@ -53,8 +53,8 @@ private:
     std::vector<SpatialIndex::id_type> ids;
     SpatialIndex::Region* bounds;
     SpatialIndex::id_type m_id;
-    LeafQueryResult() = delete;
 public:
+    LeafQueryResult() = delete;
     LeafQueryResult(SpatialIndex::id_type id) : bounds(nullptr), m_id(id){}
     ~LeafQueryResult() {if (bounds!=nullptr) delete bounds;}
 
