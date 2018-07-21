@@ -34,7 +34,7 @@ class SIDX_DLL IdVisitor : public SpatialIndex::IVisitor
 {
 private:
     std::vector<uint64_t> m_vector;
-    uint64_t nResults;
+    uint64_t nResults{0};
 
 public:
 

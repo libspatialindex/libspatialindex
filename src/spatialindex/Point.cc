@@ -34,7 +34,6 @@
 using namespace SpatialIndex;
 
 Point::Point()
-	: m_dimension(0), m_pCoords(nullptr)
 {
 }
 

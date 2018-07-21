@@ -1201,7 +1201,7 @@ inline void SleepMilliseconds(int n) {
 // use it in user tests, either directly or indirectly.
 class Notification {
  public:
-  Notification() : notified_(false) {
+  Notification() {
     GTEST_CHECK_POSIX_SUCCESS_(pthread_mutex_init(&mutex_, nullptr));
   }
   ~Notification() {
@@ -1231,7 +1231,7 @@ class Notification {
 
  private:
   pthread_mutex_t mutex_;
-  bool notified_;
+  bool notified_{false};
 
   GTEST_DISALLOW_COPY_AND_ASSIGN_(Notification);
 };

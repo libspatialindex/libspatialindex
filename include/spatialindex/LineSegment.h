@@ -77,9 +77,9 @@ namespace SpatialIndex
 		virtual void makeDimension(uint32_t dimension);
         
 	public:
-		uint32_t m_dimension;
-		double* m_pStartPoint;
-		double* m_pEndPoint;
+		uint32_t m_dimension{0};
+		double* m_pStartPoint{nullptr};
+		double* m_pEndPoint{nullptr};
 
 		friend class Region;
 		friend class Point;

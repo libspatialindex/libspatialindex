@@ -39,7 +39,7 @@
 using namespace SpatialIndex;
 
 MovingRegion::MovingRegion()
-	: TimeRegion(), m_pVLow(nullptr), m_pVHigh(nullptr)
+    : TimeRegion()
 {
 }
 

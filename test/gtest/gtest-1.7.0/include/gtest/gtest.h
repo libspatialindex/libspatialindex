@@ -599,9 +599,9 @@ class GTEST_API_ TestResult {
   // The vector of TestProperties
   std::vector<TestProperty> test_properties_;
   // Running count of death tests.
-  int death_test_count_;
+  int death_test_count_{0};
   // The elapsed time, in milliseconds.
-  TimeInMillis elapsed_time_;
+  TimeInMillis elapsed_time_{0};
 
   // We disallow copying TestResult.
   GTEST_DISALLOW_COPY_AND_ASSIGN_(TestResult);
@@ -1098,9 +1098,9 @@ class GTEST_API_ TestEventListeners {
   // The actual list of listeners.
   internal::TestEventRepeater* repeater_;
   // Listener responsible for the standard result output.
-  TestEventListener* default_result_printer_;
+  TestEventListener* default_result_printer_{nullptr};
   // Listener responsible for the creation of the XML output file.
-  TestEventListener* default_xml_generator_;
+  TestEventListener* default_xml_generator_{nullptr};
 
   // We disallow copying TestEventListeners.
   GTEST_DISALLOW_COPY_AND_ASSIGN_(TestEventListeners);

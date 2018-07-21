@@ -33,7 +33,7 @@
 class SIDX_DLL CountVisitor : public SpatialIndex::IVisitor
 {
 private:
-   uint64_t nResults;
+   uint64_t nResults{0};
 
 public:
 

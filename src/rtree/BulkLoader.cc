@@ -47,7 +47,6 @@ using namespace SpatialIndex::RTree;
 // ExternalSorter::Record
 //
 ExternalSorter::Record::Record()
-: m_pData(nullptr)
 {
 }
 

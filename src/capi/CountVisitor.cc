@@ -28,7 +28,7 @@
 
 #include <spatialindex/capi/sidx_impl.h>
 
-CountVisitor::CountVisitor(): nResults(0)
+CountVisitor::CountVisitor()
 {
 }
 

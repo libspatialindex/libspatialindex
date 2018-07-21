@@ -166,7 +166,7 @@ class GTEST_API_ HasNewFatalFailureHelper
   void ReportTestPartResult(const TestPartResult& result) override;
   bool has_new_fatal_failure() const { return has_new_fatal_failure_; }
  private:
-  bool has_new_fatal_failure_;
+  bool has_new_fatal_failure_{false};
   TestPartResultReporterInterface* original_reporter_;
 
   GTEST_DISALLOW_COPY_AND_ASSIGN_(HasNewFatalFailureHelper);

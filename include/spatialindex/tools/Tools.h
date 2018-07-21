@@ -276,7 +276,7 @@ namespace Tools
 	public:
 		Variant();
 
-		VariantType m_varType;
+		VariantType m_varType{VT_EMPTY};
 
 		union
 		{
@@ -346,9 +346,9 @@ namespace Tools
 		bool containsInterval(const IInterval&) const override;
 		IntervalType getIntervalType() const override;
 
-		IntervalType m_type;
-		double m_low;
-		double m_high;
+		IntervalType m_type{IT_RIGHTOPEN};
+		double m_low{0.0};
+		double m_high{0.0};
 	}; // Interval
 
 	SIDX_DLL std::ostream& operator<<(std::ostream& os, const Tools::Interval& iv);
@@ -420,7 +420,7 @@ namespace Tools
 		std::fstream m_file;
 		char* m_buffer;
 		uint32_t m_u32BufferSize;
-		bool m_bEOF;
+		bool m_bEOF{true};
 	};
 
 	class SIDX_DLL BufferedFileReader : public BufferedFile

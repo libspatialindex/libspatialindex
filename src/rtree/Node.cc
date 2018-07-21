@@ -227,17 +227,7 @@ bool Node::isIndex() const
 // Internal
 //
 
-Node::Node() :
-	m_pTree(nullptr),
-	m_level(0),
-	m_identifier(-1),
-	m_children(0),
-	m_capacity(0),
-	m_pData(nullptr),
-	m_ptrMBR(nullptr),
-	m_pIdentifier(nullptr),
-	m_pDataLength(nullptr),
-	m_totalDataLength(0)
+Node::Node()
 {
 }
 

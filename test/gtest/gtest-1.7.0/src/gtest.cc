@@ -1692,8 +1692,7 @@ std::string AppendUserMessage(const std::string& gtest_msg,
 
 // Creates an empty TestResult.
 TestResult::TestResult()
-    : death_test_count_(0),
-      elapsed_time_(0) {
+      {
 }
 
 // D'tor.
@@ -2898,7 +2897,7 @@ void PrettyUnitTestResultPrinter::OnTestIterationEnd(const UnitTest& unit_test,
 // This class forwards events to other event listeners.
 class TestEventRepeater : public TestEventListener {
  public:
-  TestEventRepeater() : forwarding_enabled_(true) {}
+  TestEventRepeater() {}
   ~TestEventRepeater() override;
   void Append(TestEventListener *listener);
   TestEventListener* Release(TestEventListener* listener);
@@ -2925,7 +2924,7 @@ class TestEventRepeater : public TestEventListener {
  private:
   // Controls whether events will be forwarded to listeners_. Set to false
   // in death test child processes.
-  bool forwarding_enabled_;
+  bool forwarding_enabled_{true};
   // The list of listeners that receive events.
   std::vector<TestEventListener*> listeners_;
 
@@ -3557,9 +3556,8 @@ class ScopedPrematureExitFile {
 // class TestEventListeners
 
 TestEventListeners::TestEventListeners()
-    : repeater_(new internal::TestEventRepeater()),
-      default_result_printer_(nullptr),
-      default_xml_generator_(nullptr) {
+    : repeater_(new internal::TestEventRepeater())
+{
 }
 
 TestEventListeners::~TestEventListeners() { delete repeater_; }

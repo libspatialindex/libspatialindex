@@ -96,37 +96,37 @@ namespace SpatialIndex
 
 			virtual void split(uint32_t dataLength, byte* pData, Region& mbr, id_type id, NodePtr& left, NodePtr& right) = 0;
 
-			RTree* m_pTree;
+			RTree* m_pTree{nullptr};
 				// Parent of all nodes.
 
-			uint32_t m_level;
+			uint32_t m_level{0};
 				// The level of the node in the tree.
 				// Leaves are always at level 0.
 
-			id_type m_identifier;
+			id_type m_identifier{-1};
 				// The unique ID of this node.
 
-			uint32_t m_children;
+			uint32_t m_children{0};
 				// The number of children pointed by this node.
 
-			uint32_t m_capacity;
+			uint32_t m_capacity{0};
 				// Specifies the node capacity.
 
 			Region m_nodeMBR;
 				// The minimum bounding region enclosing all data contained in the node.
 
-			byte** m_pData;
+			byte** m_pData{nullptr};
 				// The data stored in the node.
 
-			RegionPtr* m_ptrMBR;
+			RegionPtr* m_ptrMBR{nullptr};
 				// The corresponding data MBRs.
 
-			id_type* m_pIdentifier;
+			id_type* m_pIdentifier{nullptr};
 				// The corresponding data identifiers.
 
-			uint32_t* m_pDataLength;
+			uint32_t* m_pDataLength{nullptr};
 
-			uint32_t m_totalDataLength;
+			uint32_t m_totalDataLength{0};
 
 			class RstarSplitEntry
 			{

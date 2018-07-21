@@ -508,7 +508,7 @@ GTEST_API_ bool SkipPrefix(const char* prefix, const char** pstr);
 // State of the definition of a type-parameterized test case.
 class GTEST_API_ TypedTestCasePState {
  public:
-  TypedTestCasePState() : registered_(false) {}
+  TypedTestCasePState() {}
 
   // Adds the given test name to defined_test_names_ and return true
   // if the test case hasn't been registered; otherwise aborts the
@@ -533,7 +533,7 @@ class GTEST_API_ TypedTestCasePState {
       const char* file, int line, const char* registered_tests);
 
  private:
-  bool registered_;
+  bool registered_{false};
   ::std::set<const char*> defined_test_names_;
 };
 

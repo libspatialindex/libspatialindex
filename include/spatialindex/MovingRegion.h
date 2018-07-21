@@ -159,8 +159,8 @@ namespace SpatialIndex
 		}; // CrossPoint
 
 	public:
-		double* m_pVLow;
-		double* m_pVHigh;
+		double* m_pVLow{nullptr};
+		double* m_pVHigh{nullptr};
 
 		friend SIDX_DLL std::ostream& operator<<(std::ostream& os, const MovingRegion& r);
 	}; // MovingRegion

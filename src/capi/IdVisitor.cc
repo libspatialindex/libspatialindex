@@ -28,7 +28,7 @@
 
 #include <spatialindex/capi/sidx_impl.h>
 
-IdVisitor::IdVisitor(): nResults(0)
+IdVisitor::IdVisitor()
 {
 }
 

@@ -74,8 +74,8 @@ namespace SpatialIndex
 		virtual void makeDimension(uint32_t dimension);
 
 	public:
-		uint32_t m_dimension;
-		double* m_pCoords;
+		uint32_t m_dimension{0};
+		double* m_pCoords{nullptr};
 
 		friend class Region;
 		friend SIDX_DLL std::ostream& operator<<(std::ostream& os, const Point& pt);

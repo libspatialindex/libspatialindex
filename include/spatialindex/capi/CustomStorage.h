@@ -37,21 +37,15 @@ namespace SpatialIndex
         struct SIDX_DLL CustomStorageManagerCallbacks
         {
             CustomStorageManagerCallbacks() 
-            : context(nullptr)
-            , createCallback(nullptr)
-            , destroyCallback(nullptr)
-            , loadByteArrayCallback(nullptr)
-            , storeByteArrayCallback(nullptr)
-            , deleteByteArrayCallback(nullptr)
             {}
 
-            void* context;
-            void (*createCallback)( const void* context, int* errorCode );
-            void (*destroyCallback)( const void* context, int* errorCode );
+            void* context{nullptr};
+            void (*createCallback)( const void* context, int* errorCode ){nullptr};
+            void (*destroyCallback)( const void* context, int* errorCode ){nullptr};
 			void (*flushCallback)( const void* context, int* errorCode );
-            void (*loadByteArrayCallback)( const void* context, const id_type page, uint32_t* len, byte** data, int* errorCode );
-            void (*storeByteArrayCallback)( const void* context, id_type* page, const uint32_t len, const byte* const data, int* errorCode );
-            void (*deleteByteArrayCallback)( const void* context, const id_type page, int* errorCode );
+            void (*loadByteArrayCallback)( const void* context, const id_type page, uint32_t* len, byte** data, int* errorCode ){nullptr};
+            void (*storeByteArrayCallback)( const void* context, id_type* page, const uint32_t len, const byte* const data, int* errorCode ){nullptr};
+            void (*deleteByteArrayCallback)( const void* context, const id_type page, int* errorCode ){nullptr};
         };
 
         class SIDX_DLL CustomStorageManager : public SpatialIndex::IStorageManager

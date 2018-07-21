@@ -61,7 +61,7 @@ namespace SpatialIndex
 				Region m_r;
 				id_type m_id;
 				uint32_t m_len;
-				byte* m_pData;
+				byte* m_pData{nullptr};
 				uint32_t m_s;
 			};
 

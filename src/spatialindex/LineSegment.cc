@@ -34,7 +34,6 @@
 using namespace SpatialIndex;
 
 LineSegment::LineSegment()
-	: m_dimension(0), m_pStartPoint(nullptr), m_pEndPoint(nullptr)
 {
 }
 

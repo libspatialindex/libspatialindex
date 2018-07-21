@@ -94,9 +94,9 @@ namespace SpatialIndex
 		void initialize(const double* pLow, const double* pHigh, uint32_t dimension);
 
 	public:
-		uint32_t m_dimension;
-		double* m_pLow;
-		double* m_pHigh;
+		uint32_t m_dimension{0};
+		double* m_pLow{nullptr};
+		double* m_pHigh{nullptr};
 
 		friend SIDX_DLL std::ostream& operator<<(std::ostream& os, const Region& r);
 	}; // Region

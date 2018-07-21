@@ -103,7 +103,7 @@ std::string Tools::NotSupportedException::what()
 	return "NotSupportedException: " + m_error;
 }
 
-Tools::Variant::Variant() : m_varType(VT_EMPTY)
+Tools::Variant::Variant()
 {
 }
 
@@ -372,7 +372,7 @@ void Tools::PropertySet::removeProperty(std::string property)
    	if (it != m_propertySet.end()) m_propertySet.erase(it);
 }
 
-Tools::Interval::Interval() : m_type(IT_RIGHTOPEN), m_low(0.0), m_high(0.0)
+Tools::Interval::Interval()
 {
 }
 
@@ -717,7 +717,7 @@ std::ostream& Tools::operator<<(std::ostream& os, const Tools::Interval& iv)
 // BufferedFile
 //
 Tools::BufferedFile::BufferedFile(uint32_t u32BufferSize)
-: m_buffer(new char[u32BufferSize]), m_u32BufferSize(u32BufferSize), m_bEOF(true)
+: m_buffer(new char[u32BufferSize]), m_u32BufferSize(u32BufferSize)
 {
 }
 

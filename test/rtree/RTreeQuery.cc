@@ -45,11 +45,11 @@ using namespace std;
 class MyVisitor : public IVisitor
 {
 public:
-	size_t m_indexIO;
-	size_t m_leafIO;
+	size_t m_indexIO{0};
+	size_t m_leafIO{0};
 
 public:
-	MyVisitor() : m_indexIO(0), m_leafIO(0) {}
+    MyVisitor() {}
 
 	void visitNode(const INode& n) override
 	{

@@ -34,7 +34,6 @@
 using namespace SpatialIndex;
 
 Region::Region()
-	: m_dimension(0), m_pLow(nullptr), m_pHigh(nullptr)
 {
 }
 

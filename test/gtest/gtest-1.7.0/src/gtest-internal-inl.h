@@ -439,7 +439,7 @@ class OsStackTraceGetterInterface {
 // A working implementation of the OsStackTraceGetterInterface interface.
 class OsStackTraceGetter : public OsStackTraceGetterInterface {
  public:
-  OsStackTraceGetter() : caller_frame_(nullptr) {}
+  OsStackTraceGetter() {}
 
   string CurrentStackTrace(int max_depth, int skip_count) override
       GTEST_LOCK_EXCLUDED_(mutex_);
@@ -457,7 +457,7 @@ class OsStackTraceGetter : public OsStackTraceGetterInterface {
   // We do this because the address of the frame immediately below
   // the user code changes between the call to UponLeavingGTest()
   // and any calls to CurrentStackTrace() from within the user code.
-  void* caller_frame_;
+  void* caller_frame_{nullptr};
 
   GTEST_DISALLOW_COPY_AND_ASSIGN_(OsStackTraceGetter);
 };

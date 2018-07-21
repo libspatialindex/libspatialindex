@@ -87,8 +87,7 @@ int TestPartResultArray::size() const {
 namespace internal {
 
 HasNewFatalFailureHelper::HasNewFatalFailureHelper()
-    : has_new_fatal_failure_(false),
-      original_reporter_(GetUnitTestImpl()->
+    : original_reporter_(GetUnitTestImpl()->
                          GetTestPartResultReporterForCurrentThread()) {
   GetUnitTestImpl()->SetTestPartResultReporterForCurrentThread(this);
 }
