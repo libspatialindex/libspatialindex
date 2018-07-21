@@ -35,11 +35,7 @@ Error::Error(int code, std::string const& message, std::string const& method) :
 {
 }
 
-Error::Error(Error const& other) :
-    ,
-    ,
-    
-= default;
+Error::Error(Error const& other) = default;
 
 Error& Error::operator=(Error const& rhs)
 {

@@ -59,7 +59,7 @@ namespace internal {
 class GTEST_API_ FilePath {
  public:
   FilePath() : pathname_("") { }
-  FilePath(const FilePath& rhs) : = default;
+  FilePath(const FilePath& rhs) = default;
 
   explicit FilePath(const std::string& pathname) : pathname_(pathname) {
     Normalize();
