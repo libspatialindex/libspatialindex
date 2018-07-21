@@ -68,7 +68,7 @@ TimeRegion::TimeRegion(const Region& r, double tStart, double tEnd)
 }
 
 TimeRegion::TimeRegion(const TimePoint& low, const TimePoint& high)
-	: Region((Point&) low, (Point&) high), m_startTime(low.m_startTime), m_endTime(high.m_endTime)
+    : Region( low, high), m_startTime(low.m_startTime), m_endTime(high.m_endTime)
 {
 }
 
