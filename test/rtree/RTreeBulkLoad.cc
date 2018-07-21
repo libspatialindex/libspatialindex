@@ -49,12 +49,12 @@ public:
 		readNextEntry();
 	}
 
-	virtual ~MyDataStream()
+	~MyDataStream() override
 	{
 		if (m_pNext != 0) delete m_pNext;
 	}
 
-	virtual IData* getNext()
+	IData* getNext() override
 	{
 		if (m_pNext == 0) return 0;
 
@@ -64,17 +64,17 @@ public:
 		return ret;
 	}
 
-	virtual bool hasNext()
+	bool hasNext() override
 	{
 		return (m_pNext != 0);
 	}
 
-	virtual uint32_t size()
+	uint32_t size() override
 	{
 		throw Tools::NotSupportedException("Operation not supported.");
 	}
 
-	virtual void rewind()
+	void rewind() override
 	{
 		if (m_pNext != 0)
 		{

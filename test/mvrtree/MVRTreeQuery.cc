@@ -51,13 +51,13 @@ public:
 public:
 	MyVisitor() : m_indexIO(0), m_leafIO(0) {}
 
-	void visitNode(const INode& n)
+	void visitNode(const INode& n) override
 	{
 		if (n.isLeaf()) m_leafIO++;
 		else m_indexIO++;
 	}
 
-	void visitData(const IData& d)
+	void visitData(const IData& d) override
 	{
 		//IShape* pS;
 		//d.getShape(&pS);
@@ -77,7 +77,7 @@ public:
 			// the ID of this data entry is an answer to the query. I will just print it to stdout.
 	}
 
-	void visitData(std::vector<const IData*>& v) {}
+	void visitData(std::vector<const IData*>& v) override {}
 };
 
 // example of a Strategy pattern.
@@ -88,7 +88,7 @@ private:
 	queue<id_type> ids;
 
 public:
-	void getNextEntry(const IEntry& entry, id_type& nextEntry, bool& hasNext)
+	void getNextEntry(const IEntry& entry, id_type& nextEntry, bool& hasNext) override
 	{
 		IShape* ps;
 		entry.getShape(&ps);
@@ -134,7 +134,7 @@ public:
 	Region m_indexedSpace;
 
 public:
-	void getNextEntry(const IEntry& entry, id_type& nextEntry, bool& hasNext)
+	void getNextEntry(const IEntry& entry, id_type& nextEntry, bool& hasNext) override
 	{
 		// the first time we are called, entry points to the root.
 

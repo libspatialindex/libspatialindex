@@ -40,10 +40,10 @@ private:
 public:
 
 	LeafQuery();
-	~LeafQuery() { }
+	~LeafQuery() override { }
 	void getNextEntry(	const SpatialIndex::IEntry& entry, 
 						SpatialIndex::id_type& nextEntry, 
-						bool& hasNext);
+						bool& hasNext) override;
 	std::vector<LeafQueryResult> const& GetResults() const {return m_results;}
 };
 

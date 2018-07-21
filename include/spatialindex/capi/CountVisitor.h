@@ -38,11 +38,11 @@ private:
 public:
 
    CountVisitor();
-   ~CountVisitor();
+   ~CountVisitor() override;
 
    uint64_t GetResultCount() const { return nResults; }
 
-   void visitNode(const SpatialIndex::INode& n);
-   void visitData(const SpatialIndex::IData& d);
-   void visitData(std::vector<const SpatialIndex::IData*>& v);
+   void visitNode(const SpatialIndex::INode& n) override;
+   void visitData(const SpatialIndex::IData& d) override;
+   void visitData(std::vector<const SpatialIndex::IData*>& v) override;
 };

@@ -41,36 +41,36 @@ namespace SpatialIndex
 		class Node : public SpatialIndex::INode
 		{
 		public:
-			virtual ~Node();
+			~Node() override;
 
 			//
 			// Tools::IObject interface
 			//
-			virtual Tools::IObject* clone();
+			Tools::IObject* clone() override;
 
 			//
 			// Tools::ISerializable interface
 			//
-			virtual uint32_t getByteArraySize();
-			virtual void loadFromByteArray(const byte* data);
-			virtual void storeToByteArray(byte** data, uint32_t& len);
+			uint32_t getByteArraySize() override;
+			void loadFromByteArray(const byte* data) override;
+			void storeToByteArray(byte** data, uint32_t& len) override;
 
 			//
 			// SpatialIndex::IEntry interface
 			//
-			virtual id_type getIdentifier() const;
-			virtual void getShape(IShape** out) const;
+			id_type getIdentifier() const override;
+			void getShape(IShape** out) const override;
 
 			//
 			// SpatialIndex::INode interface
 			//
-			virtual uint32_t getChildrenCount() const;
-			virtual id_type getChildIdentifier(uint32_t index)  const;
-			virtual void getChildShape(uint32_t index, IShape** out)  const;
-                        virtual void getChildData(uint32_t index, uint32_t& length, byte** data) const;
-			virtual uint32_t getLevel() const;
-			virtual bool isIndex() const;
-			virtual bool isLeaf() const;
+			uint32_t getChildrenCount() const override;
+			id_type getChildIdentifier(uint32_t index)  const override;
+			void getChildShape(uint32_t index, IShape** out)  const override;
+                        void getChildData(uint32_t index, uint32_t& length, byte** data) const override;
+			uint32_t getLevel() const override;
+			bool isIndex() const override;
+			bool isLeaf() const override;
 
 		private:
 			Node();
@@ -140,7 +140,7 @@ namespace SpatialIndex
 
 				static int compareLow(const void* pv1, const void* pv2)
 				{
-					RstarSplitEntry* pe1 = * (RstarSplitEntry**) pv1;
+                    RstarSplitEntry* pe1 = * (RstarSplitEntry**) pv1;
 					RstarSplitEntry* pe2 = * (RstarSplitEntry**) pv2;
 
 					assert(pe1->m_sortDim == pe2->m_sortDim);

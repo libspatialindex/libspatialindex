@@ -46,15 +46,15 @@ using namespace std;
 class MyVisitor : public IVisitor
 {
 public:
-	void visitNode(const INode& ) {}
+	void visitNode(const INode& ) override {}
 
-	void visitData(const IData& d)
+	void visitData(const IData& d) override
 	{
 		cout << d.getIdentifier() << endl;
 			// the ID of this data entry is an answer to the query. I will just print it to stdout.
 	}
 
-	void visitData(std::vector<const IData*>& ) {}
+	void visitData(std::vector<const IData*>& ) override {}
 };
 
 int main(int argc, char** argv)

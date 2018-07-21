@@ -39,13 +39,13 @@ private:
 public:
 
     ObjVisitor();
-    ~ObjVisitor();
+    ~ObjVisitor() override;
 
     uint64_t GetResultCount() const { return nResults; }
     std::vector<SpatialIndex::IData*>& GetResults()  { return m_vector; }
     
-    void visitNode(const SpatialIndex::INode& n);
-    void visitData(const SpatialIndex::IData& d);
-    void visitData(std::vector<const SpatialIndex::IData*>& v);
+    void visitNode(const SpatialIndex::INode& n) override;
+    void visitData(const SpatialIndex::IData& d) override;
+    void visitData(std::vector<const SpatialIndex::IData*>& v) override;
 };
 

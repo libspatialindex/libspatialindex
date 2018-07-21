@@ -36,7 +36,7 @@ namespace SpatialIndex
 		LineSegment(const double* startPoint, const double* endPoint, uint32_t dimension);
 		LineSegment(const Point& startPoint, const Point& endPoint);
 		LineSegment(const LineSegment& l);
-		virtual ~LineSegment();
+		~LineSegment() override;
 
 		virtual LineSegment& operator=(const LineSegment& p);
 		virtual bool operator==(const LineSegment& p) const;
@@ -44,26 +44,26 @@ namespace SpatialIndex
 		//
 		// IObject interface
 		//
-		virtual LineSegment* clone();
+		LineSegment* clone() override;
 
 		//
 		// ISerializable interface
 		//
-		virtual uint32_t getByteArraySize();
-		virtual void loadFromByteArray(const byte* data);
-		virtual void storeToByteArray(byte** data, uint32_t& length);
+		uint32_t getByteArraySize() override;
+		void loadFromByteArray(const byte* data) override;
+		void storeToByteArray(byte** data, uint32_t& length) override;
 
 		//
 		// IShape interface
 		//
-		virtual bool intersectsShape(const IShape& in) const;
-		virtual bool containsShape(const IShape& in) const;
-		virtual bool touchesShape(const IShape& in) const;
-		virtual void getCenter(Point& out) const;
-		virtual uint32_t getDimension() const;
-		virtual void getMBR(Region& out) const;
-		virtual double getArea() const;
-		virtual double getMinimumDistance(const IShape& in) const;
+		bool intersectsShape(const IShape& in) const override;
+		bool containsShape(const IShape& in) const override;
+		bool touchesShape(const IShape& in) const override;
+		void getCenter(Point& out) const override;
+		uint32_t getDimension() const override;
+		void getMBR(Region& out) const override;
+		double getArea() const override;
+		double getMinimumDistance(const IShape& in) const override;
 
 		virtual bool intersectsLineSegment(const LineSegment& l) const;
 		virtual bool intersectsRegion(const Region& p) const;

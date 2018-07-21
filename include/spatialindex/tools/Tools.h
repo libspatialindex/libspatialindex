@@ -128,8 +128,8 @@ namespace Tools
 	{
 	public:
 		IndexOutOfBoundsException(size_t i);
-		virtual ~IndexOutOfBoundsException() {}
-		virtual std::string what();
+		~IndexOutOfBoundsException() override {}
+		std::string what() override;
 
 	private:
 		std::string m_error;
@@ -139,8 +139,8 @@ namespace Tools
 	{
 	public:
 		IllegalArgumentException(std::string s);
-		virtual ~IllegalArgumentException() {}
-		virtual std::string what();
+		~IllegalArgumentException() override {}
+		std::string what() override;
 
 	private:
 		std::string m_error;
@@ -150,8 +150,8 @@ namespace Tools
 	{
 	public:
 		IllegalStateException(std::string s);
-		virtual ~IllegalStateException() {}
-		virtual std::string what();
+		~IllegalStateException() override {}
+		std::string what() override;
 
 	private:
 		std::string m_error;
@@ -161,8 +161,8 @@ namespace Tools
 	{
 	public:
 		EndOfStreamException(std::string s);
-		virtual ~EndOfStreamException() {}
-		virtual std::string what();
+		~EndOfStreamException() override {}
+		std::string what() override;
 
 	private:
 		std::string m_error;
@@ -172,8 +172,8 @@ namespace Tools
 	{
 	public:
 		ResourceLockedException(std::string s);
-		virtual ~ResourceLockedException() {}
-		virtual std::string what();
+		~ResourceLockedException() override {}
+		std::string what() override;
 
 	private:
 		std::string m_error;
@@ -183,8 +183,8 @@ namespace Tools
 	{
 	public:
 		NotSupportedException(std::string s);
-		virtual ~NotSupportedException() {}
-		virtual std::string what();
+		~NotSupportedException() override {}
+		std::string what() override;
 
 	private:
 		std::string m_error;
@@ -305,15 +305,15 @@ namespace Tools
 	public:
 		PropertySet();
 		PropertySet(const byte* data);
-		virtual ~PropertySet();
+		~PropertySet() override;
 
 		Variant getProperty(std::string property) const;
 		void setProperty(std::string property, Variant const& v);
 		void removeProperty(std::string property);
 
-		virtual uint32_t getByteArraySize();
-		virtual void loadFromByteArray(const byte* data);
-		virtual void storeToByteArray(byte** data, uint32_t& length);
+		uint32_t getByteArraySize() override;
+		void loadFromByteArray(const byte* data) override;
+		void storeToByteArray(byte** data, uint32_t& length) override;
 
 	private:
 		std::map<std::string, Variant> m_propertySet;
@@ -333,18 +333,18 @@ namespace Tools
 		Interval(IntervalType, double, double);
 		Interval(double, double);
 		Interval(const Interval&);
-		virtual ~Interval() {}
+		~Interval() override {}
 		virtual IInterval& operator=(const IInterval&);
 
 		virtual bool operator==(const Interval&) const;
 		virtual bool operator!=(const Interval&) const;
-		virtual double getLowerBound() const;
-		virtual double getUpperBound() const;
-		virtual void setBounds(double, double);
-		virtual bool intersectsInterval(const IInterval&) const;
-		virtual bool intersectsInterval(IntervalType type, const double start, const double end) const;
-		virtual bool containsInterval(const IInterval&) const;
-		virtual IntervalType getIntervalType() const;
+		double getLowerBound() const override;
+		double getUpperBound() const override;
+		void setBounds(double, double) override;
+		bool intersectsInterval(const IInterval&) const override;
+		bool intersectsInterval(IntervalType type, const double start, const double end) const override;
+		bool containsInterval(const IInterval&) const override;
+		IntervalType getIntervalType() const override;
 
 		IntervalType m_type;
 		double m_low;
@@ -428,11 +428,11 @@ namespace Tools
 	public:
 		BufferedFileReader();
 		BufferedFileReader(const std::string& sFileName, uint32_t u32BufferSize = 32768);
-		virtual ~BufferedFileReader();
+		~BufferedFileReader() override;
 
 		virtual void open(const std::string& sFileName);
-		virtual void rewind();
-		virtual void seek(std::fstream::off_type offset);
+		void rewind() override;
+		void seek(std::fstream::off_type offset) override;
 
 		virtual uint8_t readUInt8();
 		virtual uint16_t readUInt16();
@@ -450,11 +450,11 @@ namespace Tools
 	public:
 		BufferedFileWriter();
 		BufferedFileWriter(const std::string& sFileName, FileMode mode = CREATE, uint32_t u32BufferSize = 32768);
-		virtual ~BufferedFileWriter();
+		~BufferedFileWriter() override;
 
 		virtual void open(const std::string& sFileName, FileMode mode = CREATE);
-		virtual void rewind();
-		virtual void seek(std::fstream::off_type offset);
+		void rewind() override;
+		void seek(std::fstream::off_type offset) override;
 
 		virtual void write(uint8_t i);
 		virtual void write(uint16_t i);

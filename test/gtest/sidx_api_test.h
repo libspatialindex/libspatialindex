@@ -18,7 +18,7 @@ class SidxApiRTreeTest : public testing::Test {
     // virtual void SetUp() will be called before each test is run.  You
     // should define it if you need to initialize the varaibles.
     // Otherwise, this can be skipped.
-    virtual void SetUp() {
+    void SetUp() override {
       memset(pszData, '\0', sizeof(pszData));
       strcpy(pszData, "TEST");
       IndexPropertyH props = IndexProperty_Create();
@@ -33,7 +33,7 @@ class SidxApiRTreeTest : public testing::Test {
     // You should define it if there is cleanup work to do.  Otherwise,
     // you don't have to provide it.
     //
-    virtual void TearDown() {
+    void TearDown() override {
       Index_Destroy(idx);
     }
 

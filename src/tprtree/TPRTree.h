@@ -62,25 +62,25 @@ namespace SpatialIndex
 				// RegionPoolCapacity       VT_LONG   Default is 1000
 				// PointPoolCapacity        VT_LONG   Default is 500
 
-			virtual ~TPRTree();
+			~TPRTree() override;
 
 			//
 			// ISpatialIndex interface
 			//
-			virtual void insertData(uint32_t len, const byte* pData, const IShape& shape, id_type shapeIdentifier);
-			virtual bool deleteData(const IShape& shape, id_type id);
-			virtual void containsWhatQuery(const IShape& query, IVisitor& v);
-			virtual void intersectsWithQuery(const IShape& query, IVisitor& v);
-			virtual void pointLocationQuery(const Point& query, IVisitor& v);
-			virtual void nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v, INearestNeighborComparator&);
-			virtual void nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v);
-			virtual void selfJoinQuery(const IShape& s, IVisitor& v);
-			virtual void queryStrategy(IQueryStrategy& qs);
-			virtual void getIndexProperties(Tools::PropertySet& out) const;
-			virtual void addCommand(ICommand* pCommand, CommandType ct);
-			virtual bool isIndexValid();
-			virtual void getStatistics(IStatistics** out) const;
-			virtual void flush();
+			void insertData(uint32_t len, const byte* pData, const IShape& shape, id_type shapeIdentifier) override;
+			bool deleteData(const IShape& shape, id_type id) override;
+			void containsWhatQuery(const IShape& query, IVisitor& v) override;
+			void intersectsWithQuery(const IShape& query, IVisitor& v) override;
+			void pointLocationQuery(const Point& query, IVisitor& v) override;
+			void nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v, INearestNeighborComparator&) override;
+			void nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v) override;
+			void selfJoinQuery(const IShape& s, IVisitor& v) override;
+			void queryStrategy(IQueryStrategy& qs) override;
+			void getIndexProperties(Tools::PropertySet& out) const override;
+			void addCommand(ICommand* pCommand, CommandType ct) override;
+			bool isIndexValid() override;
+			void getStatistics(IStatistics** out) const override;
+			void flush() override;
 
 		private:
 			void initNew(Tools::PropertySet&);
@@ -165,12 +165,12 @@ namespace SpatialIndex
 			class NNComparator : public INearestNeighborComparator
 			{
 			public:
-				double getMinimumDistance(const IShape& query, const IShape& entry)
+				double getMinimumDistance(const IShape& query, const IShape& entry) override
 				{
 					return query.getMinimumDistance(entry);
 				}
 
-				double getMinimumDistance(const IShape& query, const IData& data)
+				double getMinimumDistance(const IShape& query, const IData& data) override
 				{
 					IShape* pS;
 					data.getShape(&pS);

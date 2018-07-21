@@ -53,8 +53,8 @@ namespace SpatialIndex
 	{
 	public:
 		InvalidPageException(id_type id);
-		virtual ~InvalidPageException() {}
-		virtual std::string what();
+		~InvalidPageException() override {}
+		std::string what() override;
 
 	private:
 		std::string m_error;
@@ -75,7 +75,7 @@ namespace SpatialIndex
 		virtual void getMBR(Region& out) const = 0;
 		virtual double getArea() const = 0;
 		virtual double getMinimumDistance(const IShape& in) const = 0;
-		virtual ~IShape() {}
+		~IShape() override {}
 	}; // IShape
 
 	class SIDX_DLL ITimeShape : public Tools::IInterval
@@ -91,7 +91,7 @@ namespace SpatialIndex
 		virtual double getAreaInTime(const Tools::IInterval& ivI) const = 0;
 		virtual double getIntersectingAreaInTime(const ITimeShape& r) const = 0;
 		virtual double getIntersectingAreaInTime(const Tools::IInterval& ivI, const ITimeShape& r) const = 0;
-		virtual ~ITimeShape() {}
+		~ITimeShape() override {}
 	}; // ITimeShape
 
 	class SIDX_DLL IEvolvingShape
@@ -107,7 +107,7 @@ namespace SpatialIndex
 	public:
 		virtual id_type getIdentifier() const = 0;
 		virtual void getShape(IShape** out) const = 0;
-		virtual ~IEntry() {}
+		~IEntry() override {}
 	}; // IEntry
 
 	class SIDX_DLL INode : public IEntry, public Tools::ISerializable
@@ -120,21 +120,21 @@ namespace SpatialIndex
 		virtual uint32_t getLevel() const = 0;
 		virtual bool isIndex() const = 0;
 		virtual bool isLeaf() const = 0;
-		virtual ~INode() {}
+		~INode() override {}
 	}; // INode
 
 	class SIDX_DLL IData : public IEntry
 	{
 	public:
 		virtual void getData(uint32_t& len, byte** data) const = 0;
-		virtual ~IData() {}
+		~IData() override {}
 	}; // IData
 
 	class SIDX_DLL IDataStream : public Tools::IObjectStream
 	{
 	public:
-		virtual IData* getNext() = 0;
-		virtual ~IDataStream() {}
+		IData* getNext() override = 0;
+		~IDataStream() override {}
 	}; // IDataStream
 
 	class SIDX_DLL ICommand
@@ -222,7 +222,7 @@ namespace SpatialIndex
 		public:
 			virtual uint64_t getHits() = 0;
 			virtual void clear() = 0;
-			virtual ~IBuffer() {}
+			~IBuffer() override {}
 		}; // IBuffer
 
 		SIDX_DLL  IStorageManager* returnMemoryStorageManager(Tools::PropertySet& in);
