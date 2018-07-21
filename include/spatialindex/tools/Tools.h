@@ -39,7 +39,7 @@
   typedef unsigned __int64 uint64_t;
 
 #else
-  #include <stdint.h>
+  #include <cstdint>
 #endif
 
 #if (defined _WIN32 || defined _WIN64 || defined WIN32 || defined WIN64) && !defined __GNUC__
@@ -56,7 +56,7 @@
   #define SIDX_DLL
 #endif
 
-#include <assert.h>
+#include <cassert>
 #include <iostream>
 #include <iomanip>
 #include <iterator>

@@ -2,7 +2,7 @@
 #define SIDX_API_TEST_H
 
 #include <spatialindex/capi/sidx_api.h>
-#include <string.h>
+#include <cstring>
 
 #include "test.h"
 

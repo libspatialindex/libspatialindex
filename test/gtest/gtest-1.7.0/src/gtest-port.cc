@@ -31,10 +31,10 @@
 
 #include "gtest/internal/gtest-port.h"
 
-#include <limits.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
+#include <climits>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
 
 #if GTEST_OS_WINDOWS_MOBILE
 # include <windows.h>  // For TerminateProcess()

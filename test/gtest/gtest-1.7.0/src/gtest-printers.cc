@@ -43,8 +43,8 @@
 // defines Foo.
 
 #include "gtest/gtest-printers.h"
-#include <ctype.h>
-#include <stdio.h>
+#include <cctype>
+#include <cstdio>
 #include <ostream>  // NOLINT
 #include <string>
 #include "gtest/internal/gtest-port.h"

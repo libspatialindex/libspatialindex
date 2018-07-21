@@ -26,7 +26,7 @@
 ******************************************************************************/
 
 #include <cstring>
-#include <stdio.h>
+#include <cstdio>
 #include <cmath>
 
 #ifndef _MSC_VER

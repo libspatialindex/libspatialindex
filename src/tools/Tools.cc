@@ -25,7 +25,7 @@
  * DEALINGS IN THE SOFTWARE.
 ******************************************************************************/
 
-#include <time.h>
+#include <ctime>
 #include <limits>
 #include <spatialindex/tools/Tools.h>
 
