@@ -731,7 +731,7 @@ void SpatialIndex::MVRTree::MVRTree::initNew(Tools::PropertySet& ps)
 	root.m_nodeMBR.m_startTime = 0.0;
 	root.m_nodeMBR.m_endTime = std::numeric_limits<double>::max();
 	writeNode(&root);
-	m_roots.push_back(RootEntry(root.m_identifier, root.m_nodeMBR.m_startTime, root.m_nodeMBR.m_endTime));
+	m_roots.emplace_back(root.m_identifier, root.m_nodeMBR.m_startTime, root.m_nodeMBR.m_endTime);
 
 	storeHeader();
 }

@@ -201,7 +201,7 @@ void ExternalSorter::sort()
 			for (uint32_t i = 0; i < (std::min)(static_cast<uint32_t>(m_runs.size()), m_u32BufferPages); ++i)
 			{
 				buckets.push_back(*it);
-				buffers.push_back(std::queue<Record*>());
+				buffers.emplace_back();
 
 				r = new Record();
 				r->loadFromFile(**it);

@@ -496,7 +496,7 @@ bool Node::insertData(
 					assert(m_pTree->m_roots[m_pTree->m_roots.size() - 1].m_id == m_identifier);
 					m_pTree->m_roots[m_pTree->m_roots.size() - 1].m_startTime = m_nodeMBR.m_startTime;
 					m_pTree->m_roots[m_pTree->m_roots.size() - 1].m_endTime = m_nodeMBR.m_endTime;
-					m_pTree->m_roots.push_back(MVRTree::RootEntry(ptrR->m_identifier, ptrR->m_nodeMBR.m_startTime, ptrR->m_nodeMBR.m_endTime));
+					m_pTree->m_roots.emplace_back(ptrR->m_identifier, ptrR->m_nodeMBR.m_startTime, ptrR->m_nodeMBR.m_endTime);
 					m_pTree->m_stats.m_treeHeight.push_back(ptrR->m_level + 1);
 					m_pTree->m_stats.m_nodesInLevel.at(n->m_level) = m_pTree->m_stats.m_nodesInLevel[n->m_level] + 2;
 					if (m_level > 0) ++(m_pTree->m_stats.m_u32DeadIndexNodes);
@@ -576,7 +576,7 @@ bool Node::insertData(
 					assert(m_pTree->m_roots[m_pTree->m_roots.size() - 1].m_id == m_identifier);
 					m_pTree->m_roots[m_pTree->m_roots.size() - 1].m_startTime = m_nodeMBR.m_startTime;
 					m_pTree->m_roots[m_pTree->m_roots.size() - 1].m_endTime = m_nodeMBR.m_endTime;
-					m_pTree->m_roots.push_back(MVRTree::RootEntry(ptrCopy->m_identifier, ptrCopy->m_nodeMBR.m_startTime, ptrCopy->m_nodeMBR.m_endTime));
+					m_pTree->m_roots.emplace_back(ptrCopy->m_identifier, ptrCopy->m_nodeMBR.m_startTime, ptrCopy->m_nodeMBR.m_endTime);
 					m_pTree->m_stats.m_treeHeight.push_back(ptrCopy->m_level + 1);
 
 					m_pTree->m_stats.m_nodesInLevel.at(ptrCopy->m_level) = m_pTree->m_stats.m_nodesInLevel[ptrCopy->m_level] + 1;
@@ -790,7 +790,7 @@ bool Node::deleteData(id_type id, double delTime, std::stack<id_type>& pathBuffe
 								*tmpR = m_nodeMBR;
 								tmpR->combineRegion(*(sibling->m_ptrMBR[cSiblingChild]));
 								double a = tmpR->getArea();
-								if (a <= m_nodeMBR.getArea() * 1.1) toCheck.push_back(DeleteDataEntry(cSiblingChild, a));
+								if (a <= m_nodeMBR.getArea() * 1.1) toCheck.emplace_back(cSiblingChild, a);
 							}
 						}
 					}
@@ -1014,7 +1014,7 @@ bool Node::deleteData(id_type id, double delTime, std::stack<id_type>& pathBuffe
 					assert(m_pTree->m_roots[m_pTree->m_roots.size() - 1].m_id == m_identifier);
 					m_pTree->m_roots[m_pTree->m_roots.size() - 1].m_startTime = m_nodeMBR.m_startTime;
 					m_pTree->m_roots[m_pTree->m_roots.size() - 1].m_endTime = m_nodeMBR.m_endTime;
-					m_pTree->m_roots.push_back(MVRTree::RootEntry(root.m_identifier, root.m_nodeMBR.m_startTime, root.m_nodeMBR.m_endTime));
+					m_pTree->m_roots.emplace_back(root.m_identifier, root.m_nodeMBR.m_startTime, root.m_nodeMBR.m_endTime);
 
 					m_pTree->m_stats.m_treeHeight.push_back(1);
 					m_pTree->m_stats.m_nodesInLevel.at(root.m_level) = m_pTree->m_stats.m_nodesInLevel[root.m_level] + 1;
