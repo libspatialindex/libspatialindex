@@ -107,7 +107,7 @@ public:
 		const INode* n = dynamic_cast<const INode*>(&entry);
 
 		// traverse only index nodes at levels 2 and higher.
-		if (n != 0 && n->getLevel() > 1)
+		if (n != nullptr && n->getLevel() > 1)
 		{
 			for (uint32_t cChild = 0; cChild < n->getChildrenCount(); cChild++)
 			{
@@ -223,7 +223,7 @@ int main(int argc, char** argv)
 
 				//tree->insertData(data.size() + 1, reinterpret_cast<const byte*>(data.c_str()), r, id);
 
-				tree->insertData(0, 0, r, id);
+				tree->insertData(0, nullptr, r, id);
 					// example of passing zero size and a null pointer as the associated data.
 			}
 			else if (op == DELETE)

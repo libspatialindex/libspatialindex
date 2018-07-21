@@ -45,21 +45,21 @@ std::string SpatialIndex::InvalidPageException::what()
 std::ostream& SpatialIndex::operator<<(std::ostream& os, const ISpatialIndex& i)
 {
 	const SpatialIndex::RTree::RTree* pRTree = dynamic_cast<const SpatialIndex::RTree::RTree*>(&i);
-	if (pRTree != 0)
+	if (pRTree != nullptr)
 	{
 		os << *pRTree;
 		return os;
 	}
 
 	const SpatialIndex::MVRTree::MVRTree* pMVRTree = dynamic_cast<const SpatialIndex::MVRTree::MVRTree*>(&i);
-	if (pMVRTree != 0)
+	if (pMVRTree != nullptr)
 	{
 		os << *pMVRTree;
 		return os;
 	}
 
 	const SpatialIndex::TPRTree::TPRTree* pTPRTree = dynamic_cast<const SpatialIndex::TPRTree::TPRTree*>(&i);
-	if (pTPRTree != 0)
+	if (pTPRTree != nullptr)
 	{
 		os << *pTPRTree;
 		return os;
@@ -72,21 +72,21 @@ std::ostream& SpatialIndex::operator<<(std::ostream& os, const ISpatialIndex& i)
 std::ostream& SpatialIndex::operator<<(std::ostream& os, const IStatistics& s)
 {
 	const SpatialIndex::RTree::Statistics* pRTreeStats = dynamic_cast<const SpatialIndex::RTree::Statistics*>(&s);
-	if (pRTreeStats != 0)
+	if (pRTreeStats != nullptr)
 	{
 		os << *pRTreeStats;
 		return os;
 	}
 
 	const SpatialIndex::MVRTree::Statistics* pMVRTreeStats = dynamic_cast<const SpatialIndex::MVRTree::Statistics*>(&s);
-	if (pMVRTreeStats != 0)
+	if (pMVRTreeStats != nullptr)
 	{
 		os << * pMVRTreeStats;
 		return os;
 	}
 
 	const SpatialIndex::TPRTree::Statistics* pTPRTreeStats = dynamic_cast<const SpatialIndex::TPRTree::Statistics*>(&s);
-	if (pTPRTreeStats != 0)
+	if (pTPRTreeStats != nullptr)
 	{
 		os << * pTPRTreeStats;
 		return os;

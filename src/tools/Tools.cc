@@ -544,13 +544,13 @@ Tools::IntervalType Tools::Interval::getIntervalType() const
 
 Tools::Random::Random()
 {
-	m_pBuffer = 0;
-	initDrand(static_cast<uint32_t>(time(0)), 0xD31A);
+	m_pBuffer = nullptr;
+	initDrand(static_cast<uint32_t>(time(nullptr)), 0xD31A);
 }
 
 Tools::Random::Random(uint32_t seed, uint16_t xsubi0)
 {
-	m_pBuffer = 0;
+	m_pBuffer = nullptr;
 	initDrand(seed, xsubi0);
 }
 
@@ -1086,7 +1086,7 @@ Tools::TemporaryFile::TemporaryFile()
 
 #else
 	char tmpName[7] = "XXXXXX";
-	if (mktemp(tmpName) == 0)
+	if (mktemp(tmpName) == nullptr)
 		throw std::ios_base::failure("Tools::TemporaryFile: Cannot create temporary file name.");
 	m_sFile = tmpName;
 #endif
@@ -1108,7 +1108,7 @@ Tools::TemporaryFile::~TemporaryFile()
 void Tools::TemporaryFile::rewindForReading()
 {
 	Tools::BufferedFileReader* br = dynamic_cast<Tools::BufferedFileReader*>(m_pFile);
-	if (br != 0)
+	if (br != nullptr)
 		m_pFile->rewind();
 	else
 	{
@@ -1120,7 +1120,7 @@ void Tools::TemporaryFile::rewindForReading()
 void Tools::TemporaryFile::rewindForWriting()
 {
 	Tools::BufferedFileWriter* bw = dynamic_cast<Tools::BufferedFileWriter*>(m_pFile);
-	if (bw != 0)
+	if (bw != nullptr)
 		m_pFile->rewind();
 	else
 	{
@@ -1142,7 +1142,7 @@ std::string Tools::TemporaryFile::getFileName() const
 uint8_t Tools::TemporaryFile::readUInt8()
 {
 	Tools::BufferedFileReader* br = dynamic_cast<Tools::BufferedFileReader*>(m_pFile);
-	if (br == 0)
+	if (br == nullptr)
 		throw std::ios_base::failure("Tools::TemporaryFile::readUInt8: file not open for reading.");
 
 	return br->readUInt8();
@@ -1151,7 +1151,7 @@ uint8_t Tools::TemporaryFile::readUInt8()
 uint16_t Tools::TemporaryFile::readUInt16()
 {
 	Tools::BufferedFileReader* br = dynamic_cast<Tools::BufferedFileReader*>(m_pFile);
-	if (br == 0)
+	if (br == nullptr)
 		throw std::ios_base::failure("Tools::TemporaryFile::readUInt16: file not open for reading.");
 
 	return br->readUInt16();
@@ -1160,7 +1160,7 @@ uint16_t Tools::TemporaryFile::readUInt16()
 uint32_t Tools::TemporaryFile::readUInt32()
 {
 	Tools::BufferedFileReader* br = dynamic_cast<Tools::BufferedFileReader*>(m_pFile);
-	if (br == 0)
+	if (br == nullptr)
 		throw std::ios_base::failure("Tools::TemporaryFile::readUInt32: file not open for reading.");
 
 	return br->readUInt32();
@@ -1169,7 +1169,7 @@ uint32_t Tools::TemporaryFile::readUInt32()
 uint64_t Tools::TemporaryFile::readUInt64()
 {
 	Tools::BufferedFileReader* br = dynamic_cast<Tools::BufferedFileReader*>(m_pFile);
-	if (br == 0)
+	if (br == nullptr)
 		throw std::ios_base::failure("Tools::TemporaryFile::readUInt64: file not open for reading.");
 
 	return br->readUInt64();
@@ -1178,7 +1178,7 @@ uint64_t Tools::TemporaryFile::readUInt64()
 float Tools::TemporaryFile::readFloat()
 {
 	Tools::BufferedFileReader* br = dynamic_cast<Tools::BufferedFileReader*>(m_pFile);
-	if (br == 0)
+	if (br == nullptr)
 		throw std::ios_base::failure("Tools::TemporaryFile::readFloat: file not open for reading.");
 
 	return br->readFloat();
@@ -1187,7 +1187,7 @@ float Tools::TemporaryFile::readFloat()
 double Tools::TemporaryFile::readDouble()
 {
 	Tools::BufferedFileReader* br = dynamic_cast<Tools::BufferedFileReader*>(m_pFile);
-	if (br == 0)
+	if (br == nullptr)
 		throw std::ios_base::failure("Tools::TemporaryFile::readDouble: file not open for reading.");
 
 	return br->readDouble();
@@ -1196,7 +1196,7 @@ double Tools::TemporaryFile::readDouble()
 std::string Tools::TemporaryFile::readString()
 {
 	Tools::BufferedFileReader* br = dynamic_cast<Tools::BufferedFileReader*>(m_pFile);
-	if (br == 0)
+	if (br == nullptr)
 		throw std::ios_base::failure("Tools::TemporaryFile::readString: file not open for reading.");
 
 	return br->readString();
@@ -1205,7 +1205,7 @@ std::string Tools::TemporaryFile::readString()
 void Tools::TemporaryFile::readBytes(uint32_t u32Len, byte** pData)
 {
 	Tools::BufferedFileReader* br = dynamic_cast<Tools::BufferedFileReader*>(m_pFile);
-	if (br == 0)
+	if (br == nullptr)
 		throw std::ios_base::failure("Tools::TemporaryFile::readString: file not open for reading.");
 
 	return br->readBytes(u32Len, pData);
@@ -1214,7 +1214,7 @@ void Tools::TemporaryFile::readBytes(uint32_t u32Len, byte** pData)
 void Tools::TemporaryFile::write(uint8_t i)
 {
 	Tools::BufferedFileWriter* bw = dynamic_cast<Tools::BufferedFileWriter*>(m_pFile);
-	if (bw == 0)
+	if (bw == nullptr)
 		throw std::ios_base::failure("Tools::TemporaryFile::write: file not open for writing.");
 
 	return bw->write(i);
@@ -1223,7 +1223,7 @@ void Tools::TemporaryFile::write(uint8_t i)
 void Tools::TemporaryFile::write(uint16_t i)
 {
 	Tools::BufferedFileWriter* bw = dynamic_cast<Tools::BufferedFileWriter*>(m_pFile);
-	if (bw == 0)
+	if (bw == nullptr)
 		throw std::ios_base::failure("Tools::TemporaryFile::write: file not open for writing.");
 
 	return bw->write(i);
@@ -1232,7 +1232,7 @@ void Tools::TemporaryFile::write(uint16_t i)
 void Tools::TemporaryFile::write(uint32_t i)
 {
 	Tools::BufferedFileWriter* bw = dynamic_cast<Tools::BufferedFileWriter*>(m_pFile);
-	if (bw == 0)
+	if (bw == nullptr)
 		throw std::ios_base::failure("Tools::TemporaryFile::write: file not open for writing.");
 
 	return bw->write(i);
@@ -1241,7 +1241,7 @@ void Tools::TemporaryFile::write(uint32_t i)
 void Tools::TemporaryFile::write(uint64_t i)
 {
 	Tools::BufferedFileWriter* bw = dynamic_cast<Tools::BufferedFileWriter*>(m_pFile);
-	if (bw == 0)
+	if (bw == nullptr)
 		throw std::ios_base::failure("Tools::TemporaryFile::write: file not open for writing.");
 
 	return bw->write(i);
@@ -1250,7 +1250,7 @@ void Tools::TemporaryFile::write(uint64_t i)
 void Tools::TemporaryFile::write(float i)
 {
 	Tools::BufferedFileWriter* bw = dynamic_cast<Tools::BufferedFileWriter*>(m_pFile);
-	if (bw == 0)
+	if (bw == nullptr)
 		throw std::ios_base::failure("Tools::TemporaryFile::write: file not open for writing.");
 
 	return bw->write(i);
@@ -1259,7 +1259,7 @@ void Tools::TemporaryFile::write(float i)
 void Tools::TemporaryFile::write(double i)
 {
 	Tools::BufferedFileWriter* bw = dynamic_cast<Tools::BufferedFileWriter*>(m_pFile);
-	if (bw == 0)
+	if (bw == nullptr)
 		throw std::ios_base::failure("Tools::TemporaryFile::write: file not open for writing.");
 
 	return bw->write(i);
@@ -1268,7 +1268,7 @@ void Tools::TemporaryFile::write(double i)
 void Tools::TemporaryFile::write(const std::string& s)
 {
 	Tools::BufferedFileWriter* bw = dynamic_cast<Tools::BufferedFileWriter*>(m_pFile);
-	if (bw == 0)
+	if (bw == nullptr)
 		throw std::ios_base::failure("Tools::TemporaryFile::write: file not open for writing.");
 
 	return bw->write(s);
@@ -1277,7 +1277,7 @@ void Tools::TemporaryFile::write(const std::string& s)
 void Tools::TemporaryFile::write(uint32_t u32Len, byte* pData)
 {
 	Tools::BufferedFileWriter* bw = dynamic_cast<Tools::BufferedFileWriter*>(m_pFile);
-	if (bw == 0)
+	if (bw == nullptr)
 		throw std::ios_base::failure("Tools::TemporaryFile::write: file not open for writing.");
 
 	return bw->write(u32Len, pData);

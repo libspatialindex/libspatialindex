@@ -129,7 +129,7 @@ int main(int argc, char** argv)
 
 				//tree->insertData(data.size() + 1, reinterpret_cast<const byte*>(data.c_str()), r, id);
 
-				tree->insertData(0, 0, r, id);
+				tree->insertData(0, nullptr, r, id);
 					// example of passing zero size and a null pointer as the associated data.
 			}
 			else if (op == DELETE)

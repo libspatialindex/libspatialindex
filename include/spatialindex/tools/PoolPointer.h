@@ -36,7 +36,7 @@ namespace Tools
 	template <class X> class PoolPointer
 	{
 	public:
-		explicit PoolPointer(X* p = 0) : m_pointer(p), m_pPool(0) { m_prev = m_next = this; }
+		explicit PoolPointer(X* p = nullptr) : m_pointer(p), m_pPool(nullptr) { m_prev = m_next = this; }
 		explicit PoolPointer(X* p, PointerPool<X>* pPool) throw() : m_pointer(p), m_pPool(pPool) { m_prev = m_next = this; }
 		~PoolPointer() { release(); }
 		PoolPointer(const PoolPointer& p) throw() { acquire(p); }
@@ -56,8 +56,8 @@ namespace Tools
 		bool unique() const throw() { return m_prev ? m_prev == this : true; }
 		void relinquish() throw()
 		{
-			m_pPool = 0;
-			m_pointer = 0;
+			m_pPool = nullptr;
+			m_pointer = nullptr;
 			release();
 		}
 
@@ -85,17 +85,17 @@ namespace Tools
 		{
 			if (unique())
 			{
-				if (m_pPool != 0) m_pPool->release(m_pointer);
+				if (m_pPool != nullptr) m_pPool->release(m_pointer);
 				else delete m_pointer;
 			}
 			else
 			{
 				m_prev->m_next = m_next;
 				m_next->m_prev = m_prev;
-				m_prev = m_next = 0;
+				m_prev = m_next = nullptr;
 			}
-			m_pointer = 0;
-			m_pPool = 0;
+			m_pointer = nullptr;
+			m_pPool = nullptr;
 		}
 	};
 }

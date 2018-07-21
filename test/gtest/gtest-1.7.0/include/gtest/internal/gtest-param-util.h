@@ -307,7 +307,7 @@ class ValuesInIteratorRangeGenerator : public ParamGeneratorInterface<T> {
     // detect that fact. The client code, on the other hand, is
     // responsible for not calling Current() on an out-of-range iterator.
     const T* Current() const override {
-      if (value_.get() == NULL)
+      if (value_.get() == nullptr)
         value_.reset(new T(*iterator_));
       return value_.get();
     }

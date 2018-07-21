@@ -35,7 +35,7 @@ DataStream::DataStream(int (*readNext)(SpatialIndex::id_type * id,
 					   uint32_t *nDimension,
 					   const uint8_t** pData,
 					   size_t *nDataLength) )
-  : m_pNext(0),
+  : m_pNext(nullptr),
     m_bDoneReading(false)
 {
 	iterfunct = readNext;
@@ -46,16 +46,16 @@ DataStream::DataStream(int (*readNext)(SpatialIndex::id_type * id,
 
 DataStream::~DataStream()
 {
-	if (m_pNext != 0) delete m_pNext;
+	if (m_pNext != nullptr) delete m_pNext;
 }
 
 bool DataStream::readData()
 {
 	SpatialIndex::id_type id;
-	double *pMin=0;
-	double *pMax=0;
+	double *pMin=nullptr;
+	double *pMax=nullptr;
 	uint32_t nDimension=0;
-	uint8_t *p_data=0;
+	uint8_t *p_data=nullptr;
 	size_t nDataLength=0;
 
 	if (m_bDoneReading == true) {
@@ -83,17 +83,17 @@ bool DataStream::readData()
 
 SpatialIndex::IData* DataStream::getNext()
 {
-	if (m_pNext == 0) return 0;
+	if (m_pNext == nullptr) return nullptr;
 
 	SpatialIndex::RTree::Data* ret = m_pNext;
-	m_pNext = 0;
+	m_pNext = nullptr;
 	readData();
 	return ret;
 }
 
 bool DataStream::hasNext()
 {
-	return (m_pNext != 0);
+	return (m_pNext != nullptr);
 }
 
 uint32_t DataStream::size()
@@ -105,9 +105,9 @@ void DataStream::rewind()
 {
 	throw Tools::NotSupportedException("Operation not supported.");
 
-	if (m_pNext != 0)
+	if (m_pNext != nullptr)
 	{
 	 delete m_pNext;
-	 m_pNext = 0;
+	 m_pNext = nullptr;
 	}
 }

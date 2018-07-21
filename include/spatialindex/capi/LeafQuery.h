@@ -55,8 +55,8 @@ private:
     SpatialIndex::id_type m_id;
     LeafQueryResult();
 public:
-    LeafQueryResult(SpatialIndex::id_type id) : bounds(0), m_id(id){}
-    ~LeafQueryResult() {if (bounds!=0) delete bounds;}
+    LeafQueryResult(SpatialIndex::id_type id) : bounds(nullptr), m_id(id){}
+    ~LeafQueryResult() {if (bounds!=nullptr) delete bounds;}
 
     /// Copy constructor.
     LeafQueryResult(LeafQueryResult const& other);

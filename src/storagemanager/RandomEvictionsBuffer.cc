@@ -62,7 +62,7 @@ IBuffer* SpatialIndex::StorageManager::createNewRandomEvictionsBuffer(IStorageMa
 
 RandomEvictionsBuffer::RandomEvictionsBuffer(IStorageManager& sm, Tools::PropertySet& ps) : Buffer(sm, ps)
 {
-	srand48(static_cast<uint32_t>(time(0)));
+	srand48(static_cast<uint32_t>(time(nullptr)));
 }
 
 RandomEvictionsBuffer::~RandomEvictionsBuffer()

@@ -47,7 +47,7 @@ using namespace SpatialIndex::RTree;
 // ExternalSorter::Record
 //
 ExternalSorter::Record::Record()
-: m_pData(0)
+: m_pData(nullptr)
 {
 }
 
@@ -110,7 +110,7 @@ void ExternalSorter::Record::loadFromFile(Tools::TemporaryFile& f)
 	}
 
 	m_len = f.readUInt32();
-	delete[] m_pData; m_pData = 0;
+	delete[] m_pData; m_pData = nullptr;
 	if (m_len > 0) f.readBytes(m_len, &m_pData);
 }
 
@@ -188,7 +188,7 @@ void ExternalSorter::sort()
 	}
 	else
 	{
-		Record* r = 0;
+		Record* r = nullptr;
 
 		while (m_runs.size() > 1)
 		{
@@ -291,12 +291,12 @@ ExternalSorter::Record* ExternalSorter::getNextRecord()
 
 	Record* ret;
 
-	if (m_sortedFile.get() == 0)
+	if (m_sortedFile.get() == nullptr)
 	{
 		if (m_stI < m_buffer.size())
 		{
 			ret = m_buffer[m_stI];
-			m_buffer[m_stI] = 0;
+			m_buffer[m_stI] = nullptr;
 			++m_stI;
 		}
 		else
@@ -344,13 +344,13 @@ void BulkLoader::bulkLoadUsingSTR(
 	while (stream.hasNext())
 	{
 		Data* d = reinterpret_cast<Data*>(stream.getNext());
-		if (d == 0)
+		if (d == nullptr)
 			throw Tools::IllegalArgumentException(
 				"bulkLoadUsingSTR: RTree bulk load expects SpatialIndex::RTree::Data entries."
 			);
 
 		es->insert(new ExternalSorter::Record(d->m_region, d->m_id, d->m_dataLength, d->m_pData, 0));
-		d->m_pData = 0;
+		d->m_pData = nullptr;
 		delete d;
 	}
 	es->sort();
@@ -410,7 +410,7 @@ void BulkLoader::createLevel(
 				Node* n = createNode(pTree, node, level);
 				node.clear();
 				pTree->writeNode(n);
-				es2->insert(new ExternalSorter::Record(n->m_nodeMBR, n->m_identifier, 0, 0, 0));
+				es2->insert(new ExternalSorter::Record(n->m_nodeMBR, n->m_identifier, 0, nullptr, 0));
 				pTree->m_rootID = n->m_identifier;
 					// special case when the root has exactly bindex entries.
 				delete n;
@@ -421,7 +421,7 @@ void BulkLoader::createLevel(
 		{
 			Node* n = createNode(pTree, node, level);
 			pTree->writeNode(n);
-			es2->insert(new ExternalSorter::Record(n->m_nodeMBR, n->m_identifier, 0, 0, 0));
+			es2->insert(new ExternalSorter::Record(n->m_nodeMBR, n->m_identifier, 0, nullptr, 0));
 			pTree->m_rootID = n->m_identifier;
 			delete n;
 		}
@@ -458,7 +458,7 @@ Node* BulkLoader::createNode(SpatialIndex::RTree::RTree* pTree, std::vector<Exte
 	for (size_t cChild = 0; cChild < e.size(); ++cChild)
 	{
 		n->insertEntry(e[cChild]->m_len, e[cChild]->m_pData, e[cChild]->m_r, e[cChild]->m_id);
-		e[cChild]->m_pData = 0;
+		e[cChild]->m_pData = nullptr;
 		delete e[cChild];
 	}
 

@@ -106,7 +106,7 @@ public:
 		const INode* n = dynamic_cast<const INode*>(&entry);
 
 		// traverse only index nodes at levels 2 and higher.
-		if (n != 0 && n->getLevel() > 1)
+		if (n != nullptr && n->getLevel() > 1)
 		{
 			for (size_t cChild = 0; cChild < n->getChildrenCount(); cChild++)
 			{

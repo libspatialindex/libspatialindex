@@ -125,7 +125,7 @@ SpatialIndex::IStorageManager* SpatialIndex::StorageManager::loadDiskStorageMana
 	return returnDiskStorageManager(ps);
 }
 
-DiskStorageManager::DiskStorageManager(Tools::PropertySet& ps) : m_pageSize(0), m_nextPage(-1), m_buffer(0)
+DiskStorageManager::DiskStorageManager(Tools::PropertySet& ps) : m_pageSize(0), m_nextPage(-1), m_buffer(nullptr)
 {
 	Tools::Variant var;
 
@@ -287,7 +287,7 @@ DiskStorageManager::~DiskStorageManager()
 	flush();
 	m_indexFile.close();
 	m_dataFile.close();
-	if (m_buffer != 0) delete[] m_buffer;
+	if (m_buffer != nullptr) delete[] m_buffer;
 
 	for (auto& v: m_pageIndex)
 		delete v.second;

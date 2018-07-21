@@ -37,12 +37,12 @@ namespace SpatialIndex
         struct SIDX_DLL CustomStorageManagerCallbacks
         {
             CustomStorageManagerCallbacks() 
-            : context(0)
-            , createCallback(0)
-            , destroyCallback(0)
-            , loadByteArrayCallback(0)
-            , storeByteArrayCallback(0)
-            , deleteByteArrayCallback(0)
+            : context(nullptr)
+            , createCallback(nullptr)
+            , destroyCallback(nullptr)
+            , loadByteArrayCallback(nullptr)
+            , storeByteArrayCallback(nullptr)
+            , deleteByteArrayCallback(nullptr)
             {}
 
             void* context;

@@ -65,7 +65,7 @@ TEST_F(SidxApiRTreeTest, intersects_nearest_id) {
 TEST_F(SidxApiRTreeTest, intersects_obj) {
   uint64_t nResults;
   IndexItemH* items;
-  char* pszRes = NULL;
+  char* pszRes = nullptr;
   uint64_t len = 0;  
   Index_Intersects_obj(idx, min, max, nDims, &items, &nResults);
   ASSERT_EQ(1, nResults);
@@ -78,7 +78,7 @@ TEST_F(SidxApiRTreeTest, intersects_obj) {
 TEST_F(SidxApiRTreeTest, intersects_nearest_obj) {
   uint64_t nResults;
   IndexItemH* items;
-  char* pszRes = NULL;
+  char* pszRes = nullptr;
   uint64_t len = 0;  
   Index_NearestNeighbors_obj(idx, min, max, nDims, &items, &nResults);
   ASSERT_EQ(1, nResults);

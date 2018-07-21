@@ -65,7 +65,7 @@ public:
 		delete pS;
 
 		// data should be an array of characters representing a Region as a string.
-		byte* pData = 0;
+		byte* pData = nullptr;
 		uint32_t cLen = 0;
 		d.getData(cLen, &pData);
 		// do something.
@@ -109,7 +109,7 @@ public:
 		const INode* n = dynamic_cast<const INode*>(&entry);
 
 		// traverse only index nodes at levels 2 and higher.
-		if (n != 0 && n->getLevel() > 1)
+		if (n != nullptr && n->getLevel() > 1)
 		{
 			for (uint32_t cChild = 0; cChild < n->getChildrenCount(); cChild++)
 			{

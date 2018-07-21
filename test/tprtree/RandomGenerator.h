@@ -78,7 +78,7 @@ public:
 		m_speedStandardDeviation(0.33), // 20 miles/hour = 0.33 miles/minute
 		m_maxX(100.0),
 		m_maxY(100.0),
-		m_updateArray(0)
+		m_updateArray(nullptr)
 	{
 		m_updateArray = new set<int>[m_simulationLength];
 	}

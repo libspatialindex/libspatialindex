@@ -38,7 +38,7 @@ private:
 public:
 
     BoundsQuery();
-    ~BoundsQuery() override { if (m_bounds != 0) delete m_bounds; }
+    ~BoundsQuery() override { if (m_bounds != nullptr) delete m_bounds; }
     void getNextEntry(  const SpatialIndex::IEntry& entry, 
                         SpatialIndex::id_type& nextEntry, 
                         bool& hasNext) override;

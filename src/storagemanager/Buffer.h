@@ -59,7 +59,7 @@ namespace SpatialIndex
 			class Entry
 			{
 			public:
-				Entry(uint32_t l, const byte* const d) : m_pData(0), m_length(l), m_bDirty(false)
+				Entry(uint32_t l, const byte* const d) : m_pData(nullptr), m_length(l), m_bDirty(false)
 				{
 					m_pData = new byte[m_length];
 					memcpy(m_pData, d, m_length);
