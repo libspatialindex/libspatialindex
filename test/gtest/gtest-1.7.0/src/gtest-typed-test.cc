@@ -59,7 +59,7 @@ const char* TypedTestCasePState::VerifyRegisteredTestNames(
 
   Message errors;
   ::std::set<std::string> tests;
-  for (const char* names = registered_tests; names != NULL;
+  for (const char* names = registered_tests; names != nullptr;
        names = SkipComma(names)) {
     const std::string name = GetPrefixUntilComma(names);
     if (tests.count(name) != 0) {

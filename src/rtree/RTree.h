@@ -5,7 +5,7 @@
  * Copyright (c) 2002, Marios Hadjieleftheriou
  *
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
@@ -30,6 +30,7 @@
 #include "Statistics.h"
 #include "Node.h"
 #include "PointerPoolNode.h"
+#include <memory>
 
 namespace SpatialIndex
 {
@@ -60,27 +61,27 @@ namespace SpatialIndex
 				// RegionPoolCapacity       VT_LONG   Default is 1000
 				// PointPoolCapacity        VT_LONG   Default is 500
 
-			virtual ~RTree();
+			~RTree() override;
 
 
 
 			//
 			// ISpatialIndex interface
 			//
-			virtual void insertData(uint32_t len, const byte* pData, const IShape& shape, id_type shapeIdentifier);
-			virtual bool deleteData(const IShape& shape, id_type id);
-			virtual void containsWhatQuery(const IShape& query, IVisitor& v);
-			virtual void intersectsWithQuery(const IShape& query, IVisitor& v);
-			virtual void pointLocationQuery(const Point& query, IVisitor& v);
-			virtual void nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v, INearestNeighborComparator&);
-			virtual void nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v);
-			virtual void selfJoinQuery(const IShape& s, IVisitor& v);
-			virtual void queryStrategy(IQueryStrategy& qs);
-			virtual void getIndexProperties(Tools::PropertySet& out) const;
-			virtual void addCommand(ICommand* pCommand, CommandType ct);
-			virtual bool isIndexValid();
-			virtual void getStatistics(IStatistics** out) const;
-			virtual void flush();
+			void insertData(uint32_t len, const byte* pData, const IShape& shape, id_type shapeIdentifier) override;
+			bool deleteData(const IShape& shape, id_type id) override;
+			void containsWhatQuery(const IShape& query, IVisitor& v) override;
+			void intersectsWithQuery(const IShape& query, IVisitor& v) override;
+			void pointLocationQuery(const Point& query, IVisitor& v) override;
+			void nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v, INearestNeighborComparator&) override;
+			void nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v) override;
+			void selfJoinQuery(const IShape& s, IVisitor& v) override;
+			void queryStrategy(IQueryStrategy& qs) override;
+			void getIndexProperties(Tools::PropertySet& out) const override;
+			void addCommand(ICommand* pCommand, CommandType ct) override;
+			bool isIndexValid() override;
+			void getStatistics(IStatistics** out) const override;
+			void flush() override;
 
 		private:
 			void initNew(Tools::PropertySet&);
@@ -99,7 +100,7 @@ namespace SpatialIndex
 			void rangeQuery(RangeQueryType type, const IShape& query, IVisitor& v);
 			void selfJoinQuery(id_type id1, id_type id2, const Region& r, IVisitor& vis);
             void visitSubTree(NodePtr subTree, IVisitor& v);
-            
+
 			IStorageManager* m_pStorageManager;
 
 			id_type m_rootID, m_headerID;
@@ -140,13 +141,9 @@ namespace SpatialIndex
 			Tools::PointerPool<Node> m_indexPool;
 			Tools::PointerPool<Node> m_leafPool;
 
-			std::vector<Tools::SmartPointer<ICommand> > m_writeNodeCommands;
-			std::vector<Tools::SmartPointer<ICommand> > m_readNodeCommands;
-			std::vector<Tools::SmartPointer<ICommand> > m_deleteNodeCommands;
-
-#ifdef HAVE_PTHREAD_H
-			pthread_mutex_t m_lock;
-#endif
+			std::vector<std::shared_ptr<ICommand> > m_writeNodeCommands;
+			std::vector<std::shared_ptr<ICommand> > m_readNodeCommands;
+			std::vector<std::shared_ptr<ICommand> > m_deleteNodeCommands;
 
 			class NNEntry
 			{
@@ -156,7 +153,7 @@ namespace SpatialIndex
 				double m_minDist;
 
 				NNEntry(id_type id, IEntry* e, double f) : m_id(id), m_pEntry(e), m_minDist(f) {}
-				~NNEntry() {}
+				~NNEntry() = default;
 
 				struct ascending : public std::binary_function<NNEntry*, NNEntry*, bool>
 				{
@@ -167,12 +164,12 @@ namespace SpatialIndex
 			class NNComparator : public INearestNeighborComparator
 			{
 			public:
-				double getMinimumDistance(const IShape& query, const IShape& entry)
+				double getMinimumDistance(const IShape& query, const IShape& entry) override
 				{
 					return query.getMinimumDistance(entry);
 				}
 
-				double getMinimumDistance(const IShape& query, const IData& data)
+				double getMinimumDistance(const IShape& query, const IData& data) override
 				{
 					IShape* pS;
 					data.getShape(&pS);

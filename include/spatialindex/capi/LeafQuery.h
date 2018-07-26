@@ -40,10 +40,10 @@ private:
 public:
 
 	LeafQuery();
-	~LeafQuery() { }
+	~LeafQuery() override = default;
 	void getNextEntry(	const SpatialIndex::IEntry& entry, 
 						SpatialIndex::id_type& nextEntry, 
-						bool& hasNext);
+						bool& hasNext) override;
 	std::vector<LeafQueryResult> const& GetResults() const {return m_results;}
 };
 
@@ -53,10 +53,10 @@ private:
     std::vector<SpatialIndex::id_type> ids;
     SpatialIndex::Region* bounds;
     SpatialIndex::id_type m_id;
-    LeafQueryResult();
 public:
-    LeafQueryResult(SpatialIndex::id_type id) : bounds(0), m_id(id){}
-    ~LeafQueryResult() {if (bounds!=0) delete bounds;}
+    LeafQueryResult() = delete;
+    LeafQueryResult(SpatialIndex::id_type id) : bounds(nullptr), m_id(id){}
+    ~LeafQueryResult() {if (bounds!=nullptr) delete bounds;}
 
     /// Copy constructor.
     LeafQueryResult(LeafQueryResult const& other);

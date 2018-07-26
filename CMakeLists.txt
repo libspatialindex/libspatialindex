@@ -75,8 +75,6 @@ check_function_exists(bcopy HAVE_BCOPY)
 
 
 INCLUDE (CheckIncludeFiles)
-check_include_files(pthread.h HAVE_PTHREAD_H)
-
 
 if (HAVE_SRAND48)
     add_definitions(-DHAVE_SRAND48=1)
@@ -176,13 +174,13 @@ else()
 
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SIDX_COMMON_CXX_FLAGS}")
     if (CMAKE_COMPILER_IS_GNUCXX AND NOT CMAKE_SYSTEM_NAME STREQUAL "CYGWIN")
-      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++98 -ansi")
+      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
     endif()
 
     set(SIDX_COMPILER_GCC 1)
 
   elseif("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang" OR "${CMAKE_CXX_COMPILER}" MATCHES "clang")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SIDX_COMMON_CXX_FLAGS}")
+    set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS} ${SIDX_COMMON_CXX_FLAGS}")
     set(SIDX_COMPILER_CLANG 1)
   endif()
 endif(WIN32)

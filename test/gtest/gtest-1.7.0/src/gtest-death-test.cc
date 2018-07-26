@@ -40,15 +40,15 @@
 #  include <crt_externs.h>
 # endif  // GTEST_OS_MAC
 
-# include <errno.h>
+# include <cerrno>
 # include <fcntl.h>
-# include <limits.h>
+# include <climits>
 
 # if GTEST_OS_LINUX
-#  include <signal.h>
+#  include <csignal>
 # endif  // GTEST_OS_LINUX
 
-# include <stdarg.h>
+# include <cstdarg>
 
 # if GTEST_OS_WINDOWS
 #  include <windows.h>
@@ -254,7 +254,7 @@ void DeathTestAbort(const std::string& message) {
   // the heap for any additional non-minuscule memory requirements.
   const InternalRunDeathTestFlag* const flag =
       GetUnitTestImpl()->internal_run_death_test_flag();
-  if (flag != NULL) {
+  if (flag != nullptr) {
     FILE* parent = posix::FDOpen(flag->write_fd(), "w");
     fputc(kDeathTestInternalError, parent);
     fprintf(parent, "%s", message.c_str());
@@ -334,7 +334,7 @@ static void FailFromInternalError(int fd) {
 // for the current test.
 DeathTest::DeathTest() {
   TestInfo* const info = GetUnitTestImpl()->current_test_info();
-  if (info == NULL) {
+  if (info == nullptr) {
     DeathTestAbort("Cannot run a death test outside of a TEST or "
                    "TEST_F construct");
   }
@@ -371,10 +371,10 @@ class DeathTestImpl : public DeathTest {
         write_fd_(-1) {}
 
   // read_fd_ is expected to be closed and cleared by a derived class.
-  ~DeathTestImpl() { GTEST_DEATH_TEST_CHECK_(read_fd_ == -1); }
+  ~DeathTestImpl() override { GTEST_DEATH_TEST_CHECK_(read_fd_ == -1); }
 
-  void Abort(AbortReason reason);
-  virtual bool Passed(bool status_ok);
+  void Abort(AbortReason reason) override;
+  bool Passed(bool status_ok) override;
 
   const char* statement() const { return statement_; }
   const RE* regex() const { return regex_; }
@@ -778,7 +778,7 @@ class ForkingDeathTest : public DeathTestImpl {
   ForkingDeathTest(const char* statement, const RE* regex);
 
   // All of these virtual functions are inherited from DeathTest.
-  virtual int Wait();
+  int Wait() override;
 
  protected:
   void set_child_pid(pid_t child_pid) { child_pid_ = child_pid; }
@@ -814,7 +814,7 @@ class NoExecDeathTest : public ForkingDeathTest {
  public:
   NoExecDeathTest(const char* a_statement, const RE* a_regex) :
       ForkingDeathTest(a_statement, a_regex) { }
-  virtual TestRole AssumeRole();
+  TestRole AssumeRole() override;
 };
 
 // The AssumeRole process for a fork-and-run death test.  It implements a
@@ -870,7 +870,7 @@ class ExecDeathTest : public ForkingDeathTest {
   ExecDeathTest(const char* a_statement, const RE* a_regex,
                 const char* file, int line) :
       ForkingDeathTest(a_statement, a_regex), file_(file), line_(line) { }
-  virtual TestRole AssumeRole();
+  TestRole AssumeRole() override;
  private:
   static ::std::vector<testing::internal::string>
   GetArgvsForDeathTestChildProcess() {
@@ -887,7 +887,7 @@ class ExecDeathTest : public ForkingDeathTest {
 class Arguments {
  public:
   Arguments() {
-    args_.push_back(NULL);
+    args_.push_back(nullptr);
   }
 
   ~Arguments() {
@@ -1054,7 +1054,7 @@ static pid_t ExecDeathTestSpawnChild(char* const* argv, int close_fd) {
     static const bool stack_grows_down = StackGrowsDown();
     const size_t stack_size = getpagesize();
     // MMAP_ANONYMOUS is not defined on Mac, so we use MAP_ANON instead.
-    void* const stack = mmap(NULL, stack_size, PROT_READ | PROT_WRITE,
+    void* const stack = mmap(nullptr, stack_size, PROT_READ | PROT_WRITE,
                              MAP_ANON | MAP_PRIVATE, -1, 0);
     GTEST_DEATH_TEST_CHECK_(stack != MAP_FAILED);
 
@@ -1086,7 +1086,7 @@ static pid_t ExecDeathTestSpawnChild(char* const* argv, int close_fd) {
 #  endif  // GTEST_OS_QNX
 #  if GTEST_OS_LINUX
   GTEST_DEATH_TEST_CHECK_SYSCALL_(
-      sigaction(SIGPROF, &saved_sigprof_action, NULL));
+      sigaction(SIGPROF, &saved_sigprof_action, nullptr));
 #  endif  // GTEST_OS_LINUX
 
   GTEST_DEATH_TEST_CHECK_(child_pid != -1);
@@ -1104,7 +1104,7 @@ DeathTest::TestRole ExecDeathTest::AssumeRole() {
   const TestInfo* const info = impl->current_test_info();
   const int death_test_index = info->result()->death_test_count();
 
-  if (flag != NULL) {
+  if (flag != nullptr) {
     set_write_fd(flag->write_fd());
     return EXECUTE_TEST;
   }
@@ -1159,7 +1159,7 @@ bool DefaultDeathTestFactory::Create(const char* statement, const RE* regex,
   const int death_test_index = impl->current_test_info()
       ->increment_death_test_count();
 
-  if (flag != NULL) {
+  if (flag != nullptr) {
     if (death_test_index > flag->index()) {
       DeathTest::set_last_death_test_message(
           "Death test count (" + StreamableToString(death_test_index)
@@ -1170,7 +1170,7 @@ bool DefaultDeathTestFactory::Create(const char* statement, const RE* regex,
 
     if (!(flag->file() == file && flag->line() == line &&
           flag->index() == death_test_index)) {
-      *test = NULL;
+      *test = nullptr;
       return true;
     }
   }
@@ -1294,7 +1294,7 @@ int GetStatusFileDescriptor(unsigned int parent_process_id,
 // initialized from the GTEST_FLAG(internal_run_death_test) flag if
 // the flag is specified; otherwise returns NULL.
 InternalRunDeathTestFlag* ParseInternalRunDeathTestFlag() {
-  if (GTEST_FLAG(internal_run_death_test) == "") return NULL;
+  if (GTEST_FLAG(internal_run_death_test) == "") return nullptr;
 
   // GTEST_HAS_DEATH_TEST implies that we have ::std::string, so we
   // can use it here.

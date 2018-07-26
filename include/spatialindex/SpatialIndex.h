@@ -53,8 +53,8 @@ namespace SpatialIndex
 	{
 	public:
 		InvalidPageException(id_type id);
-		virtual ~InvalidPageException() {}
-		virtual std::string what();
+		~InvalidPageException() override = default;
+		std::string what() override;
 
 	private:
 		std::string m_error;
@@ -75,7 +75,7 @@ namespace SpatialIndex
 		virtual void getMBR(Region& out) const = 0;
 		virtual double getArea() const = 0;
 		virtual double getMinimumDistance(const IShape& in) const = 0;
-		virtual ~IShape() {}
+		~IShape() override = default;
 	}; // IShape
 
 	class SIDX_DLL ITimeShape : public Tools::IInterval
@@ -91,7 +91,7 @@ namespace SpatialIndex
 		virtual double getAreaInTime(const Tools::IInterval& ivI) const = 0;
 		virtual double getIntersectingAreaInTime(const ITimeShape& r) const = 0;
 		virtual double getIntersectingAreaInTime(const Tools::IInterval& ivI, const ITimeShape& r) const = 0;
-		virtual ~ITimeShape() {}
+		~ITimeShape() override = default;
 	}; // ITimeShape
 
 	class SIDX_DLL IEvolvingShape
@@ -99,7 +99,7 @@ namespace SpatialIndex
 	public:
 		virtual void getVMBR(Region& out) const = 0;
 		virtual void getMBRAtTime(double t, Region& out) const = 0;
-		virtual ~IEvolvingShape() {}
+		virtual ~IEvolvingShape() = default;
 	}; // IEvolvingShape
 
 	class SIDX_DLL IEntry : public Tools::IObject
@@ -107,7 +107,7 @@ namespace SpatialIndex
 	public:
 		virtual id_type getIdentifier() const = 0;
 		virtual void getShape(IShape** out) const = 0;
-		virtual ~IEntry() {}
+		~IEntry() override = default;
 	}; // IEntry
 
 	class SIDX_DLL INode : public IEntry, public Tools::ISerializable
@@ -120,28 +120,28 @@ namespace SpatialIndex
 		virtual uint32_t getLevel() const = 0;
 		virtual bool isIndex() const = 0;
 		virtual bool isLeaf() const = 0;
-		virtual ~INode() {}
+		~INode() override = default;
 	}; // INode
 
 	class SIDX_DLL IData : public IEntry
 	{
 	public:
 		virtual void getData(uint32_t& len, byte** data) const = 0;
-		virtual ~IData() {}
+		~IData() override = default;
 	}; // IData
 
 	class SIDX_DLL IDataStream : public Tools::IObjectStream
 	{
 	public:
-		virtual IData* getNext() = 0;
-		virtual ~IDataStream() {}
+		IData* getNext() override = 0;
+		~IDataStream() override = default;
 	}; // IDataStream
 
 	class SIDX_DLL ICommand
 	{
 	public:
 		virtual void execute(const INode& in) = 0;
-		virtual ~ICommand() {}
+		virtual ~ICommand() = default;
 	}; // ICommand
 
 	class SIDX_DLL INearestNeighborComparator
@@ -149,7 +149,7 @@ namespace SpatialIndex
 	public:
 		virtual double getMinimumDistance(const IShape& query, const IShape& entry) = 0;
 		virtual double getMinimumDistance(const IShape& query, const IData& data) = 0;
-		virtual ~INearestNeighborComparator() {}
+		virtual ~INearestNeighborComparator() = default;
 	}; // INearestNeighborComparator
 
 	class SIDX_DLL IStorageManager
@@ -159,7 +159,7 @@ namespace SpatialIndex
 		virtual void storeByteArray(id_type& id, const uint32_t len, const byte* const data) = 0;
 		virtual void deleteByteArray(const id_type id) = 0;
 		virtual void flush() = 0;
-		virtual ~IStorageManager() {}
+		virtual ~IStorageManager() = default;
 	}; // IStorageManager
 
 	class SIDX_DLL IVisitor
@@ -168,14 +168,14 @@ namespace SpatialIndex
 		virtual void visitNode(const INode& in) = 0;
 		virtual void visitData(const IData& in) = 0;
 		virtual void visitData(std::vector<const IData*>& v) = 0;
-		virtual ~IVisitor() {}
+		virtual ~IVisitor() = default;
 	}; // IVisitor
 
 	class SIDX_DLL IQueryStrategy
 	{
 	public:
 		virtual void getNextEntry(const IEntry& previouslyFetched, id_type& nextEntryToFetch, bool& bFetchNextEntry) = 0;
-		virtual ~IQueryStrategy() {}
+		virtual ~IQueryStrategy() = default;
 	}; // IQueryStrategy
 
 	class SIDX_DLL IStatistics
@@ -185,7 +185,7 @@ namespace SpatialIndex
 		virtual uint64_t getWrites() const = 0;
 		virtual uint32_t getNumberOfNodes() const = 0;
 		virtual uint64_t getNumberOfData() const = 0;
-		virtual ~IStatistics() {}
+		virtual ~IStatistics() = default;
 	}; // IStatistics
 
 	class SIDX_DLL ISpatialIndex
@@ -205,7 +205,7 @@ namespace SpatialIndex
 		virtual bool isIndexValid() = 0;
 		virtual void getStatistics(IStatistics** out) const = 0;
 		virtual void flush() = 0;
-		virtual ~ISpatialIndex() {}
+		virtual ~ISpatialIndex() = default;
 
 	}; // ISpatialIndex
 
@@ -222,7 +222,7 @@ namespace SpatialIndex
 		public:
 			virtual uint64_t getHits() = 0;
 			virtual void clear() = 0;
-			virtual ~IBuffer() {}
+			~IBuffer() override = default;
 		}; // IBuffer
 
 		SIDX_DLL  IStorageManager* returnMemoryStorageManager(Tools::PropertySet& in);

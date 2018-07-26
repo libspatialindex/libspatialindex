@@ -37,21 +37,15 @@ namespace SpatialIndex
         struct SIDX_DLL CustomStorageManagerCallbacks
         {
             CustomStorageManagerCallbacks() 
-            : context(0)
-            , createCallback(0)
-            , destroyCallback(0)
-            , loadByteArrayCallback(0)
-            , storeByteArrayCallback(0)
-            , deleteByteArrayCallback(0)
-            {}
+            = default;
 
-            void* context;
-            void (*createCallback)( const void* context, int* errorCode );
-            void (*destroyCallback)( const void* context, int* errorCode );
+            void* context{nullptr};
+            void (*createCallback)( const void* context, int* errorCode ){nullptr};
+            void (*destroyCallback)( const void* context, int* errorCode ){nullptr};
 			void (*flushCallback)( const void* context, int* errorCode );
-            void (*loadByteArrayCallback)( const void* context, const id_type page, uint32_t* len, byte** data, int* errorCode );
-            void (*storeByteArrayCallback)( const void* context, id_type* page, const uint32_t len, const byte* const data, int* errorCode );
-            void (*deleteByteArrayCallback)( const void* context, const id_type page, int* errorCode );
+            void (*loadByteArrayCallback)( const void* context, const id_type page, uint32_t* len, byte** data, int* errorCode ){nullptr};
+            void (*storeByteArrayCallback)( const void* context, id_type* page, const uint32_t len, const byte* const data, int* errorCode ){nullptr};
+            void (*deleteByteArrayCallback)( const void* context, const id_type page, int* errorCode ){nullptr};
         };
 
         class SIDX_DLL CustomStorageManager : public SpatialIndex::IStorageManager
@@ -64,12 +58,12 @@ namespace SpatialIndex
 
 	        CustomStorageManager(Tools::PropertySet&);
 
-	        virtual ~CustomStorageManager();
+	        ~CustomStorageManager() override;
 
-			virtual void flush();
-	        virtual void loadByteArray(const id_type page, uint32_t& len, byte** data);
-	        virtual void storeByteArray(id_type& page, const uint32_t len, const byte* const data);
-	        virtual void deleteByteArray(const id_type page);
+			void flush() override;
+	        void loadByteArray(const id_type page, uint32_t& len, byte** data) override;
+	        void storeByteArray(id_type& page, const uint32_t len, const byte* const data) override;
+	        void deleteByteArray(const id_type page) override;
 
         private:
             CustomStorageManagerCallbacks   callbacks;

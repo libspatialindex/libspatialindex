@@ -50,7 +50,7 @@ using internal::GetUnitTestImpl;
 // in it.
 std::string TestPartResult::ExtractSummary(const char* message) {
   const char* const stack_trace = strstr(message, internal::kStackTraceMarker);
-  return stack_trace == NULL ? message :
+  return stack_trace == nullptr ? message :
       std::string(message, stack_trace);
 }
 
@@ -87,8 +87,7 @@ int TestPartResultArray::size() const {
 namespace internal {
 
 HasNewFatalFailureHelper::HasNewFatalFailureHelper()
-    : has_new_fatal_failure_(false),
-      original_reporter_(GetUnitTestImpl()->
+    : original_reporter_(GetUnitTestImpl()->
                          GetTestPartResultReporterForCurrentThread()) {
   GetUnitTestImpl()->SetTestPartResultReporterForCurrentThread(this);
 }

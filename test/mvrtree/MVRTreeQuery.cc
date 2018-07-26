@@ -45,19 +45,19 @@ using namespace std;
 class MyVisitor : public IVisitor
 {
 public:
-	size_t m_indexIO;
-	size_t m_leafIO;
+	size_t m_indexIO{0};
+	size_t m_leafIO{0};
 
 public:
-	MyVisitor() : m_indexIO(0), m_leafIO(0) {}
+    MyVisitor() = default;
 
-	void visitNode(const INode& n)
+	void visitNode(const INode& n) override
 	{
 		if (n.isLeaf()) m_leafIO++;
 		else m_indexIO++;
 	}
 
-	void visitData(const IData& d)
+	void visitData(const IData& d) override
 	{
 		//IShape* pS;
 		//d.getShape(&pS);
@@ -77,7 +77,7 @@ public:
 			// the ID of this data entry is an answer to the query. I will just print it to stdout.
 	}
 
-	void visitData(std::vector<const IData*>& v) {}
+	void visitData(std::vector<const IData*>& v) override {}
 };
 
 // example of a Strategy pattern.
@@ -88,7 +88,7 @@ private:
 	queue<id_type> ids;
 
 public:
-	void getNextEntry(const IEntry& entry, id_type& nextEntry, bool& hasNext)
+	void getNextEntry(const IEntry& entry, id_type& nextEntry, bool& hasNext) override
 	{
 		IShape* ps;
 		entry.getShape(&ps);
@@ -106,7 +106,7 @@ public:
 		const INode* n = dynamic_cast<const INode*>(&entry);
 
 		// traverse only index nodes at levels 2 and higher.
-		if (n != 0 && n->getLevel() > 1)
+		if (n != nullptr && n->getLevel() > 1)
 		{
 			for (size_t cChild = 0; cChild < n->getChildrenCount(); cChild++)
 			{
@@ -134,7 +134,7 @@ public:
 	Region m_indexedSpace;
 
 public:
-	void getNextEntry(const IEntry& entry, id_type& nextEntry, bool& hasNext)
+	void getNextEntry(const IEntry& entry, id_type& nextEntry, bool& hasNext) override
 	{
 		// the first time we are called, entry points to the root.
 

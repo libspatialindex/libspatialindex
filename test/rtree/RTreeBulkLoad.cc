@@ -39,7 +39,7 @@ using namespace SpatialIndex;
 class MyDataStream : public IDataStream
 {
 public:
-	MyDataStream(std::string inputFile) : m_pNext(0)
+	MyDataStream(std::string inputFile) : m_pNext(nullptr)
 	{
 		m_fin.open(inputFile.c_str());
 
@@ -49,37 +49,37 @@ public:
 		readNextEntry();
 	}
 
-	virtual ~MyDataStream()
+	~MyDataStream() override
 	{
-		if (m_pNext != 0) delete m_pNext;
+		if (m_pNext != nullptr) delete m_pNext;
 	}
 
-	virtual IData* getNext()
+	IData* getNext() override
 	{
-		if (m_pNext == 0) return 0;
+		if (m_pNext == nullptr) return nullptr;
 
 		RTree::Data* ret = m_pNext;
-		m_pNext = 0;
+		m_pNext = nullptr;
 		readNextEntry();
 		return ret;
 	}
 
-	virtual bool hasNext()
+	bool hasNext() override
 	{
-		return (m_pNext != 0);
+		return (m_pNext != nullptr);
 	}
 
-	virtual uint32_t size()
+	uint32_t size() override
 	{
 		throw Tools::NotSupportedException("Operation not supported.");
 	}
 
-	virtual void rewind()
+	void rewind() override
 	{
-		if (m_pNext != 0)
+		if (m_pNext != nullptr)
 		{
 			delete m_pNext;
-			m_pNext = 0;
+			m_pNext = nullptr;
 		}
 
 		m_fin.seekg(0, std::ios::beg);

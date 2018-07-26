@@ -5,7 +5,7 @@
  * Copyright (c) 2002, Marios Hadjieleftheriou
  *
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
@@ -27,6 +27,8 @@
 
 #pragma once
 
+#include <memory>
+
 namespace SpatialIndex
 {
 	namespace RTree
@@ -40,7 +42,7 @@ namespace SpatialIndex
 				Record();
 				Record(const Region& r, id_type id, uint32_t len, byte* pData, uint32_t s);
 				~Record();
-				
+
 				bool operator<(const Record& r) const;
 
 				void storeToFile(Tools::TemporaryFile& f);
@@ -59,7 +61,7 @@ namespace SpatialIndex
 				Region m_r;
 				id_type m_id;
 				uint32_t m_len;
-				byte* m_pData;
+				byte* m_pData{nullptr};
 				uint32_t m_s;
 			};
 
@@ -95,8 +97,8 @@ namespace SpatialIndex
 			bool m_bInsertionPhase;
 			uint32_t m_u32PageSize;
 			uint32_t m_u32BufferPages;
-			Tools::SmartPointer<Tools::TemporaryFile> m_sortedFile;
-			std::list<Tools::SmartPointer<Tools::TemporaryFile> > m_runs;
+            std::shared_ptr<Tools::TemporaryFile> m_sortedFile;
+			std::list<std::shared_ptr<Tools::TemporaryFile> > m_runs;
 			std::vector<Record*> m_buffer;
 			uint64_t m_u64TotalEntries;
 			uint32_t m_stI;
@@ -117,12 +119,12 @@ namespace SpatialIndex
 		protected:
 			void createLevel(
 				RTree* pTree,
-				Tools::SmartPointer<ExternalSorter> es,
+				std::shared_ptr<ExternalSorter> es,
 				uint32_t dimension,
 				uint32_t indexSize,
 				uint32_t leafSize,
 				uint32_t level,
-				Tools::SmartPointer<ExternalSorter> es2,
+				std::shared_ptr<ExternalSorter> es2,
 				uint32_t pageSize,
 				uint32_t numberOfPages
 			);

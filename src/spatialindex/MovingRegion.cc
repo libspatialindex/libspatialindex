@@ -39,7 +39,7 @@
 using namespace SpatialIndex;
 
 MovingRegion::MovingRegion()
-	: TimeRegion(), m_pVLow(0), m_pVHigh(0)
+    : TimeRegion()
 {
 }
 
@@ -108,8 +108,8 @@ MovingRegion::MovingRegion(const MovingPoint& low, const MovingPoint& high)
 	m_startTime = low.m_startTime;
 	m_endTime = high.m_endTime;;
 	m_dimension = low.m_dimension;
-	m_pLow = 0; m_pHigh = 0;
-	m_pVLow = 0; m_pVHigh = 0;
+	m_pLow = nullptr; m_pHigh = nullptr;
+	m_pVLow = nullptr; m_pVHigh = nullptr;
 
 	if (m_endTime <= m_startTime) throw Tools::IllegalArgumentException("MovingRegion: Cannot support degenerate time intervals.");
 
@@ -142,8 +142,8 @@ MovingRegion::MovingRegion(const MovingRegion& r)
 {
 	m_startTime = r.m_startTime;
 	m_endTime = r.m_endTime;
-	m_pLow = 0; m_pHigh = 0;
-	m_pVLow = 0; m_pVHigh = 0;
+	m_pLow = nullptr; m_pHigh = nullptr;
+	m_pVLow = nullptr; m_pVHigh = nullptr;
 
 	m_dimension = r.m_dimension;
 
@@ -177,8 +177,8 @@ void MovingRegion::initialize(
 	m_startTime = tStart;
 	m_endTime = tEnd;
 	m_dimension = dimension;
-	m_pLow = 0; m_pHigh = 0;
-	m_pVLow = 0; m_pVHigh = 0;
+	m_pLow = nullptr; m_pHigh = nullptr;
+	m_pVLow = nullptr; m_pVHigh = nullptr;
 
 	if (m_endTime <= m_startTime) throw Tools::IllegalArgumentException("MovingRegion: Cannot support degenerate time intervals.");
 
@@ -1162,7 +1162,7 @@ double MovingRegion::getIntersectingAreaInTime(const ITimeShape& r) const
 double MovingRegion::getIntersectingAreaInTime(const IInterval&, const ITimeShape& in) const
 {
 	const MovingRegion* pr = dynamic_cast<const MovingRegion*>(&in);
-	if (pr != 0) return getIntersectingAreaInTime(*pr);
+	if (pr != nullptr) return getIntersectingAreaInTime(*pr);
 
 	throw Tools::IllegalStateException("getIntersectingAreaInTime: Not implemented yet!");
 }
@@ -1190,8 +1190,8 @@ void MovingRegion::makeDimension(uint32_t dimension)
 		delete[] m_pHigh;
 		delete[] m_pVLow;
 		delete[] m_pVHigh;
-		m_pLow = 0; m_pHigh = 0;
-		m_pVLow = 0; m_pVHigh = 0;
+		m_pLow = nullptr; m_pHigh = nullptr;
+		m_pVLow = nullptr; m_pVHigh = nullptr;
 
 		m_dimension = dimension;
 		m_pLow = new double[m_dimension];

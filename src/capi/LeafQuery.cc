@@ -29,9 +29,7 @@
 #include <spatialindex/capi/sidx_impl.h>
 
 LeafQuery::LeafQuery() 
-{
-
-}
+= default;
 
 LeafQueryResult get_results(const SpatialIndex::INode* n)
 {
@@ -59,7 +57,7 @@ void LeafQuery::getNextEntry(	const SpatialIndex::IEntry& entry,
 
 	const SpatialIndex::INode* n = dynamic_cast<const SpatialIndex::INode*>(&entry);
 
-	if (n != 0)
+	if (n != nullptr)
 	{
 		// traverse only index nodes at levels 2 and higher.
 		if (n->getLevel() > 0)

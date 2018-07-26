@@ -144,11 +144,11 @@ Tools::PropertySet* GetDefaults()
 
     // Custom storage manager properties
     var.m_varType = Tools::VT_ULONG;
-	var.m_val.pcVal = 0;
+	var.m_val.pcVal = nullptr;
 	ps->setProperty("CustomStorageCallbacksSize", var);
 
     var.m_varType = Tools::VT_PVOID;
-	var.m_val.pcVal = 0;
+	var.m_val.pcVal = nullptr;
 	ps->setProperty("CustomStorageCallbacks", var);
 
     return ps;

@@ -97,7 +97,7 @@ void Node::loadFromByteArray(const byte* ptr)
 		}
 		else
 		{
-			m_pData[u32Child] = 0;
+			m_pData[u32Child] = nullptr;
 		}
 
 		//m_nodeMBR.combineRegion(*(m_ptrMBR[u32Child]));
@@ -196,10 +196,10 @@ void Node::getChildShape(uint32_t index, IShape** out) const
 void Node::getChildData(uint32_t index, uint32_t& length, byte** data) const
 {
 	if (index >= m_children) throw Tools::IndexOutOfBoundsException(index);
-	if (m_pData[index] == NULL)
+	if (m_pData[index] == nullptr)
 	{
 		length = 0;
-		data = NULL;
+		data = nullptr;
 	}
 	else
 	{
@@ -227,19 +227,8 @@ bool Node::isIndex() const
 // Internal
 //
 
-Node::Node() :
-	m_pTree(0),
-	m_level(0),
-	m_identifier(-1),
-	m_children(0),
-	m_capacity(0),
-	m_pData(0),
-	m_ptrMBR(0),
-	m_pIdentifier(0),
-	m_pDataLength(0),
-	m_totalDataLength(0)
-{
-}
+Node::Node()
+= default;
 
 Node::Node(SpatialIndex::RTree::RTree* pTree, id_type id, uint32_t level, uint32_t capacity) :
 	m_pTree(pTree),
@@ -247,10 +236,10 @@ Node::Node(SpatialIndex::RTree::RTree* pTree, id_type id, uint32_t level, uint32
 	m_identifier(id),
 	m_children(0),
 	m_capacity(capacity),
-	m_pData(0),
-	m_ptrMBR(0),
-	m_pIdentifier(0),
-	m_pDataLength(0),
+	m_pData(nullptr),
+	m_ptrMBR(nullptr),
+	m_pIdentifier(nullptr),
+	m_pDataLength(nullptr),
 	m_totalDataLength(0)
 {
 	m_nodeMBR.makeInfinite(m_pTree->m_dimension);
@@ -274,11 +263,11 @@ Node::Node(SpatialIndex::RTree::RTree* pTree, id_type id, uint32_t level, uint32
 
 Node::~Node()
 {
-	if (m_pData != 0)
+	if (m_pData != nullptr)
 	{
 		for (uint32_t u32Child = 0; u32Child < m_children; ++u32Child)
 		{
-			if (m_pData[u32Child] != 0) delete[] m_pData[u32Child];
+			if (m_pData[u32Child] != nullptr) delete[] m_pData[u32Child];
 		}
 
 		delete[] m_pData;
@@ -318,7 +307,7 @@ void Node::deleteEntry(uint32_t index)
 	RegionPtr ptrR = m_ptrMBR[index];
 
 	m_totalDataLength -= m_pDataLength[index];
-	if (m_pData[index] != 0) delete[] m_pData[index];
+	if (m_pData[index] != nullptr) delete[] m_pData[index];
 
 	if (m_children > 1 && index != m_children - 1)
 	{
@@ -385,14 +374,14 @@ bool Node::insertData(uint32_t dataLength, byte* pData, Region& mbr, id_type id,
 		uint32_t lReinsert = static_cast<uint32_t>(vReinsert.size());
 		uint32_t lKeep = static_cast<uint32_t>(vKeep.size());
 
-		byte** reinsertdata = 0;
-		RegionPtr* reinsertmbr = 0;
-		id_type* reinsertid = 0;
-		uint32_t* reinsertlen = 0;
-		byte** keepdata = 0;
-		RegionPtr* keepmbr = 0;
-		id_type* keepid = 0;
-		uint32_t* keeplen = 0;
+		byte** reinsertdata = nullptr;
+		RegionPtr* reinsertmbr = nullptr;
+		id_type* reinsertid = nullptr;
+		uint32_t* reinsertlen = nullptr;
+		byte** keepdata = nullptr;
+		RegionPtr* keepmbr = nullptr;
+		id_type* keepid = nullptr;
+		uint32_t* keeplen = nullptr;
 
 		try
 		{
@@ -504,7 +493,7 @@ bool Node::insertData(uint32_t dataLength, byte* pData, Region& mbr, id_type id,
 			m_pTree->writeNode(nn.get());
 
 			NodePtr ptrR = m_pTree->m_indexPool.acquire();
-			if (ptrR.get() == 0)
+			if (ptrR.get() == nullptr)
 			{
 				ptrR = NodePtr(new Index(m_pTree, m_pTree->m_rootID, m_level + 1), &(m_pTree->m_indexPool));
 			}
@@ -516,8 +505,8 @@ bool Node::insertData(uint32_t dataLength, byte* pData, Region& mbr, id_type id,
 				ptrR->m_nodeMBR = m_pTree->m_infiniteRegion;
 			}
 
-			ptrR->insertEntry(0, 0, n->m_nodeMBR, n->m_identifier);
-			ptrR->insertEntry(0, 0, nn->m_nodeMBR, nn->m_identifier);
+			ptrR->insertEntry(0, nullptr, n->m_nodeMBR, n->m_identifier);
+			ptrR->insertEntry(0, nullptr, nn->m_nodeMBR, nn->m_identifier);
 
 			m_pTree->writeNode(ptrR.get());
 
@@ -766,8 +755,8 @@ void Node::rtreeSplit(uint32_t dataLength, byte* pData, Region& mbr, id_type id,
 
 void Node::rstarSplit(uint32_t dataLength, byte* pData, Region& mbr, id_type id, std::vector<uint32_t>& group1, std::vector<uint32_t>& group2)
 {
-	RstarSplitEntry** dataLow = 0;
-	RstarSplitEntry** dataHigh = 0;
+	RstarSplitEntry** dataLow = nullptr;
+	RstarSplitEntry** dataHigh = nullptr;
 
 	try
 	{

@@ -40,7 +40,7 @@
 #include "gtest/internal/gtest-port.h"
 
 #if GTEST_OS_LINUX
-# include <stdlib.h>
+# include <cstdlib>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
@@ -50,9 +50,9 @@
 # include <stdexcept>
 #endif
 
-#include <ctype.h>
-#include <float.h>
-#include <string.h>
+#include <cctype>
+#include <cfloat>
+#include <cstring>
 #include <iomanip>
 #include <limits>
 #include <set>
@@ -433,14 +433,14 @@ GTEST_API_ TypeId GetTestTypeId();
 // of a Test object.
 class TestFactoryBase {
  public:
-  virtual ~TestFactoryBase() {}
+  virtual ~TestFactoryBase() = default;
 
   // Creates a test instance to run. The instance is both created and destroyed
   // within TestInfoImpl::Run()
   virtual Test* CreateTest() = 0;
 
  protected:
-  TestFactoryBase() {}
+  TestFactoryBase() = default;
 
  private:
   GTEST_DISALLOW_COPY_AND_ASSIGN_(TestFactoryBase);
@@ -451,7 +451,7 @@ class TestFactoryBase {
 template <class TestClass>
 class TestFactoryImpl : public TestFactoryBase {
  public:
-  virtual Test* CreateTest() { return new TestClass; }
+  Test* CreateTest() override { return new TestClass; }
 };
 
 #if GTEST_OS_WINDOWS
@@ -508,7 +508,7 @@ GTEST_API_ bool SkipPrefix(const char* prefix, const char** pstr);
 // State of the definition of a type-parameterized test case.
 class GTEST_API_ TypedTestCasePState {
  public:
-  TypedTestCasePState() : registered_(false) {}
+  TypedTestCasePState() = default;
 
   // Adds the given test name to defined_test_names_ and return true
   // if the test case hasn't been registered; otherwise aborts the
@@ -533,7 +533,7 @@ class GTEST_API_ TypedTestCasePState {
       const char* file, int line, const char* registered_tests);
 
  private:
-  bool registered_;
+  bool registered_{false};
   ::std::set<const char*> defined_test_names_;
 };
 
@@ -541,8 +541,8 @@ class GTEST_API_ TypedTestCasePState {
 // returns NULL if no comma is found in 'str'.
 inline const char* SkipComma(const char* str) {
   const char* comma = strchr(str, ',');
-  if (comma == NULL) {
-    return NULL;
+  if (comma == nullptr) {
+    return nullptr;
   }
   while (IsSpace(*(++comma))) {}
   return comma;
@@ -552,7 +552,7 @@ inline const char* SkipComma(const char* str) {
 // the entire string if it contains no comma.
 inline std::string GetPrefixUntilComma(const char* str) {
   const char* comma = strchr(str, ',');
-  return comma == NULL ? str : std::string(str, comma);
+  return comma == nullptr ? str : std::string(str, comma);
 }
 
 // TypeParameterizedTest<Fixture, TestSel, Types>::Register()

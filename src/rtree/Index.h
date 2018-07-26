@@ -34,15 +34,15 @@ namespace SpatialIndex
 		class Index : public Node
 		{
 		public:
-			virtual ~Index();
+			~Index() override;
 
 		protected:
 			Index(RTree* pTree, id_type id, uint32_t level);
 
-			virtual NodePtr chooseSubtree(const Region& mbr, uint32_t level, std::stack<id_type>& pathBuffer);
-			virtual NodePtr findLeaf(const Region& mbr, id_type id, std::stack<id_type>& pathBuffer);
+			NodePtr chooseSubtree(const Region& mbr, uint32_t level, std::stack<id_type>& pathBuffer) override;
+			NodePtr findLeaf(const Region& mbr, id_type id, std::stack<id_type>& pathBuffer) override;
 
-			virtual void split(uint32_t dataLength, byte* pData, Region& mbr, id_type id, NodePtr& left, NodePtr& right);
+			void split(uint32_t dataLength, byte* pData, Region& mbr, id_type id, NodePtr& left, NodePtr& right) override;
 
 			uint32_t findLeastEnlargement(const Region&) const;
 			uint32_t findLeastOverlap(const Region&) const;

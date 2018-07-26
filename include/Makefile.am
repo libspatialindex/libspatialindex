@@ -29,5 +29,4 @@ nobase_spatialindex_HEADERS =			spatialindex/SpatialIndex.h \
 								spatialindex/tools/PointerPool.h \
 								spatialindex/tools/PoolPointer.h \
 								spatialindex/tools/rand48.h \
-								spatialindex/tools/SmartPointer.h \
 								spatialindex/tools/Tools.h

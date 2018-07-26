@@ -34,9 +34,7 @@
 using namespace SpatialIndex;
 
 Point::Point()
-	: m_dimension(0), m_pCoords(0)
-{
-}
+= default;
 
 Point::Point(const double* pCoords, uint32_t dimension)
 	: m_dimension(dimension)
@@ -134,7 +132,7 @@ void Point::storeToByteArray(byte** data, uint32_t& len)
 bool Point::intersectsShape(const IShape& s) const
 {
 	const Region* pr = dynamic_cast<const Region*>(&s);
-	if (pr != 0)
+	if (pr != nullptr)
 	{
 		return pr->containsPoint(*this);
 	}
@@ -152,14 +150,14 @@ bool Point::containsShape(const IShape&) const
 bool Point::touchesShape(const IShape& s) const
 {
 	const Point* ppt = dynamic_cast<const Point*>(&s);
-	if (ppt != 0)
+	if (ppt != nullptr)
 	{
 		if (*this == *ppt) return true;
 		return false;
 	}
 
 	const Region* pr = dynamic_cast<const Region*>(&s);
-	if (pr != 0)
+	if (pr != nullptr)
 	{
 		return pr->touchesPoint(*this);
 	}
@@ -192,13 +190,13 @@ double Point::getArea() const
 double Point::getMinimumDistance(const IShape& s) const
 {
 	const Point* ppt = dynamic_cast<const Point*>(&s);
-	if (ppt != 0)
+	if (ppt != nullptr)
 	{
 		return getMinimumDistance(*ppt);
 	}
 
 	const Region* pr = dynamic_cast<const Region*>(&s);
-	if (pr != 0)
+	if (pr != nullptr)
 	{
 		return pr->getMinimumDistance(*this);
 	}
@@ -250,7 +248,7 @@ void Point::makeDimension(uint32_t dimension)
 
 		// remember that this is not a constructor. The object will be destructed normally if
 		// something goes wrong (bad_alloc), so we must take care not to leave the object at an intermediate state.
-		m_pCoords = 0;
+		m_pCoords = nullptr;
 
 		m_dimension = dimension;
 		m_pCoords = new double[m_dimension];

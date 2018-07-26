@@ -45,21 +45,21 @@ namespace SpatialIndex
 				// Capacity		VT_ULONG	Buffer maximum capacity.
 				// WriteThrough	VT_BOOL	Enable or disable write through policy.
 
-			virtual ~Buffer();
+			~Buffer() override;
 
-			virtual void flush();
-			virtual void loadByteArray(const id_type page, uint32_t& len, byte** data);
-			virtual void storeByteArray(id_type& page, const uint32_t len, const byte* const data);
-			virtual void deleteByteArray(const id_type page);
+			void flush() override;
+			void loadByteArray(const id_type page, uint32_t& len, byte** data) override;
+			void storeByteArray(id_type& page, const uint32_t len, const byte* const data) override;
+			void deleteByteArray(const id_type page) override;
 
-			virtual void clear();
-			virtual uint64_t getHits();
+			void clear() override;
+			uint64_t getHits() override;
 
 		protected:
 			class Entry
 			{
 			public:
-				Entry(uint32_t l, const byte* const d) : m_pData(0), m_length(l), m_bDirty(false)
+				Entry(uint32_t l, const byte* const d) : m_pData(nullptr), m_length(l), m_bDirty(false)
 				{
 					m_pData = new byte[m_length];
 					memcpy(m_pData, d, m_length);
