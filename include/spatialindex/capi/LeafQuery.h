@@ -39,8 +39,7 @@ private:
 	std::vector<LeafQueryResult> m_results;
 public:
 
-	LeafQuery();
-	~LeafQuery() override = default;
+    LeafQuery() = default;
 	void getNextEntry(	const SpatialIndex::IEntry& entry, 
 						SpatialIndex::id_type& nextEntry, 
 						bool& hasNext) override;
@@ -51,12 +50,11 @@ class SIDX_DLL LeafQueryResult
 {
 private:
     std::vector<SpatialIndex::id_type> ids;
-    SpatialIndex::Region* bounds;
+    std::unique_ptr< SpatialIndex::Region > bounds;
     SpatialIndex::id_type m_id;
 public:
     LeafQueryResult() = delete;
-    LeafQueryResult(SpatialIndex::id_type id) : bounds(nullptr), m_id(id){}
-    ~LeafQueryResult() {if (bounds!=nullptr) delete bounds;}
+    LeafQueryResult(SpatialIndex::id_type id) : m_id(id){}
 
     /// Copy constructor.
     LeafQueryResult(LeafQueryResult const& other);
