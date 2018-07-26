@@ -35,18 +35,11 @@ DataStream::DataStream(int (*readNext)(SpatialIndex::id_type * id,
 					   uint32_t *nDimension,
 					   const uint8_t** pData,
 					   size_t *nDataLength) )
-  : m_pNext(nullptr),
-    m_bDoneReading(false)
 {
 	iterfunct = readNext;
 
 	// Read the first one.
 	readData();
-}
-
-DataStream::~DataStream()
-{
-	if (m_pNext != nullptr) delete m_pNext;
 }
 
 bool DataStream::readData()
@@ -58,7 +51,7 @@ bool DataStream::readData()
 	uint8_t *p_data=nullptr;
 	size_t nDataLength=0;
 
-	if (m_bDoneReading == true) {
+	if (m_bDoneReading) {
 		return false;
 	}
 
@@ -75,7 +68,7 @@ bool DataStream::readData()
 	SpatialIndex::Region r = SpatialIndex::Region(pMin, pMax, nDimension);
 
 	// Data gets copied here anyway. We should fix this part of SpatialIndex::RTree::Data's constructor
-	m_pNext = new SpatialIndex::RTree::Data(nDataLength, p_data, r, id);
+	m_pNext.reset( new SpatialIndex::RTree::Data(nDataLength, p_data, r, id) );
 
 	return true;
 }
@@ -83,17 +76,16 @@ bool DataStream::readData()
 
 SpatialIndex::IData* DataStream::getNext()
 {
-	if (m_pNext == nullptr) return nullptr;
+	if (!m_pNext) return nullptr;
 
-	SpatialIndex::RTree::Data* ret = m_pNext;
-	m_pNext = nullptr;
+	std::unique_ptr< SpatialIndex::RTree::Data > ret = std::move( m_pNext );
 	readData();
-	return ret;
+	return ret.release();
 }
 
 bool DataStream::hasNext()
 {
-	return (m_pNext != nullptr);
+	return (static_cast< bool >(m_pNext));
 }
 
 uint32_t DataStream::size()
@@ -105,9 +97,5 @@ void DataStream::rewind()
 {
 	throw Tools::NotSupportedException("Operation not supported.");
 
-	if (m_pNext != nullptr)
-	{
-	 delete m_pNext;
-	 m_pNext = nullptr;
-	}
+	m_pNext.reset();
 }

@@ -34,7 +34,6 @@ class SIDX_DLL DataStream : public SpatialIndex::IDataStream
 {
 public:
     DataStream(int (*readNext)(SpatialIndex::id_type* id, double **pMin, double **pMax, uint32_t *nDimension, const uint8_t **pData, size_t *nDataLength));
-    ~DataStream() override;
 
     SpatialIndex::IData* getNext() override;
     bool hasNext() override;
@@ -43,14 +42,14 @@ public:
     void rewind() override;
 
 protected:
-    SpatialIndex::RTree::Data* m_pNext;
+    std::unique_ptr< SpatialIndex::RTree::Data > m_pNext;
     SpatialIndex::id_type m_id;
 
 private:
     int (*iterfunct)(SpatialIndex::id_type *id, double **pMin, double **pMax, uint32_t *nDimension, const uint8_t **pData, size_t *nDataLength);
 
     bool readData();
-    bool m_bDoneReading;
+    bool m_bDoneReading { false };
 
 };
 
