@@ -28,9 +28,6 @@
 
 #include <spatialindex/capi/sidx_impl.h>
 
-LeafQuery::LeafQuery() 
-= default;
-
 LeafQueryResult get_results(const SpatialIndex::INode* n)
 {
 	LeafQueryResult result (n->getIdentifier());
@@ -98,12 +95,12 @@ void LeafQueryResult::SetIDs(std::vector<SpatialIndex::id_type>& v)
 }
 const SpatialIndex::Region*  LeafQueryResult::GetBounds() const
 {
-    return bounds;
+    return bounds.get();
 }
 
 void LeafQueryResult::SetBounds(const SpatialIndex::Region*  b) 
 {
-    bounds = new SpatialIndex::Region(*b);
+    bounds.reset( new SpatialIndex::Region(*b) );
 }
 
 LeafQueryResult::LeafQueryResult(LeafQueryResult const& other)
@@ -112,7 +109,7 @@ LeafQueryResult::LeafQueryResult(LeafQueryResult const& other)
     std::copy(other.ids.begin(), other.ids.end(), ids.begin());
     m_id = other.m_id;
     
-    bounds = other.bounds->clone();
+    bounds.reset( other.bounds->clone() );
 }
 
 LeafQueryResult& LeafQueryResult::operator=(LeafQueryResult const& rhs)
@@ -122,7 +119,7 @@ LeafQueryResult& LeafQueryResult::operator=(LeafQueryResult const& rhs)
         ids.resize(rhs.ids.size());
         std::copy(rhs.ids.begin(), rhs.ids.end(), ids.begin());
         m_id = rhs.m_id;
-        bounds = rhs.bounds->clone();
+        bounds.reset( rhs.bounds->clone() );
     }
     return *this;
 }

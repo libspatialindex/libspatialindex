@@ -28,9 +28,9 @@
 
 #include <spatialindex/capi/sidx_impl.h>
 
-BoundsQuery::BoundsQuery() 
+BoundsQuery::BoundsQuery()
+    : m_bounds{ new SpatialIndex::Region }
 {
-	m_bounds = new SpatialIndex::Region;
 }
 
 void BoundsQuery::getNextEntry( const SpatialIndex::IEntry& entry, 

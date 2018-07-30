@@ -29,20 +29,20 @@
 #pragma once
 
 #include "sidx_export.h"
+#include <memory>
 
 class SIDX_DLL BoundsQuery : public SpatialIndex::IQueryStrategy
 {
 private:
-    SpatialIndex::Region* m_bounds;
+    std::unique_ptr< SpatialIndex::Region > m_bounds;
     
 public:
 
     BoundsQuery();
-    ~BoundsQuery() override { if (m_bounds != nullptr) delete m_bounds; }
     void getNextEntry(  const SpatialIndex::IEntry& entry, 
                         SpatialIndex::id_type& nextEntry, 
                         bool& hasNext) override;
     
-    SpatialIndex::Region* GetBounds() const { return m_bounds; }
+    SpatialIndex::Region* GetBounds() const { return m_bounds.get(); }
 };
 
