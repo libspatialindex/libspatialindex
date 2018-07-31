@@ -28,8 +28,9 @@
 
 #include <spatialindex/capi/sidx_impl.h>
 
-ObjVisitor::ObjVisitor()
-= default;
+ObjVisitor::ObjVisitor(): nResults(0)
+{
+}
 
 ObjVisitor::~ObjVisitor()
 {

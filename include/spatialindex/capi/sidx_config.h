@@ -54,7 +54,7 @@
 
 #else
 
-   #include <cstdint>
+   #include <stdint.h>
    #define SIDX_THREAD  __thread
    #define STRDUP strdup
 #endif

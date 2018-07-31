@@ -32,7 +32,7 @@ SpatialIndex::ISpatialIndex* Index::CreateIndex()
 {
 	using namespace SpatialIndex;
 
-	ISpatialIndex* index = nullptr;
+	ISpatialIndex* index = 0;
 
 	Tools::Variant var;
 
@@ -192,9 +192,9 @@ Index::Index(	const Tools::PropertySet& poProperties,
 SpatialIndex::StorageManager::IBuffer* Index::CreateIndexBuffer(SpatialIndex::IStorageManager& storage)
 {
 	using namespace SpatialIndex::StorageManager;
-	IBuffer* buffer = nullptr;
+	IBuffer* buffer = 0;
 	try {
-		if ( m_storage == nullptr )
+		if ( m_storage == 0 )
 			throw std::runtime_error("Storage was invalid to create index buffer");
 		buffer = returnRandomEvictionsBuffer(storage, m_properties);
 	} catch (Tools::Exception& e) {
@@ -210,7 +210,7 @@ SpatialIndex::IStorageManager* Index::CreateStorage()
 {
 	using namespace SpatialIndex::StorageManager;
 
-	SpatialIndex::IStorageManager* storage = nullptr;
+	SpatialIndex::IStorageManager* storage = 0;
 	std::string filename("");
 
 	Tools::Variant var;
@@ -280,9 +280,9 @@ void Index::Initialize()
 void Index::Setup()
 
 {
-	m_buffer = nullptr;
-	m_storage = nullptr;
-	m_rtree = nullptr;
+	m_buffer = 0;
+	m_storage = 0;
+	m_rtree = 0;
 }
 
 RTIndexType Index::GetIndexType()

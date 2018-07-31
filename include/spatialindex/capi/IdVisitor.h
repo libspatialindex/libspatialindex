@@ -34,17 +34,17 @@ class SIDX_DLL IdVisitor : public SpatialIndex::IVisitor
 {
 private:
     std::vector<uint64_t> m_vector;
-    uint64_t nResults{0};
+    uint64_t nResults;
 
 public:
 
     IdVisitor();
-    ~IdVisitor() override;
+    ~IdVisitor();
 
     uint64_t GetResultCount() const { return nResults; }
     std::vector<uint64_t>& GetResults()  { return m_vector; }
     
-    void visitNode(const SpatialIndex::INode& n) override;
-    void visitData(const SpatialIndex::IData& d) override;
-    void visitData(std::vector<const SpatialIndex::IData*>& v) override;
+    void visitNode(const SpatialIndex::INode& n);
+    void visitData(const SpatialIndex::IData& d);
+    void visitData(std::vector<const SpatialIndex::IData*>& v);
 };
