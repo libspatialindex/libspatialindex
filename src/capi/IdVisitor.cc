@@ -28,11 +28,14 @@
 
 #include <spatialindex/capi/sidx_impl.h>
 
-IdVisitor::IdVisitor()
-= default;
+IdVisitor::IdVisitor(): nResults(0)
+{
+}
 
 IdVisitor::~IdVisitor()
-= default;
+{
+
+}
 
 void IdVisitor::visitNode(const SpatialIndex::INode& )
 {

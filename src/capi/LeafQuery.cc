@@ -28,6 +28,11 @@
 
 #include <spatialindex/capi/sidx_impl.h>
 
+LeafQuery::LeafQuery() 
+{
+
+}
+
 LeafQueryResult get_results(const SpatialIndex::INode* n)
 {
 	LeafQueryResult result (n->getIdentifier());
@@ -54,7 +59,7 @@ void LeafQuery::getNextEntry(	const SpatialIndex::IEntry& entry,
 
 	const SpatialIndex::INode* n = dynamic_cast<const SpatialIndex::INode*>(&entry);
 
-	if (n != nullptr)
+	if (n != 0)
 	{
 		// traverse only index nodes at levels 2 and higher.
 		if (n->getLevel() > 0)
@@ -95,12 +100,12 @@ void LeafQueryResult::SetIDs(std::vector<SpatialIndex::id_type>& v)
 }
 const SpatialIndex::Region*  LeafQueryResult::GetBounds() const
 {
-    return bounds.get();
+    return bounds;
 }
 
 void LeafQueryResult::SetBounds(const SpatialIndex::Region*  b) 
 {
-    bounds.reset( new SpatialIndex::Region(*b) );
+    bounds = new SpatialIndex::Region(*b);
 }
 
 LeafQueryResult::LeafQueryResult(LeafQueryResult const& other)
@@ -109,7 +114,7 @@ LeafQueryResult::LeafQueryResult(LeafQueryResult const& other)
     std::copy(other.ids.begin(), other.ids.end(), ids.begin());
     m_id = other.m_id;
     
-    bounds.reset( other.bounds->clone() );
+    bounds = other.bounds->clone();
 }
 
 LeafQueryResult& LeafQueryResult::operator=(LeafQueryResult const& rhs)
@@ -119,7 +124,7 @@ LeafQueryResult& LeafQueryResult::operator=(LeafQueryResult const& rhs)
         ids.resize(rhs.ids.size());
         std::copy(rhs.ids.begin(), rhs.ids.end(), ids.begin());
         m_id = rhs.m_id;
-        bounds.reset( rhs.bounds->clone() );
+        bounds = rhs.bounds->clone();
     }
     return *this;
 }
