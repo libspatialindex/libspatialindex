@@ -23,8 +23,8 @@ libspatialindex_c_la_LIBADD = \
 nodist_EXTRA_libspatialindex_la_SOURCES = dummy.cxx
 nodist_EXTRA_libspatialindex_c_la_SOURCES = dummy.cxx
 
-libspatialindex_la_LDFLAGS = -version-info 5:0:0 -no-undefined -lstdc++
-libspatialindex_c_la_LDFLAGS = -version-info 5:0:0 -no-undefined -lstdc++
+libspatialindex_la_LDFLAGS = -version-info 5:0:0 -no-undefined
+libspatialindex_c_la_LDFLAGS = -version-info 5:0:0 -no-undefined
 
 EXTRA_DIST = INSTALL.WIN \
              spatialindex.sln \
