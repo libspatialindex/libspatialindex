@@ -18,6 +18,11 @@ libspatialindex_c_la_LIBADD = \
 	libspatialindex.la \
 	src/capi/libsidxc.la
 
+# Dummy file to force C++ linking, see this page for more details:
+# https://www.gnu.org/software/automake/manual/html_node/Libtool-Convenience-Libraries.html
+nodist_EXTRA_libspatialindex_la_SOURCES = dummy.cxx
+nodist_EXTRA_libspatialindex_c_la_SOURCES = dummy.cxx
+
 libspatialindex_la_LDFLAGS = -version-info 5:0:0 -no-undefined -lstdc++
 libspatialindex_c_la_LDFLAGS = -version-info 5:0:0 -no-undefined -lstdc++
 
