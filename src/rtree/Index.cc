@@ -144,7 +144,7 @@ void Index::split(uint32_t dataLength, byte* pData, Region& mbr, id_type id, Nod
 
 uint32_t Index::findLeastEnlargement(const Region& r) const
 {
-	double area = std::numeric_limits<double>::max();
+	double area = std::numeric_limits<double>::infinity();
 	uint32_t best = std::numeric_limits<uint32_t>::max();
 
 	RegionPtr t = m_pTree->m_regionPool.acquire();
@@ -165,7 +165,8 @@ uint32_t Index::findLeastEnlargement(const Region& r) const
 		{
 			// this will rarely happen, so compute best area on the fly only
 			// when necessary.
-			if (a < m_ptrMBR[best]->getArea()) best = cChild;
+			if (enl == std::numeric_limits<double>::infinity()
+			    || a < m_ptrMBR[best]->getArea()) best = cChild;
 		}
 	}
 
