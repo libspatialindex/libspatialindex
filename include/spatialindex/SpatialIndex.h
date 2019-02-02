@@ -42,7 +42,7 @@ namespace SpatialIndex
 
 	typedef int64_t id_type;
 
-	SIDX_DLL enum CommandType
+	enum CommandType
 	{
 		CT_NODEREAD = 0x0,
 		CT_NODEDELETE,
@@ -211,7 +211,7 @@ namespace SpatialIndex
 
 	namespace StorageManager
 	{
-		SIDX_DLL enum StorageManagerConstants
+		enum StorageManagerConstants
 		{
 			EmptyPage = -0x1,
 			NewPage = -0x1
