@@ -31,20 +31,20 @@ namespace SpatialIndex
 {
 	namespace MVRTree
 	{
-		SIDX_DLL enum MVRTreeVariant
+		enum MVRTreeVariant
 		{
 			RV_LINEAR = 0x0,
 			RV_QUADRATIC,
 			RV_RSTAR
 		};
 
-		SIDX_DLL enum PersistenObjectIdentifier
+		enum PersistenObjectIdentifier
 		{
 			PersistentIndex = 0x1,
 			PersistentLeaf = 0x2
 		};
 
-		SIDX_DLL enum RangeQueryType
+		enum RangeQueryType
 		{
 			ContainmentQuery = 0x1,
 			IntersectionQuery = 0x2

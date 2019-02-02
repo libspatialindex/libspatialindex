@@ -32,18 +32,18 @@ namespace SpatialIndex
 {
 	namespace TPRTree
 	{
-		SIDX_DLL enum TPRTreeVariant
+		enum TPRTreeVariant
 		{
 			TPRV_RSTAR = 0x2
 		};
 
-		SIDX_DLL enum PersistenObjectIdentifier
+		enum PersistenObjectIdentifier
 		{
 			PersistentIndex = 0x1,
 			PersistentLeaf = 0x2
 		};
 
-		SIDX_DLL enum RangeQueryType
+		enum RangeQueryType
 		{
 			ContainmentQuery = 0x1,
 			IntersectionQuery = 0x2

@@ -79,7 +79,7 @@ typedef uint8_t byte;
 
 namespace Tools
 {
-	SIDX_DLL enum IntervalType
+	enum IntervalType
 	{
 		IT_RIGHTOPEN = 0x0,
 		IT_LEFTOPEN,
@@ -87,7 +87,7 @@ namespace Tools
 		IT_CLOSED
 	};
 
-	SIDX_DLL enum VariantType
+	enum VariantType
 	{
 		VT_LONG = 0x0,
 		VT_BYTE,
@@ -108,7 +108,7 @@ namespace Tools
         VT_PWCHAR
     };
 
-	SIDX_DLL enum FileMode
+	enum FileMode
 	{
 		APPEND = 0x0,
 		CREATE
