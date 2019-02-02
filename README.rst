@@ -1,4 +1,5 @@
 .. image:: https://travis-ci.org/libspatialindex/libspatialindex.svg?branch=master
+.. image:: https://ci.appveyor.com/api/projects/status/fpdtkp2this1gkg6?svg=true
 
 *****************************************************************************
  libspatialindex
