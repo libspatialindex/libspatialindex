@@ -1,0 +1,52 @@
+version: 1.0.{build}
+
+os: Visual Studio 2015
+
+platform: x64
+
+configuration: Release
+
+matrix:
+  fast_finish: true
+
+# Should speed up repository cloning
+shallow_clone: true
+clone_depth: 5
+
+# init:
+    #  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
+    #on_finish:
+    # - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
+cache:
+    C:\Miniconda3-x64\pkgs -> appveyor.yml
+
+install:
+
+  - set "CONDA_ROOT=C:\Miniconda3-x64"
+  - set PATH=%CONDA_ROOT%;%CONDA_ROOT%\\scripts;%CONDA_ROOT%\\Library\\bin;%PATH%;C:\\Program Files (x86)\\CMake\\bin
+  - conda config --set always_yes yes
+  - conda config --add channels conda-forge
+  - conda config --add channels anaconda
+  - conda update -q conda
+  - conda config --set auto_update_conda no
+  - conda update -q --all
+  - conda info
+  - python -c "import sys; print(sys.version)"
+  - python -c "import sys; print(sys.executable)"
+  - python -c "import sys; print(sys.prefix)"
+  - call "%CONDA_ROOT%\Scripts\activate.bat" base
+  - conda install cmake ninja
+  - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" amd64
+  - call scripts\\appveyor\\config.cmd
+
+
+build_script:
+  - call "%CONDA_ROOT%\Scripts\activate.bat" base
+  - call scripts\\appveyor\\build.cmd
+
+test_script:
+  - call "%CONDA_ROOT%\Scripts\activate.bat" base
+  - call scripts\\appveyor\\test.cmd
+

@@ -4,5 +4,5 @@ services: docker
 compiler:
 - g++
 - clang
-before_install: "./ci/before_install.sh"
-script: "./ci/build.sh"
+before_install: "./scripts/travis/before_install.sh"
+script: "./scripts/travis/build.sh"
