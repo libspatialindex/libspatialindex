@@ -7,7 +7,7 @@ mkdir build
 pushd build
 
 
-cmake -G "Visual Studio 14 Win64" ^
+cmake -G "Ninja" ^
     -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% ^
     -DCMAKE_VERBOSE_MAKEFILE=%CMAKE_VERBOSE_MAKEFILE% ^
     -DCMAKE_LIBRARY_PATH:FILEPATH="=%CONDA_ROOT%/Library/lib" ^
