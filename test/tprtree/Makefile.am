@@ -1,6 +1,6 @@
 ## Makefile.am -- Process this file with automake to produce Makefile.in
 noinst_PROGRAMS = Generator Exhaustive TPRTreeLoad TPRTreeQuery
-INCLUDES = -I../../include 
+AM_CPPFLAGS = -I../../include
 Generator_SOURCES = RandomGenerator.cc Generator.cc RandomGenerator.h
 Generator_LDADD = ../../libspatialindex.la
 Exhaustive_SOURCES = Exhaustive.cc 

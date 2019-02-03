@@ -1,6 +1,6 @@
 language: cpp
 sudo: required
-services: docker
+dist: xenial
 compiler:
 - g++
 - clang
