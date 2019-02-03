@@ -26,6 +26,7 @@ AC_PROG_LN_S
 AC_PROG_MAKE_SET
 AC_PROG_LIBTOOL
 AM_INIT_AUTOMAKE([dist-bzip2 subdir-objects])
+AX_CXX_COMPILE_STDCXX([11],[noext],[mandatory])
 
 # Checks for header files.
 AC_CHECK_HEADERS(fcntl.h,, [AC_MSG_ERROR([cannot find fcntl.h, bailing out])])
