@@ -71,7 +71,7 @@ set(SIDX_CAPI_CPP
   "${SIDX_CAPI_DIR}/sidx_api.cc"
   "${SIDX_CAPI_DIR}/Utility.cc"
 )
-
+list (APPEND SIDX_CPP ${SIDX_CAPI_CPP} )
 
 set(SIDX_SPATIALINDEX_CPP
   "${SIDX_SRC_DIR}/spatialindex/LineSegment.cc"

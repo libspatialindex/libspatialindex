@@ -30,6 +30,7 @@
 #include <limits>
 
 #include <spatialindex/SpatialIndex.h>
+#include <spatialindex/capi/IdVisitor.h>
 #include "Node.h"
 #include "Leaf.h"
 #include "Index.h"
@@ -431,6 +432,70 @@ bool SpatialIndex::RTree::RTree::deleteData(const IShape& shape, id_type id)
 	return ret;
 }
 
+
+void SpatialIndex::RTree::RTree::internalNodesQuery(const IShape& query, IVisitor& v)
+{
+	if (query.getDimension() != m_dimension) throw Tools::IllegalArgumentException("containsWhatQuery: Shape has the wrong number of dimensions.");
+
+#ifdef HAVE_PTHREAD_H
+	Tools::LockGuard lock(&m_lock);
+#endif
+
+	try
+	{
+		std::stack<NodePtr> st;
+		NodePtr root = readNode(m_rootID);
+		st.push(root);
+
+		while (! st.empty())
+		{
+			NodePtr n = st.top(); st.pop();
+
+			if(query.containsShape(n->m_nodeMBR))
+			{
+				IdVisitor vId = IdVisitor();
+				visitSubTree(n, vId);
+				const uint64_t nObj = vId.GetResultCount();
+				uint64_t *obj = new uint64_t[nObj];
+				std::copy(vId.GetResults().begin(), vId.GetResults().end(), obj);
+
+				Data data = Data(sizeof(uint64_t) * nObj, (byte *) obj, n->m_nodeMBR, n->getIdentifier());
+				v.visitData(data);
+				++(m_stats.m_u64QueryResults);
+			}
+			else
+			{
+				if(n->m_level == 0)
+				{
+					for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
+					{
+						if(query.containsShape(*(n->m_ptrMBR[cChild])))
+						{
+							Data data = Data(sizeof(id_type), (byte *) &n->m_pIdentifier[cChild], *(n->m_ptrMBR[cChild]), n->getIdentifier());
+							v.visitData(data);
+							++(m_stats.m_u64QueryResults);
+						}
+					}
+				}
+				else //not a leaf
+				{
+					if(query.intersectsShape(n->m_nodeMBR))
+					{
+						for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
+						{
+							st.push(readNode(n->m_pIdentifier[cChild]));
+						}
+					}
+				}
+			}
+		}
+
+	}
+	catch (...)
+	{
+		throw;
+	}
+}
 
 void SpatialIndex::RTree::RTree::containsWhatQuery(const IShape& query, IVisitor& v)
 {

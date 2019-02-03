@@ -1537,6 +1537,56 @@ SIDX_C_DLL RTError Index_NearestNeighbors_obj(IndexH index,
 	return RT_None;
 }
 
+SIDX_C_DLL RTError Index_Intersects_internal(	IndexH index,
+												double* pdMin,
+												double* pdMax,
+												uint32_t nDimension,
+												IndexItemH** ids,
+												uint64_t* nResults)
+{
+	VALIDATE_POINTER1(index, "Index_Intersects_internal", RT_Failure);
+	Index* idx = reinterpret_cast<Index*>(index);
+
+	int64_t nResultLimit, nStart;
+
+	nResultLimit = idx->GetResultSetLimit();
+	nStart = idx->GetResultSetOffset();
+
+	ObjVisitor* visitor = new ObjVisitor;
+	try {
+    SpatialIndex::Region* r = new SpatialIndex::Region(pdMin, pdMax, nDimension);
+		idx->index().internalNodesQuery(	*r,
+											*visitor);
+
+    Page_ResultSet_Obj(*visitor, ids, nStart, nResultLimit, nResults);
+
+    delete r;
+		delete visitor;
+
+	} catch (Tools::Exception& e)
+	{
+		Error_PushError(RT_Failure,
+						e.what().c_str(),
+						"Index_Intersects_internal");
+		delete visitor;
+		return RT_Failure;
+	} catch (std::exception const& e)
+	{
+		Error_PushError(RT_Failure,
+						e.what(),
+						"Index_Intersects_internal");
+		delete visitor;
+		return RT_Failure;
+	} catch (...) {
+		Error_PushError(RT_Failure,
+						"Unknown Error",
+						"Index_Intersects_internal");
+		delete visitor;
+		return RT_Failure;
+	}
+	return RT_None;
+}
+
 SIDX_C_DLL RTError Index_GetBounds(	  IndexH index,
 									double** ppdMin,
 									double** ppdMax,

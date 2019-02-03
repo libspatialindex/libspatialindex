@@ -234,6 +234,13 @@ SIDX_DLL RTError Index_NearestNeighbors_id( IndexH index,
 											int64_t** items,
 											uint64_t* nResults);
 
+SIDX_DLL RTError Index_Intersects_internal(	IndexH index,
+											double* pdMin,
+											double* pdMax,
+											uint32_t nDimension,
+											IndexItemH** items,
+											uint64_t* nResults);
+
 SIDX_DLL RTError Index_GetBounds(	IndexH index,
 									double** ppdMin,
 									double** ppdMax,

@@ -72,20 +72,21 @@ namespace SpatialIndex
 			//
 			// ISpatialIndex interface
 			//
-			void insertData(uint32_t len, const byte* pData, const IShape& shape, id_type id) override;
-			bool deleteData(const IShape& shape, id_type id) override;
-			void containsWhatQuery(const IShape& query, IVisitor& v) override;
-			void intersectsWithQuery(const IShape& query, IVisitor& v) override;
-			void pointLocationQuery(const Point& query, IVisitor& v) override;
-			void nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v, INearestNeighborComparator&) override;
-			void nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v) override;
-			void selfJoinQuery(const IShape& s, IVisitor& v) override;
-			void queryStrategy(IQueryStrategy& qs) override;
-			void getIndexProperties(Tools::PropertySet& out) const override;
-			void addCommand(ICommand* pCommand, CommandType ct) override;
-			bool isIndexValid() override;
-			void getStatistics(IStatistics** out) const override;
-			void flush() override;
+			virtual void insertData(uint32_t len, const byte* pData, const IShape& shape, id_type id);
+			virtual bool deleteData(const IShape& shape, id_type id);
+			virtual void internalNodesQuery(const IShape& query, IVisitor& v);
+			virtual void containsWhatQuery(const IShape& query, IVisitor& v);
+			virtual void intersectsWithQuery(const IShape& query, IVisitor& v);
+			virtual void pointLocationQuery(const Point& query, IVisitor& v);
+			virtual void nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v, INearestNeighborComparator&);
+			virtual void nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v);
+			virtual void selfJoinQuery(const IShape& s, IVisitor& v);
+			virtual void queryStrategy(IQueryStrategy& qs);
+			virtual void getIndexProperties(Tools::PropertySet& out) const;
+			virtual void addCommand(ICommand* pCommand, CommandType ct);
+			virtual bool isIndexValid();
+			virtual void getStatistics(IStatistics** out) const;
+			virtual void flush();
 
 		private:
 			void initNew(Tools::PropertySet&);

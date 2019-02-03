@@ -7,6 +7,7 @@ lib_LTLIBRARIES = libspatialindex.la libspatialindex_c.la
 libspatialindex_la_SOURCES =
 libspatialindex_la_LIBADD = \
 	src/spatialindex/liblibrary.la \
+    src/capi/libsidxc.la \
 	src/storagemanager/libstoragemanager.la \
 	src/rtree/librtree.la \
 	src/mvrtree/libmvrtree.la \

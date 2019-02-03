@@ -301,6 +301,12 @@ bool SpatialIndex::MVRTree::MVRTree::deleteData(const IShape& shape, id_type id)
 	return ret;
 }
 
+
+void SpatialIndex::MVRTree::MVRTree::internalNodesQuery(const IShape& query, IVisitor& v)
+{
+	throw Tools::IllegalStateException("internalNodesQuery: not impelmented yet.");
+}
+
 void SpatialIndex::MVRTree::MVRTree::containsWhatQuery(const IShape& query, IVisitor& v)
 {
 	if (query.getDimension() != m_dimension) throw Tools::IllegalArgumentException("containsWhatQuery: Shape has the wrong number of dimensions.");
