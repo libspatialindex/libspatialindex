@@ -32,18 +32,18 @@ namespace SpatialIndex
 {
 	namespace TPRTree
 	{
-		SIDX_DLL enum TPRTreeVariant
+		enum TPRTreeVariant
 		{
 			TPRV_RSTAR = 0x2
 		};
 
-		SIDX_DLL enum PersistenObjectIdentifier
+		enum PersistenObjectIdentifier
 		{
 			PersistentIndex = 0x1,
 			PersistentLeaf = 0x2
 		};
 
-		SIDX_DLL enum RangeQueryType
+		enum RangeQueryType
 		{
 			ContainmentQuery = 0x1,
 			IntersectionQuery = 0x2
@@ -53,15 +53,15 @@ namespace SpatialIndex
 		{
 		public:
 			Data(uint32_t len, byte* pData, MovingRegion& r, id_type id);
-			virtual ~Data();
+			~Data() override;
 
-			virtual Data* clone();
-			virtual id_type getIdentifier() const;
-			virtual void getShape(IShape** out) const;
-			virtual void getData(uint32_t& len, byte** data) const;
-			virtual uint32_t getByteArraySize();
-			virtual void loadFromByteArray(const byte* data);
-			virtual void storeToByteArray(byte** data, uint32_t& len);
+			Data* clone() override;
+			id_type getIdentifier() const override;
+			void getShape(IShape** out) const override;
+			void getData(uint32_t& len, byte** data) const override;
+			uint32_t getByteArraySize() override;
+			void loadFromByteArray(const byte* data) override;
+			void storeToByteArray(byte** data, uint32_t& len) override;
 
 			id_type m_id;
 			MovingRegion m_region;

@@ -46,15 +46,15 @@ using namespace std;
 class MyVisitor : public IVisitor
 {
 public:
-	void visitNode(const INode& ) {}
+	void visitNode(const INode& ) override {}
 
-	void visitData(const IData& d)
+	void visitData(const IData& d) override
 	{
 		cout << d.getIdentifier() << endl;
 			// the ID of this data entry is an answer to the query. I will just print it to stdout.
 	}
 
-	void visitData(std::vector<const IData*>& ) {}
+	void visitData(std::vector<const IData*>& ) override {}
 };
 
 int main(int argc, char** argv)
@@ -129,7 +129,7 @@ int main(int argc, char** argv)
 
 				//tree->insertData(data.size() + 1, reinterpret_cast<const byte*>(data.c_str()), r, id);
 
-				tree->insertData(0, 0, r, id);
+				tree->insertData(0, nullptr, r, id);
 					// example of passing zero size and a null pointer as the associated data.
 			}
 			else if (op == DELETE)

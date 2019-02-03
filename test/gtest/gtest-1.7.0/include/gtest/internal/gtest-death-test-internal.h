@@ -39,7 +39,7 @@
 
 #include "gtest/internal/gtest-internal.h"
 
-#include <stdio.h>
+#include <cstdio>
 
 namespace testing {
 namespace internal {
@@ -79,7 +79,7 @@ class GTEST_API_ DeathTest {
   static bool Create(const char* statement, const RE* regex,
                      const char* file, int line, DeathTest** test);
   DeathTest();
-  virtual ~DeathTest() { }
+  virtual ~DeathTest() = default;
 
   // A helper class that aborts a death test when it's deleted.
   class ReturnSentinel {
@@ -139,7 +139,7 @@ class GTEST_API_ DeathTest {
 // Factory interface for death tests.  May be mocked out for testing.
 class DeathTestFactory {
  public:
-  virtual ~DeathTestFactory() { }
+  virtual ~DeathTestFactory() = default;
   virtual bool Create(const char* statement, const RE* regex,
                       const char* file, int line, DeathTest** test) = 0;
 };
@@ -147,8 +147,8 @@ class DeathTestFactory {
 // A concrete DeathTestFactory implementation for normal use.
 class DefaultDeathTestFactory : public DeathTestFactory {
  public:
-  virtual bool Create(const char* statement, const RE* regex,
-                      const char* file, int line, DeathTest** test);
+  bool Create(const char* statement, const RE* regex,
+                      const char* file, int line, DeathTest** test) override;
 };
 
 // Returns true if exit_status describes a process that was terminated

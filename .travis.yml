@@ -1,8 +1,8 @@
 language: cpp
 sudo: required
-services: docker
+dist: xenial
 compiler:
 - g++
 - clang
-before_install: "./ci/before_install.sh"
-script: "./ci/build.sh"
+before_install: "./scripts/travis/before_install.sh"
+script: "./scripts/travis/build.sh"

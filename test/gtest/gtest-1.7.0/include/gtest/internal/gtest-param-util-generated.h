@@ -3164,7 +3164,7 @@ class CartesianProductGenerator2
   CartesianProductGenerator2(const ParamGenerator<T1>& g1,
       const ParamGenerator<T2>& g2)
       : g1_(g1), g2_(g2) {}
-  virtual ~CartesianProductGenerator2() {}
+  virtual ~CartesianProductGenerator2() = default;
 
   virtual ParamIteratorInterface<ParamType>* Begin() const {
     return new Iterator(this, g1_, g1_.begin(), g2_, g2_.begin());
@@ -3186,7 +3186,7 @@ class CartesianProductGenerator2
           begin2_(g2.begin()), end2_(g2.end()), current2_(current2)    {
       ComputeCurrentValue();
     }
-    virtual ~Iterator() {}
+    virtual ~Iterator() = default;
 
     virtual const ParamGeneratorInterface<ParamType>* BaseGenerator() const {
       return base_;
@@ -3279,7 +3279,7 @@ class CartesianProductGenerator3
   CartesianProductGenerator3(const ParamGenerator<T1>& g1,
       const ParamGenerator<T2>& g2, const ParamGenerator<T3>& g3)
       : g1_(g1), g2_(g2), g3_(g3) {}
-  virtual ~CartesianProductGenerator3() {}
+  virtual ~CartesianProductGenerator3() = default;
 
   virtual ParamIteratorInterface<ParamType>* Begin() const {
     return new Iterator(this, g1_, g1_.begin(), g2_, g2_.begin(), g3_,
@@ -3305,7 +3305,7 @@ class CartesianProductGenerator3
           begin3_(g3.begin()), end3_(g3.end()), current3_(current3)    {
       ComputeCurrentValue();
     }
-    virtual ~Iterator() {}
+    virtual ~Iterator() = default;
 
     virtual const ParamGeneratorInterface<ParamType>* BaseGenerator() const {
       return base_;
@@ -3412,7 +3412,7 @@ class CartesianProductGenerator4
       const ParamGenerator<T2>& g2, const ParamGenerator<T3>& g3,
       const ParamGenerator<T4>& g4)
       : g1_(g1), g2_(g2), g3_(g3), g4_(g4) {}
-  virtual ~CartesianProductGenerator4() {}
+  virtual ~CartesianProductGenerator4() = default;
 
   virtual ParamIteratorInterface<ParamType>* Begin() const {
     return new Iterator(this, g1_, g1_.begin(), g2_, g2_.begin(), g3_,
@@ -3442,7 +3442,7 @@ class CartesianProductGenerator4
           begin4_(g4.begin()), end4_(g4.end()), current4_(current4)    {
       ComputeCurrentValue();
     }
-    virtual ~Iterator() {}
+    virtual ~Iterator() = default;
 
     virtual const ParamGeneratorInterface<ParamType>* BaseGenerator() const {
       return base_;
@@ -3563,7 +3563,7 @@ class CartesianProductGenerator5
       const ParamGenerator<T2>& g2, const ParamGenerator<T3>& g3,
       const ParamGenerator<T4>& g4, const ParamGenerator<T5>& g5)
       : g1_(g1), g2_(g2), g3_(g3), g4_(g4), g5_(g5) {}
-  virtual ~CartesianProductGenerator5() {}
+  virtual ~CartesianProductGenerator5() = default;
 
   virtual ParamIteratorInterface<ParamType>* Begin() const {
     return new Iterator(this, g1_, g1_.begin(), g2_, g2_.begin(), g3_,
@@ -3596,7 +3596,7 @@ class CartesianProductGenerator5
           begin5_(g5.begin()), end5_(g5.end()), current5_(current5)    {
       ComputeCurrentValue();
     }
-    virtual ~Iterator() {}
+    virtual ~Iterator() = default;
 
     virtual const ParamGeneratorInterface<ParamType>* BaseGenerator() const {
       return base_;
@@ -3733,7 +3733,7 @@ class CartesianProductGenerator6
       const ParamGenerator<T4>& g4, const ParamGenerator<T5>& g5,
       const ParamGenerator<T6>& g6)
       : g1_(g1), g2_(g2), g3_(g3), g4_(g4), g5_(g5), g6_(g6) {}
-  virtual ~CartesianProductGenerator6() {}
+  virtual ~CartesianProductGenerator6() = default;
 
   virtual ParamIteratorInterface<ParamType>* Begin() const {
     return new Iterator(this, g1_, g1_.begin(), g2_, g2_.begin(), g3_,
@@ -3769,7 +3769,7 @@ class CartesianProductGenerator6
           begin6_(g6.begin()), end6_(g6.end()), current6_(current6)    {
       ComputeCurrentValue();
     }
-    virtual ~Iterator() {}
+    virtual ~Iterator() = default;
 
     virtual const ParamGeneratorInterface<ParamType>* BaseGenerator() const {
       return base_;
@@ -3919,7 +3919,7 @@ class CartesianProductGenerator7
       const ParamGenerator<T4>& g4, const ParamGenerator<T5>& g5,
       const ParamGenerator<T6>& g6, const ParamGenerator<T7>& g7)
       : g1_(g1), g2_(g2), g3_(g3), g4_(g4), g5_(g5), g6_(g6), g7_(g7) {}
-  virtual ~CartesianProductGenerator7() {}
+  virtual ~CartesianProductGenerator7() = default;
 
   virtual ParamIteratorInterface<ParamType>* Begin() const {
     return new Iterator(this, g1_, g1_.begin(), g2_, g2_.begin(), g3_,
@@ -3959,7 +3959,7 @@ class CartesianProductGenerator7
           begin7_(g7.begin()), end7_(g7.end()), current7_(current7)    {
       ComputeCurrentValue();
     }
-    virtual ~Iterator() {}
+    virtual ~Iterator() = default;
 
     virtual const ParamGeneratorInterface<ParamType>* BaseGenerator() const {
       return base_;
@@ -4124,7 +4124,7 @@ class CartesianProductGenerator8
       const ParamGenerator<T8>& g8)
       : g1_(g1), g2_(g2), g3_(g3), g4_(g4), g5_(g5), g6_(g6), g7_(g7),
           g8_(g8) {}
-  virtual ~CartesianProductGenerator8() {}
+  virtual ~CartesianProductGenerator8() = default;
 
   virtual ParamIteratorInterface<ParamType>* Begin() const {
     return new Iterator(this, g1_, g1_.begin(), g2_, g2_.begin(), g3_,
@@ -4168,7 +4168,7 @@ class CartesianProductGenerator8
           begin8_(g8.begin()), end8_(g8.end()), current8_(current8)    {
       ComputeCurrentValue();
     }
-    virtual ~Iterator() {}
+    virtual ~Iterator() = default;
 
     virtual const ParamGeneratorInterface<ParamType>* BaseGenerator() const {
       return base_;
@@ -4346,7 +4346,7 @@ class CartesianProductGenerator9
       const ParamGenerator<T8>& g8, const ParamGenerator<T9>& g9)
       : g1_(g1), g2_(g2), g3_(g3), g4_(g4), g5_(g5), g6_(g6), g7_(g7), g8_(g8),
           g9_(g9) {}
-  virtual ~CartesianProductGenerator9() {}
+  virtual ~CartesianProductGenerator9() = default;
 
   virtual ParamIteratorInterface<ParamType>* Begin() const {
     return new Iterator(this, g1_, g1_.begin(), g2_, g2_.begin(), g3_,
@@ -4393,7 +4393,7 @@ class CartesianProductGenerator9
           begin9_(g9.begin()), end9_(g9.end()), current9_(current9)    {
       ComputeCurrentValue();
     }
-    virtual ~Iterator() {}
+    virtual ~Iterator() = default;
 
     virtual const ParamGeneratorInterface<ParamType>* BaseGenerator() const {
       return base_;
@@ -4586,7 +4586,7 @@ class CartesianProductGenerator10
       const ParamGenerator<T10>& g10)
       : g1_(g1), g2_(g2), g3_(g3), g4_(g4), g5_(g5), g6_(g6), g7_(g7), g8_(g8),
           g9_(g9), g10_(g10) {}
-  virtual ~CartesianProductGenerator10() {}
+  virtual ~CartesianProductGenerator10() = default;
 
   virtual ParamIteratorInterface<ParamType>* Begin() const {
     return new Iterator(this, g1_, g1_.begin(), g2_, g2_.begin(), g3_,
@@ -4636,7 +4636,7 @@ class CartesianProductGenerator10
           begin10_(g10.begin()), end10_(g10.end()), current10_(current10)    {
       ComputeCurrentValue();
     }
-    virtual ~Iterator() {}
+    virtual ~Iterator() = default;
 
     virtual const ParamGeneratorInterface<ParamType>* BaseGenerator() const {
       return base_;

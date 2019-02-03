@@ -34,9 +34,7 @@
 using namespace SpatialIndex;
 
 LineSegment::LineSegment()
-	: m_dimension(0), m_pStartPoint(0), m_pEndPoint(0)
-{
-}
+= default;
 
 LineSegment::LineSegment(const double* pStartPoint, const double* pEndPoint, uint32_t dimension)
 	: m_dimension(dimension)
@@ -164,10 +162,10 @@ void LineSegment::storeToByteArray(byte** data, uint32_t& len)
 bool LineSegment::intersectsShape(const IShape& s) const
 {
 	const LineSegment* ps = dynamic_cast<const LineSegment*>(&s);
-	if (ps != 0) return intersectsLineSegment(*ps);
+	if (ps != nullptr) return intersectsLineSegment(*ps);
 
 	const Region* pr = dynamic_cast<const Region*>(&s);
-	if (pr != 0) return intersectsRegion(*pr);
+	if (pr != nullptr) return intersectsRegion(*pr);
 
 	throw Tools::IllegalStateException(
 		"LineSegment::intersectsShape: Not implemented yet!"
@@ -228,7 +226,7 @@ double LineSegment::getArea() const
 double LineSegment::getMinimumDistance(const IShape& s) const
 {
 	const Point* ppt = dynamic_cast<const Point*>(&s);
-	if (ppt != 0)
+	if (ppt != nullptr)
 	{
 		return getMinimumDistance(*ppt);
 	}
@@ -416,8 +414,8 @@ void LineSegment::makeDimension(uint32_t dimension)
 
 		// remember that this is not a constructor. The object will be destructed normally if
 		// something goes wrong (bad_alloc), so we must take care not to leave the object at an intermediate state.
-		m_pStartPoint = 0;
-		m_pEndPoint = 0;
+		m_pStartPoint = nullptr;
+		m_pEndPoint = nullptr;
 
 		m_dimension = dimension;
 		m_pStartPoint = new double[m_dimension];

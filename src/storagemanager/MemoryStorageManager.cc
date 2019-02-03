@@ -65,7 +65,7 @@ void MemoryStorageManager::loadByteArray(const id_type page, uint32_t& len, byte
 	try
 	{
 		e = m_buffer.at(page);
-		if (e == 0) throw InvalidPageException(page);
+		if (e == nullptr) throw InvalidPageException(page);
 	}
 	catch (std::out_of_range)
 	{
@@ -101,7 +101,7 @@ void MemoryStorageManager::storeByteArray(id_type& page, const uint32_t len, con
 		try
 		{
 			e_old = m_buffer.at(page);
-			if (e_old == 0) throw InvalidPageException(page);
+			if (e_old == nullptr) throw InvalidPageException(page);
 		}
 		catch (std::out_of_range)
 		{
@@ -121,14 +121,14 @@ void MemoryStorageManager::deleteByteArray(const id_type page)
 	try
 	{
 		e = m_buffer.at(page);
-		if (e == 0) throw InvalidPageException(page);
+		if (e == nullptr) throw InvalidPageException(page);
 	}
 	catch (std::out_of_range)
 	{
 		throw InvalidPageException(page);
 	}
 
-	m_buffer[page] = 0;
+	m_buffer[page] = nullptr;
 	m_emptyPages.push(page);
 
 	delete e;

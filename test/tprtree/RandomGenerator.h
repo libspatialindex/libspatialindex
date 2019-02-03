@@ -29,12 +29,12 @@
 #ifndef _random_generator_h
 #define _random_generator_h
 
-#include <assert.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <time.h>
-#include <errno.h>
-#include <math.h>
+#include <cassert>
+#include <cstdlib>
+#include <cstdio>
+#include <ctime>
+#include <cerrno>
+#include <cmath>
 
 #include <string>
 #include <iostream>
@@ -78,7 +78,7 @@ public:
 		m_speedStandardDeviation(0.33), // 20 miles/hour = 0.33 miles/minute
 		m_maxX(100.0),
 		m_maxY(100.0),
-		m_updateArray(0)
+		m_updateArray(nullptr)
 	{
 		m_updateArray = new set<int>[m_simulationLength];
 	}

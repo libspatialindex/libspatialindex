@@ -38,7 +38,7 @@
 using namespace SpatialIndex::TPRTree;
 
 SpatialIndex::TPRTree::Data::Data(uint32_t len, byte* pData, MovingRegion& r, id_type id)
-	: m_id(id), m_region(r), m_pData(0), m_dataLength(len)
+	: m_id(id), m_region(r), m_pData(nullptr), m_dataLength(len)
 {
 	if (m_dataLength > 0)
 	{
@@ -70,7 +70,7 @@ void SpatialIndex::TPRTree::Data::getShape(IShape** out) const
 void SpatialIndex::TPRTree::Data::getData(uint32_t& len, byte** data) const
 {
 	len = m_dataLength;
-	*data = 0;
+	*data = nullptr;
 
 	if (m_dataLength > 0)
 	{
@@ -94,7 +94,7 @@ void SpatialIndex::TPRTree::Data::loadFromByteArray(const byte* ptr)
 	ptr += sizeof(id_type);
 
 	delete[] m_pData;
-	m_pData = 0;
+	m_pData = nullptr;
 
 	memcpy(&m_dataLength, ptr, sizeof(uint32_t));
 	ptr += sizeof(uint32_t);
@@ -113,7 +113,7 @@ void SpatialIndex::TPRTree::Data::storeToByteArray(byte** data, uint32_t& len)
 {
 	// it is thread safe this way.
 	uint32_t regionsize;
-	byte* regiondata = 0;
+	byte* regiondata = nullptr;
 	m_region.storeToByteArray(&regiondata, regionsize);
 
 	len = sizeof(id_type) + sizeof(uint32_t) + m_dataLength + regionsize;
@@ -221,10 +221,6 @@ SpatialIndex::TPRTree::TPRTree::TPRTree(IStorageManager& sm, Tools::PropertySet&
 	m_indexPool(100),
 	m_leafPool(100)
 {
-#ifdef HAVE_PTHREAD_H
-	pthread_mutex_init(&m_lock, NULL);
-#endif
-
 	Tools::Variant var = ps.getProperty("IndexIdentifier");
 	if (var.m_varType != Tools::VT_EMPTY)
 	{
@@ -246,10 +242,6 @@ SpatialIndex::TPRTree::TPRTree::TPRTree(IStorageManager& sm, Tools::PropertySet&
 
 SpatialIndex::TPRTree::TPRTree::~TPRTree()
 {
-#ifdef HAVE_PTHREAD_H
-	pthread_mutex_destroy(&m_lock);
-#endif
-
 	storeHeader();
 }
 
@@ -261,15 +253,11 @@ void SpatialIndex::TPRTree::TPRTree::insertData(uint32_t len, const byte* pData,
 {
 	if (shape.getDimension() != m_dimension) throw Tools::IllegalArgumentException("insertData: Shape has the wrong number of dimensions.");
 	const IEvolvingShape* es = dynamic_cast<const IEvolvingShape*>(&shape);
-	if (es == 0) throw Tools::IllegalArgumentException("insertData: Shape does not support the Tools::IEvolvingShape interface.");
+	if (es == nullptr) throw Tools::IllegalArgumentException("insertData: Shape does not support the Tools::IEvolvingShape interface.");
 	const Tools::IInterval *pivI  = dynamic_cast<const Tools::IInterval*>(&shape);
-	if (pivI == 0) throw Tools::IllegalArgumentException("insertData: Shape does not support the Tools::IInterval interface.");
+	if (pivI == nullptr) throw Tools::IllegalArgumentException("insertData: Shape does not support the Tools::IInterval interface.");
 
 	if (pivI->getLowerBound() < m_currentTime) throw Tools::IllegalArgumentException("insertData: Shape start time is older than tree current time.");
-
-#ifdef HAVE_PTHREAD_H
-	Tools::LockGuard lock(&m_lock);
-#endif
 
 	Region mbr;
 	shape.getMBR(mbr);
@@ -287,7 +275,7 @@ void SpatialIndex::TPRTree::TPRTree::insertData(uint32_t len, const byte* pData,
 	mr->m_startTime = pivI->getLowerBound();
 	mr->m_endTime = std::numeric_limits<double>::max();
 
-	byte* buffer = 0;
+	byte* buffer = nullptr;
 
 	if (len > 0)
 	{
@@ -306,13 +294,9 @@ bool SpatialIndex::TPRTree::TPRTree::deleteData(const IShape& shape, id_type id)
 {
 	if (shape.getDimension() != m_dimension) throw Tools::IllegalArgumentException("insertData: Shape has the wrong number of dimensions.");
 	const IEvolvingShape* es = dynamic_cast<const IEvolvingShape*>(&shape);
-	if (es == 0) throw Tools::IllegalArgumentException("insertData: Shape does not support the Tools::IEvolvingShape interface.");
+	if (es == nullptr) throw Tools::IllegalArgumentException("insertData: Shape does not support the Tools::IEvolvingShape interface.");
 	const Tools::IInterval *pivI  = dynamic_cast<const Tools::IInterval*>(&shape);
-	if (pivI == 0) throw Tools::IllegalArgumentException("insertData: Shape does not support the Tools::IInterval interface.");
-
-#ifdef HAVE_PTHREAD_H
-	Tools::LockGuard lock(&m_lock);
-#endif
+	if (pivI == nullptr) throw Tools::IllegalArgumentException("insertData: Shape does not support the Tools::IInterval interface.");
 
 	Region mbr;
 	shape.getMBR(mbr);
@@ -379,10 +363,6 @@ void SpatialIndex::TPRTree::TPRTree::selfJoinQuery(const IShape&, IVisitor&)
 
 void SpatialIndex::TPRTree::TPRTree::queryStrategy(IQueryStrategy& qs)
 {
-#ifdef HAVE_PTHREAD_H
-	Tools::LockGuard lock(&m_lock);
-#endif
-
 	id_type next = m_rootID;
 	bool hasNext = true;
 
@@ -478,13 +458,13 @@ void SpatialIndex::TPRTree::TPRTree::addCommand(ICommand* pCommand, CommandType 
 	switch (ct)
 	{
 		case CT_NODEREAD:
-			m_readNodeCommands.push_back(Tools::SmartPointer<ICommand>(pCommand));
+			m_readNodeCommands.push_back(std::shared_ptr<ICommand>(pCommand));
 			break;
 		case CT_NODEWRITE:
-			m_writeNodeCommands.push_back(Tools::SmartPointer<ICommand>(pCommand));
+			m_writeNodeCommands.push_back(std::shared_ptr<ICommand>(pCommand));
 			break;
 		case CT_NODEDELETE:
-			m_deleteNodeCommands.push_back(Tools::SmartPointer<ICommand>(pCommand));
+			m_deleteNodeCommands.push_back(std::shared_ptr<ICommand>(pCommand));
 			break;
 	}
 }
@@ -556,7 +536,7 @@ bool SpatialIndex::TPRTree::TPRTree::isIndexValid()
 				NodePtr ptrN = readNode(e.m_pNode->m_pIdentifier[cChild]);
 				ValidateEntry tmpEntry(*(e.m_pNode->m_ptrMBR[cChild]), ptrN);
 
-				std::map<uint32_t, uint32_t>::iterator itNodes = nodesInLevel.find(tmpEntry.m_pNode->m_level);
+				auto itNodes = nodesInLevel.find(tmpEntry.m_pNode->m_level);
 
 				if (itNodes == nodesInLevel.end())
 				{
@@ -965,7 +945,7 @@ void SpatialIndex::TPRTree::TPRTree::storeHeader()
 void SpatialIndex::TPRTree::TPRTree::loadHeader()
 {
 	uint32_t headerSize;
-	byte* header = 0;
+	byte* header = nullptr;
 	m_pStorageManager->loadByteArray(m_headerID, headerSize, &header);
 
 	byte* ptr = header;
@@ -1020,7 +1000,7 @@ void SpatialIndex::TPRTree::TPRTree::insertData_impl(uint32_t dataLength, byte* 
 	assert(m_currentTime <= mr.m_startTime);
 
 	std::stack<id_type> pathBuffer;
-	byte* overflowTable = 0;
+	byte* overflowTable = nullptr;
 
 	try
 	{
@@ -1079,7 +1059,7 @@ bool SpatialIndex::TPRTree::TPRTree::deleteData_impl(const MovingRegion& mr, id_
 		root.relinquish();
 	}
 
-	if (l.get() != 0)
+	if (l.get() != nullptr)
 	{
 		Leaf* pL = static_cast<Leaf*>(l.get());
 		pL->deleteData(id, pathBuffer);
@@ -1169,7 +1149,7 @@ SpatialIndex::TPRTree::NodePtr SpatialIndex::TPRTree::TPRTree::readNode(id_type 
 		else if (nodeType == PersistentLeaf) n = m_leafPool.acquire();
 		else throw Tools::IllegalStateException("readNode: failed reading the correct node type information");
 
-		if (n.get() == 0)
+		if (n.get() == nullptr)
 		{
 			if (nodeType == PersistentIndex) n = NodePtr(new Index(this, -1, 0), &m_indexPool);
 			else if (nodeType == PersistentLeaf) n = NodePtr(new Leaf(this, -1), &m_leafPool);
@@ -1221,13 +1201,9 @@ void SpatialIndex::TPRTree::TPRTree::deleteNode(Node* n)
 void SpatialIndex::TPRTree::TPRTree::rangeQuery(RangeQueryType type, const IShape& query, IVisitor& v)
 {
 	const MovingRegion* mr = dynamic_cast<const MovingRegion*>(&query);
-	if (mr == 0) throw Tools::IllegalArgumentException("rangeQuery: Shape has to be a moving region.");
+	if (mr == nullptr) throw Tools::IllegalArgumentException("rangeQuery: Shape has to be a moving region.");
 	if (mr->m_startTime < m_currentTime || mr->m_endTime >= m_currentTime + m_horizon)
 		throw Tools::IllegalArgumentException("rangeQuery: Query time interval does not intersect current horizon.");
-
-#ifdef HAVE_PTHREAD_H
-	Tools::LockGuard lock(&m_lock);
-#endif
 
 	std::stack<NodePtr> st;
 	NodePtr root = readNode(m_rootID);

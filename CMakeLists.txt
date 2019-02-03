@@ -50,15 +50,13 @@ set(SIDX_C_LIB_NAME spatialindex_c)
 
 if(WIN32)
   if (MSVC)
-    if (MSVC80 OR MSVC90 OR MSVC10 OR MSVC11 OR MSVC12 OR MSVC13 OR MSVC14)
-        if( CMAKE_SIZEOF_VOID_P EQUAL 8 )
-            set( SIDX_LIB_NAME "spatialindex-64" )
-            set( SIDX_C_LIB_NAME "spatialindex_c-64" )
-        else( CMAKE_SIZEOF_VOID_P EQUAL 8 )
-            set( SIDX_LIB_NAME "spatialindex-32"  )
-            set( SIDX_C_LIB_NAME "spatialindex_c-32"  )
-        endif( CMAKE_SIZEOF_VOID_P EQUAL 8 )
-    endif()
+	if( CMAKE_SIZEOF_VOID_P EQUAL 8 )
+		set( SIDX_LIB_NAME "spatialindex-64" )
+		set( SIDX_C_LIB_NAME "spatialindex_c-64" )
+	else( CMAKE_SIZEOF_VOID_P EQUAL 8 )
+		set( SIDX_LIB_NAME "spatialindex-32"  )
+		set( SIDX_C_LIB_NAME "spatialindex_c-32"  )
+	endif( CMAKE_SIZEOF_VOID_P EQUAL 8 )
   endif()
 endif()
 
@@ -75,8 +73,6 @@ check_function_exists(bcopy HAVE_BCOPY)
 
 
 INCLUDE (CheckIncludeFiles)
-check_include_files(pthread.h HAVE_PTHREAD_H)
-
 
 if (HAVE_SRAND48)
     add_definitions(-DHAVE_SRAND48=1)
@@ -140,7 +136,6 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${SIDX_BUILD_OUTPUT_DIRECTORY})
 
 if(WIN32)
   if (MSVC)
-    if (MSVC80 OR MSVC90 OR MSVC10 OR MSVC11 OR MSVC12 OR MSVC13 OR MSVC14)
       add_definitions(-D_CRT_SECURE_NO_DEPRECATE)
       add_definitions(-D_CRT_SECURE_NO_WARNINGS)
       add_definitions(-D_CRT_NONSTDC_NO_WARNING)
@@ -149,7 +144,6 @@ if(WIN32)
       add_definitions(-DNOMINMAX)
 
       set(SIDX_COMPILER_MSVC 1)
-    endif()
 
     if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
       string(REGEX REPLACE "/W[0-4]" "/W4"
@@ -176,13 +170,13 @@ else()
 
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SIDX_COMMON_CXX_FLAGS}")
     if (CMAKE_COMPILER_IS_GNUCXX AND NOT CMAKE_SYSTEM_NAME STREQUAL "CYGWIN")
-      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++98 -ansi")
+      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
     endif()
 
     set(SIDX_COMPILER_GCC 1)
 
   elseif("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang" OR "${CMAKE_CXX_COMPILER}" MATCHES "clang")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SIDX_COMMON_CXX_FLAGS}")
+    set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS} ${SIDX_COMMON_CXX_FLAGS}")
     set(SIDX_COMPILER_CLANG 1)
   endif()
 endif(WIN32)

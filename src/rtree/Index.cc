@@ -37,8 +37,7 @@ using namespace SpatialIndex;
 using namespace SpatialIndex::RTree;
 
 Index::~Index()
-{
-}
+= default;
 
 Index::Index(SpatialIndex::RTree::RTree* pTree, id_type id, uint32_t level) : Node(pTree, id, level, pTree->m_indexCapacity)
 {
@@ -93,7 +92,7 @@ NodePtr Index::findLeaf(const Region& mbr, id_type id, std::stack<id_type>& path
 			NodePtr n = m_pTree->readNode(m_pIdentifier[cChild]);
 			NodePtr l = n->findLeaf(mbr, id, pathBuffer);
 			if (n.get() == l.get()) n.relinquish();
-			if (l.get() != 0) return l;
+			if (l.get() != nullptr) return l;
 		}
 	}
 
@@ -124,8 +123,8 @@ void Index::split(uint32_t dataLength, byte* pData, Region& mbr, id_type id, Nod
 	ptrLeft = m_pTree->m_indexPool.acquire();
 	ptrRight = m_pTree->m_indexPool.acquire();
 
-	if (ptrLeft.get() == 0) ptrLeft = NodePtr(new Index(m_pTree, m_identifier, m_level), &(m_pTree->m_indexPool));
-	if (ptrRight.get() == 0) ptrRight = NodePtr(new Index(m_pTree, -1, m_level), &(m_pTree->m_indexPool));
+	if (ptrLeft.get() == nullptr) ptrLeft = NodePtr(new Index(m_pTree, m_identifier, m_level), &(m_pTree->m_indexPool));
+	if (ptrRight.get() == nullptr) ptrRight = NodePtr(new Index(m_pTree, -1, m_level), &(m_pTree->m_indexPool));
 
 	ptrLeft->m_nodeMBR = m_pTree->m_infiniteRegion;
 	ptrRight->m_nodeMBR = m_pTree->m_infiniteRegion;
@@ -134,18 +133,18 @@ void Index::split(uint32_t dataLength, byte* pData, Region& mbr, id_type id, Nod
 
 	for (cIndex = 0; cIndex < g1.size(); ++cIndex)
 	{
-		ptrLeft->insertEntry(0, 0, *(m_ptrMBR[g1[cIndex]]), m_pIdentifier[g1[cIndex]]);
+		ptrLeft->insertEntry(0, nullptr, *(m_ptrMBR[g1[cIndex]]), m_pIdentifier[g1[cIndex]]);
 	}
 
 	for (cIndex = 0; cIndex < g2.size(); ++cIndex)
 	{
-		ptrRight->insertEntry(0, 0, *(m_ptrMBR[g2[cIndex]]), m_pIdentifier[g2[cIndex]]);
+		ptrRight->insertEntry(0, nullptr, *(m_ptrMBR[g2[cIndex]]), m_pIdentifier[g2[cIndex]]);
 	}
 }
 
 uint32_t Index::findLeastEnlargement(const Region& r) const
 {
-	double area = std::numeric_limits<double>::max();
+	double area = std::numeric_limits<double>::infinity();
 	uint32_t best = std::numeric_limits<uint32_t>::max();
 
 	RegionPtr t = m_pTree->m_regionPool.acquire();
@@ -166,7 +165,8 @@ uint32_t Index::findLeastEnlargement(const Region& r) const
 		{
 			// this will rarely happen, so compute best area on the fly only
 			// when necessary.
-			if (a < m_ptrMBR[best]->getArea()) best = cChild;
+			if (enl == std::numeric_limits<double>::infinity()
+			    || a < m_ptrMBR[best]->getArea()) best = cChild;
 		}
 	}
 
@@ -179,7 +179,7 @@ uint32_t Index::findLeastOverlap(const Region& r) const
 
 	double leastOverlap = std::numeric_limits<double>::max();
 	double me = std::numeric_limits<double>::max();
-	OverlapEntry* best = 0;
+	OverlapEntry* best = nullptr;
 
 	// find combined region and enlargement of every entry and store it.
 	for (uint32_t cChild = 0; cChild < m_children; ++cChild)
@@ -366,7 +366,7 @@ void Index::adjustTree(Node* n1, Node* n2, std::stack<id_type>& pathBuffer, byte
 	// No write necessary here. insertData will write the node if needed.
 	//m_pTree->writeNode(this);
 
-	bool bAdjusted = insertData(0, 0, n2->m_nodeMBR, n2->m_identifier, pathBuffer, overflowTable);
+	bool bAdjusted = insertData(0, nullptr, n2->m_nodeMBR, n2->m_identifier, pathBuffer, overflowTable);
 
 	// if n2 is contained in the node and there was no split or reinsert,
 	// we need to adjust only if recalculation took place.

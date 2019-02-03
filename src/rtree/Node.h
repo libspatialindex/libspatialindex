@@ -5,7 +5,7 @@
  * Copyright (c) 2002, Marios Hadjieleftheriou
  *
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
@@ -27,6 +27,9 @@
 
 #pragma once
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-qual"
+
 namespace SpatialIndex
 {
 	namespace RTree
@@ -41,36 +44,36 @@ namespace SpatialIndex
 		class Node : public SpatialIndex::INode
 		{
 		public:
-			virtual ~Node();
+			~Node() override;
 
 			//
 			// Tools::IObject interface
 			//
-			virtual Tools::IObject* clone();
+			Tools::IObject* clone() override;
 
 			//
 			// Tools::ISerializable interface
 			//
-			virtual uint32_t getByteArraySize();
-			virtual void loadFromByteArray(const byte* data);
-			virtual void storeToByteArray(byte** data, uint32_t& len);
+			uint32_t getByteArraySize() override;
+			void loadFromByteArray(const byte* data) override;
+			void storeToByteArray(byte** data, uint32_t& len) override;
 
 			//
 			// SpatialIndex::IEntry interface
 			//
-			virtual id_type getIdentifier() const;
-			virtual void getShape(IShape** out) const;
+			id_type getIdentifier() const override;
+			void getShape(IShape** out) const override;
 
 			//
 			// SpatialIndex::INode interface
 			//
-			virtual uint32_t getChildrenCount() const;
-			virtual id_type getChildIdentifier(uint32_t index)  const;
-			virtual void getChildShape(uint32_t index, IShape** out)  const;
-                        virtual void getChildData(uint32_t index, uint32_t& length, byte** data) const;
-			virtual uint32_t getLevel() const;
-			virtual bool isIndex() const;
-			virtual bool isLeaf() const;
+			uint32_t getChildrenCount() const override;
+			id_type getChildIdentifier(uint32_t index)  const override;
+			void getChildShape(uint32_t index, IShape** out)  const override;
+                        void getChildData(uint32_t index, uint32_t& length, byte** data) const override;
+			uint32_t getLevel() const override;
+			bool isIndex() const override;
+			bool isLeaf() const override;
 
 		private:
 			Node();
@@ -96,37 +99,37 @@ namespace SpatialIndex
 
 			virtual void split(uint32_t dataLength, byte* pData, Region& mbr, id_type id, NodePtr& left, NodePtr& right) = 0;
 
-			RTree* m_pTree;
+			RTree* m_pTree{nullptr};
 				// Parent of all nodes.
 
-			uint32_t m_level;
+			uint32_t m_level{0};
 				// The level of the node in the tree.
 				// Leaves are always at level 0.
 
-			id_type m_identifier;
+			id_type m_identifier{-1};
 				// The unique ID of this node.
 
-			uint32_t m_children;
+			uint32_t m_children{0};
 				// The number of children pointed by this node.
 
-			uint32_t m_capacity;
+			uint32_t m_capacity{0};
 				// Specifies the node capacity.
 
 			Region m_nodeMBR;
 				// The minimum bounding region enclosing all data contained in the node.
 
-			byte** m_pData;
+			byte** m_pData{nullptr};
 				// The data stored in the node.
 
-			RegionPtr* m_ptrMBR;
+			RegionPtr* m_ptrMBR{nullptr};
 				// The corresponding data MBRs.
 
-			id_type* m_pIdentifier;
+			id_type* m_pIdentifier{nullptr};
 				// The corresponding data identifiers.
 
-			uint32_t* m_pDataLength;
+			uint32_t* m_pDataLength{nullptr};
 
-			uint32_t m_totalDataLength;
+			uint32_t m_totalDataLength{0};
 
 			class RstarSplitEntry
 			{
@@ -140,7 +143,7 @@ namespace SpatialIndex
 
 				static int compareLow(const void* pv1, const void* pv2)
 				{
-					RstarSplitEntry* pe1 = * (RstarSplitEntry**) pv1;
+                    RstarSplitEntry* pe1 = * (RstarSplitEntry**) pv1;
 					RstarSplitEntry* pe2 = * (RstarSplitEntry**) pv2;
 
 					assert(pe1->m_sortDim == pe2->m_sortDim);
@@ -192,3 +195,4 @@ namespace SpatialIndex
 		}; // Node
 	}
 }
+#pragma GCC diagnostic pop

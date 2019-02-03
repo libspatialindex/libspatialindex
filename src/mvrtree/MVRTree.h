@@ -5,7 +5,7 @@
  * Copyright (c) 2002, Marios Hadjieleftheriou
  *
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
@@ -30,6 +30,10 @@
 #include "Statistics.h"
 #include "Node.h"
 #include "PointerPoolNode.h"
+#include <memory>
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-qual"
 
 namespace SpatialIndex
 {
@@ -63,7 +67,7 @@ namespace SpatialIndex
 				// StrongVersionOverflow    VT_DOUBLE Default is 0.8
 				// VersionUnderflow         VT_DOUBLE Default is 0.3
 
-			virtual ~MVRTree();
+			~MVRTree() override;
 
 			//
 			// ISpatialIndex interface
@@ -152,18 +156,14 @@ namespace SpatialIndex
 			Tools::PointerPool<Node> m_indexPool;
 			Tools::PointerPool<Node> m_leafPool;
 
-			std::vector<Tools::SmartPointer<ICommand> > m_writeNodeCommands;
-			std::vector<Tools::SmartPointer<ICommand> > m_readNodeCommands;
-			std::vector<Tools::SmartPointer<ICommand> > m_deleteNodeCommands;
-
-#ifdef HAVE_PTHREAD_H
-			pthread_mutex_t m_lock;
-#endif
+			std::vector<std::shared_ptr<ICommand> > m_writeNodeCommands;
+			std::vector<std::shared_ptr<ICommand> > m_readNodeCommands;
+			std::vector<std::shared_ptr<ICommand> > m_deleteNodeCommands;
 
 			class RootEntry
 			{
 			public:
-				RootEntry() {}
+				RootEntry() = default;
 				RootEntry(id_type id, double s, double e) : m_id(id), m_startTime(s), m_endTime(e) {}
 
 				id_type m_id;
@@ -179,7 +179,7 @@ namespace SpatialIndex
 				double m_minDist;
 
 				NNEntry(id_type id, IEntry* e, double f) : m_id(id), m_pEntry(e), m_minDist(f) {}
-				~NNEntry() {}
+				~NNEntry() = default;
 
 				struct greater : public std::binary_function<NNEntry*, NNEntry*, bool>
 				{
@@ -190,11 +190,11 @@ namespace SpatialIndex
 			class NNComparator : public INearestNeighborComparator
 			{
 			public:
-				double getMinimumDistance(const IShape& query, const IShape& entry)
+				double getMinimumDistance(const IShape& query, const IShape& entry) override
 				{
 					return query.getMinimumDistance(entry);
 				}
-				double getMinimumDistance(const IShape& query, const IData& data)
+				double getMinimumDistance(const IShape& query, const IData& data) override
 				{
 					IShape* pR;
 					data.getShape(&pR);
@@ -225,4 +225,4 @@ namespace SpatialIndex
 		std::ostream& operator<<(std::ostream& os, const MVRTree& t);
 	}
 }
-
+#pragma GCC diagnostic pop

@@ -2,7 +2,7 @@
 #define SIDX_API_TEST_H
 
 #include <spatialindex/capi/sidx_api.h>
-#include <string.h>
+#include <cstring>
 
 #include "test.h"
 
@@ -18,7 +18,7 @@ class SidxApiRTreeTest : public testing::Test {
     // virtual void SetUp() will be called before each test is run.  You
     // should define it if you need to initialize the varaibles.
     // Otherwise, this can be skipped.
-    virtual void SetUp() {
+    void SetUp() override {
       memset(pszData, '\0', sizeof(pszData));
       strcpy(pszData, "TEST");
       IndexPropertyH props = IndexProperty_Create();
@@ -33,7 +33,7 @@ class SidxApiRTreeTest : public testing::Test {
     // You should define it if there is cleanup work to do.  Otherwise,
     // you don't have to provide it.
     //
-    virtual void TearDown() {
+    void TearDown() override {
       Index_Destroy(idx);
     }
 
@@ -65,7 +65,7 @@ TEST_F(SidxApiRTreeTest, intersects_nearest_id) {
 TEST_F(SidxApiRTreeTest, intersects_obj) {
   uint64_t nResults;
   IndexItemH* items;
-  char* pszRes = NULL;
+  char* pszRes = nullptr;
   uint64_t len = 0;  
   Index_Intersects_obj(idx, min, max, nDims, &items, &nResults);
   ASSERT_EQ(1, nResults);
@@ -78,7 +78,7 @@ TEST_F(SidxApiRTreeTest, intersects_obj) {
 TEST_F(SidxApiRTreeTest, intersects_nearest_obj) {
   uint64_t nResults;
   IndexItemH* items;
-  char* pszRes = NULL;
+  char* pszRes = nullptr;
   uint64_t len = 0;  
   Index_NearestNeighbors_obj(idx, min, max, nDims, &items, &nResults);
   ASSERT_EQ(1, nResults);

@@ -33,7 +33,7 @@
 #include "gtest/internal/gtest-filepath.h"
 #include "gtest/internal/gtest-port.h"
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #if GTEST_OS_WINDOWS_MOBILE
 # include <windows.h>
@@ -44,7 +44,7 @@
 // Symbian OpenC has PATH_MAX in sys/syslimits.h
 # include <sys/syslimits.h>
 #else
-# include <limits.h>
+# include <climits>
 # include <climits>  // Some Linux distributions define PATH_MAX here.
 #endif  // GTEST_OS_WINDOWS_MOBILE
 
@@ -108,7 +108,7 @@ FilePath FilePath::GetCurrentDir() {
   return FilePath(_getcwd(cwd, sizeof(cwd)) == NULL ? "" : cwd);
 #else
   char cwd[GTEST_PATH_MAX_ + 1] = { '\0' };
-  return FilePath(getcwd(cwd, sizeof(cwd)) == NULL ? "" : cwd);
+  return FilePath(getcwd(cwd, sizeof(cwd)) == nullptr ? "" : cwd);
 #endif  // GTEST_OS_WINDOWS_MOBILE
 }
 
@@ -349,7 +349,7 @@ FilePath FilePath::RemoveTrailingPathSeparator() const {
 // redundancies that might be in a pathname involving "." or "..".
 // TODO(wan@google.com): handle Windows network shares (e.g. \\server\share).
 void FilePath::Normalize() {
-  if (pathname_.c_str() == NULL) {
+  if (pathname_.c_str() == nullptr) {
     pathname_ = "";
     return;
   }

@@ -67,8 +67,7 @@ TimePoint::TimePoint(const TimePoint& p)
 }
 
 TimePoint::~TimePoint()
-{
-}
+= default;
 
 TimePoint& TimePoint::operator=(const TimePoint& p)
 {
@@ -156,7 +155,7 @@ void TimePoint::storeToByteArray(byte** data, uint32_t& len)
 bool TimePoint::intersectsShapeInTime(const ITimeShape& in) const
 {
 	const TimeRegion* pr = dynamic_cast<const TimeRegion*>(&in);
-	if (pr != 0) return pr->containsPointInTime(*this);
+	if (pr != nullptr) return pr->containsPointInTime(*this);
 
 	throw Tools::IllegalStateException("intersectsShapeInTime: Not implemented yet!");
 }
@@ -282,7 +281,7 @@ void TimePoint::makeDimension(uint32_t dimension)
 		m_dimension = dimension;
 
 		delete[] m_pCoords;
-		m_pCoords = 0;
+		m_pCoords = nullptr;
 
 		m_pCoords = new double[m_dimension];
 	}
