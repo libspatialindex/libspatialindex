@@ -32,6 +32,9 @@
 #include "PointerPoolNode.h"
 #include <memory>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-qual"
+
 namespace SpatialIndex
 {
 	namespace MVRTree
@@ -221,4 +224,4 @@ namespace SpatialIndex
 		std::ostream& operator<<(std::ostream& os, const MVRTree& t);
 	}
 }
-
+#pragma GCC diagnostic pop
