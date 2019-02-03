@@ -6,13 +6,13 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --fix-mi
         ca-certificates \
         cmake \
         curl \
-        git
+        git libtool m4 automake
 
 RUN git clone https://github.com/libspatialindex/libspatialindex.git
 
 
-RUN cd libspatialindex && \
-	cmake . -DCMAKE_INSTALL_PREFIX=/usr \
-		    -DCMAKE_SYSTEM_NAME=Linux \
-			-DCMAKE_BUILD_TYPE=Release \
-			&& make && make install
+#RUN cd libspatialindex && \
+#	cmake . -DCMAKE_INSTALL_PREFIX=/usr \
+#		    -DCMAKE_SYSTEM_NAME=Linux \
+#			-DCMAKE_BUILD_TYPE=Release \
+#			&& make && make install
