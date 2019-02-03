@@ -5,7 +5,7 @@
 tmstamp() { echo -n "[$(date '+%H:%M:%S')]" ; }
 
 ./autogen.sh
-./configure
+CXXFLAGS="-std=c++11" ./configure
 
 make
 pushd test/geometry/test1
