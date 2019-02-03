@@ -1,18 +1,41 @@
 #!/bin/bash
-# Builds and tests libLAS
-mkdir -p _build
-cd _build
+# Builds and tests libspatialindex
+./autogen.sh
 
 tmstamp() { echo -n "[$(date '+%H:%M:%S')]" ; }
 
-echo "$(tmstamp) *** script::cmake-config starting $(date) ***"
-cmake .. -DCMAKE_BUILD_TYPE=Debug
-echo "$(tmstamp) *** script::cmake-config finished $(date) ***"
+./autogen.sh
+./configure
 
-echo "$(tmstamp) *** script::cmake-build make $(date) ***"
 make
-echo "$(tmstamp) *** script::cmake-build finished $(date) ***"
+pushd test/geometry/test1
+./run
+popd
 
-echo "$(tmstamp) *** script::cmake-test starting $(date) ***"
-ctest
-echo "$(tmstamp) *** script::cmake-test finished $(date) ***"
+pushd test/rtree/test1
+./run
+popd
+pushd test/rtree/test2
+./run
+popd
+pushd test/rtree/test3
+./run
+popd
+pushd test/rtree/test4
+./run
+popd
+
+pushd test/tprtree/test1
+./run
+popd
+pushd test/tprtree/test2
+./run
+popd
+
+pushd test/mvrtree/test1
+./run
+popd
+pushd test/mvrtree/test2
+./run
+popd
+echo "$(tmstamp) *** finished $(date) ***"
