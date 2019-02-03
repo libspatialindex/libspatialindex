@@ -5,7 +5,7 @@
  * Copyright (c) 2002, Marios Hadjieleftheriou
  *
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
@@ -62,9 +62,11 @@ namespace SpatialIndex
 
 				static int compareEntries(const void* pv1, const void* pv2)
 				{
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-qual"
 					OverlapEntry* pe1 = * (OverlapEntry**) pv1;
 					OverlapEntry* pe2 = * (OverlapEntry**) pv2;
-
+#pragma GCC diagnostic pop
 					if (pe1->m_enlargement < pe2->m_enlargement) return -1;
 					if (pe1->m_enlargement > pe2->m_enlargement) return 1;
 					return 0;
