@@ -13,5 +13,5 @@ echo "adding key"
 ./add_deploy_key.sh pdaldocs-private.key $KEY $KEY_INIT
 
 echo "deploying website"
-./deploy_website.sh $TRAVIS_BUILD_DIR/doc/build /tmp
+./deploy_website.sh $TRAVIS_BUILD_DIR/docs/build /tmp
 echo "done"
