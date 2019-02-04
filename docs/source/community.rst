@@ -5,7 +5,7 @@ Mailing List
 ------------------------------------------------------------------------------
 
 The libspatialindex mailing list is available to ask development questions.
-Please join and participate on groups.io.
+Please join and participate on `groups.io <https://groups.io/g/libspatialindex/>`__.
 
 
 .. raw:: html
