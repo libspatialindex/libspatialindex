@@ -11,12 +11,12 @@
    Mailing List <http://lists.gispython.org/mailman/listinfo/spatialindex>
    overview
    Class Documentation <http://libspatialindex.org/doxygen/>
-   
-   
 
-.. include:: introduction.txt
+
+
+.. include:: introduction.rst
 .. include:: ../../COPYING
-.. include:: download.txt
+.. include:: download.rst
+.. include:: community.rst
 
-.. _download:
 
