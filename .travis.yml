@@ -13,6 +13,7 @@ before_install:
 after_success: |
   if [[ "$TRAVIS_SECURE_ENV_VARS" == "true" &&
         "$TRAVIS_BRANCH" == "doc-building" &&
+        "$CC" == "clang" &&
         -n "$encrypted_e7d7c698df9c_key" ]]
   then
       cd scripts/travis
