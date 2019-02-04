@@ -13,7 +13,7 @@ cd $builddir/html
 cp -rf * $destdir/pdaldocs
 
 cd $builddir/latex/
-cp PDAL.pdf $destdir/pdaldocs
+cp libspatialindex.pdf $destdir/pdaldocs
 
 cd $destdir/pdaldocs
 git config user.email "pdal@hobu.net"
