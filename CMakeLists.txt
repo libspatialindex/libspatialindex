@@ -136,14 +136,13 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${SIDX_BUILD_OUTPUT_DIRECTORY})
 
 if(WIN32)
   if (MSVC)
-      add_definitions(-D_CRT_SECURE_NO_DEPRECATE)
-      add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-      add_definitions(-D_CRT_NONSTDC_NO_WARNING)
-      add_definitions(-D_SCL_SECURE_NO_WARNINGS)
-      add_definitions(-DSPATIALINDEX_CREATE_DLL=1)
-      add_definitions(-DNOMINMAX)
-
-      set(SIDX_COMPILER_MSVC 1)
+    add_definitions(-D_CRT_SECURE_NO_DEPRECATE)
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+    add_definitions(-D_CRT_NONSTDC_NO_WARNING)
+    add_definitions(-D_SCL_SECURE_NO_WARNINGS)
+    add_definitions(-DSPATIALINDEX_CREATE_DLL=1)
+    add_definitions(-DNOMINMAX)
+    set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /wd4068")
 
     if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
       string(REGEX REPLACE "/W[0-4]" "/W4"
@@ -152,11 +151,6 @@ if(WIN32)
       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
     endif()
   endif()
-
-  set(CMAKE_INCLUDE_PATH c:/osgeo4w/include;$ENV{CMAKE_INCLUDE_PATH})
-  set(CMAKE_LIBRARY_PATH c:/osgeo4w/lib;$ENV{CMAKE_LIBRARY_PATH})
-
-  set(SIDX_OS_WIN32 1)
 
 else()
   # not WIN32
