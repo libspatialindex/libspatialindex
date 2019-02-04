@@ -13,5 +13,6 @@ echo "adding key"
 ./add_deploy_key.sh pdaldocs-private.key $KEY $KEY_INIT
 
 echo "deploying website"
+cp -r $TRAVIS_BUILD_DIR/docs/doxygen/html $TRAVIS_BUILD_DIR/docs/build/doxygen
 ./deploy_website.sh $TRAVIS_BUILD_DIR/docs/build /tmp
 echo "done"

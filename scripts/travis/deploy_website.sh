@@ -8,8 +8,8 @@ git clone git@github.com:libspatialindex/libspatialindex.github.com.git $destdir
 cd $destdir/pdaldocs
 git checkout master
 
-cd $builddir/doxygen
-cp -rf * $destdir/pdaldocs/doxygen
+cd $builddir/doxygen/
+cp -rf * $destdir/pdaldocs/doxygen/
 
 cd $builddir/html
 cp -rf * $destdir/pdaldocs
