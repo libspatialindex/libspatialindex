@@ -27,10 +27,7 @@ nodist_EXTRA_libspatialindex_c_la_SOURCES = dummy.cxx
 libspatialindex_la_LDFLAGS = -version-info 5:0:0 -no-undefined
 libspatialindex_c_la_LDFLAGS = -version-info 5:0:0 -no-undefined
 
-EXTRA_DIST = INSTALL.WIN \
-             spatialindex.sln \
-             spatialindex-vc/spatialindex.vcproj \
-             CMakeLists.txt \
+EXTRA_DIST = CMakeLists.txt \
              src/CMakeLists.txt \
              test/CMakeLists.txt \
              test/mvrtree/test1/run \
@@ -40,5 +37,4 @@ EXTRA_DIST = INSTALL.WIN \
              test/rtree/test3/run \
              test/rtree/test4/run \
              test/tprtree/test1/run \
-             test/tprtree/test2/run \
-             test/gtest
+             test/tprtree/test2/run
