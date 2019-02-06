@@ -11,11 +11,9 @@ EXTRA_DIST = \
   include/gtest/internal/gtest-param-util-generated.h.pump \
   include/gtest/internal/gtest-tuple.h.pump \
   include/gtest/internal/gtest-type-util.h.pump \
-  make/Makefile \
   scripts/fuse_gtest_files.py \
   scripts/gen_gtest_pred_impl.py \
-  scripts/pump.py \
-  scripts/test/Makefile
+  scripts/pump.py
 
 # gtest source files that we don't compile directly.  They are
 # #included by gtest-all.cc.
@@ -118,49 +116,6 @@ EXTRA_DIST += \
   CMakeLists.txt \
   cmake/internal_utils.cmake
 
-# MSVC project files
-EXTRA_DIST += \
-  msvc/gtest-md.sln \
-  msvc/gtest-md.vcproj \
-  msvc/gtest.sln \
-  msvc/gtest.vcproj \
-  msvc/gtest_main-md.vcproj \
-  msvc/gtest_main.vcproj \
-  msvc/gtest_prod_test-md.vcproj \
-  msvc/gtest_prod_test.vcproj \
-  msvc/gtest_unittest-md.vcproj \
-  msvc/gtest_unittest.vcproj
-
-# xcode project files
-EXTRA_DIST += \
-  xcode/Config/DebugProject.xcconfig \
-  xcode/Config/FrameworkTarget.xcconfig \
-  xcode/Config/General.xcconfig \
-  xcode/Config/ReleaseProject.xcconfig \
-  xcode/Config/StaticLibraryTarget.xcconfig \
-  xcode/Config/TestTarget.xcconfig \
-  xcode/Resources/Info.plist \
-  xcode/Scripts/runtests.sh \
-  xcode/Scripts/versiongenerate.py \
-  xcode/gtest.xcodeproj/project.pbxproj
-
-# xcode sample files
-EXTRA_DIST += \
-  xcode/Samples/FrameworkSample/Info.plist \
-  xcode/Samples/FrameworkSample/WidgetFramework.xcodeproj/project.pbxproj \
-  xcode/Samples/FrameworkSample/runtests.sh \
-  xcode/Samples/FrameworkSample/widget.cc \
-  xcode/Samples/FrameworkSample/widget.h \
-  xcode/Samples/FrameworkSample/widget_test.cc
-
-# C++Builder project files
-EXTRA_DIST += \
-  codegear/gtest.cbproj \
-  codegear/gtest.groupproj \
-  codegear/gtest_all.cc \
-  codegear/gtest_link.cc \
-  codegear/gtest_main.cbproj \
-  codegear/gtest_unittest.cbproj
 
 # Distribute and install M4 macro
 m4datadir = $(datadir)/aclocal
