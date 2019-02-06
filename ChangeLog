@@ -1,5 +1,238 @@
+2019-02-05
+	* Howard Butler <howard@hobu.co> get gtest happy with autoconf (20:32:12)
+	* Howard Butler <howard@hobu.co> more 'dist' target for cmake and autotools (20:22:57)
+	* Howard Butler <howard@hobu.co> add 'dist' target to cmake (20:04:59)
+
+2019-02-04
+	* Howard Butler <howard@hobu.co> don't ls (13:01:54)
+	* Howard Butler <howard@hobu.co> another doxygen cycle (12:39:24)
+	* Howard Butler <howard@hobu.co> doxygen dir stuff (11:37:44)
+	* Howard Butler <howard@hobu.co> make doxygen dir (11:09:01)
+	* Howard Butler <howard@hobu.co> copy doxygen output (10:47:34)
+	* Howard Butler <howard@hobu.co> doc updates and reorganization (09:05:14)
+	* Howard Butler <howard@hobu.co> Automated doc build and update (#134) (08:22:23)
+
+2019-02-03
+	* Howard Butler <howard@hobu.co> ignore unknown pragmas on msvc (#133) (22:38:35)
+	* Howard Butler <howard@hobu.co> Merge and catch up of #116 (#132) (13:12:47)
+	* Howard Butler <howard@hobu.co> silence a bunch of cast-qual (#130) (10:21:54)
+	* Howard Butler <howard@hobu.co> autotools based Travis build (10:21:27)
+
+2019-02-02
+	* Howard Butler <howard@hobu.co> remove unnecessary personal config (22:40:57)
+	* Howard Butler <howard@hobu.co> README is an autotools-required file (22:40:33)
+	* Howard Butler <howard@hobu.co> remove a bunch of dead stuff and add some docker/conda scripts (#129) (22:07:01)
+	* Howard Butler <howard@hobu.co> appveyor configuration based on conda (#128) (21:20:23)
+	* Howard Butler <howard@hobu.co> upstream Tools.h patch from conda libspatialindex feedstock (#127) (17:33:29)
+	* Howard Butler <howard@hobu.co> add Appveyor status badge (16:07:20)
+	* Howard Butler <howard@hobu.co> link to Travis instead of dummy link (15:34:24)
+
+2019-01-29
+	* Julien Cabieces <julien.cabieces@oslandia.com> Correct findLeastEnlargement method to always return a correct value (11:37:38)
+
+2018-11-19
+	* Elliot Saba <staticfloat@gmail.com> libstdc++/libc++ fixes for macOS and FreeBSD (#124) (09:12:07)
+
+2018-09-29
+	* Howard Butler <howard@hobu.co> Merge pull request #122 from willp552/master (19:57:45)
+	* William Price <willp552@gmail.com> Use tabs as opposed to spaces for consistency. (09:35:09)
+
+2018-08-08
+	* Howard Butler <howard@hobu.co> Merge pull request #121 from nyalldawson/fix_120 (16:00:03)
+
+2018-07-31
+	* Nyall Dawson <nyall.dawson@gmail.com> Revert changes to c API (16:06:17)
+
+2018-07-30
+	* Howard Butler <howard@hobu.co> Merge pull request #119 from nyalldawson/modernize (14:05:47)
+
+2018-07-26
+	* Nyall Dawson <nyall.dawson@gmail.com> More unique_ptr use (17:01:19)
+	* Nyall Dawson <nyall.dawson@gmail.com> Convert some raw to unique ptr (16:51:54)
+	* Howard Butler <howard@hobu.co> Merge pull request #117 from nyalldawson/modernize (08:59:06)
+
+2018-07-21
+	* Nyall Dawson <nyall.dawson@gmail.com> Fix a warning (04:15:38)
+	* Nyall Dawson <nyall.dawson@gmail.com> Fix warning (04:05:19)
+	* Nyall Dawson <nyall.dawson@gmail.com> Fix build (04:04:17)
+	* Nyall Dawson <nyall.dawson@gmail.com> Use noexcept (04:02:50)
+	* Nyall Dawson <nyall.dawson@gmail.com> Use = delete (04:02:07)
+	* Nyall Dawson <nyall.dawson@gmail.com> Use = default (04:01:19)
+	* Nyall Dawson <nyall.dawson@gmail.com> Use emplace_back instead of push_back (04:00:37)
+	* Nyall Dawson <nyall.dawson@gmail.com> Use default member init (03:59:51)
+	* Nyall Dawson <nyall.dawson@gmail.com> Replace raw string literal (03:54:27)
+	* Nyall Dawson <nyall.dawson@gmail.com> Replace deprecated headers (03:53:09)
+	* Nyall Dawson <nyall.dawson@gmail.com> 0 -> nullptr (03:52:08)
+	* Nyall Dawson <nyall.dawson@gmail.com> Add overrides (03:51:26)
+	* Nyall Dawson <nyall.dawson@gmail.com> Fix build (03:47:46)
+
+2015-02-21
+	* Howard Butler <howard@hobu.co> remove broken pthread support #60 (11:10:05)
+
+2015-02-12
+	* Norman Barker <norman@cloudant.com> Fixed potential memory leaks (10:27:08)
+	* Norman Barker <norman@cloudant.com> Travis status (10:34:36)
+	* Norman Barker <norman@cloudant.com> Merge pull request #50 from cloudant/simple_c_test (08:33:40)
+	* Norman Barker <norman@cloudant.com> Merge pull request #51 from cloudant/sidx_test (08:33:30)
+
+2014-11-29
+	* Howard Butler <howard@hobu.co> auto-up some iterators (20:04:40)
+
+2014-11-27
+	* Howard Butler <howard@hobu.co> remove Tools::SmartPointer in exchange for C++11 std::shared_ptr (14:25:27)
+
+2018-05-29
+	* Howard Butler <howard@hobu.co> Merge remote-tracking branch 'origin/master' into capi-fixes (10:21:34)
+	* Howard Butler <howard@hobu.co> bump version numbers (10:21:28)
+
 2018-04-26
-	* Michael Herwig <michael.herwig@hotmail.de> Added cmake support for 'Visual Studio 15 2017 [Win64]' generator (12:32:00)
+	* Howard Butler <howard@hobu.co> Merge pull request #114 from michael-herwig/master (10:58:17)
+	* Michael Herwig <michael.herwig@hotmail.de> added summary to changelog (05:34:40)
+	* Michael Herwig <michael.herwig@hotmail.de> Added silent tr1 depecreation flag vor msvc compiler >= 1900 (05:30:27)
+	* Michael Herwig <michael.herwig@hotmail.de> Added <cinttypes> include for proper compilation using msvc15 (05:23:48)
+	* Michael Herwig <michael.herwig@hotmail.de> Added cmake option for conditional test integration (05:19:21)
+
+2017-12-05
+	* Howard Butler <howard@hobu.co> Merge pull request #111 from QuLogic/scanbuild (09:41:26)
+	* Elliott Sales de Andrade <quantum.analyst@gmail.com> Fix leaks in tests. (01:27:11)
+	* Elliott Sales de Andrade <quantum.analyst@gmail.com> Fix possible memory leaks with unexpected returns. (01:05:35)
+	* Elliott Sales de Andrade <quantum.analyst@gmail.com> Re-arrange loop to avoid double-free warning. (00:55:54)
+	* Elliott Sales de Andrade <quantum.analyst@gmail.com> Fix possible NULL-dereference. (00:48:28)
+
+2017-11-29
+	* Howard Butler <howard@hobu.co> Merge pull request #108 from QuLogic/fix-oob (10:28:43)
+
+2017-11-28
+	* Elliott Sales de Andrade <quantum.analyst@gmail.com> Fix array allocation in Index_GetLeaves. (04:03:40)
+
+2017-10-17
+	* Howard Butler <howard@hobu.co> Merge pull request #106 from r-barnes/patch-2 (13:43:04)
+
+2017-10-16
+	* Richard Barnes <rbarnes@umn.edu> Update introduction.txt (11:29:24)
+
+2017-08-22
+	* Howard Butler <howard@hobu.co> Merge pull request #101 from tpetazzoni/configure-optim-fix (09:44:32)
+
+2017-08-14
+	* Thomas Petazzoni <thomas.petazzoni@free-electrons.com> configure.ac: do not force -O2 (16:36:36)
+
+2017-04-20
+	* Howard Butler <howard@hobu.co> Merge pull request #94 from libspatialindex/capi-fixes (11:35:39)
+
+2017-03-03
+	* Howard Butler <howard@hobu.co> modify C API internals to match C API definition in headers (fixes #92) (10:52:35)
+
+2016-12-19
+	* Howard Butler <howard@hobu.co> reset path to fix #91 when generating autoconf stuff (11:38:49)
+
+2016-08-23
+	* Howard Butler <howard@hobu.co> tmpstamp function (13:42:21)
+	* Howard Butler <howard@hobu.co> add travis config for libspatialindex (13:38:37)
+
+2016-08-22
+	* Howard Butler <howard@hobu.co> don't install gtest (16:24:15)
+	* Howard Butler <howard@hobu.co> whitespace cleanup (16:24:06)
+	* Howard Butler <howard@hobu.co> build libsidxtest for both autotools and cmake (13:19:33)
+	* Howard Butler <howard@hobu.co> embed gtest in the source tree for use in testing (12:05:36)
+	* Howard Butler <howard@hobu.co> Merge pull request #74 from sasavilic/master (10:52:58)
+	* Howard Butler <howard@hobu.co> Merge pull request #84 from naihil/msvs2010_stdint (10:52:23)
+
+2016-03-17
+	* Anatoliy Golubev <darth.naihil@gmail.com> Use stdint.h for MSVS 2010 too (04:22:01)
+
+2016-02-29
+	* Howard Butler <howard@hobu.co> Merge pull request #82 from miklos1/master (13:59:36)
+	* Miklos Homolya <m.homolya14@imperial.ac.uk> fix C API (09:01:24)
+
+2016-02-02
+	* Howard Butler <howard@hobu.co> Merge pull request #81 from Hemofektik/master (08:52:57)
+	* Richard Schubert <rs@directx9.de> fixed stat use for MSVC to use _stat64 instead to support files larger than 2GB (02:38:35)
+
+2016-01-29
+	* Howard Butler <howard@hobu.co> Merge pull request #80 from Hemofektik/master (06:42:30)
+	* Richard Schubert <rs@directx9.de> fixed CMakeLists.txt to support MSVC14 (Visual Studio 2015) (04:18:39)
+
+2015-12-07
+	* Howard Butler <howard@hobu.co> Merge pull request #79 from cloudant/fix-rtree-multi-entry-deletes (11:05:16)
+
+2015-12-04
+	* Paul J. Davis <paul.joseph.davis@gmail.com> Fix RTree deletions (16:19:19)
+
+2015-11-23
+	* Howard Butler <howard@hobu.co> another tweak for #78 (09:41:35)
+	* Howard Butler <howard@hobu.co> shut up MSVC about dll linkage warnings #78 (08:51:14)
+
+2015-11-20
+	* Howard Butler <howard@hobu.co> attempt to fix #78 -- MSVC stdint.h for MSVC versions > 1700 (12:57:14)
+
+2015-07-16
+	* Sasa Vilic <svilic@ubimet.com> Making error passing over C interface reentrant for GCC implementation (05:17:51)
+
+2015-04-25
+	* Howard Butler <howard@hobu.co> Merge pull request #68 from cloudant/fix-adjust-tree (16:34:58)
+	* Howard Butler <howard@hobu.co> Merge pull request #72 from zippy1981/patch-1 (16:34:37)
+
+2015-04-23
+	* Justin Dearing <zippy1981@gmail.com> Update .gitignore (17:55:34)
+
+2015-04-09
+	* Howard Butler <howard@hobu.co> Merge pull request #70 from TheSkorm/patch-1 (08:55:27)
+	* Michael Wheeler <git@michael-wheeler.org> Small typo in DiskStorageManager.cc (06:38:54)
+
+2015-03-17
+	* Paul J. Davis <paul.joseph.davis@gmail.com> Fix RTree::Index::adjustTree (12:00:33)
+
+2015-03-03
+	* Howard Butler <howard@hobu.co> Merge pull request #67 from sciencectn/master (09:42:23)
+
+2015-03-02
+	* Chris Taylor <sciencectn@gmail.com> Made a few changes so it would compile on Cygwin. (23:30:24)
+
+2015-02-23
+	* Howard Butler <howard@hobu.co> Merge pull request #56 from cloudant/fix-root-mbr-on-condense (16:25:19)
+	* Howard Butler <howard@hobu.co> Merge pull request #61 from cloudant/55-fix-region-touches-region (16:25:07)
+	* Howard Butler <howard@hobu.co> Merge pull request #62 from cloudant/57-fix-index-adjust-tree (16:25:02)
+	* Howard Butler <howard@hobu.co> Merge pull request #63 from cloudant/58-fix-rstar-reinsert (16:24:52)
+	* Norman Barker <norman@cloudant.com> Merge pull request #53 from cloudant/fix-rstar-reinsert (15:07:44)
+
+2015-02-20
+	* Paul J. Davis <paul.joseph.davis@gmail.com> Fix adjustTree during R*-tree reinserts (16:04:19)
+	* Paul J. Davis <paul.joseph.davis@gmail.com> Fix Index::adjustTree/4 (16:01:13)
+	* Paul J. Davis <paul.joseph.davis@gmail.com> Fix Region::touchesRegion (15:59:23)
+	* Paul J. Davis <paul.joseph.davis@gmail.com> Update the root MBR during condenseTree (01:45:46)
+
+2015-02-18
+	* Paul J. Davis <paul.joseph.davis@gmail.com> Fix Node::reinsertData selection criteria (12:48:18)
+
+2015-02-11
+	* Norman Barker <norman@cloudant.com> Initial gtest tests (12:24:21)
+	* Norman Barker <norman@cloudant.com> Initial Travis build file (09:35:02)
+	* Norman Barker <norman@cloudant.com> Simple RTree CAPI example (08:34:10)
+
+2015-02-05
+	* Howard Butler <howard@hobu.co> Merge pull request #49 from cloudant/fix-mvrtree-locks (08:09:28)
+
+2015-02-04
+	* Paul J. Davis <paul.joseph.davis@gmail.com> Fix the locking calls in MVRTree.cc (19:59:55)
+
+2015-01-14
+	* Howard Butler <howard@hobu.co> Merge pull request #47 from cloudant/flush-index-headers (15:56:05)
+
+2014-12-17
+	* Paul J. Davis <paul.joseph.davis@gmail.com> Add a flush function to each index type (22:17:17)
+
+2014-11-02
+	* Howard Butler <howard@hobu.co> Set IndexIdentifier on getIndexProperties for MVRTree and TPRTree (21:05:53)
+
+2014-11-01
+	* Howard Butler <howard@hobu.co> modify fix for #40 to keep IndexIdentifier around when getting Index properties (11:49:48)
+	* Howard Butler <howard@hobu.co> point download to 1.8.5 release (11:22:42)
+	* Howard Butler <howard@hobu.co> more automake tweak (11:11:38)
+	* Howard Butler <howard@hobu.co> automake tweaks (11:08:19)
+	* Howard Butler <hobu@hobu.co> add my windows config example (10:40:38)
+	* Howard Butler <howard@hobu.co> update HOWTORELEASE notes (09:21:25)
+	* Howard Butler <howard@hobu.co> Increment versioning to 1.8.5 in preparation for release (09:19:25)
 
 2014-10-31
 	* Howard Butler <howard@hobu.co> CAPI: revert #40, which could cause inconsistent object lifetime behavior (23:53:04)
