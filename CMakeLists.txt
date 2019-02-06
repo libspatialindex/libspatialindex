@@ -239,3 +239,6 @@ add_subdirectory(src)
 if(SIDX_BUILD_TESTS)
   add_subdirectory(test)
 endif()
+
+add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
+
