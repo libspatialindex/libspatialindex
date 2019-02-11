@@ -7,6 +7,7 @@ EXTRA_DIST = \
   CHANGES \
   CONTRIBUTORS \
   LICENSE \
+  CMakeLists.txt \
   include/gtest/gtest-param-test.h.pump \
   include/gtest/internal/gtest-param-util-generated.h.pump \
   include/gtest/internal/gtest-tuple.h.pump \
