@@ -96,7 +96,7 @@ public:
 		delete pS;
 
 		// data should be an array of characters representing a Region as a string.
-		byte* pData = 0;
+		uint8_t* pData = 0;
 		uint32_t cLen = 0;
 		d.getData(cLen, &pData);
 		// do something.

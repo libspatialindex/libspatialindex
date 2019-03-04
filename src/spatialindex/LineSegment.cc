@@ -129,7 +129,7 @@ uint32_t LineSegment::getByteArraySize()
 	return (sizeof(uint32_t) + m_dimension * sizeof(double) * 2);
 }
 
-void LineSegment::loadFromByteArray(const byte* ptr)
+void LineSegment::loadFromByteArray(const uint8_t* ptr)
 {
 	uint32_t dimension;
 	memcpy(&dimension, ptr, sizeof(uint32_t));
@@ -142,11 +142,11 @@ void LineSegment::loadFromByteArray(const byte* ptr)
 	//ptr += m_dimension * sizeof(double);
 }
 
-void LineSegment::storeToByteArray(byte** data, uint32_t& len)
+void LineSegment::storeToByteArray(uint8_t** data, uint32_t& len)
 {
 	len = getByteArraySize();
-	*data = new byte[len];
-	byte* ptr = *data;
+	*data = new uint8_t[len];
+	uint8_t* ptr = *data;
 
 	memcpy(ptr, &m_dimension, sizeof(uint32_t));
 	ptr += sizeof(uint32_t);

@@ -102,7 +102,7 @@ public:
 				);
 
 			Region r(low, high, 2);
-			m_pNext = new RTree::Data(sizeof(double), reinterpret_cast<byte*>(low), r, id);
+			m_pNext = new RTree::Data(sizeof(double), reinterpret_cast<uint8_t*>(low), r, id);
 				// Associate a bogus data array with every entry for testing purposes.
 				// Once the data array is given to RTRee:Data a local copy will be created.
 				// Hence, the input data array can be deleted after this operation if not

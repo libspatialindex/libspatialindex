@@ -132,7 +132,7 @@ int main(int argc, char** argv)
 					// array of bytes can be inserted in the index (see MVRTree::Node::load and MVRTree::Node::store for
 					// an example of how to do that).
 
-				//tree->insertData(data.size() + 1, reinterpret_cast<const byte*>(data.c_str()), r, id);
+				//tree->insertData(data.size() + 1, reinterpret_cast<const uint8_t*>(data.c_str()), r, id);
 
 				tree->insertData(0, nullptr, r, id);
 					// example of passing zero size and a null pointer as the associated data.

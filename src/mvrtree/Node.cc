@@ -63,7 +63,7 @@ uint32_t Node::getByteArraySize()
 		(2 * m_pTree->m_dimension * sizeof(double)));
 }
 
-void Node::loadFromByteArray(const byte* ptr)
+void Node::loadFromByteArray(const uint8_t* ptr)
 {
 	m_nodeMBR = m_pTree->m_infiniteRegion;
 
@@ -103,7 +103,7 @@ void Node::loadFromByteArray(const byte* ptr)
 		if (m_pDataLength[cChild] > 0)
 		{
 			m_totalDataLength += m_pDataLength[cChild];
-			m_pData[cChild] = new byte[m_pDataLength[cChild]];
+			m_pData[cChild] = new uint8_t[m_pDataLength[cChild]];
 			memcpy(m_pData[cChild], ptr, m_pDataLength[cChild]);
 			ptr += m_pDataLength[cChild];
 		}
@@ -121,12 +121,12 @@ void Node::loadFromByteArray(const byte* ptr)
 	//ptr += m_pTree->m_dimension * sizeof(double);
 }
 
-void Node::storeToByteArray(byte** data, uint32_t& len)
+void Node::storeToByteArray(uint8_t** data, uint32_t& len)
 {
 	len = getByteArraySize();
 
-	*data = new byte[len];
-	byte* ptr = *data;
+	*data = new uint8_t[len];
+	uint8_t* ptr = *data;
 
 	uint32_t nodeType;
 
@@ -213,7 +213,7 @@ void Node::getChildShape(uint32_t index, IShape** out) const
 }
 
 
-void Node::getChildData(uint32_t index, uint32_t& length, byte** data) const
+void Node::getChildData(uint32_t index, uint32_t& length, uint8_t** data) const
 {
         if (index >= m_children) throw Tools::IndexOutOfBoundsException(index);
         if (m_pData[index] == nullptr)
@@ -267,7 +267,7 @@ Node::Node()
 	try
 	{
 		m_pDataLength = new uint32_t[m_capacity + 2];
-		m_pData = new byte*[m_capacity + 2];
+		m_pData = new uint8_t*[m_capacity + 2];
 		m_ptrMBR = new TimeRegionPtr[m_capacity + 2];
 		m_pIdentifier = new id_type[m_capacity + 2];
 	}
@@ -303,7 +303,7 @@ Node& Node::operator=(const Node&)
 	throw Tools::IllegalStateException("operator =: This should never be called.");
 }
 
-void Node::insertEntry(uint32_t dataLength, byte* pData, TimeRegion& mbr, id_type id)
+void Node::insertEntry(uint32_t dataLength, uint8_t* pData, TimeRegion& mbr, id_type id)
 {
 	assert(m_children < m_capacity);
 
@@ -366,7 +366,7 @@ bool Node::deleteEntry(uint32_t index)
 }
 
 bool Node::insertData(
-	uint32_t dataLength, byte* pData, TimeRegion& mbr, id_type id, std::stack<id_type>& pathBuffer,
+	uint32_t dataLength, uint8_t* pData, TimeRegion& mbr, id_type id, std::stack<id_type>& pathBuffer,
 	TimeRegion& mbr2, id_type id2, bool bInsertMbr2, bool bForceAdjust)
 {
 	// we should be certain that when bInsertMbr2 is true the node needs to be version split
@@ -428,12 +428,12 @@ bool Node::insertData(
 		{
 			if (! (m_ptrMBR[cChild]->m_endTime < std::numeric_limits<double>::max()))
 			{
-				byte* data = nullptr;
+				uint8_t* data = nullptr;
 
 				if (m_pDataLength[cChild] > 0)
 				{
-					data = new byte[m_pDataLength[cChild]];
-					memcpy(data, m_pData[cChild], m_pDataLength[cChild] * sizeof(byte));
+					data = new uint8_t[m_pDataLength[cChild]];
+					memcpy(data, m_pData[cChild], m_pDataLength[cChild] * sizeof(uint8_t));
 				}
 				ptrCopy->insertEntry(m_pDataLength[cChild], data, *(m_ptrMBR[cChild]), m_pIdentifier[cChild]);
 				ptrCopy->m_ptrMBR[ptrCopy->m_children - 1]->m_startTime = mbr.m_startTime;
@@ -1047,7 +1047,7 @@ bool Node::deleteData(id_type id, double delTime, std::stack<id_type>& pathBuffe
 }
 
 void Node::rtreeSplit(
-	uint32_t dataLength, byte* pData, TimeRegion& mbr, id_type id, std::vector<uint32_t>& group1, std::vector<uint32_t>& group2,
+	uint32_t dataLength, uint8_t* pData, TimeRegion& mbr, id_type id, std::vector<uint32_t>& group1, std::vector<uint32_t>& group2,
 	TimeRegion& mbr2, id_type id2, bool bInsertMbr2)
 {
 	uint32_t cChild;
@@ -1056,7 +1056,7 @@ void Node::rtreeSplit(
 	uint32_t cTotal = (bInsertMbr2) ? m_children + 2 : m_children + 1;
 
 	// use this mask array for marking visited entries.
-	byte* mask = new byte[cTotal];
+	uint8_t* mask = new uint8_t[cTotal];
 	memset(mask, 0, cTotal);
 
 	// insert new data in the node for easier manipulation. Data arrays are always
@@ -1213,7 +1213,7 @@ void Node::rtreeSplit(
 }
 
 void Node::rstarSplit(
-	uint32_t dataLength, byte* pData, TimeRegion& mbr, id_type id, std::vector<uint32_t>& group1, std::vector<uint32_t>& group2,
+	uint32_t dataLength, uint8_t* pData, TimeRegion& mbr, id_type id, std::vector<uint32_t>& group1, std::vector<uint32_t>& group2,
 	TimeRegion& mbr2, id_type id2, bool bInsertMbr2)
 {
 	RstarSplitEntry** dataLow = nullptr;

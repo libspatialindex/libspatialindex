@@ -4863,27 +4863,27 @@ TEST(ComparisonAssertionTest, AcceptsUnprintableArgs) {
   ASSERT_GT(y, x);
   EXPECT_GE(x, x);
 
-  EXPECT_NONFATAL_FAILURE(EXPECT_EQ(x, y), "1-byte object <78>");
-  EXPECT_NONFATAL_FAILURE(EXPECT_EQ(x, y), "1-byte object <79>");
-  EXPECT_NONFATAL_FAILURE(EXPECT_LT(y, y), "1-byte object <79>");
-  EXPECT_NONFATAL_FAILURE(EXPECT_GT(x, y), "1-byte object <78>");
-  EXPECT_NONFATAL_FAILURE(EXPECT_GT(x, y), "1-byte object <79>");
+  EXPECT_NONFATAL_FAILURE(EXPECT_EQ(x, y), "1-uint8_t object <78>");
+  EXPECT_NONFATAL_FAILURE(EXPECT_EQ(x, y), "1-uint8_t object <79>");
+  EXPECT_NONFATAL_FAILURE(EXPECT_LT(y, y), "1-uint8_t object <79>");
+  EXPECT_NONFATAL_FAILURE(EXPECT_GT(x, y), "1-uint8_t object <78>");
+  EXPECT_NONFATAL_FAILURE(EXPECT_GT(x, y), "1-uint8_t object <79>");
 
   // Code tested by EXPECT_FATAL_FAILURE cannot reference local
   // variables, so we have to write UnprintableChar('x') instead of x.
 #ifndef __BORLANDC__
   // ICE's in C++Builder.
   EXPECT_FATAL_FAILURE(ASSERT_NE(UnprintableChar('x'), UnprintableChar('x')),
-                       "1-byte object <78>");
+                       "1-uint8_t object <78>");
   EXPECT_FATAL_FAILURE(ASSERT_LE(UnprintableChar('y'), UnprintableChar('x')),
-                       "1-byte object <78>");
+                       "1-uint8_t object <78>");
 #endif
   EXPECT_FATAL_FAILURE(ASSERT_LE(UnprintableChar('y'), UnprintableChar('x')),
-                       "1-byte object <79>");
+                       "1-uint8_t object <79>");
   EXPECT_FATAL_FAILURE(ASSERT_GE(UnprintableChar('x'), UnprintableChar('y')),
-                       "1-byte object <78>");
+                       "1-uint8_t object <78>");
   EXPECT_FATAL_FAILURE(ASSERT_GE(UnprintableChar('x'), UnprintableChar('y')),
-                       "1-byte object <79>");
+                       "1-uint8_t object <79>");
 }
 
 // Tests the FRIEND_TEST macro.

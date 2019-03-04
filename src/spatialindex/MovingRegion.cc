@@ -1031,7 +1031,7 @@ uint32_t MovingRegion::getByteArraySize()
 	return (sizeof(uint32_t) + 2 * sizeof(double) + 4 * m_dimension * sizeof(double));
 }
 
-void MovingRegion::loadFromByteArray(const byte* ptr)
+void MovingRegion::loadFromByteArray(const uint8_t* ptr)
 {
 	uint32_t dimension;
 
@@ -1053,11 +1053,11 @@ void MovingRegion::loadFromByteArray(const byte* ptr)
 	//ptr += m_dimension * sizeof(double);
 }
 
-void MovingRegion::storeToByteArray(byte** data, uint32_t& len)
+void MovingRegion::storeToByteArray(uint8_t** data, uint32_t& len)
 {
 	len = getByteArraySize();
-	*data = new byte[len];
-	byte* ptr = *data;
+	*data = new uint8_t[len];
+	uint8_t* ptr = *data;
 
 	memcpy(ptr, &m_dimension, sizeof(uint32_t));
 	ptr += sizeof(uint32_t);

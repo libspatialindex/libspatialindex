@@ -108,7 +108,7 @@ NodePtr Index::findLeaf(const TimeRegion& mbr, id_type id, std::stack<id_type>& 
 }
 
 void Index::split(
-	uint32_t dataLength, byte* pData, TimeRegion& mbr, id_type id, NodePtr& pLeft, NodePtr& pRight,
+	uint32_t dataLength, uint8_t* pData, TimeRegion& mbr, id_type id, NodePtr& pLeft, NodePtr& pRight,
 	TimeRegion& mbr2, id_type id2, bool bInsertMbr2)
 {
 	++(m_pTree->m_stats.m_u64Splits);

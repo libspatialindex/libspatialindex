@@ -1406,16 +1406,16 @@ AssertionResult IsHRESULTFailure(const char* expr, long hr) {  // NOLINT
 //  12 - 16 bits       1110xxxx 10xxxxxx 10xxxxxx
 //  17 - 21 bits       11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
 
-// The maximum code-point a one-byte UTF-8 sequence can represent.
+// The maximum code-point a one-uint8_t UTF-8 sequence can represent.
 const UInt32 kMaxCodePoint1 = (static_cast<UInt32>(1) <<  7) - 1;
 
-// The maximum code-point a two-byte UTF-8 sequence can represent.
+// The maximum code-point a two-uint8_t UTF-8 sequence can represent.
 const UInt32 kMaxCodePoint2 = (static_cast<UInt32>(1) << (5 + 6)) - 1;
 
-// The maximum code-point a three-byte UTF-8 sequence can represent.
+// The maximum code-point a three-uint8_t UTF-8 sequence can represent.
 const UInt32 kMaxCodePoint3 = (static_cast<UInt32>(1) << (4 + 2*6)) - 1;
 
-// The maximum code-point a four-byte UTF-8 sequence can represent.
+// The maximum code-point a four-uint8_t UTF-8 sequence can represent.
 const UInt32 kMaxCodePoint4 = (static_cast<UInt32>(1) << (3 + 3*6)) - 1;
 
 // Chops off the n lowest bits from a bit pattern.  Returns the n
@@ -1646,7 +1646,7 @@ std::string String::FormatHexInt(int value) {
   return ss.str();
 }
 
-// Formats a byte as "%02X".
+// Formats a uint8_t as "%02X".
 std::string String::FormatByte(unsigned char value) {
   std::stringstream ss;
   ss << std::setfill('0') << std::setw(2) << std::hex << std::uppercase

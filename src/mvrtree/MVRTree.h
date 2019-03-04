@@ -72,7 +72,7 @@ namespace SpatialIndex
 			//
 			// ISpatialIndex interface
 			//
-			virtual void insertData(uint32_t len, const byte* pData, const IShape& shape, id_type id);
+			virtual void insertData(uint32_t len, const uint8_t* pData, const IShape& shape, id_type id);
 			virtual bool deleteData(const IShape& shape, id_type id);
 			virtual void internalNodesQuery(const IShape& query, IVisitor& v);
 			virtual void containsWhatQuery(const IShape& query, IVisitor& v);
@@ -94,8 +94,8 @@ namespace SpatialIndex
 			void storeHeader();
 			void loadHeader();
 
-			void insertData_impl(uint32_t dataLength, byte* pData, TimeRegion& mbr, id_type id);
-			void insertData_impl(uint32_t dataLength, byte* pData, TimeRegion& mbr, id_type id, uint32_t level);
+			void insertData_impl(uint32_t dataLength, uint8_t* pData, TimeRegion& mbr, id_type id);
+			void insertData_impl(uint32_t dataLength, uint8_t* pData, TimeRegion& mbr, id_type id, uint32_t level);
 			bool deleteData_impl(const TimeRegion& mbr, id_type id);
 
 			id_type writeNode(Node*);

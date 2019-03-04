@@ -49,7 +49,7 @@ using namespace SpatialIndex::RTree;
 ExternalSorter::Record::Record()
 = default;
 
-ExternalSorter::Record::Record(const Region& r, id_type id, uint32_t len, byte* pData, uint32_t s)
+ExternalSorter::Record::Record(const Region& r, id_type id, uint32_t len, uint8_t* pData, uint32_t s)
 : m_r(r), m_id(id), m_len(len), m_pData(pData), m_s(s)
 {
 }

@@ -40,7 +40,7 @@ namespace SpatialIndex
 			{
 			public:
 				Record();
-				Record(const Region& r, id_type id, uint32_t len, byte* pData, uint32_t s);
+				Record(const Region& r, id_type id, uint32_t len, uint8_t* pData, uint32_t s);
 				~Record();
 
 				bool operator<(const Record& r) const;
@@ -61,7 +61,7 @@ namespace SpatialIndex
 				Region m_r;
 				id_type m_id;
 				uint32_t m_len;
-				byte* m_pData{nullptr};
+				uint8_t* m_pData{nullptr};
 				uint32_t m_s;
 			};
 

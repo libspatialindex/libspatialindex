@@ -46,7 +46,7 @@ Storage Manager
 
 The library provides a common interface for storage management of all 
 indices. It consists of the IStorageManager interface, which provides functions 
-for storing and retrieving entities.  An entity is viewed as a simple byte 
+for storing and retrieving entities.  An entity is viewed as a simple uint8_t 
 array; hence it can be an index entry, a data entry or anything else that the 
 user wants to store. The storage manager interface is generic and does not apply 
 only to spatial indices.
@@ -61,14 +61,14 @@ as unique IDs are associated with every entity. Also, storage managers should
 implement their own paging, compaction and deletion policies transparently 
 from the callers (be it an index or a user).
 
-The storeByteArray method gets a byte array and its length and an entity ID. 
+The storeByteArray method gets a uint8_t array and its length and an entity ID. 
 If the caller specifies NewPage as the input ID, the storage manager allocates 
 a new ID, stores the entity and returns the ID associated with the entity. 
 If, instead, the user specifies an already existing ID the storage manager 
 overwrites the old data. An exception is thrown if the caller requests 
 an invalid ID to be overwritten.
 
-The loadByteArray method gets an entity ID and returns the associated byte array
+The loadByteArray method gets an entity ID and returns the associated uint8_t array
 along with its length. If an invalid ID is requested, an exception is thrown.
 
 The deleteByteArray method removes the requested entity from storage.
@@ -205,9 +205,9 @@ function will convert any shape into an internal representation depending on
 the index. Every inserted object should be assigned an ID (called object 
 identifier) that will allow updating, deleting and reporting the object.
 It is the responsibility of the caller to provide the index with IDs 
-(unique or not). Also, a byte array can be associated with an entry. The 
-byte arrays are stored along with the spatial information inside the leaf 
-nodes. Clustered indices can be supported in that way. The byte array can
+(unique or not). Also, a uint8_t array can be associated with an entry. The 
+uint8_t arrays are stored along with the spatial information inside the leaf 
+nodes. Clustered indices can be supported in that way. The uint8_t array can
 also by null (in which case the length field should be zero), and no extra 
 space should be used per node.
 

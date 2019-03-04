@@ -568,10 +568,10 @@ struct Foo {
 
 TEST(PrintPointerTest, MemberVariablePointer) {
   EXPECT_TRUE(HasPrefix(Print(&Foo::value),
-                        Print(sizeof(&Foo::value)) + "-byte object "));
+                        Print(sizeof(&Foo::value)) + "-uint8_t object "));
   int (Foo::*p) = NULL;  // NOLINT
   EXPECT_TRUE(HasPrefix(Print(p),
-                        Print(sizeof(p)) + "-byte object "));
+                        Print(sizeof(p)) + "-uint8_t object "));
 }
 
 // Tests printing member function pointers.  Although they are called
@@ -580,13 +580,13 @@ TEST(PrintPointerTest, MemberVariablePointer) {
 // printed as raw bytes.
 TEST(PrintPointerTest, MemberFunctionPointer) {
   EXPECT_TRUE(HasPrefix(Print(&Foo::MyMethod),
-                        Print(sizeof(&Foo::MyMethod)) + "-byte object "));
+                        Print(sizeof(&Foo::MyMethod)) + "-uint8_t object "));
   EXPECT_TRUE(
       HasPrefix(Print(&Foo::MyVirtualMethod),
-                Print(sizeof((&Foo::MyVirtualMethod))) + "-byte object "));
+                Print(sizeof((&Foo::MyVirtualMethod))) + "-uint8_t object "));
   int (Foo::*p)(char) = NULL;  // NOLINT
   EXPECT_TRUE(HasPrefix(Print(p),
-                        Print(sizeof(p)) + "-byte object "));
+                        Print(sizeof(p)) + "-uint8_t object "));
 }
 
 // Tests printing C arrays.
@@ -970,7 +970,7 @@ struct iterator {
 
 TEST(PrintStlContainerTest, Iterator) {
   iterator it = {};
-  EXPECT_EQ("1-byte object <00>", Print(it));
+  EXPECT_EQ("1-uint8_t object <00>", Print(it));
 }
 
 // Tests that a class named const_iterator isn't treated as a container.
@@ -981,7 +981,7 @@ struct const_iterator {
 
 TEST(PrintStlContainerTest, ConstIterator) {
   const_iterator it = {};
-  EXPECT_EQ("1-byte object <00>", Print(it));
+  EXPECT_EQ("1-uint8_t object <00>", Print(it));
 }
 
 #if GTEST_HAS_TR1_TUPLE
@@ -1045,13 +1045,13 @@ TEST(PrintTupleTest, NestedTuple) {
 
 // Unprintable types in the global namespace.
 TEST(PrintUnprintableTypeTest, InGlobalNamespace) {
-  EXPECT_EQ("1-byte object <00>",
+  EXPECT_EQ("1-uint8_t object <00>",
             Print(UnprintableTemplateInGlobal<char>()));
 }
 
 // Unprintable types in a user namespace.
 TEST(PrintUnprintableTypeTest, InUserNamespace) {
-  EXPECT_EQ("16-byte object <EF-12 00-00 34-AB 00-00 00-00 00-00 00-00 00-00>",
+  EXPECT_EQ("16-uint8_t object <EF-12 00-00 34-AB 00-00 00-00 00-00 00-00 00-00>",
             Print(::foo::UnprintableInFoo()));
 }
 
@@ -1063,7 +1063,7 @@ struct Big {
 };
 
 TEST(PrintUnpritableTypeTest, BigObject) {
-  EXPECT_EQ("257-byte object <00-00 00-00 00-00 00-00 00-00 00-00 "
+  EXPECT_EQ("257-uint8_t object <00-00 00-00 00-00 00-00 00-00 00-00 "
             "00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 "
             "00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 "
             "00-00 00-00 00-00 00-00 00-00 00-00 ... 00-00 00-00 00-00 "
@@ -1159,7 +1159,7 @@ TEST(PrintReferenceTest, PrintsAddressAndValue) {
             PrintByRef(a));
 
   const ::foo::UnprintableInFoo x;
-  EXPECT_EQ("@" + PrintPointer(&x) + " 16-byte object "
+  EXPECT_EQ("@" + PrintPointer(&x) + " 16-uint8_t object "
             "<EF-12 00-00 34-AB 00-00 00-00 00-00 00-00 00-00>",
             PrintByRef(x));
 }
@@ -1187,13 +1187,13 @@ TEST(PrintReferenceTest, HandlesMemberFunctionPointer) {
   EXPECT_TRUE(HasPrefix(
       PrintByRef(p),
       "@" + PrintPointer(reinterpret_cast<const void*>(&p)) + " " +
-          Print(sizeof(p)) + "-byte object "));
+          Print(sizeof(p)) + "-uint8_t object "));
 
   char (Foo::*p2)(int n) = &Foo::MyVirtualMethod;
   EXPECT_TRUE(HasPrefix(
       PrintByRef(p2),
       "@" + PrintPointer(reinterpret_cast<const void*>(&p2)) + " " +
-          Print(sizeof(p2)) + "-byte object "));
+          Print(sizeof(p2)) + "-uint8_t object "));
 }
 
 // Tests that the universal printer prints a member variable pointer
@@ -1202,7 +1202,7 @@ TEST(PrintReferenceTest, HandlesMemberVariablePointer) {
   int (Foo::*p) = &Foo::value;  // NOLINT
   EXPECT_TRUE(HasPrefix(
       PrintByRef(p),
-      "@" + PrintPointer(&p) + " " + Print(sizeof(p)) + "-byte object "));
+      "@" + PrintPointer(&p) + " " + Print(sizeof(p)) + "-uint8_t object "));
 }
 
 // Tests that FormatForComparisonFailureMessage(), which is used to print

@@ -59,7 +59,7 @@ void MemoryStorageManager::flush()
 {
 }
 
-void MemoryStorageManager::loadByteArray(const id_type page, uint32_t& len, byte** data)
+void MemoryStorageManager::loadByteArray(const id_type page, uint32_t& len, uint8_t** data)
 {
 	Entry* e;
 	try
@@ -73,12 +73,12 @@ void MemoryStorageManager::loadByteArray(const id_type page, uint32_t& len, byte
 	}
 
 	len = e->m_length;
-	*data = new byte[len];
+	*data = new uint8_t[len];
 
 	memcpy(*data, e->m_pData, len);
 }
 
-void MemoryStorageManager::storeByteArray(id_type& page, const uint32_t len, const byte* const data)
+void MemoryStorageManager::storeByteArray(id_type& page, const uint32_t len, const uint8_t* const data)
 {
 	if (page == NewPage)
 	{

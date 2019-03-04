@@ -48,8 +48,8 @@ namespace SpatialIndex
 			~Buffer() override;
 
 			void flush() override;
-			void loadByteArray(const id_type page, uint32_t& len, byte** data) override;
-			void storeByteArray(id_type& page, const uint32_t len, const byte* const data) override;
+			void loadByteArray(const id_type page, uint32_t& len, uint8_t** data) override;
+			void storeByteArray(id_type& page, const uint32_t len, const uint8_t* const data) override;
 			void deleteByteArray(const id_type page) override;
 
 			void clear() override;
@@ -59,15 +59,15 @@ namespace SpatialIndex
 			class Entry
 			{
 			public:
-				Entry(uint32_t l, const byte* const d) : m_pData(nullptr), m_length(l), m_bDirty(false)
+				Entry(uint32_t l, const uint8_t* const d) : m_pData(nullptr), m_length(l), m_bDirty(false)
 				{
-					m_pData = new byte[m_length];
+					m_pData = new uint8_t[m_length];
 					memcpy(m_pData, d, m_length);
 				}
 
 				~Entry() { delete[] m_pData; }
 
-				byte* m_pData;
+				uint8_t* m_pData;
 				uint32_t m_length;
 				bool m_bDirty;
 			}; // Entry

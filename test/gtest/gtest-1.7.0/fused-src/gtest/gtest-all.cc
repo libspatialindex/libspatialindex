@@ -2890,16 +2890,16 @@ AssertionResult IsHRESULTFailure(const char* expr, long hr) {  // NOLINT
 //  12 - 16 bits       1110xxxx 10xxxxxx 10xxxxxx
 //  17 - 21 bits       11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
 
-// The maximum code-point a one-byte UTF-8 sequence can represent.
+// The maximum code-point a one-uint8_t UTF-8 sequence can represent.
 const UInt32 kMaxCodePoint1 = (static_cast<UInt32>(1) <<  7) - 1;
 
-// The maximum code-point a two-byte UTF-8 sequence can represent.
+// The maximum code-point a two-uint8_t UTF-8 sequence can represent.
 const UInt32 kMaxCodePoint2 = (static_cast<UInt32>(1) << (5 + 6)) - 1;
 
-// The maximum code-point a three-byte UTF-8 sequence can represent.
+// The maximum code-point a three-uint8_t UTF-8 sequence can represent.
 const UInt32 kMaxCodePoint3 = (static_cast<UInt32>(1) << (4 + 2*6)) - 1;
 
-// The maximum code-point a four-byte UTF-8 sequence can represent.
+// The maximum code-point a four-uint8_t UTF-8 sequence can represent.
 const UInt32 kMaxCodePoint4 = (static_cast<UInt32>(1) << (3 + 3*6)) - 1;
 
 // Chops off the n lowest bits from a bit pattern.  Returns the n
@@ -3130,7 +3130,7 @@ std::string String::FormatHexInt(int value) {
   return ss.str();
 }
 
-// Formats a byte as "%02X".
+// Formats a uint8_t as "%02X".
 std::string String::FormatByte(unsigned char value) {
   std::stringstream ss;
   ss << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
@@ -6946,7 +6946,7 @@ void DeathTestImpl::ReadAndInterpretStatusByte() {
         break;
       default:
         GTEST_LOG_(FATAL) << "Death test child process reported "
-                          << "unexpected status byte ("
+                          << "unexpected status uint8_t ("
                           << static_cast<unsigned int>(flag) << ")";
     }
   } else {
@@ -6959,7 +6959,7 @@ void DeathTestImpl::ReadAndInterpretStatusByte() {
 
 // Signals that the death test code which should have exited, didn't.
 // Should be called only in a death test child process.
-// Writes a status byte to the child's status file descriptor, then
+// Writes a status uint8_t to the child's status file descriptor, then
 // calls _exit(1).
 void DeathTestImpl::Abort(AbortReason reason) {
   // The parent process considers the death test to be a failure if
@@ -9091,7 +9091,7 @@ void PrintByteSegmentInObjectTo(const unsigned char* obj_bytes, size_t start,
 void PrintBytesInObjectToImpl(const unsigned char* obj_bytes, size_t count,
                               ostream* os) {
   // Tells the user how big the object is.
-  *os << count << "-byte object <";
+  *os << count << "-uint8_t object <";
 
   const size_t kThreshold = 132;
   const size_t kChunkSize = 64;
@@ -9104,7 +9104,7 @@ void PrintBytesInObjectToImpl(const unsigned char* obj_bytes, size_t count,
   } else {
     PrintByteSegmentInObjectTo(obj_bytes, 0, kChunkSize, os);
     *os << " ... ";
-    // Rounds up to 2-byte boundary.
+    // Rounds up to 2-uint8_t boundary.
     const size_t resume_pos = (count - kChunkSize + 1)/2*2;
     PrintByteSegmentInObjectTo(obj_bytes, resume_pos, count - resume_pos, os);
   }

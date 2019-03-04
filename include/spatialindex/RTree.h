@@ -58,20 +58,20 @@ namespace SpatialIndex
 		class SIDX_DLL Data : public IData, public Tools::ISerializable
 		{
 		public:
-			Data(uint32_t len, byte* pData, Region& r, id_type id);
+			Data(uint32_t len, uint8_t* pData, Region& r, id_type id);
 			~Data() override;
 
 			Data* clone() override;
 			id_type getIdentifier() const override;
 			void getShape(IShape** out) const override;
-			void getData(uint32_t& len, byte** data) const override;
+			void getData(uint32_t& len, uint8_t** data) const override;
 			uint32_t getByteArraySize() override;
-			void loadFromByteArray(const byte* data) override;
-			void storeToByteArray(byte** data, uint32_t& len) override;
+			void loadFromByteArray(const uint8_t* data) override;
+			void storeToByteArray(uint8_t** data, uint32_t& len) override;
 
 			id_type m_id;
 			Region m_region;
-			byte* m_pData;
+			uint8_t* m_pData;
 			uint32_t m_dataLength;
 		}; // Data
 

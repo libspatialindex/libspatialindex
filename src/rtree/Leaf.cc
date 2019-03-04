@@ -63,7 +63,7 @@ NodePtr Leaf::findLeaf(const Region& mbr, id_type id, std::stack<id_type>&)
 	return NodePtr();
 }
 
-void Leaf::split(uint32_t dataLength, byte* pData, Region& mbr, id_type id, NodePtr& pLeft, NodePtr& pRight)
+void Leaf::split(uint32_t dataLength, uint8_t* pData, Region& mbr, id_type id, NodePtr& pLeft, NodePtr& pRight)
 {
 	++(m_pTree->m_stats.m_u64Splits);
 
@@ -134,7 +134,7 @@ void Leaf::deleteData(const Region& mbr, id_type id, std::stack<id_type>& pathBu
 		for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
 		{
 			// keep this in the for loop. The tree height might change after insertions.
-			byte* overflowTable = new byte[m_pTree->m_stats.m_u32TreeHeight];
+			uint8_t* overflowTable = new uint8_t[m_pTree->m_stats.m_u32TreeHeight];
 			memset(overflowTable, 0, m_pTree->m_stats.m_u32TreeHeight);
 			m_pTree->insertData_impl(n->m_pDataLength[cChild], n->m_pData[cChild], *(n->m_ptrMBR[cChild]), n->m_pIdentifier[cChild], n->m_level, overflowTable);
 			n->m_pData[cChild] = nullptr;
