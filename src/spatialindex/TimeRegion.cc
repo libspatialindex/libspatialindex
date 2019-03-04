@@ -210,7 +210,7 @@ uint32_t TimeRegion::getByteArraySize()
 	return (sizeof(uint32_t) + 2 * sizeof(double) + 2 * m_dimension * sizeof(double));
 }
 
-void TimeRegion::loadFromByteArray(const byte* ptr)
+void TimeRegion::loadFromByteArray(const uint8_t* ptr)
 {
 	uint32_t dimension;
 
@@ -228,11 +228,11 @@ void TimeRegion::loadFromByteArray(const byte* ptr)
 	//ptr += m_dimension * sizeof(double);
 }
 
-void TimeRegion::storeToByteArray(byte** data, uint32_t& len)
+void TimeRegion::storeToByteArray(uint8_t** data, uint32_t& len)
 {
 	len = getByteArraySize();
-	*data = new byte[len];
-	byte* ptr = *data;
+	*data = new uint8_t[len];
+	uint8_t* ptr = *data;
 
 	memcpy(ptr, &m_dimension, sizeof(uint32_t));
 	ptr += sizeof(uint32_t);

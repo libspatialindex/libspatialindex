@@ -54,8 +54,8 @@ namespace SpatialIndex
 			// Tools::ISerializable interface
 			//
 			uint32_t getByteArraySize() override;
-			void loadFromByteArray(const byte* data) override;
-			void storeToByteArray(byte** data, uint32_t& len) override;
+			void loadFromByteArray(const uint8_t* data) override;
+			void storeToByteArray(uint8_t** data, uint32_t& len) override;
 
 			//
 			// SpatialIndex::IEntry interface
@@ -69,7 +69,7 @@ namespace SpatialIndex
 			uint32_t getChildrenCount() const override;
 			id_type getChildIdentifier(uint32_t index)  const override;
 			void getChildShape(uint32_t index, IShape** out)  const override;
-			void getChildData(uint32_t index, uint32_t& length, byte** data) const override;
+			void getChildData(uint32_t index, uint32_t& length, uint8_t** data) const override;
 			uint32_t getLevel() const override;
 			bool isIndex() const override;
 			bool isLeaf() const override;
@@ -80,20 +80,20 @@ namespace SpatialIndex
 
 			virtual Node& operator=(const Node&);
 
-			virtual bool insertEntry(uint32_t dataLength, byte* pData, MovingRegion& mbr, id_type id);
+			virtual bool insertEntry(uint32_t dataLength, uint8_t* pData, MovingRegion& mbr, id_type id);
 			virtual void deleteEntry(uint32_t index);
 
-			virtual bool insertData(uint32_t dataLength, byte* pData, MovingRegion& mbr, id_type id, std::stack<id_type>& pathBuffer, byte* overflowTable);
-			virtual void reinsertData(uint32_t dataLength, byte* pData, MovingRegion& mbr, id_type id, std::vector<uint32_t>& reinsert, std::vector<uint32_t>& keep);
+			virtual bool insertData(uint32_t dataLength, uint8_t* pData, MovingRegion& mbr, id_type id, std::stack<id_type>& pathBuffer, uint8_t* overflowTable);
+			virtual void reinsertData(uint32_t dataLength, uint8_t* pData, MovingRegion& mbr, id_type id, std::vector<uint32_t>& reinsert, std::vector<uint32_t>& keep);
 
-			virtual void rstarSplit(uint32_t dataLength, byte* pData, MovingRegion& mbr, id_type id, std::vector<uint32_t>& group1, std::vector<uint32_t>& group2);
+			virtual void rstarSplit(uint32_t dataLength, uint8_t* pData, MovingRegion& mbr, id_type id, std::vector<uint32_t>& group1, std::vector<uint32_t>& group2);
 
 			virtual void condenseTree(std::stack<NodePtr>& toReinsert, std::stack<id_type>& pathBuffer, NodePtr& ptrThis);
 
 			virtual NodePtr chooseSubtree(const MovingRegion& mbr, uint32_t level, std::stack<id_type>& pathBuffer) = 0;
 			virtual NodePtr findLeaf(const MovingRegion& mbr, id_type id, std::stack<id_type>& pathBuffer) = 0;
 
-			virtual void split(uint32_t dataLength, byte* pData, MovingRegion& mbr, id_type id, NodePtr& left, NodePtr& right) = 0;
+			virtual void split(uint32_t dataLength, uint8_t* pData, MovingRegion& mbr, id_type id, NodePtr& left, NodePtr& right) = 0;
 
 			TPRTree* m_pTree{nullptr};
 				// Parent of all nodes.
@@ -114,7 +114,7 @@ namespace SpatialIndex
 			MovingRegion m_nodeMBR;
 				// The minimum bounding region enclosing all data contained in the node.
 
-			byte** m_pData{nullptr};
+			uint8_t** m_pData{nullptr};
 				// The data stored in the node.
 
 			MovingRegionPtr* m_ptrMBR{nullptr};

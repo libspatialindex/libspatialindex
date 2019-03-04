@@ -55,8 +55,8 @@ namespace SpatialIndex
 			// Tools::ISerializable interface
 			//
 			uint32_t getByteArraySize() override;
-			void loadFromByteArray(const byte* data) override;
-			void storeToByteArray(byte** data, uint32_t& len) override;
+			void loadFromByteArray(const uint8_t* data) override;
+			void storeToByteArray(uint8_t** data, uint32_t& len) override;
 
 			//
 			// SpatialIndex::IEntry interface
@@ -70,7 +70,7 @@ namespace SpatialIndex
 			uint32_t getChildrenCount() const override;
 			id_type getChildIdentifier(uint32_t index)  const override;
 			void getChildShape(uint32_t index, IShape** out)  const override;
-                        void getChildData(uint32_t index, uint32_t& length, byte** data) const override;
+                        void getChildData(uint32_t index, uint32_t& length, uint8_t** data) const override;
 			uint32_t getLevel() const override;
 			bool isIndex() const override;
 			bool isLeaf() const override;
@@ -81,20 +81,20 @@ namespace SpatialIndex
 
 			virtual Node& operator=(const Node&);
 
-			virtual void insertEntry(uint32_t dataLength, byte* pData, TimeRegion& mbr, id_type id);
+			virtual void insertEntry(uint32_t dataLength, uint8_t* pData, TimeRegion& mbr, id_type id);
 			virtual bool deleteEntry(uint32_t index);
 
 			virtual bool insertData(
-				uint32_t dataLength, byte* pData, TimeRegion& mbr, id_type id, std::stack<id_type>& pathBuffer,
+				uint32_t dataLength, uint8_t* pData, TimeRegion& mbr, id_type id, std::stack<id_type>& pathBuffer,
 				TimeRegion& mbr2, id_type id2, bool bInsertMbr2 = false, bool forceAdjust = false);
 			virtual void insertData(TimeRegion& mbr1, id_type id1, TimeRegion& mbr2, id_type id2, Node* oldVersion, std::stack<id_type>& pathBuffer);
 			virtual bool deleteData(id_type id, double delTime, std::stack<id_type>& pathBuffer, bool adjustMBR = false);
 
 			virtual void rtreeSplit(
-				uint32_t dataLength, byte* pData, TimeRegion& mbr, id_type id, std::vector<uint32_t>& group1, std::vector<uint32_t>& group2,
+				uint32_t dataLength, uint8_t* pData, TimeRegion& mbr, id_type id, std::vector<uint32_t>& group1, std::vector<uint32_t>& group2,
 				TimeRegion& mbr2, id_type id2, bool bInsertMbr2 = false);
 			virtual void rstarSplit(
-				uint32_t dataLength, byte* pData, TimeRegion& mbr, id_type id, std::vector<uint32_t>& group1, std::vector<uint32_t>& group2,
+				uint32_t dataLength, uint8_t* pData, TimeRegion& mbr, id_type id, std::vector<uint32_t>& group1, std::vector<uint32_t>& group2,
 				TimeRegion& mbr2, id_type id2, bool bInsertMbr2 = false);
 
 			virtual void pickSeeds(uint32_t& index1, uint32_t& index2, uint32_t total);
@@ -104,7 +104,7 @@ namespace SpatialIndex
 			virtual NodePtr findNode(const TimeRegion& mbr, id_type id, std::stack<id_type>& pathBuffer);
 
 			virtual void split(
-				uint32_t dataLength, byte* pData, TimeRegion& mbr, id_type id, NodePtr& left, NodePtr& right,
+				uint32_t dataLength, uint8_t* pData, TimeRegion& mbr, id_type id, NodePtr& left, NodePtr& right,
 				TimeRegion& mbr2, id_type id2, bool bInsertMbr2 = false) = 0;
 
 			MVRTree* m_pTree{nullptr};
@@ -126,7 +126,7 @@ namespace SpatialIndex
 			TimeRegion m_nodeMBR;
 				// The minimum bounding region enclosing all data contained in the node.
 
-			byte** m_pData{nullptr};
+			uint8_t** m_pData{nullptr};
 				// The data stored in the node.
 
 			TimeRegionPtr* m_ptrMBR{nullptr};

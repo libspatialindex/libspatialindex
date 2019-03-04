@@ -98,7 +98,7 @@ NodePtr Index::findLeaf(const MovingRegion& mbr, id_type id, std::stack<id_type>
 	return NodePtr();
 }
 
-void Index::split(uint32_t dataLength, byte* pData, MovingRegion& mbr, id_type id, NodePtr& pLeft, NodePtr& pRight)
+void Index::split(uint32_t dataLength, uint8_t* pData, MovingRegion& mbr, id_type id, NodePtr& pLeft, NodePtr& pRight)
 {
 	++(m_pTree->m_stats.m_splits);
 
@@ -339,7 +339,7 @@ void Index::adjustTree(Node* n, std::stack<id_type>& pathBuffer)
 	}
 }
 
-void Index::adjustTree(Node* n1, Node* n2, std::stack<id_type>& pathBuffer, byte* overflowTable)
+void Index::adjustTree(Node* n1, Node* n2, std::stack<id_type>& pathBuffer, uint8_t* overflowTable)
 {
 	++(m_pTree->m_stats.m_adjustments);
 

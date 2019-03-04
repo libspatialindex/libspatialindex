@@ -50,8 +50,8 @@ namespace SpatialIndex
 		// ISerializable interface
 		//
 		uint32_t getByteArraySize() override;
-		void loadFromByteArray(const byte* data) override;
-		void storeToByteArray(byte** data, uint32_t& length) override;
+		void loadFromByteArray(const uint8_t* data) override;
+		void storeToByteArray(uint8_t** data, uint32_t& length) override;
 
 		//
 		// IShape interface

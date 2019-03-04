@@ -93,7 +93,7 @@ void RandomEvictionsBuffer::removeEntry()
 	if ((*it).second->m_bDirty)
 	{
 		id_type page = (*it).first;
-		m_pStorageManager->storeByteArray(page, ((*it).second)->m_length, (const byte *) ((*it).second)->m_pData);
+		m_pStorageManager->storeByteArray(page, ((*it).second)->m_length, (const uint8_t *) ((*it).second)->m_pData);
 	}
 
 	delete (*it).second;

@@ -150,7 +150,7 @@ class GTEST_API_ String {
   // Formats an int value as "%X".
   static std::string FormatHexInt(int value);
 
-  // Formats a byte as "%02X".
+  // Formats a uint8_t as "%02X".
   static std::string FormatByte(unsigned char value);
 
  private:

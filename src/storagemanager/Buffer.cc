@@ -69,7 +69,7 @@ void Buffer::flush()
 	}
 }
 
-void Buffer::loadByteArray(const id_type page, uint32_t& len, byte** data)
+void Buffer::loadByteArray(const id_type page, uint32_t& len, uint8_t** data)
 {
 	auto it = m_buffer.find(page);
 
@@ -77,17 +77,17 @@ void Buffer::loadByteArray(const id_type page, uint32_t& len, byte** data)
 	{
 		++m_u64Hits;
 		len = (*it).second->m_length;
-		*data = new byte[len];
+		*data = new uint8_t[len];
 		memcpy(*data, (*it).second->m_pData, len);
 	}
 	else
 	{
 		m_pStorageManager->loadByteArray(page, len, data);
-		addEntry(page, new Entry(len, static_cast<const byte*>(*data)));
+		addEntry(page, new Entry(len, static_cast<const uint8_t*>(*data)));
 	}
 }
 
-void Buffer::storeByteArray(id_type& page, const uint32_t len, const byte* const data)
+void Buffer::storeByteArray(id_type& page, const uint32_t len, const uint8_t* const data)
 {
 	if (page == NewPage)
 	{
@@ -138,7 +138,7 @@ void Buffer::clear()
 		if ((*it).second->m_bDirty)
 		{
 			id_type page = (*it).first;
-			m_pStorageManager->storeByteArray(page, ((*it).second)->m_length, static_cast<const byte*>(((*it).second)->m_pData));
+			m_pStorageManager->storeByteArray(page, ((*it).second)->m_length, static_cast<const uint8_t*>(((*it).second)->m_pData));
 		}
 
 		delete (*it).second;

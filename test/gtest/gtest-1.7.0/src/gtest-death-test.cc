@@ -452,7 +452,7 @@ void DeathTestImpl::ReadAndInterpretStatusByte() {
         break;
       default:
         GTEST_LOG_(FATAL) << "Death test child process reported "
-                          << "unexpected status byte ("
+                          << "unexpected status uint8_t ("
                           << static_cast<unsigned int>(flag) << ")";
     }
   } else {
@@ -465,7 +465,7 @@ void DeathTestImpl::ReadAndInterpretStatusByte() {
 
 // Signals that the death test code which should have exited, didn't.
 // Should be called only in a death test child process.
-// Writes a status byte to the child's status file descriptor, then
+// Writes a status uint8_t to the child's status file descriptor, then
 // calls _exit(1).
 void DeathTestImpl::Abort(AbortReason reason) {
   // The parent process considers the death test to be a failure if

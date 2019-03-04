@@ -66,7 +66,7 @@ public:
 		delete pS;
 
 		// data should be an array of characters representing a Region as a string.
-		//byte* pData = 0;
+		//uint8_t* pData = 0;
 		//size_t cLen = 0;
 		//d.getData(cLen, &pData);
 			// do something.
@@ -221,7 +221,7 @@ int main(int argc, char** argv)
 					// array of bytes can be inserted in the index (see RTree::Node::load and RTree::Node::store for
 					// an example of how to do that).
 
-				//tree->insertData(data.size() + 1, reinterpret_cast<const byte*>(data.c_str()), r, id);
+				//tree->insertData(data.size() + 1, reinterpret_cast<const uint8_t*>(data.c_str()), r, id);
 
 				tree->insertData(0, nullptr, r, id);
 					// example of passing zero size and a null pointer as the associated data.

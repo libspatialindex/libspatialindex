@@ -78,7 +78,7 @@ void PrintByteSegmentInObjectTo(const unsigned char* obj_bytes, size_t start,
 void PrintBytesInObjectToImpl(const unsigned char* obj_bytes, size_t count,
                               ostream* os) {
   // Tells the user how big the object is.
-  *os << count << "-byte object <";
+  *os << count << "-uint8_t object <";
 
   const size_t kThreshold = 132;
   const size_t kChunkSize = 64;
@@ -91,7 +91,7 @@ void PrintBytesInObjectToImpl(const unsigned char* obj_bytes, size_t count,
   } else {
     PrintByteSegmentInObjectTo(obj_bytes, 0, kChunkSize, os);
     *os << " ... ";
-    // Rounds up to 2-byte boundary.
+    // Rounds up to 2-uint8_t boundary.
     const size_t resume_pos = (count - kChunkSize + 1)/2*2;
     PrintByteSegmentInObjectTo(obj_bytes, resume_pos, count - resume_pos, os);
   }
