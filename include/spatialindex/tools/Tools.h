@@ -75,7 +75,9 @@
 #include "PointerPool.h"
 #include "PoolPointer.h"
 
+#ifndef byte
 typedef uint8_t byte;
+#endif
 
 namespace Tools
 {
