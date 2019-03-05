@@ -5,7 +5,7 @@
  * Copyright (c) 2004, Marios Hadjieleftheriou
  *
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
@@ -53,7 +53,7 @@ namespace SpatialIndex
 		class SIDX_DLL Data : public IData, public Tools::ISerializable
 		{
 		public:
-			Data(uint32_t len, uint8_t* pData, TimeRegion& r, id_type id);
+			Data(uint64_t len, uint8_t* pData, TimeRegion& r, id_type id);
 			~Data() override;
 
 			Data* clone() override;
@@ -86,4 +86,3 @@ namespace SpatialIndex
 		);
 	}
 }
-
