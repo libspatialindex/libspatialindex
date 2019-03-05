@@ -5,7 +5,7 @@
  * Copyright (c) 2011, Howard Butler
  *
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
@@ -55,10 +55,10 @@ the -fexceptions options for C code as well.  */
 #  endif
 # endif
 
-#endif
 #else
 #   define __THROW
 #   define __NTH(fct)  fct
+#endif
 #endif
 
 extern void srand48(long int seed) __THROW;
@@ -82,4 +82,4 @@ extern double drand48(void) __THROW;
 #endif
 
 /* Only define this stuff if we're not ANDROID */
-#endif 
+#endif
