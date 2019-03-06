@@ -1080,7 +1080,7 @@ Tools::TemporaryFile::TemporaryFile()
 
 #else
 	char tmpName[7] = "XXXXXX";
-	if (mktemp(tmpName) == nullptr)
+	if (mkstemp(tmpName) == -1)
 		throw std::ios_base::failure("Tools::TemporaryFile: Cannot create temporary file name.");
 	m_sFile = tmpName;
 #endif
