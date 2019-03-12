@@ -53,7 +53,7 @@ namespace SpatialIndex
 		class SIDX_DLL Data : public IData, public Tools::ISerializable
 		{
 		public:
-			Data(uint64_t len, uint8_t* pData, TimeRegion& r, id_type id);
+			Data(uint32_t len, uint8_t* pData, TimeRegion& r, id_type id);
 			~Data() override;
 
 			Data* clone() override;

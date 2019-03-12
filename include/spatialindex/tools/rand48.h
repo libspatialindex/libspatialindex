@@ -54,11 +54,15 @@ the -fexceptions options for C code as well.  */
 #   define __NTH(fct)  fct
 #  endif
 # endif
-
-#else
-#   define __THROW
-#   define __NTH(fct)  fct
 #endif
+#endif
+
+#ifndef __THROW
+#   define __THROW
+#endif
+
+#ifndef __NTH
+#   define __NTH(fct)  fct
 #endif
 
 extern void srand48(long int seed) __THROW;
