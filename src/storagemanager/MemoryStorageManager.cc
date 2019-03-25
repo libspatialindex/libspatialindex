@@ -5,7 +5,7 @@
  * Copyright (c) 2002, Marios Hadjieleftheriou
  *
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
@@ -67,7 +67,7 @@ void MemoryStorageManager::loadByteArray(const id_type page, uint32_t& len, uint
 		e = m_buffer.at(page);
 		if (e == nullptr) throw InvalidPageException(page);
 	}
-	catch (std::out_of_range)
+	catch (std::out_of_range&)
 	{
 		throw InvalidPageException(page);
 	}
@@ -103,7 +103,7 @@ void MemoryStorageManager::storeByteArray(id_type& page, const uint32_t len, con
 			e_old = m_buffer.at(page);
 			if (e_old == nullptr) throw InvalidPageException(page);
 		}
-		catch (std::out_of_range)
+		catch (std::out_of_range&)
 		{
 			throw InvalidPageException(page);
 		}
@@ -123,7 +123,7 @@ void MemoryStorageManager::deleteByteArray(const id_type page)
 		e = m_buffer.at(page);
 		if (e == nullptr) throw InvalidPageException(page);
 	}
-	catch (std::out_of_range)
+	catch (std::out_of_range&)
 	{
 		throw InvalidPageException(page);
 	}
@@ -133,4 +133,3 @@ void MemoryStorageManager::deleteByteArray(const id_type page)
 
 	delete e;
 }
-
