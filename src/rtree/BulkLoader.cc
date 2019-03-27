@@ -216,7 +216,7 @@ void ExternalSorter::sort()
 						r->loadFromFile(**it);
 						buffers.back().push(r);
 					}
-					catch (Tools::EndOfStreamException)
+					catch (Tools::EndOfStreamException&)
 					{
 						delete r;
 						break;
@@ -242,7 +242,7 @@ void ExternalSorter::sort()
 							r->loadFromFile(*buckets[e.m_u32Index]);
 							buffers[e.m_u32Index].push(r);
 						}
-						catch (Tools::EndOfStreamException)
+						catch (Tools::EndOfStreamException&)
 						{
 							delete r;
 							break;
@@ -400,7 +400,7 @@ void BulkLoader::createLevel(
 
 		while (true)
 		{
-			try { r = es->getNextRecord(); } catch (Tools::EndOfStreamException) { break; }
+			try { r = es->getNextRecord(); } catch (Tools::EndOfStreamException&) { break; }
 			node.push_back(r);
 
 			if (node.size() == b)
@@ -436,7 +436,7 @@ void BulkLoader::createLevel(
 			for (uint64_t i = 0; i < S * b; ++i)
 			{
 				try { pR = es->getNextRecord(); }
-				catch (Tools::EndOfStreamException) { bMore = false; break; }
+				catch (Tools::EndOfStreamException&) { bMore = false; break; }
 				pR->m_s = dimension + 1;
 				es3->insert(pR);
 			}
