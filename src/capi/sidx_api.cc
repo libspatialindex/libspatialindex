@@ -148,8 +148,8 @@ SIDX_C_DLL void Error_PushError(int code, const char *message, const char *metho
 #ifdef __GNUC__
     assert(code != 0);
     last_error.code = code;
-    strncpy(last_error.message, message, LAST_ERROR_BUFFER_SIZE);
-    strncpy(last_error.method, method, LAST_ERROR_BUFFER_SIZE);
+    strncpy(last_error.message, message, LAST_ERROR_BUFFER_SIZE - 1);
+    strncpy(last_error.method, method, LAST_ERROR_BUFFER_SIZE - 1);
     last_error.message[LAST_ERROR_BUFFER_SIZE-1] = '\0';
     last_error.method[LAST_ERROR_BUFFER_SIZE-1] = '\0';
 #else
@@ -574,7 +574,7 @@ SIDX_C_DLL RTError Index_TPIntersects_obj(  IndexH index,
   Index* idx = reinterpret_cast<Index*>(index);
   int64_t nResultLimit, nStart;
   SpatialIndex::MovingRegion* r = 0;
-  
+
   nResultLimit = idx->GetResultSetLimit();
   nStart = idx->GetResultSetOffset();
 
@@ -1754,7 +1754,7 @@ SIDX_C_DLL RTError Index_GetLeaves(	IndexH index,
 	Index* idx = reinterpret_cast<Index*>(index);
 
 	std::vector<LeafQueryResult>::const_iterator i;
-	LeafQuery* query = 0; 
+	LeafQuery* query = 0;
 
 	// Fetch the dimensionality of the index
 	Tools::PropertySet ps;
@@ -3682,5 +3682,3 @@ IDX_C_END
 #ifdef _WIN32
 #  pragma warning(pop)
 #endif
-
-
