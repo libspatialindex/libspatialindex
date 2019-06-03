@@ -277,7 +277,7 @@ SIDX_DLL RTError IndexItem_GetBounds(	IndexItemH item,
 										double** ppdMax,
 										uint32_t* nDimension);
 
-SIDX_DLL IndexPropertyH IndexProperty_Create();
+SIDX_DLL IndexPropertyH IndexProperty_Create(void);
 SIDX_DLL void IndexProperty_Destroy(IndexPropertyH hProp);
 
 SIDX_DLL RTError IndexProperty_SetIndexType(IndexPropertyH iprop, RTIndexType value);
@@ -364,7 +364,7 @@ SIDX_C_DLL void  SIDX_DeleteBuffer(void* buffer);
 SIDX_DLL RTError IndexProperty_SetResultSetLimit(IndexPropertyH iprop, uint64_t value);
 SIDX_DLL uint64_t IndexProperty_GetResultSetLimit(IndexPropertyH iprop);
 
-SIDX_C_DLL char* SIDX_Version();
+SIDX_C_DLL char* SIDX_Version(void);
 
 SIDX_C_DLL char* Error_GetLastErrorMsg(void);
 
