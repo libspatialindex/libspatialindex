@@ -910,7 +910,8 @@ double MovingRegion::getIntersectingAreaInTime(const IInterval& ivI, const Movin
 
 	MovingRegion x = *this;
 	CrossPoint c;
-	std::priority_queue<CrossPoint, std::vector<CrossPoint>, CrossPoint::ascending> pq;
+	auto ascending = [](CrossPoint& lhs, CrossPoint& rhs) { return lhs.m_t > rhs.m_t; };
+	std::priority_queue < CrossPoint, std::vector<CrossPoint>, decltype(ascending)> pq(ascending);
 
 	// find points of intersection in all dimensions.
 	for (uint32_t i = 0; i < m_dimension; ++i)
