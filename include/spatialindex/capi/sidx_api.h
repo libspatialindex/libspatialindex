@@ -129,6 +129,13 @@ SIDX_DLL RTError Index_Intersects_obj(	IndexH index,
 										IndexItemH** items,
 										uint64_t* nResults);
 
+SIDX_C_DLL RTError Index_Contains_obj(  IndexH index,
+                                        double* pdMin,
+                                        double* pdMax,
+                                        uint32_t nDimension,
+                                        IndexItemH** items,
+                                        uint64_t* nResults);
+
 SIDX_C_DLL RTError Index_TPIntersects_id(  IndexH index,
                     double* pdMin,
                     double* pdMax,
@@ -156,6 +163,13 @@ SIDX_DLL RTError Index_Intersects_id(	IndexH index,
 										int64_t** items,
 										uint64_t* nResults);
 
+SIDX_C_DLL RTError Index_Contains_id(IndexH index,
+                                     double *pdMin,
+                                     double *pdMax,
+                                     uint32_t nDimension,
+                                     int64_t **ids,
+                                     uint64_t *nResults);
+
 SIDX_C_DLL RTError Index_TPIntersects_count(	  IndexH index,
                     double* pdMin,
                     double* pdMax,
@@ -179,6 +193,12 @@ SIDX_DLL RTError Index_Intersects_count(	IndexH index,
 										double* pdMax,
 										uint32_t nDimension,
 										uint64_t* nResults);
+
+SIDX_C_DLL RTError Index_Contains_count( IndexH index,
+                                         double* pdMin,
+                                         double* pdMax,
+                                         uint32_t nDimension,
+                                         uint64_t* nResults);
 
 SIDX_C_DLL RTError Index_TPNearestNeighbors_obj(IndexH index,
                       double* pdMin,

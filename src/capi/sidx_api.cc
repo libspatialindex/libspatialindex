@@ -1142,6 +1142,53 @@ SIDX_C_DLL RTError Index_Intersects_count(	  IndexH index,
 	return RT_None;
 }
 
+SIDX_C_DLL RTError Index_Contains_count( IndexH index,
+                                         double* pdMin,
+                                         double* pdMax,
+                                         uint32_t nDimension,
+                                         uint64_t* nResults)
+{
+    VALIDATE_POINTER1(index, "Index_Contains_count", RT_Failure);
+    Index* idx = reinterpret_cast<Index*>(index);
+    SpatialIndex::Region* r = 0;
+
+    CountVisitor* visitor = new CountVisitor;
+    try {
+        r = new SpatialIndex::Region(pdMin, pdMax, nDimension);
+        idx->index().containsWhatQuery(*r, *visitor);
+
+        *nResults = visitor->GetResultCount();
+
+        delete r;
+        delete visitor;
+
+    } catch (Tools::Exception& e)
+    {
+        Error_PushError(RT_Failure,
+                        e.what().c_str(),
+                        "Index_Contains_count");
+        delete r;
+        delete visitor;
+        return RT_Failure;
+    } catch (std::exception const& e)
+    {
+        Error_PushError(RT_Failure,
+                        e.what(),
+                        "Index_Contains_count");
+        delete r;
+        delete visitor;
+        return RT_Failure;
+    } catch (...) {
+        Error_PushError(RT_Failure,
+                        "Unknown Error",
+                        "Index_Contains_count");
+        delete r;
+        delete visitor;
+        return RT_Failure;
+    }
+    return RT_None;
+}
+
 SIDX_C_DLL RTError Index_SegmentIntersects_obj(  IndexH index,
 										double* pdStartPoint,
 										double* pdEndPoint,
