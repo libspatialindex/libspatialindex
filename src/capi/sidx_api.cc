@@ -722,6 +722,56 @@ SIDX_C_DLL RTError Index_Intersects_obj(  IndexH index,
 	return RT_None;
 }
 
+SIDX_C_DLL RTError Index_Contains_obj(  IndexH index,
+                                          double* pdMin,
+                                          double* pdMax,
+                                          uint32_t nDimension,
+                                          IndexItemH** items,
+                                          uint64_t* nResults)
+{
+    VALIDATE_POINTER1(index, "Index_Contains_obj", RT_Failure);
+    Index* idx = reinterpret_cast<Index*>(index);
+    int64_t nResultLimit, nStart;
+
+    nResultLimit = idx->GetResultSetLimit();
+    nStart = idx->GetResultSetOffset();
+
+    ObjVisitor* visitor = new ObjVisitor;
+    SpatialIndex::Region* r = 0;
+    try {
+        r = new SpatialIndex::Region(pdMin, pdMax, nDimension);
+        idx->index().containsWhatQuery(*r, *visitor);
+
+        Page_ResultSet_Obj(*visitor, items, nStart, nResultLimit, nResults);
+
+        delete r;
+        delete visitor;
+
+    } catch (Tools::Exception& e)
+    {
+        delete r;
+        delete visitor;
+        Error_PushError(RT_Failure,
+                        e.what().c_str(),
+                        "Index_Contains_obj");
+    } catch (std::exception const& e)
+    {
+        delete r;
+        delete visitor;
+        Error_PushError(RT_Failure,
+                        e.what(),
+                        "Index_Contains_obj");
+        delete visitor;
+    } catch (...) {
+        delete r;
+        delete visitor;
+        Error_PushError(RT_Failure,
+                        "Unknown Error",
+                        "Index_Contains_obj");
+    }
+    return RT_None;
+}
+
 SIDX_C_DLL RTError Index_TPIntersects_id(  IndexH index,
                     double* pdMin,
                     double* pdMax,
@@ -833,6 +883,61 @@ SIDX_C_DLL RTError Index_MVRIntersects_id(  IndexH index,
   }
   return RT_None;
 }
+
+
+SIDX_C_DLL RTError Index_Contains_id(IndexH index,
+                                     double *pdMin,
+                                     double *pdMax,
+                                     uint32_t nDimension,
+                                     int64_t **ids,
+                                     uint64_t *nResults)
+{
+    VALIDATE_POINTER1(index, "Index_Contains_id", RT_Failure);
+    Index* idx = reinterpret_cast<Index*>(index);
+
+    int64_t nResultLimit, nStart;
+    SpatialIndex::Region* r = 0;
+
+    nResultLimit = idx->GetResultSetLimit();
+    nStart = idx->GetResultSetOffset();
+
+    IdVisitor* visitor = new IdVisitor;
+    try {
+        r = new SpatialIndex::Region(pdMin, pdMax, nDimension);
+        idx->index().containsWhatQuery(*r, *visitor);
+
+        Page_ResultSet_Ids(*visitor, ids, nStart, nResultLimit, nResults);
+
+        delete r;
+        delete visitor;
+
+    } catch (Tools::Exception& e)
+    {
+        Error_PushError(RT_Failure,
+                        e.what().c_str(),
+                        "Index_Contains_id");
+        delete r;
+        delete visitor;
+        return RT_Failure;
+    } catch (std::exception const& e)
+    {
+        Error_PushError(RT_Failure,
+                        e.what(),
+                        "Index_Contains_id");
+        delete r;
+        delete visitor;
+        return RT_Failure;
+    } catch (...) {
+        Error_PushError(RT_Failure,
+                        "Unknown Error",
+                        "Index_Contains_id");
+        delete r;
+        delete visitor;
+        return RT_Failure;
+    }
+    return RT_None;
+}
+
 
 SIDX_C_DLL RTError Index_Intersects_id(	  IndexH index,
 										double* pdMin,
@@ -1035,6 +1140,53 @@ SIDX_C_DLL RTError Index_Intersects_count(	  IndexH index,
 		return RT_Failure;
 	}
 	return RT_None;
+}
+
+SIDX_C_DLL RTError Index_Contains_count( IndexH index,
+                                         double* pdMin,
+                                         double* pdMax,
+                                         uint32_t nDimension,
+                                         uint64_t* nResults)
+{
+    VALIDATE_POINTER1(index, "Index_Contains_count", RT_Failure);
+    Index* idx = reinterpret_cast<Index*>(index);
+    SpatialIndex::Region* r = 0;
+
+    CountVisitor* visitor = new CountVisitor;
+    try {
+        r = new SpatialIndex::Region(pdMin, pdMax, nDimension);
+        idx->index().containsWhatQuery(*r, *visitor);
+
+        *nResults = visitor->GetResultCount();
+
+        delete r;
+        delete visitor;
+
+    } catch (Tools::Exception& e)
+    {
+        Error_PushError(RT_Failure,
+                        e.what().c_str(),
+                        "Index_Contains_count");
+        delete r;
+        delete visitor;
+        return RT_Failure;
+    } catch (std::exception const& e)
+    {
+        Error_PushError(RT_Failure,
+                        e.what(),
+                        "Index_Contains_count");
+        delete r;
+        delete visitor;
+        return RT_Failure;
+    } catch (...) {
+        Error_PushError(RT_Failure,
+                        "Unknown Error",
+                        "Index_Contains_count");
+        delete r;
+        delete visitor;
+        return RT_Failure;
+    }
+    return RT_None;
 }
 
 SIDX_C_DLL RTError Index_SegmentIntersects_obj(  IndexH index,
