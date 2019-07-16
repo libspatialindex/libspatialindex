@@ -32,7 +32,7 @@ jobs:
           git config --global user.email "proj4bot@proj4.bot"
           git config --global user.name "PDAL Doc Bot"
           git clone git@github.com:libspatialindex/libspatialindex.github.com.git ../libspatialindex-docs
-          cp -r doc/build/html/* ../libspatialindex-docs
+          cp -r docs/build/html/* ../libspatialindex-docs
           cd ../libspatialindex-docs
           git add -A
           git commit -m "Update with https://github.com/libspatialindex/libspatialindex/commit/$BUILD_SOURCEVERSION"
