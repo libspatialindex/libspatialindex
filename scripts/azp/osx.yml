@@ -7,7 +7,7 @@ jobs:
   timeoutInMinutes: 360
   steps:
   - script: |
-      cmake
+      cmake .
     displayName: 'CMake'
   - script: |
       make
