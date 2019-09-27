@@ -20,7 +20,7 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/modules" ${CMAKE_MODULE_PATH}
 
 cmake_policy(SET CMP0054 NEW) # Make string comparison behave like you'd expect
 
-if (CMAKE_MAJOR_VERSION GREATER 2)
+if (CMAKE_MAJOR_VERSION VERSION_LESS 2)
     cmake_policy(SET CMP0042 OLD) # osx rpath
 endif()
 #------------------------------------------------------------------------------
@@ -287,4 +287,3 @@ list(APPEND CPACK_SOURCE_IGNORE_FILES ".bz2")
 
 include(CPack)
 add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
-
