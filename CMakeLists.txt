@@ -20,7 +20,7 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/modules" ${CMAKE_MODULE_PATH}
 
 cmake_policy(SET CMP0054 NEW) # Make string comparison behave like you'd expect
 
-if (CMAKE_MAJOR_VERSION VERSION_LESS 2)
+if (CMAKE_MAJOR_VERSION VERSION_LESS 3)
     cmake_policy(SET CMP0042 OLD) # osx rpath
 endif()
 #------------------------------------------------------------------------------
