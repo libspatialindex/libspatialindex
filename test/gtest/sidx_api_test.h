@@ -16,7 +16,7 @@ char pszData[5];
 class SidxApiRTreeTest : public testing::Test {
   protected:
     // virtual void SetUp() will be called before each test is run.  You
-    // should define it if you need to initialize the varaibles.
+    // should define it if you need to initialize the variables.
     // Otherwise, this can be skipped.
     void SetUp() override {
       memset(pszData, '\0', sizeof(pszData));
@@ -106,6 +106,34 @@ TEST_F(SidxApiRTreeTest, intersects_bounds) {
   EXPECT_EQ(max[1], pMax[1]);
   free(pMin);
   free(pMax);
+}
+
+TEST_F(SidxApiRTreeTest, contains_obj) {
+    uint64_t nResults;
+    IndexItemH* items;
+    char* pszRes = nullptr;
+    uint64_t len = 0;
+    Index_Contains_obj(idx, min, max, nDims, &items, &nResults);
+    ASSERT_EQ(1, nResults);
+    IndexItem_GetData(items[0], (uint8_t **)&pszRes, &len);
+    EXPECT_EQ(0, strcmp(pszData, pszRes));
+    free(pszRes);
+    Index_DestroyObjResults(items, nResults);
+}
+
+TEST_F(SidxApiRTreeTest, contains_id) {
+    uint64_t nResults;
+    int64_t* items;
+    Index_Contains_id(idx, min, max, nDims, &items, &nResults);
+    EXPECT_EQ(1, nResults);
+    EXPECT_EQ(nId, items[0]);
+    free(items);
+}
+
+TEST_F(SidxApiRTreeTest, contains_count) {
+    uint64_t nResults;
+    Index_Contains_count(idx, min, max, nDims, &nResults);
+    EXPECT_EQ(1, nResults);
 }
 
 #endif // SIDX_API_TEST_H

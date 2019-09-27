@@ -1,0 +1,14 @@
+# -*- mode: yaml -*-
+
+jobs:
+- job: osx
+  pool:
+    vmImage: macOS-10.13
+  timeoutInMinutes: 360
+  steps:
+  - script: |
+      cmake .
+    displayName: 'CMake'
+  - script: |
+      make
+    displayName: 'Build'
