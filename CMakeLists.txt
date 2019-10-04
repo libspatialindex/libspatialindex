@@ -12,6 +12,9 @@ project(spatialindex)
 
 set(CMAKE_COLOR_MAKEFILE ON)
 
+# C++11 required
+set (CMAKE_CXX_STANDARD 11)
+
 # Allow advanced users to generate Makefiles printing detailed commands
 mark_as_advanced(CMAKE_VERBOSE_MAKEFILE)
 
@@ -158,23 +161,9 @@ else()
   # not WIN32
 
   # Recommended C++ compilation flags
-  # -Weffc++
   set(SIDX_COMMON_CXX_FLAGS
     "-pedantic -Wall -Wpointer-arith -Wcast-align -Wcast-qual  -Wredundant-decls -Wno-long-long")
 
-  if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
-
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SIDX_COMMON_CXX_FLAGS}")
-    if (CMAKE_COMPILER_IS_GNUCXX AND NOT CMAKE_SYSTEM_NAME STREQUAL "CYGWIN")
-      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-    endif()
-
-    set(SIDX_COMPILER_GCC 1)
-
-  elseif("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang" OR "${CMAKE_CXX_COMPILER}" MATCHES "clang")
-    set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS} ${SIDX_COMMON_CXX_FLAGS}")
-    set(SIDX_COMPILER_CLANG 1)
-  endif()
 endif(WIN32)
 
 if (APPLE)
