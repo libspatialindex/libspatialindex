@@ -1,13 +1,13 @@
 #! /bin/bash
 
 echo Generating dataset
-../Generator -ds 1000 -sl 100 > mix
+test-tprtree-Generator -ds 1000 -sl 100 > mix
 
 echo Creating new TPR-Tree and Querying
-../TPRTreeLoad mix tree 10 > res
+test-tprtree-TPRTreeLoad mix tree 10 > res
 
 echo Running exhaustive search
-../Exhaustive mix > res2
+test-tpr-tree-Exhaustive mix > res2
 
 echo Comparing results
 sort -n res > a

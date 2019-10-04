@@ -1,13 +1,13 @@
 #! /bin/bash
 
 echo Generating dataset
-../Generator 1000 > mix
+test-mvrtree-Generator 1000 > mix
 
 echo Creating new MVR-Tree and Querying
-../MVRTreeLoad mix tree 20 intersection > res
+test-mvrtree-MVRTreeLoad mix tree 20 intersection > res
 
 echo Running exhaustive search
-../Exhaustive mix intersection > res2
+test-mvrtree-Exhaustive mix intersection > res2
 
 echo Comparing results
 sort -n res > a

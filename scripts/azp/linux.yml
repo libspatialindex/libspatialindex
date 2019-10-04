@@ -83,6 +83,7 @@ jobs:
         cmake --version
         cmake -DCMAKE_CXX_STANDARD=11 -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
         cmake --build . --config $BUILD_TYPE
+        export PATH=$PATH:`pwd`/build.cxx11/
         pushd ..
         ./scripts/azp/linux-test.sh
         popd

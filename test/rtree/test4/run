@@ -1,20 +1,20 @@
 #! /bin/bash
 
 echo Generating dataset
-../Generator 10000 0 > d
+test-rtree-Generator 10000 0 > d
 awk '{if ($1 == 1) print $0}' < d > data
 awk '{if ($1 == 2) print $0}' < d > queries
 rm -rf d
 
 echo Creating new R-Tree
-../RTreeLoad data tree 20 selfjoin
+test-rtree-RTreeLoad data tree 20 selfjoin
 
 echo Querying R-Tree
-../RTreeQuery queries tree selfjoin > res
+test-rtree-RTreeQuery queries tree selfjoin > res
 cat data queries > .t
 
 echo Running exhaustive search
-../Exhaustive .t selfjoin > res2
+test-rtree-Exhaustive .t selfjoin > res2
 
 echo Comparing results
 sort -n res > a
