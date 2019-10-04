@@ -68,21 +68,21 @@ namespace SpatialIndex
 			//
 			// ISpatialIndex interface
 			//
-			virtual void insertData(uint32_t len, const uint8_t* pData, const IShape& shape, id_type shapeIdentifier);
-			virtual bool deleteData(const IShape& shape, id_type id);
-			virtual void internalNodesQuery(const IShape& query, IVisitor& v);
-			virtual void containsWhatQuery(const IShape& query, IVisitor& v);
-			virtual void intersectsWithQuery(const IShape& query, IVisitor& v);
-			virtual void pointLocationQuery(const Point& query, IVisitor& v);
-			virtual void nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v, INearestNeighborComparator&);
-			virtual void nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v);
-			virtual void selfJoinQuery(const IShape& s, IVisitor& v);
-			virtual void queryStrategy(IQueryStrategy& qs);
-			virtual void getIndexProperties(Tools::PropertySet& out) const;
-			virtual void addCommand(ICommand* pCommand, CommandType ct);
-			virtual bool isIndexValid();
-			virtual void getStatistics(IStatistics** out) const;
-			virtual void flush();
+			virtual void insertData(uint32_t len, const uint8_t* pData, const IShape& shape, id_type shapeIdentifier) override;
+			virtual bool deleteData(const IShape& shape, id_type id) override;
+			virtual void internalNodesQuery(const IShape& query, IVisitor& v) override;
+			virtual void containsWhatQuery(const IShape& query, IVisitor& v) override;
+			virtual void intersectsWithQuery(const IShape& query, IVisitor& v) override;
+			virtual void pointLocationQuery(const Point& query, IVisitor& v) override;
+			virtual void nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v, INearestNeighborComparator&) override;
+			virtual void nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v) override;
+			virtual void selfJoinQuery(const IShape& s, IVisitor& v) override;
+			virtual void queryStrategy(IQueryStrategy& qs) override;
+			virtual void getIndexProperties(Tools::PropertySet& out) const override;
+			virtual void addCommand(ICommand* pCommand, CommandType ct) override;
+			virtual bool isIndexValid() override;
+			virtual void getStatistics(IStatistics** out) const override;
+			virtual void flush() override;
 
 		private:
 			void initNew(Tools::PropertySet&);
