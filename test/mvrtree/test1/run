@@ -1,20 +1,19 @@
 #! /bin/bash
-
 echo Generating dataset
-../Generator 1000 > d
+test-mvrtree-Generator 1000 > d
 awk '{if ($2 != 2) print $0}' < d > data
 awk '{if ($2 == 2) print $0}' < d > queries
 rm -rf d
 
 echo Creating new MVR-Tree
-../MVRTreeLoad data tree 20 intersection
+test-mvrtree-MVRTreeLoad data tree 20 intersection
 
 echo Querying MVR-Tree
-../MVRTreeQuery queries tree intersection > res
+test-mvrtree-MVRTreeQuery queries tree intersection > res
 cat data queries > .t
 
 echo Running exhaustive search
-../Exhaustive .t intersection > res2
+test-mvrtree-Exhaustive .t intersection > res2
 
 echo Comparing results
 sort -n res > a

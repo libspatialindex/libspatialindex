@@ -189,7 +189,7 @@ set(SIDX_SOURCES
 
 if(WIN32)
     add_definitions("-DSIDX_DLL_EXPORT=1")
-if (NOT WITH_STATIC_LASZIP)
+if (NOT WITH_STATIC_SIDX)
     add_definitions("-DSIDX_DLL_IMPORT=1")
 endif()
 endif()

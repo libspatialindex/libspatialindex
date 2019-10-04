@@ -1,13 +1,13 @@
 #! /bin/bash
 
 echo Generating dataset
-../Generator 10000 100 > mix
+test-rtree-Generator 10000 100 > mix
 
 echo Creating new R-Tree and Querying
-../RTreeLoad mix tree 20 intersection > res
+test-rtree-RTreeLoad mix tree 20 intersection > res
 
 echo Running exhaustive search
-../Exhaustive mix intersection > res2
+test-rtree-Exhaustive mix intersection > res2
 
 echo Comparing results
 sort -n res > a
