@@ -1,50 +1,132 @@
 # -*- mode: yaml -*-
 
 jobs:
-- job: linux
-  pool:
-    vmImage: ubuntu-16.04
-  container:
-      image: pdal/ubuntu-dependencies:latest
-      options: --privileged
-  timeoutInMinutes: 360
-  steps:
-  - script: |
-      ./autogen.sh
-      CXXFLAGS="-std=c++11" ./configure
-    displayName: 'configure'
-  - script: |
-      make
-    displayName: 'Build'
-  - script: |
-      pushd test/geometry/test1
-      ./run
-      popd
 
-      pushd test/rtree/test1
-      ./run
-      popd
-      pushd test/rtree/test2
-      ./run
-      popd
-      pushd test/rtree/test3
-      ./run
-      popd
-      pushd test/rtree/test4
-      ./run
-      popd
+  - job: 'Linux'
+    pool:
+      vmImage: 'ubuntu-16.04'
+    strategy:
+      matrix:
+        GCC 8:
+          CXXSTD: 11, 14, 17, 20
+          CXX: g++-8
+          PACKAGES: g++-8
+        GCC 7:
+          CXXSTD: 11, 14, 17
+          CXX: g++-7
+          PACKAGES: g++-7
+        GCC 6:
+          CXXSTD: 11, 14
+          CXX: g++-6
+          PACKAGES: g++-6
+        GCC 5:
+          CXXSTD: 11
+          CXX: g++-5
+          PACKAGES: g++-5
+        GCC 4.9:
+          CXXSTD: 11
+          CXX: g++-4.9
+          PACKAGES: g++-4.9
+        GCC 4.8:
+          CXXSTD: 11
+          CXX: g++-4.8
+          PACKAGES: g++-4.8
+        Clang 8:
+          CXXSTD: 11, 14, 17, 20
+          CXX: clang++-8
+          PACKAGES: clang-8
+          LLVM_REPO: llvm-toolchain-xenial-8
+        Clang 7:
+          CXXSTD: 14, 17, 20
+          CXX: clang++-7
+          PACKAGES: clang-7
+          LLVM_REPO: llvm-toolchain-xenial-7
+        Clang 6:
+          CXXSTD: 14, 17, 20
+          CXX: clang++-6.0
+          PACKAGES: clang-6.0
+          LLVM_REPO: llvm-toolchain-xenial-6.0
+        Clang 5:
+          CXXSTD: 11, 14, 17
+          PACKAGES: clang-5.0
+          CXX: clang++-5.0
+          LLVM_REPO: llvm-toolchain-xenial-5.0
+        Clang 4:
+          CXXSTD: 11, 14
+          CXX: clang++-4.0
+          PACKAGES: clang-4.0
+          LLVM_REPO: llvm-toolchain-xenial-4.0
+        Clang 3.9:
+          CXXSTD: 11, 14
+          CXX: clang++-3.9
+          PACKAGES: clang-3.9
+        Clang 3.8:
+          CXX: clang++-3.8
+          CXXSTD: 11, 14
+          PACKAGES: clang-3.8
+        Clang 3.7:
+          CXXSTD: 11
+          CXX: clang++-3.7
+          PACKAGES: clang-3.7
+        Clang 3.6:
+          CXXSTD: 11
+          CXX: clang++-3.6
+          PACKAGES: clang-3.6
+        Clang 3.5:
+          CXXSTD: 11
+          CXX: clang++-3.5
+          PACKAGES: clang-3.5
+    steps:
+    - script: |
+        set -e
+        uname -a
+        sudo -E apt-add-repository -y "ppa:ubuntu-toolchain-r/test"
+        if test -n "${LLVM_REPO}" ; then
+          wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+          sudo -E apt-add-repository "deb http://apt.llvm.org/xenial/ ${LLVM_REPO} main"
+        fi
+        sudo -E apt-get update
+        sudo -E apt-get -yq --no-install-suggests --no-install-recommends install cmake ${PACKAGES}
+      displayName: 'Install'
+    - script: |
+        set -e
+        mkdir build.cxx11
+        cd build.cxx11
+        cmake --version
+        cmake -DCMAKE_CXX_STANDARD=11 -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
+        cmake --build . --config $BUILD_TYPE
+        ctest -V --output-on-failure -C $BUILD_TYPE
+      displayName: 'Build C++11'
+      condition: contains(variables['CXXSTD'], '11')
+    - script: |
+        set -e
+        mkdir build.cxx14
+        cd build.cxx14
+        cmake --version
+        cmake -DCMAKE_CXX_STANDARD=14 -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
+        cmake --build . --config $BUILD_TYPE
+        ctest -V --output-on-failure -C $BUILD_TYPE
+      displayName: 'Build C++14'
+      condition: contains(variables['CXXSTD'], '14')
+    - script: |
+        set -e
+        mkdir build.cxx17
+        cd build.cxx17
+        cmake --version
+        cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
+        cmake --build . --config $BUILD_TYPE
+        ctest -V --output-on-failure -C $BUILD_TYPE
+      displayName: 'Build C++17'
+      condition: contains(variables['CXXSTD'], '17')
+    - script: |
+        set -e
+        mkdir build.cxx20
+        cd build.cxx20
+        cmake --version
+        cmake -DCMAKE_CXX_STANDARD=20 -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
+        cmake --build . --config $BUILD_TYPE
+        ctest -V --output-on-failure -C $BUILD_TYPE
+      displayName: 'Build C++20'
+      condition: contains(variables['CXXSTD'], '20')
 
-      pushd test/tprtree/test1
-      ./run
-      popd
-      pushd test/tprtree/test2
-      ./run
-      popd
 
-      pushd test/mvrtree/test1
-      ./run
-      popd
-      pushd test/mvrtree/test2
-      ./run
-      popd
-    displayName: 'Test'

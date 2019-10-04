@@ -1,3 +1,12 @@
+pr:
+  branches:
+    include:
+    - master
+
+variables:
+  - name: BUILD_TYPE
+    value: Release
+
 jobs:
   - template: ./scripts/azp/linux.yml
   - template: ./scripts/azp/win.yml
