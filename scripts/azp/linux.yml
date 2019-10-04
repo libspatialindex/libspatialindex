@@ -84,7 +84,7 @@ jobs:
         cmake -DCMAKE_CXX_STANDARD=11 -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
         cmake --build . --config $BUILD_TYPE
         pushd ..
-        ../scripts/azp/linux-test.sh
+        ./scripts/azp/linux-test.sh
         popd
       displayName: 'Build C++11'
       condition: contains(variables['CXXSTD'], '11')
