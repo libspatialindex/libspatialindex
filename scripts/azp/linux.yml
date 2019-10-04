@@ -64,18 +64,6 @@ jobs:
           CXX: clang++-3.8
           CXXSTD: 11, 14
           PACKAGES: clang-3.8
-        Clang 3.7:
-          CXXSTD: 11
-          CXX: clang++-3.7
-          PACKAGES: clang-3.7
-        Clang 3.6:
-          CXXSTD: 11
-          CXX: clang++-3.6
-          PACKAGES: clang-3.6
-        Clang 3.5:
-          CXXSTD: 11
-          CXX: clang++-3.5
-          PACKAGES: clang-3.5
     steps:
     - script: |
         set -e
@@ -95,7 +83,7 @@ jobs:
         cmake --version
         cmake -DCMAKE_CXX_STANDARD=11 -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
         cmake --build . --config $BUILD_TYPE
-        ctest -V --output-on-failure -C $BUILD_TYPE
+        scripts/azp/linux-test.sh
       displayName: 'Build C++11'
       condition: contains(variables['CXXSTD'], '11')
     - script: |
