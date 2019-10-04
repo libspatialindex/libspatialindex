@@ -84,10 +84,6 @@ public:
 
 	NNEntry(size_t id, double dist) : m_id(id), m_dist(dist) {}
 
-	struct greater : public std::binary_function<NNEntry*, NNEntry*, bool>
-	{
-		bool operator()(const NNEntry* __x, const NNEntry* __y) const { return __x->m_dist > __y->m_dist; }
-	};
 };
 
 int main(int argc, char** argv)
@@ -149,7 +145,8 @@ int main(int argc, char** argv)
 			{
 				Region query = Region(x1, y1, x1, y1);
 
-				std::priority_queue<NNEntry*, std::vector<NNEntry*>, NNEntry::greater > queue;
+				auto greater = [](const NNEntry* lhs, const NNEntry* rhs) { return lhs->m_dist > rhs->m_dist; };
+				std::priority_queue<NNEntry*, std::vector<NNEntry*>, decltype(greater) > queue(greater);
 
 				for (std::multimap<size_t, Region>::iterator it = data.begin(); it != data.end(); it++)
 				{

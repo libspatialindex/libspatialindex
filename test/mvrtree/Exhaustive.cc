@@ -103,10 +103,6 @@ public:
 
 	NNEntry(size_t id, double dist) : m_id(id), m_dist(dist) {}
 
-	struct greater : public binary_function<NNEntry*, NNEntry*, bool>
-	{
-		bool operator()(const NNEntry* __x, const NNEntry* __y) const { return __x->m_dist > __y->m_dist; }
-	};
 };
 
 int main(int argc, char** argv)
