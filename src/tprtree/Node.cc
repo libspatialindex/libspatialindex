@@ -460,7 +460,10 @@ bool Node::insertData(uint32_t dataLength, uint8_t* pData, MovingRegion& mbr, id
 
 		return bNeedToAdjust;
 	}
-	else if (false && m_pTree->m_treeVariant == TPRV_RSTAR && ! pathBuffer.empty() && overflowTable[m_level] == 0)
+	else if (false && 
+		     m_pTree->m_treeVariant == TPRV_RSTAR && 
+			 !pathBuffer.empty() && 
+			 overflowTable[m_level] == 0)
 	{
 		overflowTable[m_level] = 1;
 

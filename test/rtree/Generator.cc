@@ -97,12 +97,12 @@ int main(int argc, char** argv)
 		for (size_t a = 0; a < A; a++)
 		{
 			// find an id that is not yet examined.
-			size_t id = static_cast<size_t>(rnd.nextUniformLong(0, numberOfObjects));
+			size_t id = static_cast<size_t>(rnd.nextUniformLong(0, (int32_t)numberOfObjects));
 			std::set<size_t>::iterator itSet = examined.find(id);
 
 			while (itSet != examined.end())
 			{
-				id = static_cast<size_t>(rnd.nextUniformLong(0, numberOfObjects));
+				id = static_cast<size_t>(rnd.nextUniformLong(0, (int32_t)numberOfObjects));
 				itSet = examined.find(id);
 			}
 			examined.insert(id);

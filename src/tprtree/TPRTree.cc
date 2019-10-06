@@ -320,7 +320,7 @@ bool SpatialIndex::TPRTree::TPRTree::deleteData(const IShape& shape, id_type id)
 	return ret;
 }
 
-void SpatialIndex::TPRTree::TPRTree::internalNodesQuery(const IShape& query, IVisitor& v)
+void SpatialIndex::TPRTree::TPRTree::internalNodesQuery(const IShape& /* query */, IVisitor& /* v */)
 {
 	throw Tools::IllegalStateException("internalNodesQuery: not impelmented yet.");
 }

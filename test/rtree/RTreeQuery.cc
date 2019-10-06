@@ -137,7 +137,7 @@ public:
 	Region m_indexedSpace;
 
 public:
-	void getNextEntry(const IEntry& entry, id_type& nextEntry, bool& hasNext) override
+	void getNextEntry(const IEntry& entry, id_type& /* nextEntry */, bool& hasNext) override
 	{
 		// the first time we are called, entry points to the root.
 

@@ -7,7 +7,7 @@ using namespace std;
  * Test the Geometry
  * Nowhere near complete, but it's something
  */
-int main(int argc, char** argv) {
+int main(int /*argc*/, char** /*argv*/) {
     //define points
     double c1[2] = {1.0, 0.0};
     double c2[2] = {3.0, 2.0};

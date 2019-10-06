@@ -136,10 +136,10 @@ void Tools::PropertySet::loadFromByteArray(const uint8_t* ptr)
 		switch (v.m_varType)
 		{
 		case VT_SHORT:
-			int16_t s;
-			memcpy(&s, ptr, sizeof(int16_t));
+			int16_t st;
+			memcpy(&st, ptr, sizeof(int16_t));
 			ptr += sizeof(int16_t);
-			v.m_val.iVal = s;
+			v.m_val.iVal = st;
 			break;
 		case VT_LONG:
 			int32_t l;

@@ -43,7 +43,7 @@ using namespace SpatialIndex;
 class MyVisitor : public IVisitor
 {
 public:
-	void visitNode(const INode& n) override {}
+	void visitNode(const INode& /* n */) override {}
 
 	void visitData(const IData& d) override
 	{
@@ -51,7 +51,7 @@ public:
 			// the ID of this data entry is an answer to the query. I will just print it to stdout.
 	}
 
-	void visitData(std::vector<const IData*>& v) override {}
+	void visitData(std::vector<const IData*>& /* v */) override {}
 };
 
 int main(int argc, char** argv)
@@ -132,7 +132,7 @@ int main(int argc, char** argv)
 					// array of bytes can be inserted in the index (see RTree::Node::load and RTree::Node::store for
 					// an example of how to do that).
 
-				tree->insertData(data.size() + 1, reinterpret_cast<const uint8_t*>(data.c_str()), r, id);
+				tree->insertData((uint32_t)(data.size() + 1), reinterpret_cast<const uint8_t*>(data.c_str()), r, id);
 
 				//tree->insertData(0, 0, r, id);
 					// example of passing zero size and a null pointer as the associated data.

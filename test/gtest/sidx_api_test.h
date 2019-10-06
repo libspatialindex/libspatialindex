@@ -72,7 +72,7 @@ TEST_F(SidxApiRTreeTest, intersects_obj) {
   IndexItem_GetData(items[0], (uint8_t **)&pszRes, &len);
   EXPECT_EQ(0, strcmp(pszData, pszRes));
   free(pszRes);
-  Index_DestroyObjResults(items, nResults);  
+  Index_DestroyObjResults(items, (uint32_t) nResults);  
 }
 
 TEST_F(SidxApiRTreeTest, intersects_nearest_obj) {
@@ -85,7 +85,7 @@ TEST_F(SidxApiRTreeTest, intersects_nearest_obj) {
   IndexItem_GetData(items[0], (uint8_t **)&pszRes, &len);
   EXPECT_EQ(0, strcmp(pszData, pszRes));
   free(pszRes);
-  Index_DestroyObjResults(items, nResults); 
+  Index_DestroyObjResults(items, (uint32_t) nResults); 
 }
 
 TEST_F(SidxApiRTreeTest, intersects_count) {
@@ -118,7 +118,7 @@ TEST_F(SidxApiRTreeTest, contains_obj) {
     IndexItem_GetData(items[0], (uint8_t **)&pszRes, &len);
     EXPECT_EQ(0, strcmp(pszData, pszRes));
     free(pszRes);
-    Index_DestroyObjResults(items, nResults);
+    Index_DestroyObjResults(items, (uint32_t) nResults);
 }
 
 TEST_F(SidxApiRTreeTest, contains_id) {

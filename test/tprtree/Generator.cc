@@ -92,8 +92,8 @@ int main(int argc, char** argv)
 		}
 	}
 
-	RandomGenerator g = RandomGenerator(ds, sl, mui, a);
-	g.m_initialDistribution = id;
+	RandomGenerator g = RandomGenerator((int)ds, (int)sl, (int)mui, a);
+	g.m_initialDistribution = (int) id;
 	g.m_maxX = 1.0; g.m_maxY = 1.0;
 	g.m_minQueryExtent = 0.05; g.m_maxQueryExtent = 0.1;
 	g.m_minSpeed = 0.0025; // 15 miles/hour = 0.25 miles/minute
