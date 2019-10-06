@@ -10,6 +10,7 @@ set (SOURCES
     sidx_api_test.h
     main.cc )
 
+set (GOOGLETEST_VERSION "1.10.0")
 set (TESTNAME libsidxtest)
 add_executable(${TESTNAME} ${SOURCES})
 target_link_libraries(${TESTNAME} ${SIDX_C_LIB_NAME} gtest)

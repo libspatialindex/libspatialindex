@@ -1,12 +1,12 @@
 ## Makefile.am -- Process this file with automake to produce Makefile.in
-SUBDIRS = gtest-1.7.0
+SUBDIRS = gtest-1.10.0
 
-AM_CPPFLAGS = -I$(srcdir)/gtest-1.7.0 -I../../include -I./gtest-1.7.0/include
+AM_CPPFLAGS = -I$(srcdir)/gtest-1.10.0 -I../../include -I./gtest-1.10.0/include
 
 noinst_PROGRAMS = libsidxtest
 libsidxtest_SOURCES = main.cc
 libsidxtest_LDADD = ../../libspatialindex_c.la
-libsidxtest_LDFLAGS = -lpthread -L./gtest-1.7.0/lib -lgtest
+libsidxtest_LDFLAGS = -lpthread -L./gtest-1.10.0/lib -lgtest
 # Override Automake's installation targets with the command ":" that does nothing.
 install:; @:
 install-exec:; @:
