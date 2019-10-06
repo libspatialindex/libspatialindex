@@ -191,7 +191,6 @@ SIDX_C_DLL IndexH Index_Create(IndexPropertyH hProp)
 						"Index_Create");
 		return NULL;
 	}
-	return NULL;
 }
 
 SIDX_C_DLL IndexH Index_CreateWithStream( IndexPropertyH hProp,
@@ -392,7 +391,9 @@ SIDX_C_DLL RTError Index_InsertTPData( IndexH index,
     shape = new SpatialIndex::MovingRegion(pdMin, pdMax, pdVMin, pdVMax, tStart, tEnd, nDimension);
   }
   try {
-    idx->index().insertData(nDataLength,
+	// FIXME silently casting the nDataLength to uint32_t sucks, but 
+	// no one should be putting huge byte counts into rtree data anyway.
+    idx->index().insertData((uint32_t)nDataLength,
                 pData,
                 *shape,
                 id);
@@ -462,7 +463,9 @@ SIDX_C_DLL RTError Index_InsertMVRData( IndexH index,
     shape = new SpatialIndex::TimeRegion(pdMin, pdMax, tStart, tEnd, nDimension);
   }
   try {
-    idx->index().insertData(nDataLength,
+	// FIXME silently casting the nDataLength to uint32_t sucks, but 
+	// no one should be putting huge byte counts into rtree data anyway.
+    idx->index().insertData((uint32_t)nDataLength,
                 pData,
                 *shape,
                 id);
@@ -529,7 +532,9 @@ SIDX_C_DLL RTError Index_InsertData(  IndexH index,
 		shape = new SpatialIndex::Region(pdMin, pdMax, nDimension);
 	}
 	try {
-		idx->index().insertData(nDataLength,
+	// FIXME silently casting the nDataLength to uint32_t sucks, but 
+	// no one should be putting huge byte counts into rtree data anyway.
+		idx->index().insertData((uint32_t)nDataLength,
 								pData,
 								*shape,
 								id);
@@ -1424,7 +1429,7 @@ SIDX_C_DLL RTError Index_MVRNearestNeighbors_id(IndexH index,
 
   try {
     r = new SpatialIndex::TimeRegion(pdMin, pdMax, tStart, tEnd, nDimension);
-    idx->index().nearestNeighborQuery(	*nResults,
+    idx->index().nearestNeighborQuery((uint32_t) *nResults,
                       *r,
                       *visitor);
 
@@ -1597,7 +1602,7 @@ SIDX_C_DLL RTError Index_MVRNearestNeighbors_obj(IndexH index,
   try {
     r = new SpatialIndex::TimeRegion(pdMin, pdMax, tStart, tEnd, nDimension);
 
-    idx->index().nearestNeighborQuery(	*nResults,
+    idx->index().nearestNeighborQuery(	(uint32_t)*nResults,
                       *r,
                       *visitor);
 
@@ -1954,9 +1959,9 @@ SIDX_C_DLL RTError Index_GetLeaves(	IndexH index,
 			(*nLeafChildIDs)[k] = (int64_t*) malloc( (*nLeafSizes)[k] * sizeof(int64_t));
 			(*pppdMin)[k] = (double*) malloc (*nDimension * sizeof(double));
 			(*pppdMax)[k] = (double*) malloc (*nDimension * sizeof(double));
-			for (uint32_t i=0; i< *nDimension; ++i) {
-				(*pppdMin)[k][i] = b->getLow(i);
-				(*pppdMax)[k][i] = b->getHigh(i);
+			for (uint32_t c=0; c< *nDimension; ++c) {
+				(*pppdMin)[k][c] = b->getLow(c);
+				(*pppdMax)[k][c] = b->getHigh(c);
 			}
 			for (uint32_t cChild = 0; cChild < ids.size(); cChild++)
 			{

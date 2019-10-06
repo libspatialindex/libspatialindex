@@ -46,7 +46,7 @@ using namespace std;
 class MyVisitor : public IVisitor
 {
 public:
-	void visitNode(const INode& n) override {}
+	void visitNode(const INode& /*n*/) override {}
 
 	void visitData(const IData& d) override
 	{
@@ -54,7 +54,7 @@ public:
 			// the ID of this data entry is an answer to the query. I will just print it to stdout.
 	}
 
-	void visitData(std::vector<const IData*>& v) override {}
+	void visitData(std::vector<const IData*>& /*v*/) override {}
 };
 
 int main(int argc, char** argv)
@@ -163,7 +163,7 @@ int main(int argc, char** argv)
 
 				if (queryType == 0)
 				{
-					TimeRegion r = TimeRegion(plow, phigh, qt1, qt2, 2);
+					TimeRegion r = TimeRegion(plow, phigh, (double)qt1, (double)qt2, 2);
 
 					tree->intersectsWithQuery(r, vis);
 						// this will find all data that intersect with the query range.

@@ -302,7 +302,7 @@ bool SpatialIndex::MVRTree::MVRTree::deleteData(const IShape& shape, id_type id)
 }
 
 
-void SpatialIndex::MVRTree::MVRTree::internalNodesQuery(const IShape& query, IVisitor& v)
+void SpatialIndex::MVRTree::MVRTree::internalNodesQuery(const IShape& /* query */, IVisitor& /* v */)
 {
 	throw Tools::IllegalStateException("internalNodesQuery: not impelmented yet.");
 }

@@ -190,7 +190,7 @@ public:
 		}
 */
 
-		return false;
+		//return false;
 	}
 
 	bool intersectsStupid(MovingPoint& mp)
@@ -202,7 +202,7 @@ public:
 
 		for (size_t T = t0; T <= t1; T++)
 		{
-			if (rxy.intersectsPoint(mp.getX(T), mp.getY(T))) return true;
+			if (rxy.intersectsPoint(mp.getX((double)T), mp.getY((double)T))) return true;
 		}
 		return false;
 	}

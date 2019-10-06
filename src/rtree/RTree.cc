@@ -459,7 +459,7 @@ void SpatialIndex::RTree::RTree::internalNodesQuery(const IShape& query, IVisito
 				uint64_t *obj = new uint64_t[nObj];
 				std::copy(vId.GetResults().begin(), vId.GetResults().end(), obj);
 
-				Data data = Data(sizeof(uint64_t) * nObj, (uint8_t *) obj, n->m_nodeMBR, n->getIdentifier());
+				Data data = Data((uint32_t)(sizeof(uint64_t) * nObj), (uint8_t *) obj, n->m_nodeMBR, n->getIdentifier());
 				v.visitData(data);
 				++(m_stats.m_u64QueryResults);
 			}

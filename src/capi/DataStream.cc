@@ -75,7 +75,7 @@ bool DataStream::readData()
 	SpatialIndex::Region r = SpatialIndex::Region(pMin, pMax, nDimension);
 
 	// Data gets copied here anyway. We should fix this part of SpatialIndex::RTree::Data's constructor
-	m_pNext = new SpatialIndex::RTree::Data(nDataLength, p_data, r, id);
+	m_pNext = new SpatialIndex::RTree::Data((uint32_t)nDataLength, p_data, r, id);
 
 	return true;
 }
@@ -105,9 +105,10 @@ void DataStream::rewind()
 {
 	throw Tools::NotSupportedException("Operation not supported.");
 
-	if (m_pNext != 0)
+/*	if (m_pNext != 0)
 	{
 	 delete m_pNext;
 	 m_pNext = 0;
 	}
+*/
 }

@@ -3,6 +3,7 @@
 #
 # (based originally on the libLAS files copyright Mateusz Loskot)
 
+SET(MSVC_INCREMENTAL_DEFAULT OFF)
 cmake_minimum_required(VERSION 2.8.4)
 project(spatialindex)
 

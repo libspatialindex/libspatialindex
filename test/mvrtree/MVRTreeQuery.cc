@@ -77,7 +77,7 @@ public:
 			// the ID of this data entry is an answer to the query. I will just print it to stdout.
 	}
 
-	void visitData(std::vector<const IData*>& v) override {}
+	void visitData(std::vector<const IData*>& /*v*/) override {}
 };
 
 // example of a Strategy pattern.
@@ -110,7 +110,7 @@ public:
 		{
 			for (size_t cChild = 0; cChild < n->getChildrenCount(); cChild++)
 			{
-				ids.push(n->getChildIdentifier(cChild));
+				ids.push(n->getChildIdentifier((uint32_t)cChild));
 			}
 		}
 
@@ -134,7 +134,7 @@ public:
 	Region m_indexedSpace;
 
 public:
-	void getNextEntry(const IEntry& entry, id_type& nextEntry, bool& hasNext) override
+	void getNextEntry(const IEntry& entry, id_type& /*nextEntry*/, bool& hasNext) override
 	{
 		// the first time we are called, entry points to the root.
 
@@ -213,7 +213,7 @@ int main(int argc, char** argv)
 
 				if (queryType == 0)
 				{
-					TimeRegion r = TimeRegion(plow, phigh, qt1, qt2, 2);
+					TimeRegion r = TimeRegion(plow, phigh, (double)qt1, (double)qt2, 2);
 					tree->intersectsWithQuery(r, vis);
 						// this will find all data that intersect with the query range.
 				}

@@ -164,7 +164,7 @@ int main(int argc, char** argv)
 			//query
 			if (queryType == 0)
 			{
-				TimeRegion query = TimeRegion(x1, y1, x2, y2, qt1, qt2);
+				TimeRegion query = TimeRegion(x1, y1, x2, y2, (double)qt1, (double)qt2);
 				for (multimap<size_t, TimeRegion>::iterator it = data.begin(); it != data.end(); it++)
 				{
 					if (query.intersectsInTime((*it).second)) cout << (*it).first << endl;
