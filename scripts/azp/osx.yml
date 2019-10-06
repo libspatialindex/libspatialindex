@@ -12,3 +12,6 @@ jobs:
   - script: |
       make
     displayName: 'Build'
+  - script: |
+      make test
+    displayName: 'Test'

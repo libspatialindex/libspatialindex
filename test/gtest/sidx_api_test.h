@@ -20,7 +20,7 @@ class SidxApiRTreeTest : public testing::Test {
     // Otherwise, this can be skipped.
     void SetUp() override {
       memset(pszData, '\0', sizeof(pszData));
-      strcpy(pszData, "TEST");
+      strcpy_s(pszData, sizeof(pszData), "TEST");
       IndexPropertyH props = IndexProperty_Create();
       IndexProperty_SetIndexType(props, RT_RTree);
       IndexProperty_SetIndexStorage(props, RT_Memory);
