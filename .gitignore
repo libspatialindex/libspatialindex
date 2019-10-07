@@ -52,6 +52,7 @@ test/tprtree/test1/queries
 test/tprtree/test2/mix
 docs/build
 CMakeFiles/
+CTestTestfile.cmake
 src/CMakeFiles/
 bin/
 CMakeCache.txt

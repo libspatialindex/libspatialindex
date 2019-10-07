@@ -4,7 +4,7 @@
 # (based originally on the libLAS files copyright Mateusz Loskot)
 
 SET(MSVC_INCREMENTAL_DEFAULT OFF)
-cmake_minimum_required(VERSION 2.8.4)
+cmake_minimum_required(VERSION 3.5.0)
 project(spatialindex)
 
 #------------------------------------------------------------------------------
@@ -23,6 +23,12 @@ mark_as_advanced(CMAKE_VERBOSE_MAKEFILE)
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/modules" ${CMAKE_MODULE_PATH})
 
 cmake_policy(SET CMP0054 NEW) # Make string comparison behave like you'd expect
+
+if (WIN32)
+    if(${CMAKE_VERSION} VERSION_GREATER "3.14.5") 
+        cmake_policy(SET CMP0092 NEW) # don't put /w3 in flags
+    endif()
+endif()
 
 if (APPLE)
 	set(CMAKE_MACOSX_RPATH ON)
@@ -80,44 +86,15 @@ check_function_exists(bcopy HAVE_BCOPY)
 
 INCLUDE (CheckIncludeFiles)
 
-if (HAVE_SRAND48)
-    add_definitions(-DHAVE_SRAND48=1)
-endif()
-
-if (HAVE_GETTIMEOFDAY)
-    add_definitions(-DHAVE_GETTIMEOFDAY=1)
-endif()
-
-if (HAVE_BZERO)
-    add_definitions(-DHAVE_BZERO=1)
-endif()
-
-if (HAVE_MEMSET)
-    add_definitions(-DHAVE_MEMSET=1)
-endif()
-
-if (HAVE_MEMCPY)
-    add_definitions(-DHAVE_MEMCPY=1)
-endif()
-
-if (HAVE_BCOPY)
-    add_definitions(-DHAVE_BCOPY=1)
-endif()
-
-if (HAVE_PTHREAD_H)
-    add_definitions(-DHAVE_PTHREAD_H=1)
-endif()
 
 #------------------------------------------------------------------------------
 # General build settings
 #------------------------------------------------------------------------------
 
-# note we default to debug mode
+# note we default to RelWithDebInfo mode
 if(NOT MSVC_IDE)
-  if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING
     "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel" FORCE)
-  endif()
   message(STATUS "Setting libspatialindex build type - ${CMAKE_BUILD_TYPE}")
 endif()
 
@@ -140,32 +117,11 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${SIDX_BUILD_OUTPUT_DIRECTORY})
 # Platform and compiler specific settings
 #------------------------------------------------------------------------------
 
-if(WIN32)
-  if (MSVC)
-    add_definitions(-D_CRT_SECURE_NO_DEPRECATE)
-    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-    add_definitions(-D_CRT_NONSTDC_NO_WARNING)
-    add_definitions(-D_SCL_SECURE_NO_WARNINGS)
-    add_definitions(-DSPATIALINDEX_CREATE_DLL=1)
-    add_definitions(-DNOMINMAX)
-    set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /wd4068")
-
-    if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
-      string(REGEX REPLACE "/W[0-4]" "/W4"
-        CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-    else()
-      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
-    endif()
-  endif()
-
-else()
-  # not WIN32
-
+if(NOT WIN32)
   # Recommended C++ compilation flags
   set(SIDX_COMMON_CXX_FLAGS
     "-pedantic -Wall -Wpointer-arith -Wcast-align -Wcast-qual  -Wredundant-decls -Wno-long-long")
-
-endif(WIN32)
+endif(NOT WIN32)
 
 if (APPLE)
   set(SO_EXT dylib)

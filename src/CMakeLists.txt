@@ -187,12 +187,6 @@ set(SIDX_SOURCES
 #  add_definitions("-fPIC")
 #endif()
 
-if(WIN32)
-    add_definitions("-DSIDX_DLL_EXPORT=1")
-if (NOT WITH_STATIC_SIDX)
-    add_definitions("-DSIDX_DLL_IMPORT=1")
-endif()
-endif()
 
 add_library(${SIDX_LIB_NAME} ${SIDX_SOURCES})
 
@@ -202,8 +196,6 @@ target_link_libraries(${SIDX_C_LIB_NAME}
   ${SIDX_LIB_NAME}
 )
 
-
-
 set_target_properties(${SIDX_LIB_NAME}
     PROPERTIES VERSION "${SIDX_LIB_VERSION}"
                SOVERSION "${SIDX_LIB_SOVERSION}"  )
@@ -211,6 +203,42 @@ set_target_properties(${SIDX_LIB_NAME}
 set_target_properties(${SIDX_C_LIB_NAME}
     PROPERTIES VERSION "${SIDX_LIB_VERSION}"
                SOVERSION "${SIDX_LIB_SOVERSION}" )
+
+if(WIN32)
+    target_compile_options(${SIDX_LIB_NAME} PRIVATE "/wd4068")
+    target_compile_options(${SIDX_C_LIB_NAME} PRIVATE "/wd4068")
+
+    target_compile_definitions(${SIDX_C_LIB_NAME} PRIVATE "-DSIDX_DLL_EXPORT=1")
+    target_compile_definitions(${SIDX_LIB_NAME} PRIVATE "-DSIDX_DLL_EXPORT=1")
+    if (NOT WITH_STATIC_SIDX)
+        target_compile_definitions(${SIDX_LIB_NAME} PRIVATE "-DSIDX_DLL_IMPORT=1")
+        target_compile_definitions(${SIDX_C_LIB_NAME} PRIVATE "-DSIDX_DLL_IMPORT=1")
+    endif()
+endif()
+
+if (HAVE_SRAND48) 
+    target_compile_definitions(${SIDX_LIB_NAME} PRIVATE -DHAVE_SRAND48=1)
+endif()
+
+if (HAVE_GETTIMEOFDAY)
+    target_compile_definitions(${SIDX_LIB_NAME} PRIVATE -DHAVE_GETTIMEOFDAY=1)
+endif()
+
+if (HAVE_BZERO)
+    target_compile_definitions(${SIDX_LIB_NAME} PRIVATE -DHAVE_BZERO=1)
+endif()
+
+if (HAVE_MEMSET)
+    target_compile_definitions(${SIDX_LIB_NAME} PRIVATE -DHAVE_MEMSET=1)
+endif()
+
+if (HAVE_MEMCPY)
+    target_compile_definitions(${SIDX_LIB_NAME} PRIVATE -DHAVE_MEMCPY=1)
+endif()
+
+if (HAVE_BCOPY)
+    target_compile_definitions(${SIDX_LIB_NAME} PRIVATE -DHAVE_BCOPY=1)
+endif()
 
 
 

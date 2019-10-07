@@ -1,6 +1,4 @@
-if(MSVC_VERSION GREATER_EQUAL 1900)
-   add_definitions(-D_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING)
-endif()
+set (GOOGLETEST_VERSION "1.10.0")
 
 add_subdirectory(gtest-1.10.0)
 include_directories(./gtest-1.10.0/include)
