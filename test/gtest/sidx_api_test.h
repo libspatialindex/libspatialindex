@@ -23,7 +23,7 @@ class SidxApiRTreeTest : public testing::Test {
 #ifdef _WIN32_
       strcpy_s(pszData, sizeof(pszData), "TEST");
 #else
-      strcpy_s(pszData, "TEST");
+      strcpy(pszData, "TEST");
 #endif
       IndexPropertyH props = IndexProperty_Create();
       IndexProperty_SetIndexType(props, RT_RTree);
