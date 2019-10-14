@@ -20,7 +20,7 @@ class SidxApiRTreeTest : public testing::Test {
     // Otherwise, this can be skipped.
     void SetUp() override {
       memset(pszData, '\0', sizeof(pszData));
-#ifdef _WIN32_
+#ifdef WIN32
       strcpy_s(pszData, sizeof(pszData), "TEST");
 #else
       strcpy(pszData, "TEST");
