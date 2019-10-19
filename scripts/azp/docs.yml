@@ -17,7 +17,9 @@ jobs:
         displayName: 'Lint .rst files'
       - script: |
           cd docs
+          make doxygen
           make html
+          make latexpdfpdf
         displayName: 'Make HTML'
       - task: DownloadSecureFile@1
         inputs:
@@ -33,6 +35,9 @@ jobs:
           git config --global user.name "PDAL Doc Bot"
           git clone git@github.com:libspatialindex/libspatialindex.github.com.git ../libspatialindex-docs
           cp -r docs/build/html/* ../libspatialindex-docs
+          cp -r docs/build/latex/libspatialindex.pdf ../libspatialindex-docs/
+          cp -r docs/doxygen/html/* ../libspatialindex-docs/doxygen/
+
           cd ../libspatialindex-docs
           git add -A
           git commit -m "Update with https://github.com/libspatialindex/libspatialindex/commit/$BUILD_SOURCEVERSION"
