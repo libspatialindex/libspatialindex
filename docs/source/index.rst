@@ -6,7 +6,6 @@
    :maxdepth: 1
 
    install
-   Download <download>
    Github <https://github.com/libspatialindex/libspatialindex>
    community
    overview

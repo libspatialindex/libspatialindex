@@ -52,7 +52,7 @@ set(SIDX_VERSION_STRING "${SIDX_VERSION_MAJOR}.${SIDX_VERSION_MINOR}.${SIDX_VERS
 # libspatialindex general cmake options
 #------------------------------------------------------------------------------
 
-option(SIDX_BUILD_TESTS "Enables integrated test suites" ON)
+option(SIDX_BUILD_TESTS "Enables integrated test suites" OFF)
 
 
 # Name of C++ library
@@ -208,29 +208,27 @@ set(CPACK_SOURCE_IGNORE_FILES
 "/\\\\.gitattributes;/\\\\.vagrant;/\\\\.DS_Store;/CVS/;/\\\\.git/;\\\\.swp$;~$;\\\\.\\\\#;/\\\\#")
 
 list(APPEND CPACK_SOURCE_IGNORE_FILES "CMakeScripts/")
-list(APPEND CPACK_SOURCE_IGNORE_FILES "CMakeCache.txt")
-list(APPEND CPACK_SOURCE_IGNORE_FILES ".xcodeproj")
-list(APPEND CPACK_SOURCE_IGNORE_FILES "build.make")
 list(APPEND CPACK_SOURCE_IGNORE_FILES "_CPack_Packages")
 list(APPEND CPACK_SOURCE_IGNORE_FILES "cmake_install.cmake")
-list(APPEND CPACK_SOURCE_IGNORE_FILES "Testing")
-list(APPEND CPACK_SOURCE_IGNORE_FILES "PDAL.build/")
 list(APPEND CPACK_SOURCE_IGNORE_FILES "/bin/")
-list(APPEND CPACK_SOURCE_IGNORE_FILES "/lib/")
-list(APPEND CPACK_SOURCE_IGNORE_FILES "/build/")
-list(APPEND CPACK_SOURCE_IGNORE_FILES "Makefile")
+list(APPEND CPACK_SOURCE_IGNORE_FILES "/scripts/")
+list(APPEND CPACK_SOURCE_IGNORE_FILES "/azure-pipelines.yml")
+list(APPEND CPACK_SOURCE_IGNORE_FILES ".gitignore")
+list(APPEND CPACK_SOURCE_IGNORE_FILES ".ninja*")
+list(APPEND CPACK_SOURCE_IGNORE_FILES "HOWTORELEASE.txt")
+
+list(APPEND CPACK_SOURCE_IGNORE_FILES "README")
+list(APPEND CPACK_SOURCE_IGNORE_FILES "build/")
+
 list(APPEND CPACK_SOURCE_IGNORE_FILES "CMakeFiles")
 list(APPEND CPACK_SOURCE_IGNORE_FILES "CTestTestfile.cmake")
-list(APPEND CPACK_SOURCE_IGNORE_FILES "/test/data/local/")
-list(APPEND CPACK_SOURCE_IGNORE_FILES "/test/unit/TestConfig.hpp$")
-list(APPEND CPACK_SOURCE_IGNORE_FILES "/doc/doxygen/")
-list(APPEND CPACK_SOURCE_IGNORE_FILES "/doc/build/")
+list(APPEND CPACK_SOURCE_IGNORE_FILES "/docs/build/")
 list(APPEND CPACK_SOURCE_IGNORE_FILES "/doc/presentations/")
-list(APPEND CPACK_SOURCE_IGNORE_FILES "/doc/_static/logo/dongle/")
-list(APPEND CPACK_SOURCE_IGNORE_FILES "/cmake/examples/")
-list(APPEND CPACK_SOURCE_IGNORE_FILES "pdal_features.hpp$")
+list(APPEND CPACK_SOURCE_IGNORE_FILES "package-release.sh")
 list(APPEND CPACK_SOURCE_IGNORE_FILES "docker-package.sh")
+
 list(APPEND CPACK_SOURCE_IGNORE_FILES ".gz2")
+
 list(APPEND CPACK_SOURCE_IGNORE_FILES ".bz2")
 
 include(CPack)

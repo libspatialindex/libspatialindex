@@ -14,10 +14,6 @@ Release Process
 
 1) Increment Version Numbers
 
-  - configure.ac
-    * sidx_version_major
-    * sidx_version_minor
-    * sidx_version_micro
   - include/spatialindex/Version.h
     * SIDX_VERSION_MAJOR
     * SIDX_VERSION_MINOR
@@ -29,8 +25,6 @@ Release Process
     * SET(SIDX_VERSION_PATCH "0")
     * SET(SIDX_LIB_VERSION "4.0.0")
     * SET(SIDX_LIB_SOVERSION "4")
-  - Makefile.am
-    * version-info 3:2:0
   - Update SO versions
     * https://github.com/libspatialindex/libspatialindex/pull/44#issuecomment-57088783
 
@@ -45,12 +39,12 @@ Release Process
 
 5) Tag the release
 
-6) Invoke `package-release.sh`
+6) Invoke `docker-package-release.sh`
 
   ::
 
 	cd libspatialindex
-	./package-release.sh
+	./docker-package-release.sh
 
 
 8) Update https://github.com/libspatialindex/libspatialindex/releases

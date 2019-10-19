@@ -7,7 +7,7 @@ jobs:
   timeoutInMinutes: 360
   steps:
   - script: |
-      cmake .
+      cmake .  -DSIDX_BUILD_TESTS=ON 
     displayName: 'CMake'
   - script: |
       make
@@ -15,3 +15,6 @@ jobs:
   - script: |
       make test
     displayName: 'Test'
+  - script: |
+      make dist
+    displayName: 'Dist'

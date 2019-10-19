@@ -34,6 +34,7 @@ jobs:
             -DCMAKE_LIBRARY_PATH:FILEPATH="%CONDA_PREFIX%/Library/lib" ^
             -DCMAKE_INCLUDE_PATH:FILEPATH="%CONDA_PREFIX%/Library/include" ^
             -DBUILD_SHARED_LIBS=ON ^
+            -DSIDX_BUILD_TESTS=ON ^
             -Dgtest_force_shared_crt=ON ^
         ..
       displayName: 'CMake'
@@ -57,4 +58,10 @@ jobs:
         echo %PYTHONLIB%
         ctest -VV --output-on-failure
       displayName: 'Test'
-
+    - script: |
+        ECHO ON
+        call activate libspatialindex
+        pushd build
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64
+        ninja dist
+      displayName: 'dist'
