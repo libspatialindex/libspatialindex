@@ -6,7 +6,7 @@
    :maxdepth: 1
 
    install
-   Download <http://download.osgeo.org/libspatialindex/>
+   Download <download>
    Github <https://github.com/libspatialindex/libspatialindex>
    community
    overview
