@@ -29,10 +29,8 @@ EOF
 echo "git checkout $GITSHA" >> docker-package.sh
 
 cat >> docker-package.sh << "EOF"
-apt-get install libtool m4 automake -y
-./autogen.sh
-./configure --prefix=/tmp
-
+apt-get install cmake -y
+cmake .
 make dist
 EOF
 
