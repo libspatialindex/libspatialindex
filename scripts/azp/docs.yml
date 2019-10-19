@@ -19,8 +19,8 @@ jobs:
           cd docs
           make doxygen
           make html
-          make latexpdfpdf
-        displayName: 'Make HTML'
+          make latexpdf
+        displayName: 'Build Doxygen, HTML, and PDF'
       - task: DownloadSecureFile@1
         inputs:
           secureFile: 'pdal-docs-ssh-key'
