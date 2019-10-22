@@ -30,7 +30,8 @@ echo "git checkout $GITSHA" >> docker-package.sh
 
 cat >> docker-package.sh << "EOF"
 apt-get install cmake -y
-cmake .
+mkdir build; cd build
+cmake ..
 make dist
 EOF
 
