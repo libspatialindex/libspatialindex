@@ -566,7 +566,7 @@ void SpatialIndex::RTree::RTree::nearestNeighborQuery(uint32_t k, const IShape& 
 {
 	if (query.getDimension() != m_dimension) throw Tools::IllegalArgumentException("nearestNeighborQuery: Shape has the wrong number of dimensions.");
 
-	auto ascending = [](const NNEntry* lhs, const NNEntry* rhs) { return rhs->m_minDist > lhs->m_minDist; };
+	auto ascending = [](const NNEntry* lhs, const NNEntry* rhs) { return lhs->m_minDist > rhs->m_minDist;  };
 	std::priority_queue<NNEntry*, std::vector<NNEntry*>, decltype(ascending)> queue(ascending);
 
 	queue.push(new NNEntry(m_rootID, nullptr, 0.0));
