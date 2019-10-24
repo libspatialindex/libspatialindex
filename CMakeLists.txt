@@ -25,7 +25,7 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/modules" ${CMAKE_MODULE_PATH}
 cmake_policy(SET CMP0054 NEW) # Make string comparison behave like you'd expect
 
 if (WIN32)
-    if(${CMAKE_VERSION} VERSION_GREATER "3.14.5") 
+    if(${CMAKE_VERSION} VERSION_GREATER "3.14.5")
         cmake_policy(SET CMP0092 NEW) # don't put /w3 in flags
     endif()
 endif()
@@ -40,8 +40,8 @@ endif (APPLE)
 
 SET(SIDX_VERSION_MAJOR "1")
 SET(SIDX_VERSION_MINOR "9")
-SET(SIDX_VERSION_PATCH "2")
-SET(SIDX_LIB_VERSION "6.1.0")
+SET(SIDX_VERSION_PATCH "3")
+SET(SIDX_LIB_VERSION "6.1.1")
 SET(SIDX_LIB_SOVERSION "6")
 SET(BUILD_SHARED_LIBS ON)
 
