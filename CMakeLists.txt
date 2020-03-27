@@ -43,7 +43,6 @@ SET(SIDX_VERSION_MINOR "9")
 SET(SIDX_VERSION_PATCH "3")
 SET(SIDX_LIB_VERSION "6.1.1")
 SET(SIDX_LIB_SOVERSION "6")
-SET(BUILD_SHARED_LIBS ON)
 
 
 set(SIDX_VERSION_STRING "${SIDX_VERSION_MAJOR}.${SIDX_VERSION_MINOR}.${SIDX_VERSION_PATCH}")
@@ -52,6 +51,7 @@ set(SIDX_VERSION_STRING "${SIDX_VERSION_MAJOR}.${SIDX_VERSION_MINOR}.${SIDX_VERS
 # libspatialindex general cmake options
 #------------------------------------------------------------------------------
 
+option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(SIDX_BUILD_TESTS "Enables integrated test suites" OFF)
 
 
