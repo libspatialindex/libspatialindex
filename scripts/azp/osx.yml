@@ -3,11 +3,11 @@
 jobs:
 - job: osx
   pool:
-    vmImage: macOS-10.13
+    vmImage: macOS-10.15
   timeoutInMinutes: 360
   steps:
   - script: |
-      cmake .  -DSIDX_BUILD_TESTS=ON 
+      cmake .  -DSIDX_BUILD_TESTS=ON
     displayName: 'CMake'
   - script: |
       make
