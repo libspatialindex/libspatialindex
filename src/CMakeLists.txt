@@ -204,7 +204,7 @@ set_target_properties(${SIDX_C_LIB_NAME}
     PROPERTIES VERSION "${SIDX_LIB_VERSION}"
                SOVERSION "${SIDX_LIB_SOVERSION}" )
 
-if(WIN32)
+if(MSVC)
     target_compile_options(${SIDX_LIB_NAME} PRIVATE "/wd4068")
     target_compile_options(${SIDX_C_LIB_NAME} PRIVATE "/wd4068")
 
