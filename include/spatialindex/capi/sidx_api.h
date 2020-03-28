@@ -33,6 +33,8 @@
 
 #include "sidx_config.h"
 
+#include <stddef.h>
+
 IDX_C_START
 
 SIDX_DLL IndexH Index_Create(IndexPropertyH properties);
