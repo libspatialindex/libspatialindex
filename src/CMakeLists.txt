@@ -216,7 +216,7 @@ if(MSVC)
     endif()
 endif()
 
-if (HAVE_SRAND48) 
+if (HAVE_SRAND48)
     target_compile_definitions(${SIDX_LIB_NAME} PRIVATE -DHAVE_SRAND48=1)
 endif()
 
@@ -258,10 +258,32 @@ endif()
 # Targets installation
 
 install(TARGETS ${SIDX_LIB_NAME} ${SIDX_C_LIB_NAME}
-  RUNTIME DESTINATION ${SIDX_BIN_DIR}
-  LIBRARY DESTINATION ${SIDX_LIB_DIR}
-  ARCHIVE DESTINATION ${SIDX_LIB_DIR})
+	EXPORT libspatialindexTargets
+	RUNTIME DESTINATION ${SIDX_BIN_DIR}
+	LIBRARY DESTINATION ${SIDX_LIB_DIR}
+	ARCHIVE DESTINATION ${SIDX_LIB_DIR})
+
+export(
+    TARGETS
+        ${SIDX_LIB_NAME} ${SIDX_C_LIB_NAME}
+    FILE
+        "${SIDX_LIB_DIR}/libspatialindexTargets.cmake")
+
+install(
+    EXPORT
+        libspatialindexTargets
+    DESTINATION
+        "${SIDX_LIB_DIR}/cmake/libspatialindex")
+
+target_include_directories(${SIDX_C_LIB_NAME}
+    INTERFACE
+        $<INSTALL_INTERFACE:include>)
+target_include_directories(${SIDX_LIB_NAME}
+    INTERFACE
+        $<INSTALL_INTERFACE:include>)
 
 install(DIRECTORY ${SIDX_HEADERS_DIR}
   DESTINATION include/spatialindex
   FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp")
+
+

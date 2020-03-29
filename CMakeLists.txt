@@ -192,6 +192,34 @@ endif()
 # CPACK controls
 #------------------------------------------------------------------------------
 
+
+include(CMakePackageConfigHelpers)
+
+set(INCLUDE_INSTALL_DIR include/ CACHE PATH "include")
+set(LIB_INSTALL_DIR ${SIDX_LIB_DIR} CACHE PATH "lib")
+set(SYSCONFIG_INSTALL_DIR etc/pdal/ CACHE PATH "sysconfig")
+
+set(PDAL_CONFIG_INCLUDE_DIRS
+  "${CMAKE_INSTALL_PREFIX}/include")
+set(PDAL_CONFIG_LIBRARY_DIRS
+  "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}")
+
+configure_package_config_file(
+  libspatialindexConfig.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/libspatialindexConfig.cmake
+  INSTALL_DESTINATION ${LIB_INSTALL_DIR}/cmake/libspatialindex
+  PATH_VARS INCLUDE_INSTALL_DIR SYSCONFIG_INSTALL_DIR)
+
+write_basic_package_version_file(
+  ${CMAKE_CURRENT_BINARY_DIR}/libspatialindexConfigVersion.cmake
+  VERSION ${SIDX_VERSION_STRING}
+  COMPATIBILITY AnyNewerVersion)
+
+install(FILES
+  ${CMAKE_CURRENT_BINARY_DIR}/libspatialindexConfig.cmake
+  ${CMAKE_CURRENT_BINARY_DIR}/libspatialindexConfigVersion.cmake
+  DESTINATION ${LIB_INSTALL_DIR}/cmake/libspatialindex)
+
 SET(CPACK_PACKAGE_VERSION_MAJOR ${SIDX_VERSION_MAJOR})
 SET(CPACK_PACKAGE_VERSION_MINOR ${SIDX_VERSION_MINOR})
 SET(CPACK_PACKAGE_VERSION_PATCH ${SIDX_VERSION_MINOR})
