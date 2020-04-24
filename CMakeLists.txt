@@ -93,8 +93,10 @@ INCLUDE (CheckIncludeFiles)
 
 # note we default to RelWithDebInfo mode
 if(NOT MSVC_IDE)
+  if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING
     "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel" FORCE)
+  endif()
   message(STATUS "Setting libspatialindex build type - ${CMAKE_BUILD_TYPE}")
 endif()
 
