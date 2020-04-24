@@ -42,10 +42,8 @@
   typedef unsigned __int16 uint16_t;
   typedef unsigned __int32 uint32_t;
   typedef unsigned __int64 uint64_t;
-#endif
-
-#if _MSC_VER >= 1900
-   #include <cinttypes>
+#else
+  #include <stdint.h>
 #endif
 
    #include <windows.h>
