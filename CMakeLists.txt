@@ -1,59 +1,75 @@
 #
-# top-level CMake configuration file for PDAL
+# top-level CMake configuration file for libspatialindex
 #
-# (based originally on the libLAS files copyright Mateusz Loskot)
+# (based originally on the PDAL and libLAS files copyright Mateusz Loskot)
 
-SET(MSVC_INCREMENTAL_DEFAULT OFF)
-cmake_minimum_required(VERSION 3.5.0)
-project(spatialindex)
-
-#------------------------------------------------------------------------------
-# internal cmake settings
-#------------------------------------------------------------------------------
-
-set(CMAKE_COLOR_MAKEFILE ON)
-
-# C++11 required
-set (CMAKE_CXX_STANDARD 11)
-
-# Allow advanced users to generate Makefiles printing detailed commands
-mark_as_advanced(CMAKE_VERBOSE_MAKEFILE)
-
-# Path to additional CMake modules
-set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/modules" ${CMAKE_MODULE_PATH})
-
-cmake_policy(SET CMP0054 NEW) # Make string comparison behave like you'd expect
-
-if (WIN32)
-    if(${CMAKE_VERSION} VERSION_GREATER "3.14.5")
-        cmake_policy(SET CMP0092 NEW) # don't put /w3 in flags
-    endif()
-endif()
-
-if (APPLE)
-	set(CMAKE_MACOSX_RPATH ON)
-endif (APPLE)
+cmake_minimum_required(VERSION 3.5)
 
 #------------------------------------------------------------------------------
 # libspatialindex general settings
 #------------------------------------------------------------------------------
 
-SET(SIDX_VERSION_MAJOR "1")
-SET(SIDX_VERSION_MINOR "9")
-SET(SIDX_VERSION_PATCH "3")
-SET(SIDX_LIB_VERSION "6.1.1")
-SET(SIDX_LIB_SOVERSION "6")
+set(SIDX_VERSION_MAJOR "1")
+set(SIDX_VERSION_MINOR "9")
+set(SIDX_VERSION_PATCH "3")
+set(SIDX_VERSION_STRING
+  "${SIDX_VERSION_MAJOR}.${SIDX_VERSION_MINOR}.${SIDX_VERSION_PATCH}")
+set(SIDX_LIB_VERSION "6.1.1")
+set(SIDX_LIB_SOVERSION "6")
 
+# disable incremental linker
+set(MSVC_INCREMENTAL_DEFAULT NO)
 
-set(SIDX_VERSION_STRING "${SIDX_VERSION_MAJOR}.${SIDX_VERSION_MINOR}.${SIDX_VERSION_PATCH}")
+project(spatialindex
+  VERSION ${SIDX_VERSION_STRING}
+  LANGUAGES CXX
+)
+
+message(STATUS
+  "Configuring CMake ${CMAKE_VERSION} to build spatialindex ${PROJECT_VERSION}")
+
+# warn against in-source builds
+if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
+  message(WARNING "In-source builds are not recommended")
+endif()
+
+#------------------------------------------------------------------------------
+# internal cmake settings
+#------------------------------------------------------------------------------
+
+# Allow advanced users to generate Makefiles printing detailed commands
+mark_as_advanced(CMAKE_VERBOSE_MAKEFILE)
+
+# Only interpret if() arguments as variables or keywords when unquoted
+cmake_policy(SET CMP0054 NEW)
+
+if(WIN32)
+    if(${CMAKE_VERSION} VERSION_GREATER "3.14.5")
+        cmake_policy(SET CMP0092 NEW) # don't put /w3 in flags
+    endif()
+endif()
+
+if(APPLE)
+  set(CMAKE_MACOSX_RPATH ON)
+endif()
 
 #------------------------------------------------------------------------------
 # libspatialindex general cmake options
 #------------------------------------------------------------------------------
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
-option(SIDX_BUILD_TESTS "Enables integrated test suites" OFF)
+option(BUILD_TESTING "Enables integrated test suites" OFF)
 
+if(DEFINED SIDX_BUILD_TESTS)
+  message(DEPRECATION "SIDX_BUILD_TESTS has been replaced with BUILD_TESTING")
+  set(BUILD_TESTING ${SIDX_BUILD_TESTS})
+endif()
+
+# C++11 required, overridable by user
+set(CMAKE_CXX_STANDARD 11
+  CACHE STRING "C++ standard version to use (default is 11)")
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Name of C++ library
 
@@ -61,21 +77,21 @@ set(SIDX_LIB_NAME spatialindex)
 set(SIDX_C_LIB_NAME spatialindex_c)
 
 if(WIN32)
-  if (MSVC)
-	if( CMAKE_SIZEOF_VOID_P EQUAL 8 )
-		set( SIDX_LIB_NAME "spatialindex-64" )
-		set( SIDX_C_LIB_NAME "spatialindex_c-64" )
-	else( CMAKE_SIZEOF_VOID_P EQUAL 8 )
-		set( SIDX_LIB_NAME "spatialindex-32"  )
-		set( SIDX_C_LIB_NAME "spatialindex_c-32"  )
-	endif( CMAKE_SIZEOF_VOID_P EQUAL 8 )
+  if(MSVC)
+    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+      set(SIDX_LIB_NAME "${SIDX_LIB_NAME}-64")
+      set(SIDX_C_LIB_NAME "${SIDX_C_LIB_NAME}-64")
+    else()
+      set(SIDX_LIB_NAME "${SIDX_LIB_NAME}-32")
+      set(SIDX_C_LIB_NAME "${SIDX_C_LIB_NAME}-32")
+    endif()
   endif()
 endif()
 
 
 set(CMAKE_INCLUDE_DIRECTORIES_PROJECT_BEFORE ON)
 
-include (CheckFunctionExists)
+include(CheckFunctionExists)
 
 check_function_exists(srand48 HAVE_SRAND48)
 check_function_exists(gettimeofday HAVE_GETTIMEOFDAY)
@@ -84,7 +100,7 @@ check_function_exists(memcpy HAVE_MEMCPY)
 check_function_exists(bcopy HAVE_BCOPY)
 
 
-INCLUDE (CheckIncludeFiles)
+include(CheckIncludeFiles)
 
 
 #------------------------------------------------------------------------------
@@ -95,9 +111,11 @@ INCLUDE (CheckIncludeFiles)
 if(NOT MSVC_IDE)
   if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING
-    "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel" FORCE)
+    "Choose the type of build, options are: \
+None Debug Release RelWithDebInfo MinSizeRel" FORCE)
   endif()
-  message(STATUS "Setting libspatialindex build type - ${CMAKE_BUILD_TYPE}")
+  message(STATUS
+    "Setting libspatialindex build type - ${CMAKE_BUILD_TYPE}")
 endif()
 
 set(SIDX_BUILD_TYPE ${CMAKE_BUILD_TYPE})
@@ -119,20 +137,28 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${SIDX_BUILD_OUTPUT_DIRECTORY})
 # Platform and compiler specific settings
 #------------------------------------------------------------------------------
 
-if(NOT WIN32)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR
+   CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   # Recommended C++ compilation flags
   set(SIDX_COMMON_CXX_FLAGS
-    "-pedantic -Wall -Wpointer-arith -Wcast-align -Wcast-qual  -Wredundant-decls -Wno-long-long")
-endif(NOT WIN32)
+    -pedantic
+    -Wall
+    -Wpointer-arith
+    -Wcast-align
+    -Wcast-qual
+    -Wredundant-decls
+    -Wno-long-long
+  )
+endif()
 
-if (APPLE)
+if(APPLE)
   set(SO_EXT dylib)
   set(CMAKE_FIND_FRAMEWORK "LAST")
 elseif(WIN32)
   set(SO_EXT dll)
 else()
   set(SO_EXT so)
-endif(APPLE)
+endif()
 
 
 enable_testing()
@@ -146,7 +172,7 @@ if(WIN32)
   set(DEFAULT_DATA_SUBDIR .)
   set(DEFAULT_INCLUDE_SUBDIR include)
 
-  if (MSVC)
+  if(MSVC)
     set(DEFAULT_BIN_SUBDIR bin)
   else()
     set(DEFAULT_BIN_SUBDIR .)
@@ -186,12 +212,12 @@ set(SIDX_DATA_DIR ${SIDX_DATA_SUBDIR})
 
 add_subdirectory(src)
 
-if(SIDX_BUILD_TESTS)
+if(BUILD_TESTING)
   add_subdirectory(test)
 endif()
 
 #------------------------------------------------------------------------------
-# CPACK controls
+# CPack controls
 #------------------------------------------------------------------------------
 
 
@@ -222,44 +248,48 @@ install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/libspatialindexConfigVersion.cmake
   DESTINATION ${LIB_INSTALL_DIR}/cmake/libspatialindex)
 
-SET(CPACK_PACKAGE_VERSION_MAJOR ${SIDX_VERSION_MAJOR})
-SET(CPACK_PACKAGE_VERSION_MINOR ${SIDX_VERSION_MINOR})
-SET(CPACK_PACKAGE_VERSION_PATCH ${SIDX_VERSION_MINOR})
-SET(CPACK_PACKAGE_NAME "libspatialindex")
+set(CPACK_PACKAGE_VERSION_MAJOR ${SIDX_VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR ${SIDX_VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH ${SIDX_VERSION_MINOR})
+set(CPACK_PACKAGE_NAME "libspatialindex")
 
-SET(CPACK_SOURCE_GENERATOR "TBZ2;TGZ")
-SET(CPACK_PACKAGE_VENDOR "libspatialindex Development Team")
-SET(CPACK_RESOURCE_FILE_LICENSE    "${PROJECT_SOURCE_DIR}/COPYING")
+set(CPACK_SOURCE_GENERATOR "TBZ2;TGZ")
+set(CPACK_PACKAGE_VENDOR "libspatialindex Development Team")
+set(CPACK_RESOURCE_FILE_LICENSE "${PROJECT_SOURCE_DIR}/COPYING")
 
 set(CPACK_SOURCE_PACKAGE_FILE_NAME
     "${CMAKE_PROJECT_NAME}-src-${SIDX_VERSION_STRING}")
 
 set(CPACK_SOURCE_IGNORE_FILES
-"/\\\\.gitattributes;/\\\\.vagrant;/\\\\.DS_Store;/CVS/;/\\\\.git/;\\\\.swp$;~$;\\\\.\\\\#;/\\\\#")
-
-list(APPEND CPACK_SOURCE_IGNORE_FILES "CMakeScripts/")
-list(APPEND CPACK_SOURCE_IGNORE_FILES "_CPack_Packages")
-list(APPEND CPACK_SOURCE_IGNORE_FILES "cmake_install.cmake")
-list(APPEND CPACK_SOURCE_IGNORE_FILES "/bin/")
-list(APPEND CPACK_SOURCE_IGNORE_FILES "/scripts/")
-list(APPEND CPACK_SOURCE_IGNORE_FILES "/azure-pipelines.yml")
-list(APPEND CPACK_SOURCE_IGNORE_FILES ".gitignore")
-list(APPEND CPACK_SOURCE_IGNORE_FILES ".ninja*")
-list(APPEND CPACK_SOURCE_IGNORE_FILES "HOWTORELEASE.txt")
-
-list(APPEND CPACK_SOURCE_IGNORE_FILES "README")
-list(APPEND CPACK_SOURCE_IGNORE_FILES "build/")
-
-list(APPEND CPACK_SOURCE_IGNORE_FILES "CMakeFiles")
-list(APPEND CPACK_SOURCE_IGNORE_FILES "CTestTestfile.cmake")
-list(APPEND CPACK_SOURCE_IGNORE_FILES "/docs/build/")
-list(APPEND CPACK_SOURCE_IGNORE_FILES "/doc/presentations/")
-list(APPEND CPACK_SOURCE_IGNORE_FILES "package-release.sh")
-list(APPEND CPACK_SOURCE_IGNORE_FILES "docker-package.sh")
-
-list(APPEND CPACK_SOURCE_IGNORE_FILES ".gz2")
-
-list(APPEND CPACK_SOURCE_IGNORE_FILES ".bz2")
+  "/\\\\.gitattributes"
+  "/\\\\.vagrant"
+  "/\\\\.DS_Store"
+  "/CVS/"
+  "/\\\\.git/"
+  "\\\\.swp$"
+  "~$"
+  "\\\\.\\\\#"
+  "/\\\\#"
+  "CMakeScripts/"
+  "_CPack_Packages"
+  "cmake_install.cmake"
+  "/bin/"
+  "/scripts/"
+  "/azure-pipelines.yml"
+  ".gitignore"
+  ".ninja*"
+  "HOWTORELEASE.txt"
+  "README"
+  "build/"
+  "CMakeFiles"
+  "CTestTestfile.cmake"
+  "/docs/build/"
+  "/doc/presentations/"
+  "package-release.sh"
+  "docker-package.sh"
+  ".gz2"
+  ".bz2"
+)
 
 include(CPack)
 add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)

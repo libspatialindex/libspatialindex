@@ -7,7 +7,7 @@ jobs:
   timeoutInMinutes: 360
   steps:
   - script: |
-      cmake .  -DSIDX_BUILD_TESTS=ON
+      cmake . -DBUILD_TESTING=ON -DCMAKE_VERBOSE_MAKEFILE=ON
     displayName: 'CMake'
   - script: |
       make
