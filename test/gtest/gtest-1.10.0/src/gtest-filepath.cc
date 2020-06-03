@@ -52,6 +52,10 @@
 #elif defined(_XOPEN_PATH_MAX)
 # define GTEST_PATH_MAX_ _XOPEN_PATH_MAX
 #else
+// Workaround Clang 5.0 axp issue
+#ifndef _POSIX_PATH_MAX
+# define _POSIX_PATH_MAX 256
+#endif // _POSIX_PATH_MAX
 # define GTEST_PATH_MAX_ _POSIX_PATH_MAX
 #endif  // GTEST_OS_WINDOWS
 
