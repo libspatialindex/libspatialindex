@@ -39,7 +39,7 @@ set(SIDX_BASE_HPP
   "${SIDX_HEADERS_DIR}/TPRTree.h"
   "${SIDX_HEADERS_DIR}/Version.h"
 )
-list (APPEND SIDX_HPP ${SIDX_BASE_HPP} )
+list(APPEND SIDX_HPP ${SIDX_BASE_HPP})
 
 set(SIDX_CAPI_HPP
   "${SIDX_HEADERS_CAPI_DIR}/BoundsQuery.h"
@@ -56,7 +56,7 @@ set(SIDX_CAPI_HPP
   "${SIDX_HEADERS_CAPI_DIR}/sidx_impl.h"
   "${SIDX_HEADERS_CAPI_DIR}/Utility.h"
 )
-list (APPEND SIDX_HPP ${SIDX_CAPI_HPP} )
+list(APPEND SIDX_HPP ${SIDX_CAPI_HPP})
 
 set(SIDX_CAPI_CPP
   "${SIDX_CAPI_DIR}/BoundsQuery.cc"
@@ -71,7 +71,7 @@ set(SIDX_CAPI_CPP
   "${SIDX_CAPI_DIR}/sidx_api.cc"
   "${SIDX_CAPI_DIR}/Utility.cc"
 )
-list (APPEND SIDX_CPP ${SIDX_CAPI_CPP} )
+list(APPEND SIDX_CPP ${SIDX_CAPI_CPP})
 
 set(SIDX_SPATIALINDEX_CPP
   "${SIDX_SRC_DIR}/spatialindex/LineSegment.cc"
@@ -83,7 +83,7 @@ set(SIDX_SPATIALINDEX_CPP
   "${SIDX_SRC_DIR}/spatialindex/TimePoint.cc"
   "${SIDX_SRC_DIR}/spatialindex/TimeRegion.cc"
 )
-list (APPEND SIDX_CPP ${SIDX_SPATIALINDEX_CPP} )
+list(APPEND SIDX_CPP ${SIDX_SPATIALINDEX_CPP})
 
 set(SIDX_MVRTREE_CPP
   "${SIDX_SRC_DIR}/mvrtree/Index.cc"
@@ -98,7 +98,7 @@ set(SIDX_MVRTREE_CPP
   "${SIDX_SRC_DIR}/mvrtree/Statistics.cc"
   "${SIDX_SRC_DIR}/mvrtree/Statistics.h"
 )
-list (APPEND SIDX_CPP ${SIDX_MVRTREE_CPP})
+list(APPEND SIDX_CPP ${SIDX_MVRTREE_CPP})
 
 set(SIDX_RTREE_CPP
   "${SIDX_SRC_DIR}/rtree/BulkLoader.cc"
@@ -115,7 +115,7 @@ set(SIDX_RTREE_CPP
   "${SIDX_SRC_DIR}/rtree/Statistics.cc"
   "${SIDX_SRC_DIR}/rtree/Statistics.h"
 )
-list (APPEND SIDX_CPP ${SIDX_RTREE_CPP})
+list(APPEND SIDX_CPP ${SIDX_RTREE_CPP})
 
 set(SIDX_STORAGEMANAGER_CPP
   "${SIDX_SRC_DIR}/storagemanager/Buffer.cc"
@@ -126,11 +126,11 @@ set(SIDX_STORAGEMANAGER_CPP
   "${SIDX_SRC_DIR}/storagemanager/RandomEvictionsBuffer.cc"
   "${SIDX_SRC_DIR}/storagemanager/RandomEvictionsBuffer.h"
 )
-list (APPEND SIDX_CPP ${SIDX_STORAGEMANAGER_CPP})
+list(APPEND SIDX_CPP ${SIDX_STORAGEMANAGER_CPP})
 
-set(SIDX_RAND48 )
+set(SIDX_RAND48)
 
-if (NOT HAVE_SRAND48)
+if(NOT HAVE_SRAND48)
     set(SIDX_RAND48 "${SIDX_SRC_DIR}/tools/rand48.cc")
 endif()
 
@@ -138,7 +138,7 @@ set(SIDX_TOOLS_CPP
   ${SIDX_RAND48}
   "${SIDX_SRC_DIR}/tools/Tools.cc"
 )
-list (APPEND SIDX_CPP ${SIDX_TOOLS_CPP})
+list(APPEND SIDX_CPP ${SIDX_TOOLS_CPP})
 
 set(SIDX_TOOLS_CPP
   "${SIDX_SRC_DIR}/tprtree/Index.cc"
@@ -153,7 +153,7 @@ set(SIDX_TOOLS_CPP
   "${SIDX_SRC_DIR}/tprtree/TPRTree.cc"
   "${SIDX_SRC_DIR}/tprtree/TPRTree.h"
 )
-list (APPEND SIDX_CPP ${SIDX_TOOLS_CPP} )
+list(APPEND SIDX_CPP ${SIDX_TOOLS_CPP})
 #
 # Group source files for IDE source explorers (e.g. Visual Studio)
 #
@@ -170,7 +170,6 @@ source_group("C API Source Files" FILES ${SIDX_CAPI_CPP})
 # Standard include directory of SIDX library
 include_directories(../include)
 
-set (APPS_CPP_DEPENDENCIES "${SIDX_LIB_NAME}" CACHE INTERNAL "libraries to link")
 
 ###############################################################################
 # Targets settings
@@ -179,93 +178,84 @@ set(SIDX_SOURCES
   ${SIDX_HPP}
   ${SIDX_CPP})
 
-# NOTE:
-# This hack is required to correctly link static into shared library.
-# Such practice is not recommended as not portable, instead each library,
-# static and shared should be built from sources separately.
-#if(UNIX)
-#  add_definitions("-fPIC")
-#endif()
+add_library(spatialindex ${SIDX_SOURCES})
 
+add_library(spatialindex_c ${SIDX_CAPI_CPP})
 
-add_library(${SIDX_LIB_NAME} ${SIDX_SOURCES})
+target_link_libraries(spatialindex_c spatialindex)
 
-add_library(${SIDX_C_LIB_NAME} ${SIDX_CAPI_CPP})
+set_property(TARGET spatialindex PROPERTY OUTPUT_NAME ${SIDX_LIB_NAME})
+set_property(TARGET spatialindex_c PROPERTY OUTPUT_NAME ${SIDX_C_LIB_NAME})
 
-target_link_libraries(${SIDX_C_LIB_NAME}
-  ${SIDX_LIB_NAME}
+set_target_properties(spatialindex spatialindex_c PROPERTIES
+  VERSION ${SIDX_LIB_VERSION}
+  SOVERSION ${SIDX_LIB_SOVERSION}
+  # disable the <libname>_EXPORTS
+  DEFINE_SYMBOL ""
 )
 
-set_target_properties(${SIDX_LIB_NAME}
-    PROPERTIES VERSION "${SIDX_LIB_VERSION}"
-               SOVERSION "${SIDX_LIB_SOVERSION}"  )
+target_compile_options(spatialindex
+  PRIVATE ${SIDX_COMMON_CXX_FLAGS})
 
-set_target_properties(${SIDX_C_LIB_NAME}
-    PROPERTIES VERSION "${SIDX_LIB_VERSION}"
-               SOVERSION "${SIDX_LIB_SOVERSION}" )
+target_compile_options(spatialindex_c
+  PRIVATE ${SIDX_COMMON_CXX_FLAGS})
 
 if(MSVC)
-    target_compile_options(${SIDX_LIB_NAME} PRIVATE "/wd4068")
-    target_compile_options(${SIDX_C_LIB_NAME} PRIVATE "/wd4068")
+  target_compile_options(spatialindex PRIVATE /wd4068)
+  target_compile_options(spatialindex_c PRIVATE /wd4068)
 
-    target_compile_definitions(${SIDX_C_LIB_NAME} PRIVATE "-DSIDX_DLL_EXPORT=1")
-    target_compile_definitions(${SIDX_LIB_NAME} PRIVATE "-DSIDX_DLL_EXPORT=1")
-    if (NOT WITH_STATIC_SIDX)
-        target_compile_definitions(${SIDX_LIB_NAME} PRIVATE "-DSIDX_DLL_IMPORT=1")
-        target_compile_definitions(${SIDX_C_LIB_NAME} PRIVATE "-DSIDX_DLL_IMPORT=1")
-    endif()
+  target_compile_definitions(spatialindex_c PRIVATE -DSIDX_DLL_EXPORT=1)
+  target_compile_definitions(spatialindex PRIVATE -DSIDX_DLL_EXPORT=1)
+  if(NOT WITH_STATIC_SIDX)
+    target_compile_definitions(spatialindex PRIVATE -DSIDX_DLL_IMPORT=1)
+    target_compile_definitions(spatialindex_c PRIVATE -DSIDX_DLL_IMPORT=1)
+  endif()
 endif()
 
-if (HAVE_SRAND48)
-    target_compile_definitions(${SIDX_LIB_NAME} PRIVATE -DHAVE_SRAND48=1)
+if(HAVE_SRAND48)
+  target_compile_definitions(spatialindex PRIVATE -DHAVE_SRAND48=1)
 endif()
 
-if (HAVE_GETTIMEOFDAY)
-    target_compile_definitions(${SIDX_LIB_NAME} PRIVATE -DHAVE_GETTIMEOFDAY=1)
+if(HAVE_GETTIMEOFDAY)
+  target_compile_definitions(spatialindex PRIVATE -DHAVE_GETTIMEOFDAY=1)
 endif()
 
-if (HAVE_BZERO)
-    target_compile_definitions(${SIDX_LIB_NAME} PRIVATE -DHAVE_BZERO=1)
+if(HAVE_BZERO)
+  target_compile_definitions(spatialindex PRIVATE -DHAVE_BZERO=1)
 endif()
 
-if (HAVE_MEMSET)
-    target_compile_definitions(${SIDX_LIB_NAME} PRIVATE -DHAVE_MEMSET=1)
+if(HAVE_MEMSET)
+  target_compile_definitions(spatialindex PRIVATE -DHAVE_MEMSET=1)
 endif()
 
-if (HAVE_MEMCPY)
-    target_compile_definitions(${SIDX_LIB_NAME} PRIVATE -DHAVE_MEMCPY=1)
+if(HAVE_MEMCPY)
+  target_compile_definitions(spatialindex PRIVATE -DHAVE_MEMCPY=1)
 endif()
 
-if (HAVE_BCOPY)
-    target_compile_definitions(${SIDX_LIB_NAME} PRIVATE -DHAVE_BCOPY=1)
+if(HAVE_BCOPY)
+  target_compile_definitions(spatialindex PRIVATE -DHAVE_BCOPY=1)
 endif()
 
 
 
-if (APPLE)
-  set_target_properties(
-    ${SIDX_LIB_NAME}
-    PROPERTIES
-    INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib" BUILD_WITH_INSTALL_RPATH OFF)
-
-  set_target_properties(
-    ${SIDX_C_LIB_NAME}
-    PROPERTIES
-    INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib" BUILD_WITH_INSTALL_RPATH OFF)
+if(APPLE)
+  set_target_properties(spatialindex spatialindex_c PROPERTIES
+    INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib"
+  )
 endif()
 
 ###############################################################################
 # Targets installation
 
-install(TARGETS ${SIDX_LIB_NAME} ${SIDX_C_LIB_NAME}
-	EXPORT libspatialindexTargets
-	RUNTIME DESTINATION ${SIDX_BIN_DIR}
-	LIBRARY DESTINATION ${SIDX_LIB_DIR}
-	ARCHIVE DESTINATION ${SIDX_LIB_DIR})
+install(TARGETS spatialindex spatialindex_c
+        EXPORT libspatialindexTargets
+        RUNTIME DESTINATION ${SIDX_BIN_DIR}
+        LIBRARY DESTINATION ${SIDX_LIB_DIR}
+        ARCHIVE DESTINATION ${SIDX_LIB_DIR})
 
 export(
     TARGETS
-        ${SIDX_LIB_NAME} ${SIDX_C_LIB_NAME}
+        spatialindex spatialindex_c
     FILE
         "${SIDX_LIB_DIR}/libspatialindexTargets.cmake")
 
@@ -275,10 +265,10 @@ install(
     DESTINATION
         "${SIDX_LIB_DIR}/cmake/libspatialindex")
 
-target_include_directories(${SIDX_C_LIB_NAME}
+target_include_directories(spatialindex_c
     INTERFACE
         $<INSTALL_INTERFACE:include>)
-target_include_directories(${SIDX_LIB_NAME}
+target_include_directories(spatialindex
     INTERFACE
         $<INSTALL_INTERFACE:include>)
 
