@@ -52,7 +52,13 @@ endif()
 #------------------------------------------------------------------------------
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
-option(SIDX_BUILD_TESTS "Enables integrated test suites" OFF)
+option(BUILD_TESTING "Enables integrated test suites" OFF)
+
+if(DEFINED SIDX_BUILD_TESTS)
+  message(DEPRECATION "SIDX_BUILD_TESTS has been replaced with BUILD_TESTING")
+  set(BUILD_TESTING ${SIDX_BUILD_TESTS})
+endif()
+include(CTest)
 
 # C++11 required, overridable by user
 set(CMAKE_CXX_STANDARD 11
@@ -147,8 +153,6 @@ else()
 endif()
 
 
-enable_testing()
-
 #------------------------------------------------------------------------------
 # installation path settings
 #------------------------------------------------------------------------------
@@ -198,7 +202,7 @@ set(SIDX_DATA_DIR ${SIDX_DATA_SUBDIR})
 
 add_subdirectory(src)
 
-if(SIDX_BUILD_TESTS)
+if(BUILD_TESTING)
   add_subdirectory(test)
 endif()
 

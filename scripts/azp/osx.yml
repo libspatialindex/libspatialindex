@@ -9,7 +9,7 @@ jobs:
   - script: |
       mkdir build
       cd build
-      cmake -DSIDX_BUILD_TESTS=ON ..
+      cmake -DBUILD_TESTING=ON ..
     displayName: 'CMake'
   - script: |
       cd build
