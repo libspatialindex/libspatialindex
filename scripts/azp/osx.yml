@@ -7,14 +7,19 @@ jobs:
   timeoutInMinutes: 360
   steps:
   - script: |
-      cmake .  -DSIDX_BUILD_TESTS=ON
+      mkdir build
+      cd build
+      cmake -DSIDX_BUILD_TESTS=ON ..
     displayName: 'CMake'
   - script: |
-      make
+      cd build
+      VERBOSE=1 make
     displayName: 'Build'
   - script: |
-      make test
+      cd build
+      ctest -V --output-on-failure
     displayName: 'Test'
   - script: |
+      cd build
       make dist
     displayName: 'Dist'
