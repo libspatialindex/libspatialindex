@@ -1,17 +1,17 @@
 include_directories(../include)
 
-set (DIR geometry)
-set (SOURCES
+set(DIR geometry)
+set(SOURCES
         Intersection
         )
 
-foreach (test ${SOURCES})
+foreach(test ${SOURCES})
     add_executable(test-${DIR}-${test} ${DIR}/${test}.cc)
-    target_link_libraries(test-${DIR}-${test} ${SIDX_LIB_NAME})
+    target_link_libraries(test-${DIR}-${test} spatialindex)
 endforeach()
 
-set (DIR rtree)
-set (SOURCES
+set(DIR rtree)
+set(SOURCES
         Exhaustive
         Generator
         RTreeBulkLoad
@@ -19,13 +19,13 @@ set (SOURCES
         RTreeQuery)
 
 
-foreach (test ${SOURCES})
+foreach(test ${SOURCES})
     add_executable(test-${DIR}-${test} ${DIR}/${test}.cc)
-    target_link_libraries(test-${DIR}-${test} ${SIDX_LIB_NAME})
+    target_link_libraries(test-${DIR}-${test} spatialindex)
 endforeach()
 
-set (DIR mvrtree)
-set (SOURCES
+set(DIR mvrtree)
+set(SOURCES
         Exhaustive
         Generator
         MVRTreeLoad
@@ -33,13 +33,13 @@ set (SOURCES
         )
 
 
-foreach (test ${SOURCES})
+foreach(test ${SOURCES})
     add_executable(test-${DIR}-${test} ${DIR}/${test}.cc)
-    target_link_libraries(test-${DIR}-${test} ${SIDX_LIB_NAME})
+    target_link_libraries(test-${DIR}-${test} spatialindex)
 endforeach()
 
-set (DIR tprtree)
-set (SOURCES
+set(DIR tprtree)
+set(SOURCES
         Exhaustive
         Generator
         TPRTreeLoad
@@ -47,9 +47,10 @@ set (SOURCES
         )
 
 
-foreach (test ${SOURCES})
-    add_executable(test-${DIR}-${test} ${DIR}/${test}.cc ${DIR}/RandomGenerator.cc)
-    target_link_libraries(test-${DIR}-${test} ${SIDX_LIB_NAME})
+foreach(test ${SOURCES})
+    add_executable(test-${DIR}-${test}
+        ${DIR}/${test}.cc ${DIR}/RandomGenerator.cc)
+    target_link_libraries(test-${DIR}-${test} spatialindex)
 endforeach()
 
 add_subdirectory(gtest)
