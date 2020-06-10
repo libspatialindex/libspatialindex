@@ -34,7 +34,7 @@ jobs:
             -DCMAKE_LIBRARY_PATH:FILEPATH="%CONDA_PREFIX%/Library/lib" ^
             -DCMAKE_INCLUDE_PATH:FILEPATH="%CONDA_PREFIX%/Library/include" ^
             -DBUILD_SHARED_LIBS=ON ^
-            -DSIDX_BUILD_TESTS=ON ^
+            -DBUILD_TESTING=ON ^
             -Dgtest_force_shared_crt=ON ^
         ..
       displayName: 'CMake'

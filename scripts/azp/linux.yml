@@ -94,7 +94,7 @@ jobs:
         mkdir build.cxx11
         cd build.cxx11
         cmake --version
-        cmake -DCMAKE_CXX_STANDARD=11 -DSIDX_BUILD_TESTS=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
+        cmake -DCMAKE_CXX_STANDARD=11 -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
         VERBOSE=1 make
         pushd ..
         export PATH=$PATH:`pwd`/build.cxx11/bin
@@ -107,7 +107,7 @@ jobs:
         mkdir build.cxx14
         cd build.cxx14
         cmake --version
-        cmake -DCMAKE_CXX_STANDARD=14 -DSIDX_BUILD_TESTS=ON  -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
+        cmake -DCMAKE_CXX_STANDARD=14 -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
         VERBOSE=1 make
         ctest -V --output-on-failure
       displayName: 'Build C++14'
@@ -117,7 +117,7 @@ jobs:
         mkdir build.cxx17
         cd build.cxx17
         cmake --version
-        cmake -DCMAKE_CXX_STANDARD=17 -DSIDX_BUILD_TESTS=ON  -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
+        cmake -DCMAKE_CXX_STANDARD=17 -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
         VERBOSE=1 make
         ctest -V --output-on-failure
       displayName: 'Build C++17'
@@ -127,7 +127,7 @@ jobs:
         mkdir build.cxx20
         cd build.cxx20
         cmake --version
-        cmake -DCMAKE_CXX_STANDARD=20 -DSIDX_BUILD_TESTS=ON  -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
+        cmake -DCMAKE_CXX_STANDARD=20 -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
         VERBOSE=1 make
         ctest -V --output-on-failure
       displayName: 'Build C++20'
