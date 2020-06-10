@@ -320,7 +320,7 @@ namespace Tools
 // #else
 //             bool m_rwLock;
 // #endif
-		friend SIDX_DLL std::ostream& Tools::operator<<(std::ostream& os, const Tools::PropertySet& p);
+		friend SIDX_DLL std::ostream& operator<<(std::ostream& os, const Tools::PropertySet& p);
 	}; // PropertySet
 
 	// does not support degenerate intervals.
