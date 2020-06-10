@@ -135,6 +135,19 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR
     -Wredundant-decls
     -Wno-long-long
   )
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
+  if(WIN32)
+    set(SIDX_COMMON_CXX_FLAGS
+      /Wall
+      /Qdiag-disable:2203  # cast discards qualifiers from target type
+    )
+  else()
+    set(SIDX_COMMON_CXX_FLAGS
+      -Wall
+      -Wpointer-arith
+      -diag-disable=2203  # cast discards qualifiers from target type
+    )
+  endif()
 endif()
 
 if(APPLE)
