@@ -220,26 +220,19 @@ if(BUILD_TESTING)
 endif()
 
 #------------------------------------------------------------------------------
-# CPack controls
+# CMake package configuration for find_package(libspatialindex)
 #------------------------------------------------------------------------------
-
 
 include(CMakePackageConfigHelpers)
 
-set(INCLUDE_INSTALL_DIR include/ CACHE PATH "include")
-set(LIB_INSTALL_DIR ${SIDX_LIB_DIR} CACHE PATH "lib")
-set(SYSCONFIG_INSTALL_DIR etc/pdal/ CACHE PATH "sysconfig")
-
-set(PDAL_CONFIG_INCLUDE_DIRS
-  "${CMAKE_INSTALL_PREFIX}/include")
-set(PDAL_CONFIG_LIBRARY_DIRS
-  "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}")
+set(INCLUDE_INSTALL_DIR ${SIDX_INCLUDE_DIR} CACHE PATH "include directory")
+set(LIB_INSTALL_DIR ${SIDX_LIB_DIR} CACHE PATH "lib directory")
 
 configure_package_config_file(
   libspatialindexConfig.cmake.in
   ${CMAKE_CURRENT_BINARY_DIR}/libspatialindexConfig.cmake
   INSTALL_DESTINATION ${LIB_INSTALL_DIR}/cmake/libspatialindex
-  PATH_VARS INCLUDE_INSTALL_DIR SYSCONFIG_INSTALL_DIR)
+  PATH_VARS INCLUDE_INSTALL_DIR LIB_INSTALL_DIR)
 
 write_basic_package_version_file(
   ${CMAKE_CURRENT_BINARY_DIR}/libspatialindexConfigVersion.cmake
@@ -250,6 +243,10 @@ install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/libspatialindexConfig.cmake
   ${CMAKE_CURRENT_BINARY_DIR}/libspatialindexConfigVersion.cmake
   DESTINATION ${LIB_INSTALL_DIR}/cmake/libspatialindex)
+
+#------------------------------------------------------------------------------
+# CPack controls
+#------------------------------------------------------------------------------
 
 set(CPACK_PACKAGE_VERSION_MAJOR ${SIDX_VERSION_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR ${SIDX_VERSION_MINOR})
