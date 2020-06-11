@@ -9,6 +9,6 @@ set_and_check(SIDX_LIB_DIR "@PACKAGE_LIB_INSTALL_DIR@")
 
 include("${CMAKE_CURRENT_LIST_DIR}/libspatialindexTargets.cmake")
 
-set(SIDX_LIBRARIES @SIDX_C_LIB_NAME@ @SIDX_LIB_NAME@)
+set(SIDX_LIBRARIES spatialindex_c spatialindex)
 
 check_required_components(libspatialindex)
