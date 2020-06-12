@@ -35,6 +35,7 @@ jobs:
             -DCMAKE_INCLUDE_PATH:FILEPATH="%CONDA_PREFIX%/Library/include" ^
             -DBUILD_SHARED_LIBS=ON ^
             -DBUILD_TESTING=ON ^
+            -DCMAKE_INSTALL_PREFIX="%TEMP%\sidx" ^
             -Dgtest_force_shared_crt=ON ^
         ..
       displayName: 'CMake'
@@ -64,4 +65,11 @@ jobs:
         pushd build
         call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64
         ninja dist
-      displayName: 'dist'
+        ninja install
+      displayName: 'Dist and install'
+    - script: |
+        ECHO ON
+        call activate libspatialindex
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64
+        call test\postinstall\test_cmake.bat %TEMP%\sidx
+      displayName: 'Post-install test'

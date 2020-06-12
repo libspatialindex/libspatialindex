@@ -9,7 +9,7 @@ jobs:
   - script: |
       mkdir build
       cd build
-      cmake -DBUILD_TESTING=ON ..
+      cmake -DBUILD_TESTING=ON -DCMAKE_INSTALL_PREFIX=/tmp/sidx ..
     displayName: 'CMake'
   - script: |
       cd build
@@ -22,4 +22,8 @@ jobs:
   - script: |
       cd build
       make dist
-    displayName: 'Dist'
+      make install
+    displayName: 'Dist and install'
+  - script: |
+      ./test/postinstall/test_cmake.sh /tmp/sidx
+    displayName: 'Post-install test'
