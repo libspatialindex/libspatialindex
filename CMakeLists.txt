@@ -245,6 +245,20 @@ install(FILES
   DESTINATION ${LIB_INSTALL_DIR}/cmake/libspatialindex)
 
 #------------------------------------------------------------------------------
+# pkg-config support
+#------------------------------------------------------------------------------
+if(NOT WIN32)
+  configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/libspatialindex.pc.in
+    ${CMAKE_CURRENT_BINARY_DIR}/libspatialindex.pc
+    @ONLY)
+
+  install(FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/libspatialindex.pc
+    DESTINATION ${LIB_INSTALL_DIR}/pkgconfig)
+endif()
+
+#------------------------------------------------------------------------------
 # CPack controls
 #------------------------------------------------------------------------------
 
