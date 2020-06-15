@@ -102,6 +102,7 @@ jobs:
         export PATH=$PATH:`pwd`/build.cxx11/bin
         ./scripts/azp/linux-test.sh
         ./test/postinstall/test_cmake.sh $prefix 11
+        ./test/postinstall/test_pkg-config.sh $prefix
       displayName: 'Build C++11'
       condition: contains(variables['CXXSTD'], '11')
     - script: |
@@ -117,6 +118,7 @@ jobs:
         export PATH=$PATH:`pwd`/build.cxx11/bin
         ./scripts/azp/linux-test.sh
         ./test/postinstall/test_cmake.sh $prefix 14
+        ./test/postinstall/test_pkg-config.sh $prefix
       displayName: 'Build C++14'
       condition: contains(variables['CXXSTD'], '14')
     - script: |
@@ -132,6 +134,7 @@ jobs:
         export PATH=$PATH:`pwd`/build.cxx11/bin
         ./scripts/azp/linux-test.sh
         ./test/postinstall/test_cmake.sh $prefix 17
+        ./test/postinstall/test_pkg-config.sh $prefix
       displayName: 'Build C++17'
       condition: contains(variables['CXXSTD'], '17')
     - script: |
@@ -147,6 +150,7 @@ jobs:
         export PATH=$PATH:`pwd`/build.cxx11/bin
         ./scripts/azp/linux-test.sh
         ./test/postinstall/test_cmake.sh $prefix 20
+        ./test/postinstall/test_pkg-config.sh $prefix
       displayName: 'Build C++20'
       condition: contains(variables['CXXSTD'], '20')
 

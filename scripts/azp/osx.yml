@@ -7,6 +7,9 @@ jobs:
   timeoutInMinutes: 360
   steps:
   - script: |
+      brew install pkg-config
+    displayName: 'Install dependencies'
+  - script: |
       mkdir build
       cd build
       cmake -DBUILD_TESTING=ON -DCMAKE_INSTALL_PREFIX=/tmp/sidx ..
@@ -26,4 +29,5 @@ jobs:
     displayName: 'Dist and install'
   - script: |
       ./test/postinstall/test_cmake.sh /tmp/sidx
+      ./test/postinstall/test_pkg-config.sh /tmp/sidx
     displayName: 'Post-install test'
