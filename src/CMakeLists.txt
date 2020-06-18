@@ -237,13 +237,6 @@ if(HAVE_BCOPY)
 endif()
 
 
-
-if(APPLE)
-  set_target_properties(spatialindex spatialindex_c PROPERTIES
-    INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib"
-  )
-endif()
-
 ###############################################################################
 # Targets installation
 

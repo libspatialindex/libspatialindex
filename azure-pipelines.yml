@@ -8,7 +8,4 @@ variables:
     value: Release
 
 jobs:
-  - template: ./scripts/azp/linux.yml
-  - template: ./scripts/azp/win.yml
   - template: ./scripts/azp/osx.yml
-  - template: ./scripts/azp/docs.yml
