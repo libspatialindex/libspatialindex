@@ -23,11 +23,13 @@ jobs:
       ctest -V --output-on-failure
     displayName: 'Test'
   - script: |
+      set -e
       cd build
       make dist
       make install
     displayName: 'Dist and install'
   - script: |
+      set -e
       ./test/postinstall/test_cmake.sh /tmp/sidx
       ./test/postinstall/test_pkg-config.sh /tmp/sidx
     displayName: 'Post-install test'
