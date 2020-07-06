@@ -115,7 +115,7 @@ jobs:
         ctest -V --output-on-failure
         make install
         cd ..
-        export PATH=$PATH:`pwd`/build.cxx11/bin
+        export PATH=$PATH:`pwd`/build.cxx14/bin
         ./scripts/azp/linux-test.sh
         ./test/postinstall/test_cmake.sh $prefix 14
         ./test/postinstall/test_pkg-config.sh $prefix
@@ -131,7 +131,7 @@ jobs:
         ctest -V --output-on-failure
         make install
         cd ..
-        export PATH=$PATH:`pwd`/build.cxx11/bin
+        export PATH=$PATH:`pwd`/build.cxx17/bin
         ./scripts/azp/linux-test.sh
         ./test/postinstall/test_cmake.sh $prefix 17
         ./test/postinstall/test_pkg-config.sh $prefix
@@ -147,7 +147,7 @@ jobs:
         ctest -V --output-on-failure
         make install
         cd ..
-        export PATH=$PATH:`pwd`/build.cxx11/bin
+        export PATH=$PATH:`pwd`/build.cxx20/bin
         ./scripts/azp/linux-test.sh
         ./test/postinstall/test_cmake.sh $prefix 20
         ./test/postinstall/test_pkg-config.sh $prefix
