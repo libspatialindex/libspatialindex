@@ -27,21 +27,6 @@
 
 #pragma once
 
-
-#if (defined _WIN32 || defined _WIN64 || defined WIN32 || defined WIN64) && (defined _MSC_VER) && (_MSC_VER < 1900) && !defined __GNUC__
-  typedef __int8 int8_t;
-  typedef __int16 int16_t;
-  typedef __int32 int32_t;
-  typedef __int64 int64_t;
-  typedef unsigned __int8 uint8_t;
-  typedef unsigned __int16 uint16_t;
-  typedef unsigned __int32 uint32_t;
-  typedef unsigned __int64 uint64_t;
-
-#else
-  #include <cstdint>
-#endif
-
 #if (defined _WIN32 || defined _WIN64 || defined WIN32 || defined WIN64) && !defined __GNUC__
   #ifdef SIDX_DLL_EXPORT
     #define SIDX_DLL __declspec(dllexport)
@@ -71,6 +56,7 @@
 #include <list>
 #include <algorithm>
 #include <cwchar>
+#include <cstdint>
 
 #include "PointerPool.h"
 #include "PoolPointer.h"
