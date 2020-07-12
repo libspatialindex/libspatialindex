@@ -256,6 +256,8 @@ install(TARGETS spatialindex spatialindex_c
 export(
     TARGETS
         spatialindex spatialindex_c
+    NAMESPACE
+        libspatialindex::
     FILE
         "${SIDX_LIB_DIR}/libspatialindexTargets.cmake")
 
