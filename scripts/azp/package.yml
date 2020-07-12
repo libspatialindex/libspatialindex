@@ -1,7 +1,7 @@
 # -*- mode: yaml -*-
 
 jobs:
-  package:
+  - job: package
     name: Packaging
 
     runs-on: ubuntu-latest
