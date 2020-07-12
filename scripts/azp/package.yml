@@ -2,6 +2,8 @@
 
 jobs:
   package:
+    name: Packaging
+
     runs-on: ubuntu-latest
     container: osgeo/proj
     steps:
