@@ -4,9 +4,9 @@ jobs:
 - job: package
   container: osgeo/proj
   steps:
-    - uses: actions/checkout@v1
-    - name: Setup
-      shell: bash -l {0}
-      run: |
-          ./package-release.sh
-          ls
+  - uses: actions/checkout@v1
+  - name: Setup
+    shell: bash -l {0}
+    run: |
+        ./package-release.sh
+        ls
