@@ -1,7 +1,7 @@
 # -*- mode: yaml -*-
 
 jobs:
--job: package
+- job: package
   container: osgeo/proj
   steps:
     - name: Checkout Project
