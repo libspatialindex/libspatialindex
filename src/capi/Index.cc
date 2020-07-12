@@ -357,7 +357,7 @@ RTIndexVariant Index::GetIndexVariant()
 	return RT_InvalidIndexVariant;
 }
 
-void Index::SetIndexVariant(RTStorageType v)
+void Index::SetIndexVariant(RTIndexVariant v)
 {
 	using namespace SpatialIndex;
 	Tools::Variant var;

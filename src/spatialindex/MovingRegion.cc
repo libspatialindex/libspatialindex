@@ -5,7 +5,7 @@
  * Copyright (c) 2004, Marios Hadjieleftheriou
  *
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
@@ -28,6 +28,7 @@
 /*
  * Does not support degenerate time intervals or shrinking regions.
 */
+
 
 
 #include <cstring>
@@ -652,7 +653,7 @@ bool MovingRegion::containsRegionAtTime(double t, const MovingRegion& r) const
 
 	for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
 	{
-		if (getExtrapolatedLow(cDim, t) > r.getExtrapolatedLow(cDim, t) || getExtrapolatedHigh(cDim, t) < getExtrapolatedHigh(cDim, t)) return false;
+		if (getExtrapolatedLow(cDim, t) > r.getExtrapolatedLow(cDim, t) || getExtrapolatedHigh(cDim, t) < r.getExtrapolatedHigh(cDim, t)) return false;
 	}
 	return true;
 }
