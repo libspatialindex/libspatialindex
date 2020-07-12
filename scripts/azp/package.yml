@@ -1,16 +1,16 @@
 # -*- mode: yaml -*-
 
 jobs:
-  - job: package
-    name: Packaging
+- job: package
+  name: Packaging
 
-    runs-on: ubuntu-latest
-    container: osgeo/proj
-    steps:
-      - name: Checkout Project
-        uses: actions/checkout@v1
-      - name: Setup
-        shell: bash -l {0}
-        run: |
-            ./package-release.sh
-            ls
+  runs-on: ubuntu-latest
+  container: osgeo/proj
+  steps:
+    - name: Checkout Project
+      uses: actions/checkout@v1
+    - name: Setup
+      shell: bash -l {0}
+      run: |
+          ./package-release.sh
+          ls
