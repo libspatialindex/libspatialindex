@@ -1,14 +1,14 @@
 # -*- mode: yaml -*-
 
 jobs:
-- job: package
-  name: Package
-
-  container: osgeo/proj
-  steps:
-  - uses: actions/checkout@v2
-  - script: |
-        ./package-release.sh
-        ls
-    shell: bash -l {0}
-    displayName: Package
+  - job: 'Documentation'
+    pool:
+      vmImage: 'ubuntu-16.04'
+    container:
+      image: osgeo/proj-docs
+      options: --privileged
+    steps:
+      - script: |
+          ./package-release.sh
+          ls
+        displayName: 'Package'
