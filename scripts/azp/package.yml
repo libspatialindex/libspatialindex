@@ -1,7 +1,7 @@
 # -*- mode: yaml -*-
 
 jobs:
-  - job: 'Documentation'
+  - job: 'Package'
     pool:
       vmImage: 'ubuntu-16.04'
     container:
