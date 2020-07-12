@@ -1,12 +1,13 @@
 # -*- mode: yaml -*-
 
 jobs:
-- job: package
+  package:
+    name: Package
   container: osgeo/proj
   steps:
-  - uses: actions/checkout@v1
-  - name: Setup
-    shell: bash -l {0}
-    run: |
+  - uses: actions/checkout@v2
+  - script: |
         ./package-release.sh
         ls
+    shell: bash -l {0}
+    displayName: Package
