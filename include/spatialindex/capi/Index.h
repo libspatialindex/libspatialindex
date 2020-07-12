@@ -28,6 +28,7 @@
 
 #pragma once
 
+
 #include "sidx_export.h"
 
 class SIDX_DLL Index
