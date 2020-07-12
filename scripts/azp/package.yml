@@ -1,10 +1,7 @@
 # -*- mode: yaml -*-
 
 jobs:
-- job: package
-  name: Packaging
-
-  runs-on: ubuntu-latest
+-job: package
   container: osgeo/proj
   steps:
     - name: Checkout Project
