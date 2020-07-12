@@ -182,7 +182,7 @@ double MovingPoint::getCoord(uint32_t d, double t) const
 	if (d >= m_dimension) throw Tools::IndexOutOfBoundsException(d);
 
 	if (t >= m_endTime) return m_pCoords[d] + m_pVCoords[d] * (m_endTime - m_startTime);
-	else if (t <= m_startTime) return m_pCoords[d] + m_pVCoords[d] * m_startTime;
+	else if (t <= m_startTime) return m_pCoords[d];
 	else return m_pCoords[d] + m_pVCoords[d] * (t - m_startTime);
 }
 

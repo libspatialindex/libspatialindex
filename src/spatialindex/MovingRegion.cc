@@ -653,7 +653,7 @@ bool MovingRegion::containsRegionAtTime(double t, const MovingRegion& r) const
 
 	for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
 	{
-		if (getExtrapolatedLow(cDim, t) > r.getExtrapolatedLow(cDim, t) || getExtrapolatedHigh(cDim, t) < getExtrapolatedHigh(cDim, t)) return false;
+		if (getExtrapolatedLow(cDim, t) > r.getExtrapolatedLow(cDim, t) || getExtrapolatedHigh(cDim, t) < r.getExtrapolatedHigh(cDim, t)) return false;
 	}
 	return true;
 }
