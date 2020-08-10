@@ -56,10 +56,15 @@ jobs:
       run: |
         git config --global user.email "proj4bot@proj4.bot"
         git config --global user.name "PDAL Doc Bot"
-        ls website
         cp -r ./docs/build/html/* ./website
         cp -r ./docs/build/latex/libspatialindex.pdf ./website
         cp -r ./docs/doxygen/html/* ./website/doxygen/
+        cd website
+        ls
         git add -A
         git commit -m "Update with https://github.com/libspatialindex/libspatialindex/commit/$GITHUB_SHA_SHORT"
-        git push origin master
+    - name: Push docs
+      uses: ad-m/github-push-action@v0.6.0
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        directory: website
