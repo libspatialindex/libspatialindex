@@ -33,6 +33,11 @@ jobs:
       run: |
         make html
       working-directory: ./docs
+    - name: Doxygen
+      shell: bash -l {0}
+      run: |
+        make doxygen
+      working-directory: ./docs
     - name: PDF
       shell: bash -l {0}
       run: |
