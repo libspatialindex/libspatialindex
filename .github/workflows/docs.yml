@@ -1,0 +1,57 @@
+name: Docs
+
+on:
+  pull_request:
+    branches:
+    - '*'
+  release:
+    types:
+      - published
+jobs:
+  docs:
+    name: Docs
+
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+    container: osgeo/proj-docs
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Print versions
+      shell: bash -l {0}
+      run: |
+          python3 --version
+          sphinx-build --version
+    - name: Lint .rst files
+      shell: bash -l {0}
+      run: |
+        if find . -name '*.rst' | xargs grep -P '\t'; then echo 'Tabs are bad, please use four spaces in .rst files.'; false; fi
+      working-directory: ./docs
+    - name: HTML
+      shell: bash -l {0}
+      run: |
+        make html
+      working-directory: ./docs
+    - name: PDF
+      shell: bash -l {0}
+      run: |
+        make latexpdf
+      working-directory: ./docs
+
+    - name: Gather docs
+      shell: bash -l {0}
+      run: |
+        git config --global user.email "proj4bot@proj4.bot"
+        git config --global user.name "PDAL Doc Bot"
+        git clone git@github.com:libspatialindex/libspatialindex.github.com.git ./website
+        mkdir -p website
+        cp -r ./build/html/* ./website
+        cp -r ./build/latex/libspatialindex.pdf ./website
+        cp -r ./doxygen/html/* ./website/doxygen/
+        cd website
+        ls
+        git add -A
+        git commit -m "Update with https://github.com/libspatialindex/libspatialindex/commit/$GITHUB_SHA_SHORT"
+        git push origin master
+      working-directory: ./docs
