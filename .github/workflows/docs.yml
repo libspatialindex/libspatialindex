@@ -55,12 +55,13 @@ jobs:
     - name: Push docs
       shell: bash -l {0}
       run: |
+        cd website
+        git status
+        cp -r ../docs/build/html/* ./website
+        cp -r ../docs/build/latex/libspatialindex.pdf ./website
+        cp -r ../docs/doxygen/html/* ./website/doxygen/
         git config user.name github-actions
         git config user.email github-actions@github.com
-        cp -r ./docs/build/html/* ./website
-        cp -r ./docs/build/latex/libspatialindex.pdf ./website
-        cp -r ./docs/doxygen/html/* ./website/doxygen/
-        cd website
         ls
         pwd
         git add -A
