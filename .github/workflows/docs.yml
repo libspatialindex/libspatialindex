@@ -39,19 +39,23 @@ jobs:
         make latexpdf
       working-directory: ./docs
 
+
+    - name: Checkout Docs
+      uses: actions/checkout@v2
+      with:
+        repository: libspatialindex/libspatialindex.github.com
+        path: website
+
     - name: Gather docs
       shell: bash -l {0}
       run: |
         git config --global user.email "proj4bot@proj4.bot"
         git config --global user.name "PDAL Doc Bot"
-        git clone git@github.com:libspatialindex/libspatialindex.github.com.git ./website
-        mkdir -p website
-        cp -r ./build/html/* ./website
-        cp -r ./build/latex/libspatialindex.pdf ./website
-        cp -r ./doxygen/html/* ./website/doxygen/
-        cd website
-        ls
+        ls ../website
+        git clone git@github.com:libspatialindex/libspatialindex.github.com.git ../website
+        cp -r ./docs/build/html/* ../website
+        cp -r ./docs/build/latex/libspatialindex.pdf website
+        cp -r ./docs/doxygen/html/* ../website/doxygen/
         git add -A
         git commit -m "Update with https://github.com/libspatialindex/libspatialindex/commit/$GITHUB_SHA_SHORT"
         git push origin master
-      working-directory: ./docs
