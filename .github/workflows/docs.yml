@@ -53,16 +53,16 @@ jobs:
         clean: false
 
     - name: Push docs
-      uses: actions/checkout@v2
       shell: bash -l {0}
       run: |
-        git config --global user.email "proj4bot@proj4.bot"
-        git config --global user.name "PDAL Doc Bot"
+        git config user.name github-actions
+        git config user.email github-actions@github.com
         cp -r ./docs/build/html/* ./website
         cp -r ./docs/build/latex/libspatialindex.pdf ./website
         cp -r ./docs/doxygen/html/* ./website/doxygen/
         cd website
         ls
+        pwd
         git add -A
         git commit -m "Update with https://github.com/libspatialindex/libspatialindex/commit/$GITHUB_SHA_SHORT"
         git push
