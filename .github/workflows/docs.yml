@@ -50,8 +50,10 @@ jobs:
       with:
         repository: libspatialindex/libspatialindex.github.com
         path: website
+        clean: false
 
-    - name: Gather docs
+    - name: Push docs
+      uses: actions/checkout@v2
       shell: bash -l {0}
       run: |
         git config --global user.email "proj4bot@proj4.bot"
@@ -63,8 +65,5 @@ jobs:
         ls
         git add -A
         git commit -m "Update with https://github.com/libspatialindex/libspatialindex/commit/$GITHUB_SHA_SHORT"
-    - name: Push docs
-      uses: ad-m/github-push-action@v0.6.0
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        directory: website
+        git push
+
