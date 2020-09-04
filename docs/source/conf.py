@@ -11,7 +11,9 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys, os
+import os
+import subprocess
+from pathlib import Path
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -239,3 +241,28 @@ texinfo_documents = [
 
 # How to display URL addresses: 'footnote', 'no', or 'inline'.
 #texinfo_show_urls = 'footnote'
+
+
+#
+# On ReadTheDocs, invoke the doxygen build
+#
+
+
+def _generate_doxygen():
+    """Run the doxygen make commands if we're on the ReadTheDocs server"""
+    print("Invoking Doxygen...")
+    docs_root = Path(__file__).parent.parent
+
+    # override the doxygen conf file to generate it elsewhere so we can place it into /doxygen/
+    doxygen_conf = open((docs_root / "doxygen/doxygen.conf"), 'rt', encoding="ascii").read()
+    doxygen_conf += "\nHTML_OUTPUT = docs/doxygen/html-rtd/doxygen\n"
+    (docs_root / "doxygen/html-rtd").mkdir(exist_ok=True)
+
+    subprocess.run(['doxygen', '-'], check=True, cwd=docs_root.parent, text=True, input=doxygen_conf)
+
+
+is_read_the_docs_build = os.environ.get('READTHEDOCS', '') == 'True'
+if is_read_the_docs_build:
+    _generate_doxygen()
+    # get sphinx to pick it up
+    html_extra_path = ['../doxygen/html-rtd']

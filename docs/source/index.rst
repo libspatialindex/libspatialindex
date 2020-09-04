@@ -9,7 +9,9 @@
    Github <https://github.com/libspatialindex/libspatialindex>
    community
    overview
-   Class Documentation <http://libspatialindex.org/doxygen/>
+
+
+* `Class Documentation <./doxygen/index.html>`_
 
 
 

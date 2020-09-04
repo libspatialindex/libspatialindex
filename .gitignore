@@ -14,5 +14,5 @@ CMakeFiles/
 CMakeCache.txt
 docs/build
 install_manifest.txt
-docs/doxygen/html/
+docs/doxygen/html*/
 docs/doxygen/xml
