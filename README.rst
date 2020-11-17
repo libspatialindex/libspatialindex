@@ -7,7 +7,7 @@
 
 :Author: Marios Hadjieleftheriou
 :Contact: mhadji@gmail.com
-:Revision: 1.9.1
-:Date: 10/19/2019
+:Revision: 1.9.3
+:Date: 10/23/2019
 
 See http://libspatialindex.org for full documentation.
