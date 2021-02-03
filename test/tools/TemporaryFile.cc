@@ -13,7 +13,7 @@ int main(int /*argc*/, char** /*argv*/) {
     const std::string path = temporaryFile.getFileName();
 
 #if defined ( _MSC_VER )
-    const std::string shouldContain = "aaa";
+    const std::string shouldContain = "Temp";
     if (path.find(shouldContain) == std::string::npos) {
         cerr << "Test failed:  TemporaryFile path " << path << " does not contain " << shouldContain << endl;
         return -1;
