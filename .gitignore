@@ -1,3 +1,4 @@
+.DS_Store
 *.suo
 *.obj
 *.bak
@@ -10,6 +11,8 @@
 *.lo
 *.la
 *build*
+.idea
+CMakeLists.txt.user
 CMakeFiles/
 CMakeCache.txt
 docs/build
