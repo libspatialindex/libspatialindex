@@ -1079,10 +1079,26 @@ Tools::TemporaryFile::TemporaryFile()
 		m_sFile = std::string(tmpName);
 
 #else
-	char tmpName[7] = "XXXXXX";
+  // see https://github.com/boostorg/filesystem/blob/b4d606cdd08640c9bca68f7e97b52245aeef398d/src/operations.cpp#L2783
+  const char* val = nullptr;
+
+  (val = std::getenv("TMPDIR" )) ||
+  (val = std::getenv("TMP"    )) ||
+  (val = std::getenv("TEMP"   )) ||
+  (val = std::getenv("TEMPDIR"));
+
+#   ifdef __ANDROID__
+  const char* default_tmp = "/data/local/tmp";
+#   else
+  const char* default_tmp = "/tmp";
+#   endif
+  std::string tempDir ((val != nullptr) ? val : default_tmp);
+
+  // now contruct the temporary filename
+  char tmpName[20] = "spatialindex-XXXXXX";
 	if (mkstemp(tmpName) == -1)
 		throw std::ios_base::failure("Tools::TemporaryFile: Cannot create temporary file name.");
-	m_sFile = tmpName;
+  m_sFile = tempDir + "/" + tmpName;
 #endif
 
 	m_pFile = new Tools::BufferedFileWriter(m_sFile, Tools::CREATE);

@@ -38,6 +38,17 @@ foreach(test ${SOURCES})
     target_link_libraries(test-${DIR}-${test} spatialindex)
 endforeach()
 
+set(DIR tools)
+set(SOURCES
+        TemporaryFile
+        )
+
+
+foreach(test ${SOURCES})
+    add_executable(test-${DIR}-${test} ${DIR}/${test}.cc)
+    target_link_libraries(test-${DIR}-${test} spatialindex)
+endforeach()
+
 set(DIR tprtree)
 set(SOURCES
         Exhaustive
