@@ -1095,10 +1095,12 @@ Tools::TemporaryFile::TemporaryFile()
   std::string tempDir ((val != nullptr) ? val : default_tmp);
 
   // now contruct the temporary filename
-  char tmpName[20] = "spatialindex-XXXXXX";
-	if (mkstemp(tmpName) == -1)
+  std::string tempName = tempDir + "/spatialindex-XXXXXX";
+  char* tmpName = strdup(tempName.c_str());
+  if (!tmpName || mkstemp(tmpName) == -1)
 		throw std::ios_base::failure("Tools::TemporaryFile: Cannot create temporary file name.");
-  m_sFile = tempDir + "/" + tmpName;
+  m_sFile = tmpName;
+  free(tmpName);
 #endif
 
 	m_pFile = new Tools::BufferedFileWriter(m_sFile, Tools::CREATE);
