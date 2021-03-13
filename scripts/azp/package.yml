@@ -1,0 +1,14 @@
+# -*- mode: yaml -*-
+
+jobs:
+  - job: 'Package'
+    pool:
+      vmImage: 'ubuntu-16.04'
+    container:
+      image: osgeo/proj-docs
+      options: --privileged
+    steps:
+      - script: |
+          ./package-release.sh
+          ls
+        displayName: 'Package'

@@ -9,13 +9,13 @@ cmake_minimum_required(VERSION 3.5)
 # libspatialindex general settings
 #------------------------------------------------------------------------------
 
-set(SIDX_VERSION_MAJOR "1")
-set(SIDX_VERSION_MINOR "9")
-set(SIDX_VERSION_PATCH "3")
+set(SIDX_VERSION_MAJOR "2")
+set(SIDX_VERSION_MINOR "0")
+set(SIDX_VERSION_PATCH "0")
 set(SIDX_VERSION_STRING
   "${SIDX_VERSION_MAJOR}.${SIDX_VERSION_MINOR}.${SIDX_VERSION_PATCH}")
-set(SIDX_LIB_VERSION "6.1.1")
-set(SIDX_LIB_SOVERSION "6")
+set(SIDX_LIB_VERSION "7.0.0")
+set(SIDX_LIB_SOVERSION "7")
 
 # disable incremental linker
 set(MSVC_INCREMENTAL_DEFAULT NO)
