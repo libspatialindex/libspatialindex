@@ -46,7 +46,7 @@
   #ifdef SIDX_DLL_EXPORT
     #define SIDX_DLL __declspec(dllexport)
   #else
-    #define SIDX_DLL __declspec(dllimport)
+    #define SIDX_DLL
   #endif
 
   // Nuke this annoying warning.  See http://www.unknownroad.com/rtfm/VisualStudio/warningC4251.html
