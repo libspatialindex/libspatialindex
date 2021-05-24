@@ -29,7 +29,7 @@
 #pragma once
 
 #ifndef SIDX_C_DLL
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) && defined(SIDX_DLL_EXPORT)
 #  define SIDX_C_DLL     __declspec(dllexport)
 #  define SIDX_DLL     __declspec(dllexport)
 #else

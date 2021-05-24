@@ -179,7 +179,6 @@ set(SIDX_SOURCES
   ${SIDX_CPP})
 
 add_library(spatialindex ${SIDX_SOURCES})
-
 add_library(spatialindex_c ${SIDX_CAPI_CPP})
 
 target_link_libraries(spatialindex_c spatialindex)
@@ -204,9 +203,10 @@ if(MSVC)
   target_compile_options(spatialindex PRIVATE /wd4068)
   target_compile_options(spatialindex_c PRIVATE /wd4068)
 
-  target_compile_definitions(spatialindex_c PRIVATE -DSIDX_DLL_EXPORT=1)
-  target_compile_definitions(spatialindex PRIVATE -DSIDX_DLL_EXPORT=1)
-  if(NOT WITH_STATIC_SIDX)
+  if (BUILD_SHARED_LIBS)
+    target_compile_definitions(spatialindex PRIVATE -DSIDX_DLL_EXPORT=1)
+    target_compile_definitions(spatialindex_c PRIVATE -DSIDX_DLL_EXPORT=1)
+  else()
     target_compile_definitions(spatialindex PRIVATE -DSIDX_DLL_IMPORT=1)
     target_compile_definitions(spatialindex_c PRIVATE -DSIDX_DLL_IMPORT=1)
   endif()

@@ -4,6 +4,13 @@ jobs:
 
   pool:
     vmImage: vs2017-win2016
+    strategy:
+      matrix:
+        shared:
+          SHARED: ON
+        static:
+          SHARED: OFF
+
   timeoutInMinutes: 360
   steps:
     - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
@@ -33,7 +40,7 @@ jobs:
             -DCMAKE_BUILD_TYPE=RelWithDebInfo ^
             -DCMAKE_LIBRARY_PATH:FILEPATH="%CONDA_PREFIX%/Library/lib" ^
             -DCMAKE_INCLUDE_PATH:FILEPATH="%CONDA_PREFIX%/Library/include" ^
-            -DBUILD_SHARED_LIBS=ON ^
+            -DBUILD_SHARED_LIBS=%SHARED% ^
             -DBUILD_TESTING=ON ^
             -DCMAKE_INSTALL_PREFIX="%TEMP%\sidx" ^
             -Dgtest_force_shared_crt=ON ^
