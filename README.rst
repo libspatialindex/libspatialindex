@@ -11,3 +11,7 @@
 :Date: 10/23/2019
 
 See http://libspatialindex.org for full documentation.
+
+.. image:: https://readthedocs.org/projects/libspatialindex/badge/?version=latest
+    :target: https://libspatialindex.org/en/latest/?badge=latest
+    :alt: Documentation Status
