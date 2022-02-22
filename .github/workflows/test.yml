@@ -1,0 +1,38 @@
+
+name: Test
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+
+    steps:
+     - uses: actions/checkout@v1
+     - name: Get latest CMake and ninja
+       uses: lukka/get-cmake@v3.22.2
+
+     - name: CMake
+       shell: bash -l {0}
+       run: |
+         mkdir build;
+         cd build;
+         cmake   -G "Ninja"  \
+           -DCMAKE_BUILD_TYPE=Debug \
+           -DBUILD_TESTING=ON \
+           -DCMAKE_INSTALL_PREFIX=${CONDA_PREFIX} \
+           ..
+
+     - name: Compile
+       shell: bash -l {0}
+       run: |
+           ninja
+       working-directory: ./build
+
+
+     - name: Test
+       shell: bash -l {0}
+       run: |
+           ninja test
+       working-directory: ./build
