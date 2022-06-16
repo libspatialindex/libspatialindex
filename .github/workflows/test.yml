@@ -7,7 +7,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
-        shared: ON
+        shared: [ON]
         include:
           - os: windows-latest
             shared: ON
@@ -26,7 +26,7 @@ jobs:
          cd build;
          cmake   -G "Ninja"  \
            -DCMAKE_BUILD_TYPE=Debug \
-           -DBUILD_SHARED_LIBS=matrix.shared \
+           -DBUILD_SHARED_LIBS=${{ matrix.shared }} \
            -DBUILD_TESTING=ON \
            -DCMAKE_INSTALL_PREFIX=${CONDA_PREFIX} \
            ..
