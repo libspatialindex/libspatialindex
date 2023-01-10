@@ -144,7 +144,8 @@ bool Ball::containsShape(const IShape &in) const
 
 bool Ball::touchesShape(const IShape &in) const
 {
-	return fabs(in.getMinimumDistance(m_centerPoint) - m_radius) <= std::numeric_limits<double>::epsilon();
+	return fabs(in.getMinimumDistance(m_centerPoint) - m_radius) <=
+		std::numeric_limits<double>::epsilon();
 }
 
 void Ball::getCenter(Point &out) const
