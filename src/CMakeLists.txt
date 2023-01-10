@@ -27,6 +27,7 @@ set(SIDX_CAPI_DIR "${PROJECT_SOURCE_DIR}/src/capi")
 # base
 #
 set(SIDX_BASE_HPP
+  "${SIDX_HEADERS_DIR}/Ball.h"
   "${SIDX_HEADERS_DIR}/LineSegment.h"
   "${SIDX_HEADERS_DIR}/MovingPoint.h"
   "${SIDX_HEADERS_DIR}/MVRTree.h"
@@ -74,6 +75,7 @@ set(SIDX_CAPI_CPP
 list(APPEND SIDX_CPP ${SIDX_CAPI_CPP})
 
 set(SIDX_SPATIALINDEX_CPP
+  "${SIDX_SRC_DIR}/spatialindex/Ball.cc"
   "${SIDX_SRC_DIR}/spatialindex/LineSegment.cc"
   "${SIDX_SRC_DIR}/spatialindex/MovingPoint.cc"
   "${SIDX_SRC_DIR}/spatialindex/MovingRegion.cc"

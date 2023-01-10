@@ -36,6 +36,7 @@
 namespace SpatialIndex
 {
 	class Point;
+	class Ball;
 	class LineSegment;
 	class Region;
 
@@ -246,6 +247,7 @@ namespace SpatialIndex
 
 #include "Point.h"
 #include "Region.h"
+#include "Ball.h"
 #include "LineSegment.h"
 #include "TimePoint.h"
 #include "TimeRegion.h"
