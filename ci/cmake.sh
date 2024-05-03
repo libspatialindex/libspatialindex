@@ -1,6 +1,10 @@
 #!/bin/bash
 
 
+env
+export CC=cl.exe
+export CXX=cl.exe
+
 cmake   -G "Ninja"  \
       -DCMAKE_BUILD_TYPE=RelWithDebInfo \
       -DBUILD_SHARED_LIBS=$BUILD_SHARED_LIBS \
