@@ -18,32 +18,32 @@ jobs:
      - uses: actions/checkout@v4
      - uses: mamba-org/setup-micromamba@v1
        with:
-         init-shell: bash
-         environment-file: ci/environment.yml
-         environment-name: "build"
-         cache-environment: true
-         cache-downloads: true
+           init-shell: bash
+           environment-file: ci/environment.yml
+           environment-name: "build"
+           cache-environment: true
+           cache-downloads: true
 
-      - name: Setup
-        shell: bash -l {0}
-        run: |
-            mkdir build
+     - name: Setup
+       shell: bash -l {0}
+       run: |
+           mkdir build
 
-      - name: CMake
-        shell: bash -l {0}
-        run: |
-            source ../ci/cmake.sh
-        working-directory: ./build
+     - name: CMake
+       shell: bash -l {0}
+       run: |
+           source ../ci/cmake.sh
+       working-directory: ./build
 
-      - name: Compile
-        shell: bash -l {0}
-        run: |
-            source ../ci/compile.sh
-        working-directory: ./build
+     - name: Compile
+       shell: bash -l {0}
+       run: |
+           source ../ci/compile.sh
+       working-directory: ./build
 
-      - name: Test
-        shell: bash -l {0}
-        run: |
-            source ../ci/test.sh
-        working-directory: ./build
+     - name: Test
+       shell: bash -l {0}
+       run: |
+           source ../ci/test.sh
+       working-directory: ./build
 
