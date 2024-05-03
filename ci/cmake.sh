@@ -13,4 +13,5 @@ cmake   -G "Ninja"  \
       -DBUILD_SHARED_LIBS=$BUILD_SHARED_LIBS \
       -DBUILD_TESTING=ON \
       -DCMAKE_INSTALL_PREFIX=${CONDA_PREFIX} \
+      -Dgtest_force_shared_crt=ON \
       ..
