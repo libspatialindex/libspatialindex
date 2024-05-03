@@ -15,31 +15,35 @@ jobs:
             shared: OFF
 
     steps:
-     - uses: actions/checkout@v1
-     - name: Get latest CMake and ninja
-       uses: lukka/get-cmake@v3.22.2
+     - uses: actions/checkout@v4
+     - uses: mamba-org/setup-micromamba@v1
+       with:
+         init-shell: bash
+         environment-file: ci/environment.yml
+         environment-name: "build"
+         cache-environment: true
+         cache-downloads: true
 
-     - name: CMake
-       shell: bash -l {0}
-       run: |
-         mkdir build;
-         cd build;
-         cmake   -G "Ninja"  \
-           -DCMAKE_BUILD_TYPE=Debug \
-           -DBUILD_SHARED_LIBS=${{ matrix.shared }} \
-           -DBUILD_TESTING=ON \
-           -DCMAKE_INSTALL_PREFIX=${CONDA_PREFIX} \
-           ..
+      - name: Setup
+        shell: bash -l {0}
+        run: |
+            mkdir build
 
-     - name: Compile
-       shell: bash -l {0}
-       run: |
-           ninja
-       working-directory: ./build
+      - name: CMake
+        shell: bash -l {0}
+        run: |
+            source ../ci/cmake.sh
+        working-directory: ./build
 
+      - name: Compile
+        shell: bash -l {0}
+        run: |
+            source ../ci/compile.sh
+        working-directory: ./build
 
-     - name: Test
-       shell: bash -l {0}
-       run: |
-           ninja test
-       working-directory: ./build
+      - name: Test
+        shell: bash -l {0}
+        run: |
+            source ../ci/test.sh
+        working-directory: ./build
+

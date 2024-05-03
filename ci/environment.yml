@@ -1,0 +1,11 @@
+name: build
+channels:
+  - conda-forge
+dependencies:
+  - conda
+  - mamba
+  - compilers
+  - ninja
+  - cmake
+  - ccache
+
