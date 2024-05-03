@@ -1,9 +1,13 @@
 #!/bin/bash
 
 
-env
+
+if [ "$RUNNER_OS" == "windows-latest" ]; then
 export CC=cl.exe
 export CXX=cl.exe
+fi
+
+
 
 cmake   -G "Ninja"  \
       -DCMAKE_BUILD_TYPE=RelWithDebInfo \
