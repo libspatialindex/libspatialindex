@@ -33,8 +33,8 @@ formats:
   - epub
 
 conda:
-  environment: doc/environment.yml
+  environment: docs/environment.yml
 
 sphinx:
   builder: html
-  configuration: doc/source/conf.py
+  configuration: docs/source/conf.py
