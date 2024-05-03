@@ -31,6 +31,9 @@ jobs:
 
      - name: CMake
        shell: bash -l {0}
+       env:
+        BUILD_SHARED_LIBS: ${{ matrix.shared }}
+
        run: |
            source ../ci/cmake.sh
        working-directory: ./build
