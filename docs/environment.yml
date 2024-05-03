@@ -1,0 +1,17 @@
+name: entwine
+channels:
+  - conda-forge
+dependencies:
+  - compilers
+  - cmake
+  - ninja
+  - pip
+  - pip:
+    - breathe
+    - pybtex
+    - sphinx-rtd-theme
+    - sphinxcontrib-bibtex
+    - sphinxcontrib-spelling
+    - sphinx_markdown_tables
+    - recommonmark
+    - sphinxcontrib-spelling!=7.4.0

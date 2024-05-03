@@ -1,6 +1,11 @@
 
 name: Test
 on: [push, pull_request]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -15,31 +20,43 @@ jobs:
             shared: OFF
 
     steps:
-     - uses: actions/checkout@v1
-     - name: Get latest CMake and ninja
-       uses: lukka/get-cmake@v3.22.2
+     - uses: actions/checkout@v4
+     - uses: ilammy/msvc-dev-cmd@v1
+       if: matrix.os == 'windows-latest'
+     - name: Support longpaths
+       run: git config --system core.longpaths true
+       if: matrix.os == 'windows-latest'
+     - uses: mamba-org/setup-micromamba@v1
+       with:
+           init-shell: bash
+           environment-file: ci/environment.yml
+           environment-name: "build"
+           cache-environment: true
+           cache-downloads: true
+
+     - name: Setup
+       shell: bash -l {0}
+       run: |
+           mkdir build
 
      - name: CMake
        shell: bash -l {0}
+       env:
+        BUILD_SHARED_LIBS: ${{ matrix.shared }}
+
        run: |
-         mkdir build;
-         cd build;
-         cmake   -G "Ninja"  \
-           -DCMAKE_BUILD_TYPE=Debug \
-           -DBUILD_SHARED_LIBS=${{ matrix.shared }} \
-           -DBUILD_TESTING=ON \
-           -DCMAKE_INSTALL_PREFIX=${CONDA_PREFIX} \
-           ..
+           source ../ci/cmake.sh
+       working-directory: ./build
 
      - name: Compile
        shell: bash -l {0}
        run: |
-           ninja
+           source ../ci/compile.sh
        working-directory: ./build
-
 
      - name: Test
        shell: bash -l {0}
        run: |
-           ninja test
+           source ../ci/test.sh
        working-directory: ./build
+
