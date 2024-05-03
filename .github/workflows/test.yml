@@ -21,6 +21,8 @@ jobs:
 
     steps:
      - uses: actions/checkout@v4
+     - uses: ilammy/msvc-dev-cmd@v1
+       if: matrix.os == 'windows-latest'
      - uses: mamba-org/setup-micromamba@v1
        with:
            init-shell: bash
