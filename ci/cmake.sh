@@ -1,8 +1,7 @@
 #!/bin/bash
 
 
-env
-if [ "$RUNNER_OS" == "windows-latest" ]; then
+if [ "$RUNNER_OS" == "Windows" ]; then
 export CC=cl.exe
 export CXX=cl.exe
 fi
