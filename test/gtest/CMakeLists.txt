@@ -1,7 +1,7 @@
-set(GOOGLETEST_VERSION "1.10.0")
+set(GOOGLETEST_VERSION "1.14.0")
 
-add_subdirectory(gtest-1.10.0)
-include_directories(./gtest-1.10.0/include)
+add_subdirectory(gtest-1.14.0)
+include_directories(./gtest-1.14.0/include)
 
 set(SOURCES
     test.h
