@@ -3,54 +3,31 @@
 #
 # (based originally on the PDAL and libLAS files copyright Mateusz Loskot)
 
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.13)
 
 #------------------------------------------------------------------------------
 # libspatialindex general settings
 #------------------------------------------------------------------------------
 
-set(SIDX_VERSION_MAJOR "1")
-set(SIDX_VERSION_MINOR "9")
-set(SIDX_VERSION_PATCH "3")
+set(SIDX_VERSION_MAJOR "2")
+set(SIDX_VERSION_MINOR "0")
+set(SIDX_VERSION_PATCH "0")
 set(SIDX_VERSION_STRING
   "${SIDX_VERSION_MAJOR}.${SIDX_VERSION_MINOR}.${SIDX_VERSION_PATCH}")
-set(SIDX_LIB_VERSION "6.1.1")
-set(SIDX_LIB_SOVERSION "6")
-
-# disable incremental linker
-set(MSVC_INCREMENTAL_DEFAULT NO)
+set(SIDX_LIB_VERSION "7.0.0")
+set(SIDX_LIB_SOVERSION "7")
 
 project(spatialindex
   VERSION ${SIDX_VERSION_STRING}
   LANGUAGES CXX
 )
 
+include(GNUInstallDirs)
+
 message(STATUS
   "Configuring CMake ${CMAKE_VERSION} to build spatialindex ${PROJECT_VERSION}")
 
-#------------------------------------------------------------------------------
-# internal cmake settings
-#------------------------------------------------------------------------------
-
-# Allow advanced users to generate Makefiles printing detailed commands
-mark_as_advanced(CMAKE_VERBOSE_MAKEFILE)
-
-# Only interpret if() arguments as variables or keywords when unquoted
-cmake_policy(SET CMP0054 NEW)
-
-if(WIN32 AND NOT CMAKE_VERSION VERSION_LESS "3.15")
-  # MSVC warning flags are not in CMAKE_<LANG>_FLAGS by default
-  cmake_policy(SET CMP0092 NEW)
-endif()
-
-if(APPLE)
-  set(CMAKE_MACOSX_RPATH ON)
-endif()
-
-#------------------------------------------------------------------------------
-# libspatialindex general cmake options
-#------------------------------------------------------------------------------
-
+include(CTest)
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(BUILD_TESTING "Enables integrated test suites" OFF)
 
@@ -94,125 +71,6 @@ check_function_exists(bcopy HAVE_BCOPY)
 
 include(CheckIncludeFiles)
 
-
-#------------------------------------------------------------------------------
-# General build settings
-#------------------------------------------------------------------------------
-
-# note we default to RelWithDebInfo mode
-if(NOT MSVC_IDE)
-  if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING
-    "Choose the type of build, options are: \
-None Debug Release RelWithDebInfo MinSizeRel" FORCE)
-  endif()
-  message(STATUS
-    "Setting libspatialindex build type - ${CMAKE_BUILD_TYPE}")
-endif()
-
-set(SIDX_BUILD_TYPE ${CMAKE_BUILD_TYPE})
-
-# TODO: Still testing the output paths --mloskot
-set(SIDX_BUILD_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/bin")
-
-# Output directory in which to build RUNTIME target files.
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${SIDX_BUILD_OUTPUT_DIRECTORY})
-
-# Output directory in which to build LIBRARY target files
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${SIDX_BUILD_OUTPUT_DIRECTORY})
-
-# Output directory in which to build ARCHIVE target files.
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${SIDX_BUILD_OUTPUT_DIRECTORY})
-
-
-#------------------------------------------------------------------------------
-# Platform and compiler specific settings
-#------------------------------------------------------------------------------
-
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR
-    CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-  # Recommended C++ compilation flags
-  set(SIDX_COMMON_CXX_FLAGS
-    -pedantic
-    -Wall
-    -Wpointer-arith
-    -Wcast-align
-    -Wcast-qual
-    -Wredundant-decls
-    -Wno-long-long
-  )
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
-  if(WIN32)
-    set(SIDX_COMMON_CXX_FLAGS
-      /Wall
-      /Qdiag-disable:2203  # cast discards qualifiers from target type
-    )
-  else()
-    set(SIDX_COMMON_CXX_FLAGS
-      -Wall
-      -Wpointer-arith
-      -diag-disable=2203  # cast discards qualifiers from target type
-    )
-  endif()
-endif()
-
-if(APPLE)
-  set(SO_EXT dylib)
-  set(CMAKE_FIND_FRAMEWORK "LAST")
-elseif(WIN32)
-  set(SO_EXT dll)
-else()
-  set(SO_EXT so)
-endif()
-
-
-#------------------------------------------------------------------------------
-# installation path settings
-#------------------------------------------------------------------------------
-
-if(WIN32)
-  set(DEFAULT_LIB_SUBDIR lib)
-  set(DEFAULT_DATA_SUBDIR .)
-  set(DEFAULT_INCLUDE_SUBDIR include)
-
-  if(MSVC)
-    set(DEFAULT_BIN_SUBDIR bin)
-  else()
-    set(DEFAULT_BIN_SUBDIR .)
-  endif()
-else()
-  # Common locations for Unix and Mac OS X
-  set(DEFAULT_BIN_SUBDIR bin)
-  set(DEFAULT_LIB_SUBDIR lib${LIB_SUFFIX})
-  set(DEFAULT_DATA_SUBDIR share/spatialindex)
-  set(DEFAULT_INCLUDE_SUBDIR include)
-endif()
-
-# Locations are changeable by user to customize layout of SIDX installation
-# (default values are platform-specific)
-set(SIDX_BIN_SUBDIR ${DEFAULT_BIN_SUBDIR} CACHE STRING
-  "Subdirectory where executables will be installed")
-set(SIDX_LIB_SUBDIR ${DEFAULT_LIB_SUBDIR} CACHE STRING
-  "Subdirectory where libraries will be installed")
-set(SIDX_INCLUDE_SUBDIR ${DEFAULT_INCLUDE_SUBDIR} CACHE STRING
-  "Subdirectory where header files will be installed")
-set(SIDX_DATA_SUBDIR ${DEFAULT_DATA_SUBDIR} CACHE STRING
-  "Subdirectory where data will be installed")
-
-# Mark *_SUBDIR variables as advanced and dedicated to use by power-users only.
-mark_as_advanced(SIDX_BIN_SUBDIR
-  SIDX_LIB_SUBDIR SIDX_INCLUDE_SUBDIR SIDX_DATA_SUBDIR)
-
-# Full paths for the installation
-set(SIDX_BIN_DIR ${SIDX_BIN_SUBDIR})
-set(SIDX_LIB_DIR ${SIDX_LIB_SUBDIR})
-set(SIDX_INCLUDE_DIR ${SIDX_INCLUDE_SUBDIR})
-set(SIDX_DATA_DIR ${SIDX_DATA_SUBDIR})
-
-#------------------------------------------------------------------------------
-# subdirectory controls
-#------------------------------------------------------------------------------
-
 add_subdirectory(src)
 
 if(BUILD_TESTING)
@@ -225,13 +83,13 @@ endif()
 
 include(CMakePackageConfigHelpers)
 
-set(INCLUDE_INSTALL_DIR ${SIDX_INCLUDE_DIR} CACHE PATH "include directory")
-set(LIB_INSTALL_DIR ${SIDX_LIB_DIR} CACHE PATH "lib directory")
+set(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_INCLUDEDIR} CACHE PATH "include directory")
+set(LIB_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR} CACHE PATH "lib directory")
 
 configure_package_config_file(
   libspatialindexConfig.cmake.in
   ${CMAKE_CURRENT_BINARY_DIR}/libspatialindexConfig.cmake
-  INSTALL_DESTINATION ${LIB_INSTALL_DIR}/cmake/libspatialindex
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/libspatialindex
   PATH_VARS INCLUDE_INSTALL_DIR LIB_INSTALL_DIR)
 
 write_basic_package_version_file(
@@ -242,7 +100,7 @@ write_basic_package_version_file(
 install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/libspatialindexConfig.cmake
   ${CMAKE_CURRENT_BINARY_DIR}/libspatialindexConfigVersion.cmake
-  DESTINATION ${LIB_INSTALL_DIR}/cmake/libspatialindex)
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/libspatialindex)
 
 #------------------------------------------------------------------------------
 # pkg-config support
@@ -255,7 +113,7 @@ if(NOT WIN32)
 
   install(FILES
     ${CMAKE_CURRENT_BINARY_DIR}/libspatialindex.pc
-    DESTINATION ${LIB_INSTALL_DIR}/pkgconfig)
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
 endif()
 
 #------------------------------------------------------------------------------

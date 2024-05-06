@@ -201,6 +201,15 @@ target_compile_options(spatialindex
 target_compile_options(spatialindex_c
   PRIVATE ${SIDX_COMMON_CXX_FLAGS})
 
+set_target_properties( spatialindex PROPERTIES 
+    RUNTIME_OUTPUT_DIRECTORY 
+    ${CMAKE_BINARY_DIR}/bin)
+
+set_target_properties( spatialindex_c PROPERTIES 
+    RUNTIME_OUTPUT_DIRECTORY 
+    ${CMAKE_BINARY_DIR}/bin)
+
+
 if(MSVC)
   target_compile_options(spatialindex PRIVATE /wd4068)
   target_compile_options(spatialindex_c PRIVATE /wd4068)
@@ -239,11 +248,10 @@ if(HAVE_BCOPY)
 endif()
 
 
-
 if(APPLE)
-  set_target_properties(spatialindex spatialindex_c PROPERTIES
-    INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib"
-  )
+  set(MACOSX_RPATH ON)
+  set_target_properties(spatialindex spatialindex_c
+                        PROPERTIES INSTALL_NAME_DIR "@rpath")
 endif()
 
 ###############################################################################
@@ -251,9 +259,9 @@ endif()
 
 install(TARGETS spatialindex spatialindex_c
         EXPORT libspatialindexTargets
-        RUNTIME DESTINATION ${SIDX_BIN_DIR}
-        LIBRARY DESTINATION ${SIDX_LIB_DIR}
-        ARCHIVE DESTINATION ${SIDX_LIB_DIR})
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
 export(
     TARGETS
@@ -261,23 +269,31 @@ export(
     NAMESPACE
         libspatialindex::
     FILE
-        "${SIDX_LIB_DIR}/libspatialindexTargets.cmake")
+        "${CMAKE_INSTALL_LIBDIR}/libspatialindexTargets.cmake")
 
 install(
     EXPORT
         libspatialindexTargets
     DESTINATION
-        "${SIDX_LIB_DIR}/cmake/libspatialindex")
+        "${CMAKE_INSTALL_LIBDIR}/cmake/libspatialindex")
 
 target_include_directories(spatialindex_c
     INTERFACE
-        $<INSTALL_INTERFACE:include>)
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 target_include_directories(spatialindex
     INTERFACE
-        $<INSTALL_INTERFACE:include>)
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 install(DIRECTORY ${SIDX_HEADERS_DIR}
-  DESTINATION include/spatialindex
-  FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp")
+  DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/spatialindex"
+  FILES_MATCHING
+    PATTERN "*.h"
+    PATTERN "*.hpp"
+  PERMISSIONS
+    GROUP_EXECUTE WORLD_EXECUTE OWNER_EXECUTE
+    GROUP_READ WORLD_READ OWNER_READ
+    OWNER_WRITE
+
+  )
 
 
