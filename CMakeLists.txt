@@ -89,7 +89,7 @@ set(LIB_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR} CACHE PATH "lib directory")
 configure_package_config_file(
   libspatialindexConfig.cmake.in
   ${CMAKE_CURRENT_BINARY_DIR}/libspatialindexConfig.cmake
-  INSTALL_DESTINATION ${LIB_INSTALL_DIR}/cmake/libspatialindex
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/libspatialindex
   PATH_VARS INCLUDE_INSTALL_DIR LIB_INSTALL_DIR)
 
 write_basic_package_version_file(
@@ -100,7 +100,7 @@ write_basic_package_version_file(
 install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/libspatialindexConfig.cmake
   ${CMAKE_CURRENT_BINARY_DIR}/libspatialindexConfigVersion.cmake
-  DESTINATION ${LIB_INSTALL_DIR}/cmake/libspatialindex)
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/libspatialindex)
 
 #------------------------------------------------------------------------------
 # pkg-config support
@@ -113,7 +113,7 @@ if(NOT WIN32)
 
   install(FILES
     ${CMAKE_CURRENT_BINARY_DIR}/libspatialindex.pc
-    DESTINATION ${LIB_INSTALL_DIR}/pkgconfig)
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
 endif()
 
 #------------------------------------------------------------------------------

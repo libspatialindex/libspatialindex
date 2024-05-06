@@ -71,6 +71,6 @@ if (UNIX)
              COMMAND ${BASH_PROGRAM} "${CMAKE_CURRENT_SOURCE_DIR}/index-tests.sh"
              WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
     set_property(TEST index-tests PROPERTY ENVIRONMENT
-             "PATH=$ENV{PATH};${CMAKE_CURRENT_BINARY_DIR}")
+             "PATH=${CMAKE_BINARY_DIR}/test/:$ENV{PATH}")
 endif (UNIX)
 add_subdirectory(gtest)
