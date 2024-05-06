@@ -5,7 +5,7 @@
  * Copyright (c) 2002, Marios Hadjieleftheriou
  *
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
@@ -57,6 +57,7 @@ namespace SpatialIndex
 			id_type m_nextPage;
 			std::set<id_type> m_emptyPages;
 			std::map<id_type, Entry*> m_pageIndex;
+			bool m_flushNeeded = true;
 
 			uint8_t* m_buffer;
 		}; // DiskStorageManager
