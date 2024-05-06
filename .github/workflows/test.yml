@@ -8,16 +8,12 @@ concurrency:
 
 jobs:
   build:
+    name: OS ${{ matrix.os }} with BUILD_SHARED_LIBS=${{matrix.shared}}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
-        shared: [ON]
-        include:
-          - os: windows-latest
-            shared: ON
-          - os: windows-latest
-            shared: OFF
+        shared: [ON, OFF]
 
     steps:
      - uses: actions/checkout@v4
