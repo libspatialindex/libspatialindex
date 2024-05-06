@@ -7,7 +7,7 @@ set(SOURCES
 
 foreach(test ${SOURCES})
     add_executable(test-${DIR}-${test} ${DIR}/${test}.cc)
-    target_link_libraries(test-${DIR}-${test} spatialindex)
+    target_link_libraries(test-${DIR}-${test} PRIVATE spatialindex)
 endforeach()
 
 set(DIR rtree)
@@ -21,7 +21,7 @@ set(SOURCES
 
 foreach(test ${SOURCES})
     add_executable(test-${DIR}-${test} ${DIR}/${test}.cc)
-    target_link_libraries(test-${DIR}-${test} spatialindex)
+    target_link_libraries(test-${DIR}-${test} PRIVATE spatialindex)
 endforeach()
 
 set(DIR mvrtree)
@@ -35,7 +35,7 @@ set(SOURCES
 
 foreach(test ${SOURCES})
     add_executable(test-${DIR}-${test} ${DIR}/${test}.cc)
-    target_link_libraries(test-${DIR}-${test} spatialindex)
+    target_link_libraries(test-${DIR}-${test} PRIVATE spatialindex)
 endforeach()
 
 set(DIR tools)
@@ -46,7 +46,7 @@ set(SOURCES
 
 foreach(test ${SOURCES})
     add_executable(test-${DIR}-${test} ${DIR}/${test}.cc)
-    target_link_libraries(test-${DIR}-${test} spatialindex)
+    target_link_libraries(test-${DIR}-${test} PRIVATE spatialindex)
 endforeach()
 
 set(DIR tprtree)
@@ -61,7 +61,11 @@ set(SOURCES
 foreach(test ${SOURCES})
     add_executable(test-${DIR}-${test}
         ${DIR}/${test}.cc ${DIR}/RandomGenerator.cc)
-    target_link_libraries(test-${DIR}-${test} spatialindex)
+    target_link_libraries(test-${DIR}-${test} PRIVATE spatialindex)
+
 endforeach()
 
+if (UNIX)
+add_test(NAME index-tests COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/index-tests.sh WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+endif (UNIX)
 add_subdirectory(gtest)
