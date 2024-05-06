@@ -26,13 +26,13 @@ jobs:
      - name: Support longpaths
        run: git config --system core.longpaths true
        if: matrix.os == 'windows-latest'
-     - uses: mamba-org/setup-micromamba@v1
-       with:
-           init-shell: bash
-           environment-file: ci/environment.yml
-           environment-name: "build"
-           cache-environment: true
-           cache-downloads: true
+    #  - uses: mamba-org/setup-micromamba@v1
+    #    with:
+    #        init-shell: bash
+    #        environment-file: ci/environment.yml
+    #        environment-name: "build"
+    #        cache-environment: true
+    #        cache-downloads: true
 
      - name: Setup
        shell: bash -l {0}
