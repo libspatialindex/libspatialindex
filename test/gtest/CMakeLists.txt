@@ -18,3 +18,9 @@ add_test(${TESTNAME}
   WORKING_DIRECTORY
     "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/..")
 
+
+if (WIN32)
+  set_property(TEST libsidxtest PROPERTY ENVIRONMENT
+    "PATH=%CMAKE_BINARY_DIR%/bin;$ENV{PATH}")
+
+endif(WIN32)
