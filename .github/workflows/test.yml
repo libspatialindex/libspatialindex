@@ -8,6 +8,7 @@ concurrency:
 
 jobs:
   build:
+    name: OS ${{ matrix.os }} with BUILD_SHARED_LIBS=${{matrix.shared}}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
