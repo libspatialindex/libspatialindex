@@ -13,12 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
-        shared: [ON]
-        include:
-          - os: windows-latest
-            shared: ON
-          - os: windows-latest
-            shared: OFF
+        shared: [ON, OFF]
 
     steps:
      - uses: actions/checkout@v4
