@@ -10,15 +10,12 @@ set(SOURCES
 
 set(TESTNAME libsidxtest)
 add_executable(${TESTNAME} ${SOURCES})
-target_link_libraries(${TESTNAME} PRIVATE spatialindex_c gtest)
+target_link_libraries(${TESTNAME} PRIVATE spatialindex_c gtest )
 
 add_test(NAME ${TESTNAME}
          COMMAND "${CMAKE_CURRENT_BINARY_DIR}/${TESTNAME}"
          WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
-
-if (WIN32)
-  set_property(TEST libsidxtest PROPERTY ENVIRONMENT
-    "PATH=$<SHELL_PATH:${CMAKE_BINARY_DIR}>\\bin;$<SHELL_PATH:${CMAKE_BINARY_DIR}>\\src;$<SHELL_PATH:${CMAKE_BINARY_DIR}>\\test\\gtest;$ENV{PATH}")
-
-endif(WIN32)
+set_target_properties( ${TESTNAME} PROPERTIES 
+    RUNTIME_OUTPUT_DIRECTORY 
+    ${CMAKE_BINARY_DIR}/bin)

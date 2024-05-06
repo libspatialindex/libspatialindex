@@ -201,6 +201,15 @@ target_compile_options(spatialindex
 target_compile_options(spatialindex_c
   PRIVATE ${SIDX_COMMON_CXX_FLAGS})
 
+set_target_properties( spatialindex PROPERTIES 
+    RUNTIME_OUTPUT_DIRECTORY 
+    ${CMAKE_BINARY_DIR}/bin)
+
+set_target_properties( spatialindex_c PROPERTIES 
+    RUNTIME_OUTPUT_DIRECTORY 
+    ${CMAKE_BINARY_DIR}/bin)
+
+
 if(MSVC)
   target_compile_options(spatialindex PRIVATE /wd4068)
   target_compile_options(spatialindex_c PRIVATE /wd4068)
