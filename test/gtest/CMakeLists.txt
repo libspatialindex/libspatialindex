@@ -14,7 +14,7 @@ target_link_libraries(${TESTNAME} PRIVATE spatialindex_c gtest)
 
 add_test(NAME ${TESTNAME}
          COMMAND "${CMAKE_CURRENT_BINARY_DIR}/${TESTNAME}"
-         WORKING_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/..")
+         WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 
 if (WIN32)
