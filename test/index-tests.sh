@@ -1,6 +1,8 @@
 #!/bin/bash
 
-env
+set -e
+echo "path: " $PATH
+printenv
 
 pushd geometry/test1
 ./run

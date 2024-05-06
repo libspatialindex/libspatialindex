@@ -66,10 +66,11 @@ foreach(test ${SOURCES})
 endforeach()
 
 if (UNIX)
+    find_program (BASH_PROGRAM bash)
     add_test(NAME index-tests
-             COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/index-tests.sh
+             COMMAND ${BASH_PROGRAM} "${CMAKE_CURRENT_SOURCE_DIR}/index-tests.sh"
              WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-    set_property(TEST testName PROPERTY ENVIRONMENT
-             "PATH=$PATH;${CMAKE_CURRENT_BINARY_DIR}")
+    set_property(TEST index-tests PROPERTY ENVIRONMENT
+             "PATH=$ENV{PATH};${CMAKE_CURRENT_BINARY_DIR}")
 endif (UNIX)
 add_subdirectory(gtest)
