@@ -19,6 +19,6 @@ add_test(NAME ${TESTNAME}
 
 if (WIN32)
   set_property(TEST libsidxtest PROPERTY ENVIRONMENT
-    "PATH=${CMAKE_BINARY_DIR};$ENV{PATH}")
+    "PATH=${CMAKE_BINARY_DIR}/bin;$ENV{PATH}")
 
 endif(WIN32)
