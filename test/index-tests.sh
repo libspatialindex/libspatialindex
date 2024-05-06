@@ -1,5 +1,7 @@
 #!/bin/bash
 
+env
+
 pushd geometry/test1
 ./run
 popd
