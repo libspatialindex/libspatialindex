@@ -41,18 +41,56 @@ jobs:
         BUILD_SHARED_LIBS: ${{ matrix.shared }}
 
        run: |
-           source ../ci/cmake.sh
+
+        if [ "$RUNNER_OS" == "Windows" ]; then
+        export CC=cl.exe
+        export CXX=cl.exe
+        fi
+
+        cmake   -G "Ninja"  \
+              -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+              -DBUILD_SHARED_LIBS=$BUILD_SHARED_LIBS \
+              -DBUILD_TESTING=ON \
+              -DCMAKE_INSTALL_PREFIX=${CONDA_PREFIX} \
+              -Dgtest_force_shared_crt=ON \
+              ..
+
+
        working-directory: ./build
 
      - name: Compile
        shell: bash -l {0}
        run: |
-           source ../ci/compile.sh
+          ninja
        working-directory: ./build
 
      - name: Test
        shell: bash -l {0}
        run: |
-           source ../ci/test.sh
+          ctest -VV --rerun-failed --output-on-failure
        working-directory: ./build
 
+     - name: Generate source distribution
+       shell: bash -l {0}
+       if: matrix.os == 'ubuntu-latest'
+       run: |
+          ninja dist
+       working-directory: ./build
+
+     - uses: actions/upload-artifact@v4
+       if: matrix.os == 'ubuntu-latest'
+       name: Gather source distribution artifact
+       with:
+         # Name of the artifact to upload.
+         # Optional. Default is 'artifact'
+         name: source-package
+
+         # A file, directory or wildcard pattern that describes what to upload
+         # Required.
+         path: |
+          spatialindex-src-*
+
+     - name: Publish package distribution as release artifacts
+       if: github.event_name == 'release' && github.event.action == 'published' && matrix.os == 'ubuntu-latest'
+       run: |
+        echo "uploading artifacts to release"
