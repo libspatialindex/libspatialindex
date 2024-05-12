@@ -15,6 +15,9 @@ jobs:
         os: [macos-latest, windows-latest, ubuntu-latest]
         shared: [ON, OFF]
 
+    permissions:
+      contents: write
+
     steps:
      - uses: actions/checkout@v4
      - uses: ilammy/msvc-dev-cmd@v1
@@ -78,17 +81,13 @@ jobs:
        working-directory: ./build
 
      - uses: actions/upload-artifact@v4
-       if: matrix.os == 'ubuntu-latest'
+       if: matrix.os == 'ubuntu-latest' && matrix.shared == 'ON'
        name: Gather source distribution artifact
        with:
-         # Name of the artifact to upload.
-         # Optional. Default is 'artifact'
-         name: source-package
-
-         # A file, directory or wildcard pattern that describes what to upload
-         # Required.
+         name: source-package-${{matrix.os}}
+         if-no-files-found: error
          path: |
-          spatialindex-src-*
+          ./build/spatialindex-src-*
 
      - name: Publish package distribution as release artifacts
        if: github.event_name == 'release' && github.event.action == 'published' && matrix.os == 'ubuntu-latest'
