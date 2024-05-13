@@ -78,6 +78,17 @@ jobs:
        if: matrix.os == 'ubuntu-latest'
        run: |
           ninja dist
+          extensions=".tar.gz .tar.bz2"
+          for ext in $extensions
+          do
+              for filename in $(ls *$ext)
+              do
+
+                  `md5sum $filename > $filename.md5`
+                  `sha256sum $filename > $filename.sha256sum`
+                  `sha512sum $filename > $filename.sha512sum`
+              done
+          done
        working-directory: ./build
 
      - uses: actions/upload-artifact@v4
