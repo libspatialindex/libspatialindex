@@ -5,13 +5,13 @@ Download
 Current Release (MIT)
 ------------------------------------------------------------------------------
 
-* **2018-10-23**
+* **2024-05-17**
 
-  - `spatialindex-src-1.9.3.tar.gz <https://github.com/libspatialindex/libspatialindex/releases/download/1.9.3/spatialindex-src-1.9.3.tar.gz>`__
-    `(md5) <https://github.com/libspatialindex/libspatialindex/releases/download/1.9.3/spatialindex-src-1.9.3.tar.gz.md5>`__
+  - `spatialindex-src-2.0.0.tar.gz <https://github.com/libspatialindex/libspatialindex/releases/download/2.0.0/spatialindex-src-2.0.0.tar.gz>`__
+    `(md5) <https://github.com/libspatialindex/libspatialindex/releases/download/2.0.0/spatialindex-src-2.0.0.tar.gz.md5>`__
 
-  - `spatialindex-src-1.9.3.tar.bz2 <https://github.com/libspatialindex/libspatialindex/releases/download/1.9.3/spatialindex-src-1.9.3.tar.bz2>`__
-    `(md5) <https://github.com/libspatialindex/libspatialindex/releases/download/1.9.3/spatialindex-src-1.9.3.tar.bz2.md5>`__
+  - `spatialindex-src-2.0.0.tar.bz2 <https://github.com/libspatialindex/libspatialindex/releases/download/2.0.0/spatialindex-src-2.0.0.tar.bz2>`__
+    `(md5) <https://github.com/libspatialindex/libspatialindex/releases/download/2.0.0/spatialindex-src-2.0.0.tar.bz2.md5>`__
 
 Binaries
 ..............................................................................
@@ -21,7 +21,7 @@ for OSX, Linux, and Windows. After installing Conda or Miniconda, install the li
 
 ::
 
-    conda install -c conda-forge libspatialindex=1.9.3
+    conda install -c conda-forge libspatialindex=2.0.0
 
 Additionally, packaging systems such as Debian, RedHat, Homebrew, MacPorts, and many others
 contain binaries for libspatialindex.
@@ -30,7 +30,15 @@ contain binaries for libspatialindex.
 Past Release (MIT)
 ------------------------------------------------------------------------------
 
-* **2018-10-22**
+* **2019-10-23**
+
+  - `spatialindex-src-1.9.3.tar.gz <https://github.com/libspatialindex/libspatialindex/releases/download/1.9.3/spatialindex-src-1.9.3.tar.gz>`__
+    `(md5) <https://github.com/libspatialindex/libspatialindex/releases/download/1.9.3/spatialindex-src-1.9.3.tar.gz.md5>`__
+
+  - `spatialindex-src-1.9.3.tar.bz2 <https://github.com/libspatialindex/libspatialindex/releases/download/1.9.3/spatialindex-src-1.9.3.tar.bz2>`__
+    `(md5) <https://github.com/libspatialindex/libspatialindex/releases/download/1.9.3/spatialindex-src-1.9.3.tar.bz2.md5>`__
+
+* **2019-10-22**
 
   - `spatialindex-src-1.9.2.tar.gz <https://github.com/libspatialindex/libspatialindex/releases/download/1.9.2/spatialindex-src-1.9.2.tar.gz>`__
     `(md5) <https://github.com/libspatialindex/libspatialindex/releases/download/1.9.2/spatialindex-src-1.9.2.tar.gz.md5>`__
@@ -39,11 +47,11 @@ Past Release (MIT)
     `(md5) <https://github.com/libspatialindex/libspatialindex/releases/download/1.9.2/spatialindex-src-1.9.2.tar.bz2.md5>`__
 
 
-* **2018-10-19**
+* **2019-10-19**
 
   - spatialindex-src-1.9.1.tar.gz -- broken. See GitHub tag if needed.
 
-* **2018-02-08**
+* **2019-02-08**
 
   - `spatialindex-src-1.9.0.tar.gz <https://github.com/libspatialindex/libspatialindex/releases/download/1.9.0/spatialindex-src-1.9.0.tar.gz>`__
     `(md5) <https://github.com/libspatialindex/libspatialindex/releases/download/1.9.0/spatialindex-src-1.9.0.tar.gz.md5>`__
