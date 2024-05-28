@@ -30,7 +30,7 @@ contain binaries for libspatialindex.
 Past Release (MIT)
 ------------------------------------------------------------------------------
 
-* **2018-10-23**
+* **2019-10-23**
 
   - `spatialindex-src-1.9.3.tar.gz <https://github.com/libspatialindex/libspatialindex/releases/download/1.9.3/spatialindex-src-1.9.3.tar.gz>`__
     `(md5) <https://github.com/libspatialindex/libspatialindex/releases/download/1.9.3/spatialindex-src-1.9.3.tar.gz.md5>`__
@@ -38,6 +38,26 @@ Past Release (MIT)
   - `spatialindex-src-1.9.3.tar.bz2 <https://github.com/libspatialindex/libspatialindex/releases/download/1.9.3/spatialindex-src-1.9.3.tar.bz2>`__
     `(md5) <https://github.com/libspatialindex/libspatialindex/releases/download/1.9.3/spatialindex-src-1.9.3.tar.bz2.md5>`__
 
+* **2019-10-22**
+
+  - `spatialindex-src-1.9.3.tar.gz <https://github.com/libspatialindex/libspatialindex/releases/download/1.9.3/spatialindex-src-1.9.3.tar.gz>`__
+    `(md5) <https://github.com/libspatialindex/libspatialindex/releases/download/1.9.3/spatialindex-src-1.9.3.tar.gz.md5>`__
+
+  - `spatialindex-src-1.9.3.tar.bz2 <https://github.com/libspatialindex/libspatialindex/releases/download/1.9.3/spatialindex-src-1.9.3.tar.bz2>`__
+    `(md5) <https://github.com/libspatialindex/libspatialindex/releases/download/1.9.3/spatialindex-src-1.9.3.tar.bz2.md5>`__
+
+
+* **2019-10-19**
+
+  - spatialindex-src-1.9.1.tar.gz -- broken. See GitHub tag if needed.
+
+* **2019-02-08**
+
+  - `spatialindex-src-1.9.0.tar.gz <https://github.com/libspatialindex/libspatialindex/releases/download/1.9.0/spatialindex-src-1.9.0.tar.gz>`__
+    `(md5) <https://github.com/libspatialindex/libspatialindex/releases/download/1.9.0/spatialindex-src-1.9.0.tar.gz.md5>`__
+
+  - `spatialindex-src-1.9.0.tar.bz2 <https://github.com/libspatialindex/libspatialindex/releases/download/1.9.0/spatialindex-src-1.9.0.tar.bz2>`__
+    `(md5) <https://github.com/libspatialindex/libspatialindex/releases/download/1.9.0/spatialindex-src-1.9.0.tar.bz2.md5>`__
 
 * **2014-09-29**
 

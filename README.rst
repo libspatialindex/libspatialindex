@@ -5,10 +5,10 @@
 *****************************************************************************
 
 
-:Author: Marios Hadjieleftheriou
-:Contact: mhadji@gmail.com
-:Revision: 1.9.3
-:Date: 10/23/2019
+:Author: Marios Hadjieleftheriou <mhadji@gmail.com>
+:Contact: Developer mailing list https://groups.io/g/libspatialindex/
+:Revision: 2.0
+:Date: 2024-05-17
 
 See http://libspatialindex.org for full documentation.
 

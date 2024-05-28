@@ -1,9 +1,16 @@
 .. _introduction:
 
+<<<<<<< HEAD
 :Author: Howard Butler
 :Contact: howard@hobu.co
 :Revision: 2.0.0
 :Date: 05/22/2024
+=======
+:Author: Marios Hadjieleftheriou <mhadji@gmail.com>
+:Contact: Developer mailing list https://groups.io/g/libspatialindex/
+:Revision: 2.0.0
+:Date: 2024-05-17
+>>>>>>> origin/main
 
 
 The entire website is available as a single PDF at https://libspatialindex.org/libspatialindex.pdf
