@@ -1,5 +1,7 @@
 #! /bin/bash
 
+set -e
+
 echo Generating dataset
 test-tprtree-Generator -ds 1000 -sl 100 > d
 awk '{if ($2 != 2) print $0}' < d > data
@@ -19,11 +21,13 @@ test-tprtree-Exhaustive .t > res2
 echo Comparing results
 sort -n res > a
 sort -n res2 > b
-if diff a b
-then
-echo "Same results with exhaustive search. Everything seems fine."
-echo Results: `wc -l a`
-rm -rf a b res res2 .t tree.*
+
+set +e
+if diff a b; then
+    echo "Same results with exhaustive search. Everything seems fine."
+    echo Results: `wc -l a`
+    rm -rf a b res res2 .t tree.*
 else
-echo "PROBLEM! We got different results from exhaustive search!"
+    echo "PROBLEM! We got different results from exhaustive search!"
+    exit 1
 fi
