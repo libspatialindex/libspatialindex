@@ -180,7 +180,7 @@ uint32_t Index::findLeastEnlargement(const TimeRegion& r) const
 		}
 	}
 
-#ifndef SIDX_DEBUG
+#ifdef SIDX_DEBUG
 	if (best == std::numeric_limits<uint32_t>::max())
 	{
 		std::ostringstream s;
@@ -237,7 +237,7 @@ uint32_t Index::findLeastOverlap(const TimeRegion& r) const
 		++cLiveEntries;
 	}
 
-#ifndef SIDX_DEBUG
+#ifdef SIDX_DEBUG
 	if (cLiveEntries == 0)
 	{
 		std::ostringstream s;

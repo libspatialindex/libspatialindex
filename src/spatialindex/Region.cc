@@ -61,7 +61,7 @@ void Region::initialize(const double* pLow, const double* pHigh, uint32_t dimens
 	m_pLow = nullptr;
 	m_dimension = dimension;
 
-#ifndef SIDX_DEBUG
+#ifdef SIDX_DEBUG
     for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
     {
      if ((pLow[cDim] > pHigh[cDim]))

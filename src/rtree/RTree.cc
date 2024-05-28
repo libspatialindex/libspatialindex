@@ -1334,7 +1334,7 @@ SpatialIndex::id_type SpatialIndex::RTree::RTree::writeNode(Node* n)
 		n->m_identifier = page;
 		++(m_stats.m_u32Nodes);
 
-#ifndef SIDX_DEBUG
+#ifdef SIDX_DEBUG
 		try
 		{
 			m_stats.m_nodesInLevel[n->m_level] = m_stats.m_nodesInLevel.at(n->m_level) + 1;

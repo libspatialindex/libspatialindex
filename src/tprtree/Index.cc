@@ -321,7 +321,7 @@ void Index::adjustTree(Node* n, std::stack<id_type>& pathBuffer)
 		}
 	//}
 
-#ifndef SIDX_DEBUG
+#ifdef SIDX_DEBUG
 	for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 	{
 		assert(m_nodeMBR.containsRegionAfterTime(m_pTree->m_currentTime, *(m_ptrMBR[cChild])) == true);
@@ -382,7 +382,7 @@ void Index::adjustTree(Node* n1, Node* n2, std::stack<id_type>& pathBuffer, uint
 		}
 	//}
 
-#ifndef SIDX_DEBUG
+#ifdef SIDX_DEBUG
 	for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 	{
 		assert(m_nodeMBR.containsRegionAfterTime(m_pTree->m_currentTime, *(m_ptrMBR[cChild])) == true);
