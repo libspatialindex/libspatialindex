@@ -5,7 +5,7 @@
  * Copyright (c) 2002, Marios Hadjieleftheriou
  *
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
@@ -180,7 +180,7 @@ uint32_t Index::findLeastEnlargement(const TimeRegion& r) const
 		}
 	}
 
-#ifndef NDEBUG
+#ifdef SIDX_DEBUG
 	if (best == std::numeric_limits<uint32_t>::max())
 	{
 		std::ostringstream s;
@@ -237,7 +237,7 @@ uint32_t Index::findLeastOverlap(const TimeRegion& r) const
 		++cLiveEntries;
 	}
 
-#ifndef NDEBUG
+#ifdef SIDX_DEBUG
 	if (cLiveEntries == 0)
 	{
 		std::ostringstream s;

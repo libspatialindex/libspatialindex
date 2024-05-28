@@ -333,7 +333,7 @@ void BulkLoader::bulkLoadUsingSTR(
 	NodePtr n = pTree->readNode(pTree->m_rootID);
 	pTree->deleteNode(n.get());
 
-	#ifndef NDEBUG
+	#ifdef SIDX_DEBUG
 	std::cerr << "RTree::BulkLoader: Sorting data." << std::endl;
 	#endif
 
@@ -360,7 +360,7 @@ void BulkLoader::bulkLoadUsingSTR(
 
 	while (true)
 	{
-		#ifndef NDEBUG
+		#ifdef SIDX_DEBUG
 		std::cerr << "RTree::BulkLoader: Building level " << level << std::endl;
 		#endif
 

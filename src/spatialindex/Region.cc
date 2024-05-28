@@ -5,7 +5,7 @@
  * Copyright (c) 2004, Marios Hadjieleftheriou
  *
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
@@ -61,7 +61,7 @@ void Region::initialize(const double* pLow, const double* pHigh, uint32_t dimens
 	m_pLow = nullptr;
 	m_dimension = dimension;
 
-#ifndef NDEBUG
+#ifdef SIDX_DEBUG
     for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
     {
      if ((pLow[cDim] > pHigh[cDim]))
@@ -295,7 +295,7 @@ bool Region::touchesRegion(const Region& r) const
 		throw Tools::IllegalArgumentException(
 			"Region::touchesRegion: Regions have different number of dimensions."
 		);
-	
+
 	for (uint32_t i = 0; i < m_dimension; ++i)
 	{
 		if (
@@ -361,11 +361,11 @@ bool Region::intersectsLineSegment(const LineSegment& in) const
     // Points/LineSegment for the segment
     Point p1 = Point(in.m_pStartPoint, 2);
     Point p2 = Point(in.m_pEndPoint, 2);
-    
+
 
     //Check whether either or both the endpoints are within the region OR
     //whether any of the bounding segments of the Region intersect the segment
-    return (containsPoint(p1) || containsPoint(p2) || 
+    return (containsPoint(p1) || containsPoint(p2) ||
             in.intersectsShape(LineSegment(ll, ul)) || in.intersectsShape(LineSegment(ul, ur)) ||
             in.intersectsShape(LineSegment(ur, lr)) || in.intersectsShape(LineSegment(lr, ll)));
 

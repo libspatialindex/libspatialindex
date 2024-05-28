@@ -5,7 +5,7 @@
  * Copyright (c) 2002, Marios Hadjieleftheriou
  *
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
@@ -376,7 +376,7 @@ bool Node::insertEntry(uint32_t dataLength, uint8_t* pData, MovingRegion& mbr, i
 		}
 	}
 
-#ifndef NDEBUG
+#ifdef SIDX_DEBUG
 	for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 	{
 		assert(m_nodeMBR.containsRegionAfterTime(m_nodeMBR.m_startTime, *(m_ptrMBR[cChild])));
@@ -434,7 +434,7 @@ void Node::deleteEntry(uint32_t index)
 			m_nodeMBR.m_pHigh[cDim] += 2.0 * std::numeric_limits<double>::epsilon();
 		}
 
-#ifndef NDEBUG
+#ifdef SIDX_DEBUG
 		for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 		{
 			assert(m_nodeMBR.containsRegionAfterTime(m_pTree->m_currentTime, *(m_ptrMBR[cChild])) == true);
@@ -460,9 +460,9 @@ bool Node::insertData(uint32_t dataLength, uint8_t* pData, MovingRegion& mbr, id
 
 		return bNeedToAdjust;
 	}
-	else if (false && 
-		     m_pTree->m_treeVariant == TPRV_RSTAR && 
-			 !pathBuffer.empty() && 
+	else if (false &&
+		     m_pTree->m_treeVariant == TPRV_RSTAR &&
+			 !pathBuffer.empty() &&
 			 overflowTable[m_level] == 0)
 	{
 		overflowTable[m_level] = 1;
@@ -559,7 +559,7 @@ bool Node::insertData(uint32_t dataLength, uint8_t* pData, MovingRegion& mbr, id
 			m_nodeMBR.m_pHigh[cDim] += 2.0 * std::numeric_limits<double>::epsilon();
 		}
 
-#ifndef NDEBUG
+#ifdef SIDX_DEBUG
 		for (uint32_t cChild = 0; cChild < m_children; ++cChild)
 		{
 			assert(m_nodeMBR.containsRegionAfterTime(m_nodeMBR.m_startTime, *(m_ptrMBR[cChild])));
@@ -604,7 +604,7 @@ bool Node::insertData(uint32_t dataLength, uint8_t* pData, MovingRegion& mbr, id
 			n->m_identifier = -1;
 			nn->m_identifier = -1;
 
-#ifndef NDEBUG
+#ifdef SIDX_DEBUG
 			for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
 			{
 				assert(n->m_nodeMBR.containsRegionAfterTime(n->m_nodeMBR.m_startTime, *(n->m_ptrMBR[cChild])) == true);
@@ -647,7 +647,7 @@ bool Node::insertData(uint32_t dataLength, uint8_t* pData, MovingRegion& mbr, id
 			n->m_identifier = m_identifier;
 			nn->m_identifier = -1;
 
-#ifndef NDEBUG
+#ifdef SIDX_DEBUG
 			for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
 			{
 				assert(n->m_nodeMBR.containsRegionAfterTime(n->m_nodeMBR.m_startTime, *(n->m_ptrMBR[cChild])) == true);

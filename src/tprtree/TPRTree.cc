@@ -1098,7 +1098,7 @@ SpatialIndex::id_type SpatialIndex::TPRTree::TPRTree::writeNode(Node* n)
 		n->m_identifier = page;
 		++(m_stats.m_nodes);
 
-#ifndef NDEBUG
+#ifdef SIDX_DEBUG
 		try
 		{
 			m_stats.m_nodesInLevel[n->m_level] = m_stats.m_nodesInLevel.at(n->m_level) + 1;
@@ -1264,7 +1264,7 @@ std::ostream& SpatialIndex::TPRTree::operator<<(std::ostream& os, const TPRTree&
 		os	<< "Utilization: " << 100 * t.m_stats.getNumberOfData() / (t.m_stats.getNumberOfNodesInLevel(0) * t.m_leafCapacity) << "%" << std::endl
 			<< t.m_stats;
 
-	#ifndef NDEBUG
+	#ifdef SIDX_DEBUG
 	os	<< "Leaf pool hits: " << t.m_leafPool.m_hits << std::endl
 		<< "Leaf pool misses: " << t.m_leafPool.m_misses << std::endl
 		<< "Index pool hits: " << t.m_indexPool.m_hits << std::endl

@@ -1337,7 +1337,7 @@ std::ostream& SpatialIndex::MVRTree::operator<<(std::ostream& os, const MVRTree&
 	os << t.m_stats;
 	os << t.printRootInfo();
 
-	#ifndef NDEBUG
+	#ifdef SIDX_DEBUG
 	os 	<< "Leaf pool hits: " << t.m_leafPool.m_hits << std::endl
 		<< "Leaf pool misses: " << t.m_leafPool.m_misses << std::endl
 		<< "Index pool hits: " << t.m_indexPool.m_hits << std::endl

@@ -201,12 +201,22 @@ target_compile_options(spatialindex
 target_compile_options(spatialindex_c
   PRIVATE ${SIDX_COMMON_CXX_FLAGS})
 
-set_target_properties( spatialindex PROPERTIES 
-    RUNTIME_OUTPUT_DIRECTORY 
+target_compile_definitions(spatialindex
+    PRIVATE
+        $<$<CONFIG:Debug>:SIDX_DEBUG>
+)
+
+target_compile_definitions(spatialindex_c
+    PRIVATE
+        $<$<CONFIG:Debug>:SIDX_DEBUG>
+)
+
+set_target_properties( spatialindex PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY
     ${CMAKE_BINARY_DIR}/bin)
 
-set_target_properties( spatialindex_c PROPERTIES 
-    RUNTIME_OUTPUT_DIRECTORY 
+set_target_properties( spatialindex_c PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY
     ${CMAKE_BINARY_DIR}/bin)
 
 

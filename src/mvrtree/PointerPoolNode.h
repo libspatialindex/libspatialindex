@@ -5,7 +5,7 @@
  * Copyright (c) 2002, Marios Hadjieleftheriou
  *
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
@@ -36,7 +36,7 @@ namespace Tools
 	public:
 		explicit PointerPool(uint32_t capacity) : m_capacity(capacity)
 		{
-			#ifndef NDEBUG
+			#ifdef SIDX_DEBUG
 			m_hits = 0;
 			m_misses = 0;
 			m_pointerCount = 0;
@@ -50,13 +50,13 @@ namespace Tools
 			while (! m_pool.empty())
 			{
 				SpatialIndex::MVRTree::Node* x = m_pool.top(); m_pool.pop();
-				#ifndef NDEBUG
+				#ifdef SIDX_DEBUG
 				--m_pointerCount;
 				#endif
 				delete x;
 			}
 
-			#ifndef NDEBUG
+			#ifdef SIDX_DEBUG
 			std::cerr << "Lost pointers: " << m_pointerCount << std::endl;
 			#endif
 		}
@@ -66,13 +66,13 @@ namespace Tools
 			if (! m_pool.empty())
 			{
 				SpatialIndex::MVRTree::Node* p = m_pool.top(); m_pool.pop();
-				#ifndef NDEBUG
+				#ifdef SIDX_DEBUG
 				++m_hits;
 				#endif
 
 				return PoolPointer<SpatialIndex::MVRTree::Node>(p, this);
 			}
-			#ifndef NDEBUG
+			#ifdef SIDX_DEBUG
 			else
 			{
 				// fixme: well sort of...
@@ -107,7 +107,7 @@ namespace Tools
 				}
 				else
 				{
-					#ifndef NDEBUG
+					#ifdef SIDX_DEBUG
 					--m_pointerCount;
 					#endif
 					delete p;
@@ -128,7 +128,7 @@ namespace Tools
 		uint32_t m_capacity;
 		std::stack<SpatialIndex::MVRTree::Node*> m_pool;
 
-	#ifndef NDEBUG
+	#ifdef SIDX_DEBUG
 	public:
 		uint64_t m_hits;
 		uint64_t m_misses;
