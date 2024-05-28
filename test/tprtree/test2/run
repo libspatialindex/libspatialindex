@@ -9,7 +9,7 @@ echo Creating new TPR-Tree and Querying
 test-tprtree-TPRTreeLoad mix tree 10 > res
 
 echo Running exhaustive search
-test-tpr-tree-Exhaustive mix > res2
+test-tprtree-Exhaustive mix > res2
 
 echo Comparing results
 sort -n res > a
