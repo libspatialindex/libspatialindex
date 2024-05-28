@@ -1,8 +1,11 @@
 #! /bin/bash
 
+set -e
+
 echo Testing Intersection
 if test-geometry-Intersection ; then
     echo "Intersection Test Passed"
 else
     echo "Intersection Test Failed"
+    exit 1
 fi
