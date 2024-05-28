@@ -1,9 +1,9 @@
 .. _introduction:
 
-:Author: Marios Hadjieleftheriou
-:Contact: mhadji@gmail.com
-:Revision: 1.9.3
-:Date: 10/23/2019
+:Author: Howard Butler
+:Contact: howard@hobu.co
+:Revision: 2.0.0
+:Date: 05/22/2024
 
 
 The entire website is available as a single PDF at https://libspatialindex.org/libspatialindex.pdf
@@ -11,8 +11,6 @@ The entire website is available as a single PDF at https://libspatialindex.org/l
 ------------------------------------------------------------------------------
 Introduction
 ------------------------------------------------------------------------------
-
-
 
 
 Library Goals
