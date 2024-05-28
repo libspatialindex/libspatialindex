@@ -168,16 +168,14 @@ DiskStorageManager::DiskStorageManager(Tools::PropertySet& ps) : m_pageSize(0), 
 		bFileExists = CheckFilesExists(ps);
 
 		// check if file can be read/written.
-		if (bFileExists && !bOverwrite)
+		if (bFileExists == true && bOverwrite == false)
 		{
-		    // Exists and not overwrite: open read-only, and no flush needed
-			m_flushNeeded = false;
-			std::ios_base::openmode mode = std::ios::in | std::ios::binary;
+            std::ios_base::openmode mode = std::ios::in | std::ios::out | std::ios::binary;
 			m_indexFile.open(sIndexFile.c_str(), mode);
 			m_dataFile.open(sDataFile.c_str(), mode);
 
 			if (m_indexFile.fail() || m_dataFile.fail())
-				throw Tools::IllegalArgumentException("SpatialIndex::DiskStorageManager: Index/Data file cannot be read.");
+				throw Tools::IllegalArgumentException("SpatialIndex::DiskStorageManager: Index/Data file cannot be read/written.");
 		}
 		else
 		{
@@ -286,8 +284,7 @@ DiskStorageManager::DiskStorageManager(Tools::PropertySet& ps) : m_pageSize(0), 
 
 DiskStorageManager::~DiskStorageManager()
 {
-	if (m_flushNeeded)
-	    flush();
+	flush();
 	m_indexFile.close();
 	m_dataFile.close();
 	if (m_buffer != nullptr) delete[] m_buffer;
