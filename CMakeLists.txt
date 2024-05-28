@@ -16,6 +16,7 @@ project(spatialindex
   HOMEPAGE_URL "https://github.com/libspatialindex/libspatialindex"
 )
 
+
 set(SIDX_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
 set(SIDX_VERSION_MINOR "${PROJECT_VERSION_MINOR}")
 set(SIDX_VERSION_PATCH "${PROJECT_VERSION_PATCH}")
@@ -25,6 +26,14 @@ set(SIDX_LIB_VERSION "7.0.0")
 set(SIDX_LIB_SOVERSION "7")
 
 include(GNUInstallDirs)
+
+
+IF(NOT CMAKE_BUILD_TYPE)
+    SET(CMAKE_BUILD_TYPE Release CACHE STRING
+        "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel"
+        FORCE)
+ENDIF()
+
 
 message(STATUS
   "Configuring CMake ${CMAKE_VERSION} to build spatialindex ${PROJECT_VERSION}")
