@@ -1334,18 +1334,7 @@ SpatialIndex::id_type SpatialIndex::RTree::RTree::writeNode(Node* n)
 		n->m_identifier = page;
 		++(m_stats.m_u32Nodes);
 
-#ifdef SIDX_DEBUG
-		try
-		{
-			m_stats.m_nodesInLevel[n->m_level] = m_stats.m_nodesInLevel.at(n->m_level) + 1;
-		}
-		catch(...)
-		{
-			throw Tools::IllegalStateException("writeNode: writing past the end of m_nodesInLevel.");
-		}
-#else
 		m_stats.m_nodesInLevel[n->m_level] = m_stats.m_nodesInLevel[n->m_level] + 1;
-#endif
 	}
 
 	++(m_stats.m_u64Writes);
@@ -1562,17 +1551,6 @@ std::ostream& SpatialIndex::RTree::operator<<(std::ostream& os, const RTree& t)
 	if (t.m_stats.getNumberOfNodesInLevel(0) > 0)
 		os	<< "Utilization: " << 100 * t.m_stats.getNumberOfData() / (t.m_stats.getNumberOfNodesInLevel(0) * t.m_leafCapacity) << "%" << std::endl
 			<< t.m_stats;
-
-	#ifdef SIDX_DEBUG
-	os	<< "Leaf pool hits: " << t.m_leafPool.m_hits << std::endl
-		<< "Leaf pool misses: " << t.m_leafPool.m_misses << std::endl
-		<< "Index pool hits: " << t.m_indexPool.m_hits << std::endl
-		<< "Index pool misses: " << t.m_indexPool.m_misses << std::endl
-		<< "Region pool hits: " << t.m_regionPool.m_hits << std::endl
-		<< "Region pool misses: " << t.m_regionPool.m_misses << std::endl
-		<< "Point pool hits: " << t.m_pointPool.m_hits << std::endl
-		<< "Point pool misses: " << t.m_pointPool.m_misses << std::endl;
-	#endif
 
 	return os;
 }

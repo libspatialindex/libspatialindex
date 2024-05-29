@@ -321,13 +321,6 @@ void Index::adjustTree(Node* n, std::stack<id_type>& pathBuffer)
 		}
 	//}
 
-#ifdef SIDX_DEBUG
-	for (uint32_t cChild = 0; cChild < m_children; ++cChild)
-	{
-		assert(m_nodeMBR.containsRegionAfterTime(m_pTree->m_currentTime, *(m_ptrMBR[cChild])) == true);
-	}
-#endif
-
 	m_pTree->writeNode(this);
 
 	if (/*! bContained && */ ! pathBuffer.empty())
@@ -381,13 +374,6 @@ void Index::adjustTree(Node* n1, Node* n2, std::stack<id_type>& pathBuffer, uint
 			m_nodeMBR.m_pHigh[cDim] += 2.0 * std::numeric_limits<double>::epsilon();
 		}
 	//}
-
-#ifdef SIDX_DEBUG
-	for (uint32_t cChild = 0; cChild < m_children; ++cChild)
-	{
-		assert(m_nodeMBR.containsRegionAfterTime(m_pTree->m_currentTime, *(m_ptrMBR[cChild])) == true);
-	}
-#endif
 
 	// No write necessary here. insertData will write the node if needed.
 	//m_pTree->writeNode(this);

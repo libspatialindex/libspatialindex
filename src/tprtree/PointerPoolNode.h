@@ -37,11 +37,6 @@ namespace Tools
 	public:
 		explicit PointerPool(uint32_t capacity) : m_capacity(capacity)
 		{
-			#ifdef SIDX_DEBUG
-			m_hits = 0;
-			m_misses = 0;
-			m_pointerCount = 0;
-			#endif
 		}
 
 		~PointerPool()
@@ -51,15 +46,8 @@ namespace Tools
 			while (! m_pool.empty())
 			{
 				TPRTree::Node* x = m_pool.top(); m_pool.pop();
-				#ifdef SIDX_DEBUG
-				--m_pointerCount;
-				#endif
 				delete x;
 			}
-
-			#ifdef SIDX_DEBUG
-			std::cerr << "Lost pointers: " << m_pointerCount << std::endl;
-			#endif
 		}
 
 		PoolPointer<TPRTree::Node> acquire()
@@ -67,21 +55,8 @@ namespace Tools
 			if (! m_pool.empty())
 			{
 				TPRTree::Node* p = m_pool.top(); m_pool.pop();
-				#ifdef SIDX_DEBUG
-				++m_hits;
-				#endif
-
 				return PoolPointer<TPRTree::Node>(p, this);
 			}
-			#ifdef SIDX_DEBUG
-			else
-			{
-				// fixme: well sort of...
-				++m_pointerCount;
-				++m_misses;
-			}
-			#endif
-
 			return PoolPointer<TPRTree::Node>();
 		}
 
@@ -108,9 +83,6 @@ namespace Tools
 				}
 				else
 				{
-					#ifdef SIDX_DEBUG
-					--m_pointerCount;
-					#endif
 					delete p;
 				}
 
@@ -128,13 +100,6 @@ namespace Tools
 	protected:
 		uint32_t m_capacity;
 		std::stack<TPRTree::Node*> m_pool;
-
-	#ifdef SIDX_DEBUG
-	public:
-		uint64_t m_hits;
-		uint64_t m_misses;
-		uint64_t m_pointerCount;
-	#endif
 	};
 }
 

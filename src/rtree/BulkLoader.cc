@@ -333,10 +333,6 @@ void BulkLoader::bulkLoadUsingSTR(
 	NodePtr n = pTree->readNode(pTree->m_rootID);
 	pTree->deleteNode(n.get());
 
-	#ifdef SIDX_DEBUG
-	std::cerr << "RTree::BulkLoader: Sorting data." << std::endl;
-	#endif
-
     std::shared_ptr<ExternalSorter> es = std::shared_ptr<ExternalSorter>(new ExternalSorter(pageSize, numberOfPages));
 
 	while (stream.hasNext())
@@ -360,10 +356,6 @@ void BulkLoader::bulkLoadUsingSTR(
 
 	while (true)
 	{
-		#ifdef SIDX_DEBUG
-		std::cerr << "RTree::BulkLoader: Building level " << level << std::endl;
-		#endif
-
 		pTree->m_stats.m_nodesInLevel.push_back(0);
 
         std::shared_ptr<ExternalSorter> es2 = std::shared_ptr<ExternalSorter>(new ExternalSorter(pageSize, numberOfPages));

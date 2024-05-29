@@ -180,15 +180,6 @@ uint32_t Index::findLeastEnlargement(const TimeRegion& r) const
 		}
 	}
 
-#ifdef SIDX_DEBUG
-	if (best == std::numeric_limits<uint32_t>::max())
-	{
-		std::ostringstream s;
-		s << "findLeastEnlargement: All entries of node " << m_identifier << " are dead.";
-		throw Tools::IllegalStateException(s.str());
-	}
-#endif
-
 	return best;
 }
 
@@ -236,15 +227,6 @@ uint32_t Index::findLeastOverlap(const TimeRegion& r) const
 		}
 		++cLiveEntries;
 	}
-
-#ifdef SIDX_DEBUG
-	if (cLiveEntries == 0)
-	{
-		std::ostringstream s;
-		s << "findLeastOverlap: All entries of node " << m_identifier << " are dead.";
-		throw Tools::IllegalStateException(s.str());
-	}
-#endif
 
 	if (me < -std::numeric_limits<double>::epsilon() || me > std::numeric_limits<double>::epsilon())
 	{

@@ -61,22 +61,6 @@ void Region::initialize(const double* pLow, const double* pHigh, uint32_t dimens
 	m_pLow = nullptr;
 	m_dimension = dimension;
 
-#ifdef SIDX_DEBUG
-    for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
-    {
-     if ((pLow[cDim] > pHigh[cDim]))
-     {
-         // check for infinitive region
-         if (!(pLow[cDim] == std::numeric_limits<double>::max() ||
-             pHigh[cDim] == -std::numeric_limits<double>::max() ))
-             throw Tools::IllegalArgumentException(
-                 "Region::initialize: Low point has larger coordinates than High point."
-                 " Neither point is infinity."
-             );
-     }
-    }
-#endif
-
 	try
 	{
 		m_pLow = new double[m_dimension];

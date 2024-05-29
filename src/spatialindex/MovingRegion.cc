@@ -183,13 +183,6 @@ void MovingRegion::initialize(
 
 	if (m_endTime <= m_startTime) throw Tools::IllegalArgumentException("MovingRegion: Cannot support degenerate time intervals.");
 
-#ifdef SIDX_DEBUG
-	for (uint32_t cDim = 0; cDim < m_dimension; ++cDim)
-	{
-		if (pLow[cDim] > pHigh[cDim]) throw Tools::IllegalArgumentException("MovingRegion: Low point has larger coordinates than High point.");
-	}
-#endif
-
 	try
 	{
 		m_pLow = new double[m_dimension];
@@ -982,17 +975,10 @@ double MovingRegion::getIntersectingAreaInTime(const IInterval& ivI, const Movin
 
 	// add up the total area of the intersecting pieces.
 	double area = 0.0;
-#ifdef SIDX_DEBUG
-	double _t = -std::numeric_limits<double>::max();
-#endif
 
 	while (! pq.empty())
 	{
 		c = pq.top(); pq.pop();
-#ifdef SIDX_DEBUG
-		assert(_t <= c.m_t);
-		_t = c.m_t;
-#endif
 
 		// needed in case two consecutive points have the same intersection time.
 		if (c.m_t > tmin) area += x.getAreaInTime(Tools::Interval(tmin, c.m_t));

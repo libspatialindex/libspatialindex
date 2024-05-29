@@ -5,7 +5,7 @@
  * Copyright (c) 2004, Marios Hadjieleftheriou
  *
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
@@ -36,11 +36,6 @@ namespace Tools
 	public:
 		explicit PointerPool(uint32_t capacity) : m_capacity(capacity)
 		{
-			#ifndef NDEBUG
-			m_hits = 0;
-			m_misses = 0;
-			m_pointerCount = 0;
-			#endif
 		}
 
 		~PointerPool()
@@ -50,15 +45,8 @@ namespace Tools
 			while (! m_pool.empty())
 			{
 				X* x = m_pool.top(); m_pool.pop();
-				#ifndef NDEBUG
-				--m_pointerCount;
-				#endif
 				delete x;
 			}
-
-			#ifndef NDEBUG
-			std::cerr << "Lost pointers: " << m_pointerCount << std::endl;
-			#endif
 		}
 
 		PoolPointer<X> acquire()
@@ -68,17 +56,10 @@ namespace Tools
 			if (! m_pool.empty())
 			{
 				p = m_pool.top(); m_pool.pop();
-				#ifndef NDEBUG
-				m_hits++;
-				#endif
 			}
 			else
 			{
 				p = new X();
-				#ifndef NDEBUG
-				m_pointerCount++;
-				m_misses++;
-				#endif
 			}
 
 			return PoolPointer<X>(p, this);
@@ -92,9 +73,6 @@ namespace Tools
 			}
 			else
 			{
-				#ifndef NDEBUG
-				--m_pointerCount;
-				#endif
 				delete p;
 			}
 
@@ -112,12 +90,6 @@ namespace Tools
 		uint32_t m_capacity;
 		std::stack<X*> m_pool;
 
-	#ifndef NDEBUG
-	public:
-		uint64_t m_hits;
-		uint64_t m_misses;
-		uint64_t m_pointerCount;
-	#endif
 	};
 }
 

@@ -376,13 +376,6 @@ bool Node::insertEntry(uint32_t dataLength, uint8_t* pData, MovingRegion& mbr, i
 		}
 	}
 
-#ifdef SIDX_DEBUG
-	for (uint32_t cChild = 0; cChild < m_children; ++cChild)
-	{
-		assert(m_nodeMBR.containsRegionAfterTime(m_nodeMBR.m_startTime, *(m_ptrMBR[cChild])));
-	}
-#endif
-
 	return true;
 }
 
@@ -434,12 +427,6 @@ void Node::deleteEntry(uint32_t index)
 			m_nodeMBR.m_pHigh[cDim] += 2.0 * std::numeric_limits<double>::epsilon();
 		}
 
-#ifdef SIDX_DEBUG
-		for (uint32_t cChild = 0; cChild < m_children; ++cChild)
-		{
-			assert(m_nodeMBR.containsRegionAfterTime(m_pTree->m_currentTime, *(m_ptrMBR[cChild])) == true);
-		}
-#endif
 	}
 }
 
@@ -559,13 +546,6 @@ bool Node::insertData(uint32_t dataLength, uint8_t* pData, MovingRegion& mbr, id
 			m_nodeMBR.m_pHigh[cDim] += 2.0 * std::numeric_limits<double>::epsilon();
 		}
 
-#ifdef SIDX_DEBUG
-		for (uint32_t cChild = 0; cChild < m_children; ++cChild)
-		{
-			assert(m_nodeMBR.containsRegionAfterTime(m_nodeMBR.m_startTime, *(m_ptrMBR[cChild])));
-		}
-#endif
-
 		m_pTree->writeNode(this);
 
 		// Divertion from R*-Tree algorithm here. First adjust
@@ -604,17 +584,6 @@ bool Node::insertData(uint32_t dataLength, uint8_t* pData, MovingRegion& mbr, id
 			n->m_identifier = -1;
 			nn->m_identifier = -1;
 
-#ifdef SIDX_DEBUG
-			for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
-			{
-				assert(n->m_nodeMBR.containsRegionAfterTime(n->m_nodeMBR.m_startTime, *(n->m_ptrMBR[cChild])) == true);
-			}
-			for (uint32_t cChild = 0; cChild < nn->m_children; ++cChild)
-			{
-				assert(nn->m_nodeMBR.containsRegionAfterTime(nn->m_nodeMBR.m_startTime, *(nn->m_ptrMBR[cChild])) == true);
-			}
-#endif
-
 			m_pTree->writeNode(n.get());
 			m_pTree->writeNode(nn.get());
 
@@ -646,17 +615,6 @@ bool Node::insertData(uint32_t dataLength, uint8_t* pData, MovingRegion& mbr, id
 			nn->m_level = m_level;
 			n->m_identifier = m_identifier;
 			nn->m_identifier = -1;
-
-#ifdef SIDX_DEBUG
-			for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
-			{
-				assert(n->m_nodeMBR.containsRegionAfterTime(n->m_nodeMBR.m_startTime, *(n->m_ptrMBR[cChild])) == true);
-			}
-			for (uint32_t cChild = 0; cChild < nn->m_children; ++cChild)
-			{
-				assert(nn->m_nodeMBR.containsRegionAfterTime(nn->m_nodeMBR.m_startTime, *(nn->m_ptrMBR[cChild])) == true);
-			}
-#endif
 
 			m_pTree->writeNode(n.get());
 			m_pTree->writeNode(nn.get());
