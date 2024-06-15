@@ -66,9 +66,8 @@ foreach(test ${SOURCES})
 endforeach()
 
 if (UNIX)
-    find_program (BASH_PROGRAM bash)
     add_test(NAME index-tests
-             COMMAND ${BASH_PROGRAM} "${CMAKE_CURRENT_SOURCE_DIR}/index-tests.sh"
+             COMMAND /bin/sh "${CMAKE_CURRENT_SOURCE_DIR}/index-tests.sh"
              WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
     set_property(TEST index-tests PROPERTY ENVIRONMENT
              "PATH=${CMAKE_BINARY_DIR}/test/:$ENV{PATH}")

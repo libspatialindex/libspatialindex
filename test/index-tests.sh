@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 set -e
 echo "path: " $PATH
@@ -8,12 +8,12 @@ TEST_ROOT=`pwd`
 
 execute_test () {
     dir="$1"
-    pushd "$dir"
+    cd "$dir"
     echo "Executing test ------------------ $1 -----------------------------"
     ./run
     echo "Executed test ------------------ $1 -----------------------------"
     $TEST_ROOT/cleanup-test-output.sh
-    popd
+    cd -
 }
 
 execute_test "geometry/test1"
