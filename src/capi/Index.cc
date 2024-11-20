@@ -105,69 +105,23 @@ Index::Index(	const Tools::PropertySet& poProperties,
 	m_buffer = CreateIndexBuffer(*m_storage);
 
 	DataStream ds(readNext);
-
-	double dFillFactor = 0.7;
-	uint32_t nIdxCapacity = 100;
-	uint32_t nIdxLeafCap = 100;
-	uint32_t nIdxDimension = 2;
-	SpatialIndex::RTree::RTreeVariant eVariant = SpatialIndex::RTree::RV_RSTAR;
 	SpatialIndex::id_type m_IdxIdentifier;
 
-	// Fetch a bunch of properties.	 We can't bulk load an rtree using merely
-	// properties, we have to use the helper method(s).
-
-	Tools::Variant var;
-	var = m_properties.getProperty("FillFactor");
-	if (var.m_varType != Tools::VT_EMPTY)
+	// For memory storage ensure we do not write any files to disk during
+	// the bulk-loading phase
+	if (GetIndexStorage() == RT_Memory)
 	{
-		if (var.m_varType != Tools::VT_DOUBLE)
-			throw std::runtime_error("Index::Index (streaming):"
-									 " Property FillFactor must be Tools::VT_DOUBLE");
+		Tools::Variant sz;
+		sz.m_varType = Tools::VT_ULONG;
 
-		dFillFactor = var.m_val.dblVal;
+		sz.m_val.ulVal = 1073741824;
+		m_properties.setProperty("ExternalSortBufferPageSize", sz);
+
+		sz.m_val.ulVal = 2;
+		m_properties.setProperty("ExternalSortBufferTotalPages", sz);
 	}
 
-	var = m_properties.getProperty("IndexCapacity");
-	if (var.m_varType != Tools::VT_EMPTY)
-	{
-		if (var.m_varType != Tools::VT_ULONG)
-			throw std::runtime_error("Index::Index (streaming): "
-									 "Property IndexCapacity must be Tools::VT_ULONG");
-
-		nIdxCapacity = var.m_val.ulVal;
-	}
-
-	var = m_properties.getProperty("LeafCapacity");
-	if (var.m_varType != Tools::VT_EMPTY)
-	{
-		if (var.m_varType != Tools::VT_ULONG)
-			throw std::runtime_error("Index::Index (streaming): "
-									 "Property LeafCapacity must be Tools::VT_ULONG");
-
-		nIdxLeafCap = var.m_val.ulVal;
-	}
-
-	var = m_properties.getProperty("Dimension");
-	if (var.m_varType != Tools::VT_EMPTY)
-	{
-		if (var.m_varType != Tools::VT_ULONG)
-			throw std::runtime_error("Index::Index (streaming): "
-									 "Property Dimension must be Tools::VT_ULONG");
-
-		nIdxDimension = var.m_val.ulVal;
-	}
-
-	var = m_properties.getProperty("TreeVariant");
-	if (var.m_varType != Tools::VT_EMPTY)
-	{
-		if (var.m_varType != Tools::VT_LONG)
-			throw std::runtime_error("Index::Index (streaming): "
-									 "Property TreeVariant must be Tools::VT_LONG");
-
-		eVariant = static_cast<SpatialIndex::RTree::RTreeVariant>(var.m_val.lVal);
-	}
-
-	var = m_properties.getProperty("IndexIdentifier");
+	Tools::Variant var = m_properties.getProperty("IndexIdentifier");
 	if (var.m_varType != Tools::VT_EMPTY)
 	{
 		if (var.m_varType != Tools::VT_LONGLONG)
@@ -180,11 +134,7 @@ Index::Index(	const Tools::PropertySet& poProperties,
 	m_rtree = RTree::createAndBulkLoadNewRTree(	  SpatialIndex::RTree::BLM_STR,
 												  ds,
 												  *m_buffer,
-												  dFillFactor,
-												  nIdxCapacity,
-												  nIdxLeafCap,
-												  nIdxDimension,
-												  eVariant,
+												  m_properties,
 												  m_IdxIdentifier);
 }
 
