@@ -208,7 +208,7 @@ SpatialIndex::ISpatialIndex* SpatialIndex::RTree::createAndBulkLoadNewRTree(
 	switch (m)
 	{
 	case BLM_STR:
-		bl.bulkLoadUsingSTR(static_cast<RTree*>(tree), stream, bindex, bleaf, 10000, 100);
+	    bl.bulkLoadUsingSTR(static_cast<RTree*>(tree), stream, bindex, bleaf, 10000, 100);
 		break;
 	default:
 		throw Tools::IllegalArgumentException("createAndBulkLoadNewRTree: Unknown bulk load method.");
@@ -226,13 +226,13 @@ SpatialIndex::ISpatialIndex* SpatialIndex::RTree::createAndBulkLoadNewRTree(
 	id_type& indexIdentifier)
 {
 	Tools::Variant var;
-	RTreeVariant rv(RV_LINEAR);
-	double fillFactor(0.0);
-	uint32_t indexCapacity(0);
-	uint32_t leafCapacity(0);
-	uint32_t dimension(0);
-	uint32_t pageSize(0);
-	uint32_t numberOfPages(0);
+	RTreeVariant rv(RV_RSTAR);
+	double fillFactor(0.7);
+	uint32_t indexCapacity(100);
+	uint32_t leafCapacity(100);
+	uint32_t dimension(2);
+	uint32_t pageSize(10000);
+	uint32_t numberOfPages(100);
 
 	// tree variant
 	var = ps.getProperty("TreeVariant");
