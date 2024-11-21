@@ -138,7 +138,7 @@ bool TimeRegion::intersectsRegionInTime(const TimeRegion& r) const
 	// the first check is needed for the following case:
 	// m_endTime == m_startTime == r.m_startTime.
 	// For open ended intervals this should be considered as an intersection
-	// (takes care of degenarate intervals)
+	// (takes care of degenerate intervals)
 	//if (m_startTime != r.m_startTime &&
 	//	(m_startTime >= r.m_endTime || m_endTime <= r.m_startTime))
 	if (! intersectsInterval(r)) return false;
@@ -356,7 +356,7 @@ bool TimeRegion::intersectsInterval(Tools::IntervalType, const double start, con
 {
 	//if (m_startTime != start &&
 	//		(m_startTime >= end || m_endTime <= start)) return false;
-	// this will not work for degenarate intervals.
+	// this will not work for degenerate intervals.
 	if (m_startTime >= end || m_endTime <= start) return false;
 
 	return true;

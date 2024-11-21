@@ -88,7 +88,7 @@
 2018-04-26
 	* Howard Butler <howard@hobu.co> Merge pull request #114 from michael-herwig/master (10:58:17)
 	* Michael Herwig <michael.herwig@hotmail.de> added summary to changelog (05:34:40)
-	* Michael Herwig <michael.herwig@hotmail.de> Added silent tr1 depecreation flag vor msvc compiler >= 1900 (05:30:27)
+	* Michael Herwig <michael.herwig@hotmail.de> Added silent tr1 depecreation flag for msvc compiler >= 1900 (05:30:27)
 	* Michael Herwig <michael.herwig@hotmail.de> Added <cinttypes> include for proper compilation using msvc15 (05:23:48)
 	* Michael Herwig <michael.herwig@hotmail.de> Added cmake option for conditional test integration (05:19:21)
 
@@ -309,7 +309,7 @@
 2014-07-12
 	* Howard Butler <hobu.inc@gmail.com> add BUILD_WITH_INSTALL_RPATH target property for OSX (23:59:03)
 	* Howard Butler <hobu.inc@gmail.com> CMake config quoting #27 (23:50:05)
-	* Howard Butler <hobu.inc@gmail.com> FSF postal adress update #5 (23:38:24)
+	* Howard Butler <hobu.inc@gmail.com> FSF postal address update #5 (23:38:24)
 	* Howard Butler <hobu.inc@gmail.com> support wide character as possible tools::Variant type -- doesn't work yet though (23:32:19)
 	* Howard Butler <hobu.inc@gmail.com> add VT_PWCHAR to support wide character pointer for the Variant type (23:31:15)
 	* Howard Butler <hobu.inc@gmail.com> add MSVC 2013 and 2014 defns (23:27:45)
@@ -436,7 +436,7 @@
 	* Howard Butler <hobu.inc@gmail.com> Merge pull request #8 from booo/master (10:03:27)
 
 2012-07-14
-	* Marios Hadjieleftheriou <mhadji@gmail.com> Reverted to using pthread mutex and exlusively lock all queries, since fine grain locking using spinlocks was too slow. (09:57:39)
+	* Marios Hadjieleftheriou <mhadji@gmail.com> Reverted to using pthread mutex and exclusively lock all queries, since fine grain locking using spinlocks was too slow. (09:57:39)
 	* Marios Hadjieleftheriou <mhadji@gmail.com> Reverted to using pthread mutex for all queries, since fine grain locking using spinlocks was too slow. (09:52:34)
 
 2012-07-10
@@ -604,7 +604,7 @@
 2010-04-12
 	* Howard Butler <hobu.inc@gmail.com> update ChangeLog (14:56:52)
 	* Marios Hadjieleftheriou <mhadji@gmail.com>  (12:17:47)
-	* Marios Hadjieleftheriou <mhadji@gmail.com> Fixed rtree/BulkLoader infinit loop bug (12:07:13)
+	* Marios Hadjieleftheriou <mhadji@gmail.com> Fixed rtree/BulkLoader infinite loop bug (12:07:13)
 
 2010-03-31
 	* Howard Butler <hobu.inc@gmail.com> format and layout normalization (10:33:43)
@@ -647,7 +647,7 @@
 	* Howard Butler <hobu.inc@gmail.com> only #include <limits> where needed, and not in the global Tools.h file (14:08:16)
 
 2009-10-30
-	* Howard Butler <hobu.inc@gmail.com> remove <cmath> <limits> and <climits> from Tools.h and include them seperately in each file that needs them (12:09:14)
+	* Howard Butler <hobu.inc@gmail.com> remove <cmath> <limits> and <climits> from Tools.h and include them separately in each file that needs them (12:09:14)
 	* Howard Butler <hobu.inc@gmail.com> define to denote we're C API (11:37:11)
 	* Howard Butler <hobu.inc@gmail.com> add a newline (10:03:47)
 

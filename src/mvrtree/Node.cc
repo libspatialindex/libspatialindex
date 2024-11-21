@@ -1099,7 +1099,7 @@ void Node::rtreeSplit(
 	{
 		if (minimumLoad - group1.size() == cRemaining)
 		{
-			// all remaining entries must be assigned to group1 to comply with minimun load requirement.
+			// all remaining entries must be assigned to group1 to comply with minimum load requirement.
 			for (cChild = 0; cChild < cTotal; ++cChild)
 			{
 				if (mask[cChild] == 0)
@@ -1112,7 +1112,7 @@ void Node::rtreeSplit(
 		}
 		else if (minimumLoad - group2.size() == cRemaining)
 		{
-			// all remaining entries must be assigned to group2 to comply with minimun load requirement.
+			// all remaining entries must be assigned to group2 to comply with minimum load requirement.
 			for (cChild = 0; cChild < cTotal; ++cChild)
 			{
 				if (mask[cChild] == 0)

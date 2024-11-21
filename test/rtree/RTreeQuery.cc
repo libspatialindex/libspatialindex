@@ -258,7 +258,7 @@ int main(int argc, char** argv)
 		delete file;
 		delete diskfile;
 			// delete the buffer first, then the storage manager
-			// (otherwise the the buffer will fail writting the dirty entries).
+			// (otherwise the the buffer will fail writing the dirty entries).
 	}
 	catch (Tools::Exception& e)
 	{

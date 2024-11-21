@@ -37,7 +37,7 @@
 # define LAST_ERROR_BUFFER_SIZE 1024
 /*
  * __thread is gcc specific extension for thread-local storage, that does not allow complex
- * constructor. We can't use any of std containers for storing mutliple error messages, but we
+ * constructor. We can't use any of std containers for storing multiple error messages, but we
  * could at least get latest error message safely. The error count will be at most 1. The finer
  * solution would be to use thread-local storage from C++11, but since this library is compiled
  * with C++98 flag, this option is not available yet.

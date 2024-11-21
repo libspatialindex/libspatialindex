@@ -48,7 +48,7 @@ namespace SpatialIndex
 			MVRTree(IStorageManager&, Tools::PropertySet&);
 				// String                   Value     Description
 				// ----------------------------------------------
-				// IndexIndentifier         VT_LONG   If specified an existing index will be openened from the supplied
+				// IndexIndentifier         VT_LONG   If specified an existing index will be opened from the supplied
 				//                                    storage manager with the given index id. Behaviour is unspecified
 				//                                    if the index id or the storage manager are incorrect.
 				// Dimension                VT_ULONG  Dimensionality of the data that will be inserted.
@@ -126,7 +126,7 @@ namespace SpatialIndex
 				// for Points and Rectangles, Section 4.1]
 
 			double m_splitDistributionFactor;
-				// The R*-Tree 'm' constant, for calculating spliting distributions.
+				// The R*-Tree 'm' constant, for calculating splitting distributions.
 				// [Beckmann, Kriegel, Schneider, Seeger 'The R*-tree: An efficient and Robust Access Method
 				// for Points and Rectangles, Section 4.2]
 

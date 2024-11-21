@@ -117,7 +117,7 @@ int main(int argc, char** argv)
 					// case you should store the data externally. The index will provide the data IDs of
 					// the answers to any query, which can be used to access the actual data from the external
 					// storage (e.g. a hash table or a database table, etc.).
-					// Storing the data in the index is convinient and in case a clustered storage manager is
+					// Storing the data in the index is convenient and in case a clustered storage manager is
 					// provided (one that stores any node in consecutive pages) performance will improve substantially,
 					// since disk accesses will be mostly sequential. On the other hand, the index will need to
 					// manipulate the data, resulting in larger overhead. If you use a main memory storage manager,
@@ -178,7 +178,7 @@ int main(int argc, char** argv)
 
 		bool ret = tree->isIndexValid();
 		if (ret == false) cerr << "ERROR: Structure is invalid!" << endl;
-		else cerr << "The stucture seems O.K." << endl;
+		else cerr << "The structure seems O.K." << endl;
 
 		delete tree;
 		delete file;
