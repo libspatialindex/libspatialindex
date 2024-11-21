@@ -73,14 +73,19 @@ namespace SpatialIndex
 		virtual void makeInfinite(uint32_t dimension);
 		virtual void makeDimension(uint32_t dimension);
 
+		static constexpr int local_dim = 3;
+
 	public:
 		uint32_t m_dimension{0};
 		double* m_pCoords{nullptr};
 
 		friend class Region;
 		friend SIDX_DLL std::ostream& operator<<(std::ostream& os, const Point& pt);
+
+	private:
+		double m_local[local_dim];
 	}; // Point
-	
+
 	typedef Tools::PoolPointer<Point> PointPtr;
 
 	SIDX_DLL std::ostream& operator<<(std::ostream& os, const Point& pt);

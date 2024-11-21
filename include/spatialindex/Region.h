@@ -90,6 +90,8 @@ namespace SpatialIndex
 		virtual void makeInfinite(uint32_t dimension);
 		virtual void makeDimension(uint32_t dimension);
 
+		static constexpr int local_dim = 3;
+
 	private:
 		void initialize(const double* pLow, const double* pHigh, uint32_t dimension);
 
@@ -99,8 +101,11 @@ namespace SpatialIndex
 		double* m_pHigh{nullptr};
 
 		friend SIDX_DLL std::ostream& operator<<(std::ostream& os, const Region& r);
+
+	private:
+		double m_local[2*local_dim];
 	}; // Region
-	
+
 	typedef Tools::PoolPointer<Region> RegionPtr;
 	SIDX_DLL std::ostream& operator<<(std::ostream& os, const Region& r);
 }

@@ -40,8 +40,10 @@ Point::Point(const double* pCoords, uint32_t dimension)
 	: m_dimension(dimension)
 {
 	// no need to initialize m_pCoords to 0 since if a bad_alloc is raised the destructor will not be called.
-
-	m_pCoords = new double[m_dimension];
+	if (m_dimension <= local_dim)
+	   m_pCoords = m_local;
+	else
+	   m_pCoords = new double[m_dimension];
 	memcpy(m_pCoords, pCoords, m_dimension * sizeof(double));
 }
 
@@ -49,14 +51,17 @@ Point::Point(const Point& p)
 	: m_dimension(p.m_dimension)
 {
 	// no need to initialize m_pCoords to 0 since if a bad_alloc is raised the destructor will not be called.
-
-	m_pCoords = new double[m_dimension];
+	if (m_dimension <= local_dim)
+	   m_pCoords = m_local;
+	else
+	   m_pCoords = new double[m_dimension];
 	memcpy(m_pCoords, p.m_pCoords, m_dimension * sizeof(double));
 }
 
 Point::~Point()
 {
-	delete[] m_pCoords;
+    if (m_dimension > local_dim)
+        delete[] m_pCoords;
 }
 
 Point& Point::operator=(const Point& p)
@@ -244,14 +249,18 @@ void Point::makeDimension(uint32_t dimension)
 {
 	if (m_dimension != dimension)
 	{
-		delete[] m_pCoords;
+		if (m_dimension > local_dim)
+			delete[] m_pCoords;
 
 		// remember that this is not a constructor. The object will be destructed normally if
 		// something goes wrong (bad_alloc), so we must take care not to leave the object at an intermediate state.
 		m_pCoords = nullptr;
-
 		m_dimension = dimension;
-		m_pCoords = new double[m_dimension];
+
+		if (m_dimension <= local_dim)
+			m_pCoords = m_local;
+		else
+			m_pCoords = new double[m_dimension];
 	}
 }
 
