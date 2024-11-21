@@ -1,0 +1,3 @@
+[codespell]
+skip = ./test/gtest/gtest-1.14.0
+ignore-words = .codespell.ignore

@@ -461,7 +461,7 @@ double Region::getIntersectingArea(const Region& r) const
 }
 
 /*
- * Returns the margin of a region. It is calcuated as the sum of  2^(d-1) * width, in each dimension.
+ * Returns the margin of a region. It is calculated as the sum of  2^(d-1) * width, in each dimension.
  * It is actually the sum of all edges, no matter what the dimensionality is.
 */
 double Region::getMargin() const

@@ -548,7 +548,7 @@ bool Node::insertData(uint32_t dataLength, uint8_t* pData, MovingRegion& mbr, id
 
 		m_pTree->writeNode(this);
 
-		// Divertion from R*-Tree algorithm here. First adjust
+		// Diversion from R*-Tree algorithm here. First adjust
 		// the path to the root, then start reinserts, to avoid complicated handling
 		// of changes to the same node from multiple insertions.
 		id_type cParent = pathBuffer.top(); pathBuffer.pop();
@@ -720,7 +720,7 @@ void Node::rtreeSplit(uint32_t dataLength, uint8_t* pData, Region& mbr, id_type 
 	{
 		if (minimumLoad - group1.size() == cRemaining)
 		{
-			// all remaining entries must be assigned to group1 to comply with minimun load requirement.
+			// all remaining entries must be assigned to group1 to comply with minimum load requirement.
 			for (cChild = 0; cChild < m_capacity + 1; ++cChild)
 			{
 				if (mask[cChild] == 0)
@@ -733,7 +733,7 @@ void Node::rtreeSplit(uint32_t dataLength, uint8_t* pData, Region& mbr, id_type 
 		}
 		else if (minimumLoad - group2.size() == cRemaining)
 		{
-			// all remaining entries must be assigned to group2 to comply with minimun load requirement.
+			// all remaining entries must be assigned to group2 to comply with minimum load requirement.
 			for (cChild = 0; cChild < m_capacity + 1; ++cChild)
 			{
 				if (mask[cChild] == 0)
