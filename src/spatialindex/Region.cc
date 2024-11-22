@@ -58,19 +58,14 @@ Region::Region(const Region& r)
 
 void Region::initialize(const double* pLow, const double* pHigh, uint32_t dimension)
 {
-	m_pLow = nullptr;
 	m_dimension = dimension;
 
-	try
-	{
-		m_pLow = new double[m_dimension];
-		m_pHigh = new double[m_dimension];
-	}
-	catch (...)
-	{
-		delete[] m_pLow;
-		throw;
-	}
+	if (m_dimension <= local_dim)
+	   m_pLow = m_local;
+	else
+	   m_pLow = new double[2*m_dimension];
+
+	m_pHigh = m_pLow + m_dimension;
 
 	memcpy(m_pLow, pLow, m_dimension * sizeof(double));
 	memcpy(m_pHigh, pHigh, m_dimension * sizeof(double));
@@ -78,8 +73,8 @@ void Region::initialize(const double* pLow, const double* pHigh, uint32_t dimens
 
 Region::~Region()
 {
-	delete[] m_pLow;
-	delete[] m_pHigh;
+    if (m_dimension > local_dim)
+        delete[] m_pLow;
 }
 
 Region& Region::operator=(const Region& r)
@@ -546,16 +541,20 @@ void Region::makeDimension(uint32_t dimension)
 {
 	if (m_dimension != dimension)
 	{
-		delete[] m_pLow;
-		delete[] m_pHigh;
+	    if (m_dimension > local_dim)
+		    delete[] m_pLow;
 
 		// remember that this is not a constructor. The object will be destructed normally if
 		// something goes wrong (bad_alloc), so we must take care not to leave the object at an intermediate state.
 		m_pLow = nullptr; m_pHigh = nullptr;
-
 		m_dimension = dimension;
-		m_pLow = new double[m_dimension];
-		m_pHigh = new double[m_dimension];
+
+		if (m_dimension <= local_dim)
+		   m_pLow = m_local;
+		else
+		   m_pLow = new double[2*m_dimension];
+
+		m_pHigh = m_pLow + m_dimension;
 	}
 }
 
