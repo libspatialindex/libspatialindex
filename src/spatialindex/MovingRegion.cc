@@ -334,7 +334,7 @@ bool MovingRegion::intersectsRegionInTime(const MovingRegion& r, IInterval& ivOu
 //
 // there are various cases here:
 // 1. one region contains the other.
-// 2. one boundary of one region is always contained indide the other region, while the other
+// 2. one boundary of one region is always contained inside the other region, while the other
 //    boundary is not (so no boundaries will ever intersect).
 // 3. either the upper or lower boundary of one region intersects a boundary of the other.
 bool MovingRegion::intersectsRegionInTime(const IInterval& ivPeriod, const MovingRegion& r, IInterval& ivOut) const
@@ -379,7 +379,7 @@ bool MovingRegion::intersectsRegionInTime(const IInterval& ivPeriod, const Movin
 		tmin >= m_startTime && tmax <= m_endTime &&
 		tmin >= r.m_startTime && tmax <= r.m_endTime);
 
-		// completely above or bellow in i-th dimension
+		// completely above or below in i-th dimension
 		if (
 			(r.getExtrapolatedLow(cDim, tmin) > getExtrapolatedHigh(cDim, tmin) &&
 			r.getExtrapolatedLow(cDim, tmax) >= getExtrapolatedHigh(cDim, tmax)) ||
@@ -706,7 +706,7 @@ bool MovingRegion::intersectsPointInTime(const IInterval& ivPeriod, const Moving
 			tmin >= m_startTime && tmax <= m_endTime &&
 			tmin >= p.m_startTime && tmax <= p.m_endTime);
 
-		// completely above or bellow in i-th dimension
+		// completely above or below in i-th dimension
 		if ((p.getProjectedCoord(cDim, tmin) > getExtrapolatedHigh(cDim, tmin) &&
 			p.getProjectedCoord(cDim, tmax) >= getExtrapolatedHigh(cDim, tmax)) ||
 			(p.getProjectedCoord(cDim, tmin) < getExtrapolatedLow(cDim, tmin) &&

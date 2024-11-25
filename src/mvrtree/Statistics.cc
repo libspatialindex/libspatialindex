@@ -176,8 +176,8 @@ std::ostream& SpatialIndex::MVRTree::operator<<(std::ostream& os, const Statisti
 		<< "Number of live data: " << s.m_u64Data << std::endl
 		<< "Total number of data: " << s.m_u64TotalData << std::endl
 		<< "Number of nodes: " << s.m_u32Nodes << std::endl
-		<< "Numer of dead index nodes: " << s.m_u32DeadIndexNodes << std::endl
-		<< "Numer of dead leaf nodes: " << s.m_u32DeadLeafNodes << std::endl;
+		<< "Number of dead index nodes: " << s.m_u32DeadIndexNodes << std::endl
+		<< "Number of dead leaf nodes: " << s.m_u32DeadLeafNodes << std::endl;
 
 	for (size_t cTree = 0; cTree < s.m_treeHeight.size(); ++cTree)
 	{

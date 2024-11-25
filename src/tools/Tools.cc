@@ -1094,7 +1094,7 @@ Tools::TemporaryFile::TemporaryFile()
 #   endif
   std::string tempDir ((val != nullptr) ? val : default_tmp);
 
-  // now contruct the temporary filename
+  // now construct the temporary filename
   std::string tempName = tempDir + "/spatialindex-XXXXXX";
   char* tmpName = strdup(tempName.c_str());
   if (!tmpName || mkstemp(tmpName) == -1)

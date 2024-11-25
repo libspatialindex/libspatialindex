@@ -322,7 +322,7 @@ bool SpatialIndex::TPRTree::TPRTree::deleteData(const IShape& shape, id_type id)
 
 void SpatialIndex::TPRTree::TPRTree::internalNodesQuery(const IShape& /* query */, IVisitor& /* v */)
 {
-	throw Tools::IllegalStateException("internalNodesQuery: not impelmented yet.");
+	throw Tools::IllegalStateException("internalNodesQuery: not implemented yet.");
 }
 
 void SpatialIndex::TPRTree::TPRTree::containsWhatQuery(const IShape& query, IVisitor& v)
@@ -346,7 +346,7 @@ void SpatialIndex::TPRTree::TPRTree::pointLocationQuery(const Point& query, IVis
 
 void SpatialIndex::TPRTree::TPRTree::nearestNeighborQuery(uint32_t, const IShape&, IVisitor&, INearestNeighborComparator&)
 {
-	throw Tools::IllegalStateException("nearestNeighborQuery: not impelmented yet.");
+	throw Tools::IllegalStateException("nearestNeighborQuery: not implemented yet.");
 }
 
 void SpatialIndex::TPRTree::TPRTree::nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v)
@@ -358,7 +358,7 @@ void SpatialIndex::TPRTree::TPRTree::nearestNeighborQuery(uint32_t k, const ISha
 
 void SpatialIndex::TPRTree::TPRTree::selfJoinQuery(const IShape&, IVisitor&)
 {
-	throw Tools::IllegalStateException("selfJoinQuery: not impelmented yet.");
+	throw Tools::IllegalStateException("selfJoinQuery: not implemented yet.");
 }
 
 void SpatialIndex::TPRTree::TPRTree::queryStrategy(IQueryStrategy& qs)
