@@ -955,44 +955,31 @@ SIDX_C_DLL RTError Index_Intersects_id(	  IndexH index,
 	Index* idx = reinterpret_cast<Index*>(index);
 
 	int64_t nResultLimit, nStart;
-  SpatialIndex::Region* r = 0;
 
 	nResultLimit = idx->GetResultSetLimit();
-  nStart = idx->GetResultSetOffset();
+	nStart = idx->GetResultSetOffset();
 
-	IdVisitor* visitor = new IdVisitor;
+	IdVisitor visitor;
 	try {
-    r = new SpatialIndex::Region(pdMin, pdMax, nDimension);
-		idx->index().intersectsWithQuery(	*r,
-											*visitor);
-
-    Page_ResultSet_Ids(*visitor, ids, nStart, nResultLimit, nResults);
-
-    delete r;
-		delete visitor;
-
+        SpatialIndex::Region r(pdMin, pdMax, nDimension);
+		idx->index().intersectsWithQuery(r, visitor);
+        Page_ResultSet_Ids(visitor, ids, nStart, nResultLimit, nResults);
 	} catch (Tools::Exception& e)
 	{
 		Error_PushError(RT_Failure,
 						e.what().c_str(),
 						"Index_Intersects_id");
-    delete r;
-		delete visitor;
 		return RT_Failure;
 	} catch (std::exception const& e)
 	{
 		Error_PushError(RT_Failure,
 						e.what(),
 						"Index_Intersects_id");
-    delete r;
-		delete visitor;
 		return RT_Failure;
 	} catch (...) {
 		Error_PushError(RT_Failure,
 						"Unknown Error",
 						"Index_Intersects_id");
-    delete r;
-		delete visitor;
 		return RT_Failure;
 	}
 	return RT_None;
@@ -1475,47 +1462,36 @@ SIDX_C_DLL RTError Index_NearestNeighbors_id(IndexH index,
 	VALIDATE_POINTER1(index, "Index_NearestNeighbors_id", RT_Failure);
 	Index* idx = reinterpret_cast<Index*>(index);
   int64_t nResultLimit, nStart;
-  SpatialIndex::Region* r = 0;
 
   nResultLimit = idx->GetResultSetLimit();
   nStart = idx->GetResultSetOffset();
 
-	IdVisitor* visitor = new IdVisitor;
+	IdVisitor visitor;
 
 	try {
-    r = new SpatialIndex::Region(pdMin, pdMax, nDimension);
+        SpatialIndex::Region r(pdMin, pdMax, nDimension);
 
 		idx->index().nearestNeighborQuery(	static_cast<uint32_t>(*nResults),
-											*r,
-											*visitor);
+											r,
+											visitor);
 
-		Page_ResultSet_Ids(*visitor, ids, nStart, nResultLimit, nResults);
-
-    delete r;
-		delete visitor;
-
+		Page_ResultSet_Ids(visitor, ids, nStart, nResultLimit, nResults);
 	} catch (Tools::Exception& e)
 	{
 		Error_PushError(RT_Failure,
 						e.what().c_str(),
 						"Index_NearestNeighbors_id");
-    delete r;
-		delete visitor;
 		return RT_Failure;
 	} catch (std::exception const& e)
 	{
 		Error_PushError(RT_Failure,
 						e.what(),
 						"Index_NearestNeighbors_id");
-    delete r;
-		delete visitor;
 		return RT_Failure;
 	} catch (...) {
 		Error_PushError(RT_Failure,
 						"Unknown Error",
 						"Index_NearestNeighbors_id");
-    delete r;
-		delete visitor;
 		return RT_Failure;
 	}
 	return RT_None;

@@ -161,12 +161,12 @@ namespace SpatialIndex
 			class NNComparator : public INearestNeighborComparator
 			{
 			public:
-				double getMinimumDistance(const IShape& query, const IShape& entry) 
+				double getMinimumDistance(const IShape& query, const IShape& entry)
 				{
 					return query.getMinimumDistance(entry);
 				}
 
-				double getMinimumDistance(const IShape& query, const IData& data) 
+				double getMinimumDistance(const IShape& query, const IData& data)
 				{
 					IShape* pS;
 					data.getShape(&pS);

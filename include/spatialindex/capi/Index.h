@@ -74,6 +74,8 @@ private:
     SpatialIndex::ISpatialIndex* m_rtree;
 
     Tools::PropertySet m_properties;
+    int64_t m_resultSetLimit;
+    int64_t m_resultSetOffset;
 
     void Setup();
     SpatialIndex::IStorageManager* CreateStorage();
