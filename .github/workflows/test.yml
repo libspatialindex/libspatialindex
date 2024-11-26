@@ -1,4 +1,3 @@
-
 name: Test
 on: [push, pull_request]
 
@@ -64,6 +63,12 @@ jobs:
           ninja
        working-directory: ./build
 
+     - name: Memory analysis
+       uses: Ximaz/valgrind-action@v1.2.0
+       with:
+         binary_path: "./build/bin/*"
+         verbose: true
+
      - name: Test
        shell: bash -l {0}
        run: |
@@ -121,4 +126,3 @@ jobs:
          draft: true
          files: |
           release/spatialindex-src-*
-
