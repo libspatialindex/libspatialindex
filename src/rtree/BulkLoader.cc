@@ -91,15 +91,7 @@ void ExternalSorter::Record::loadFromFile(Tools::TemporaryFile& f)
 	m_id = static_cast<id_type>(f.readUInt64());
 	uint32_t dim = f.readUInt32();
 	m_s = f.readUInt32();
-
-	if (dim != m_r.m_dimension)
-	{
-		delete[] m_r.m_pLow;
-		delete[] m_r.m_pHigh;
-		m_r.m_dimension = dim;
-		m_r.m_pLow = new double[dim];
-		m_r.m_pHigh = new double[dim];
-	}
+	m_r.makeDimension(dim);
 
 	for (uint32_t i = 0; i < m_r.m_dimension; ++i)
 	{
