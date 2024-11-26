@@ -36,6 +36,30 @@ SpatialIndex::ISpatialIndex* Index::CreateIndex()
 
 	Tools::Variant var;
 
+	// Cache the result set limit
+    var = m_properties.getProperty("ResultSetLimit");
+    if (var.m_varType != Tools::VT_EMPTY)
+    {
+        if (var.m_varType != Tools::VT_LONGLONG)
+            throw std::runtime_error("Index::ResultSetLimit: "
+                                     "Property ResultSetLimit must be Tools::VT_LONGLONG");
+        m_resultSetLimit = var.m_val.llVal;
+    }
+    else
+        m_resultSetLimit = 0;
+
+    // Cache the result set offset
+    var = m_properties.getProperty("ResultSetOffset");
+    if (var.m_varType != Tools::VT_EMPTY)
+    {
+        if (var.m_varType != Tools::VT_LONGLONG)
+            throw std::runtime_error("Index::ResultSetOffset: "
+                                     "Property ResultSetOffset must be Tools::VT_LONGLONG");
+        m_resultSetOffset = var.m_val.llVal;
+    }
+    else
+        m_resultSetOffset = 0;
+
 	if (GetIndexType() == RT_RTree) {
 
 		try {
@@ -95,7 +119,7 @@ Index::Index(	const Tools::PropertySet& poProperties,
 								uint32_t *nDimension,
 								const uint8_t **pData,
 								size_t *nDataLength))
-: m_properties(poProperties), m_resultSetLimit(0), m_resultSetOffset(0)
+: m_properties(poProperties)
 {
 	using namespace SpatialIndex;
 
@@ -130,26 +154,6 @@ Index::Index(	const Tools::PropertySet& poProperties,
 
 		m_IdxIdentifier = var.m_val.llVal;
 	}
-
-	// Cache the result set limit
-    var = m_properties.getProperty("ResultSetLimit");
-    if (var.m_varType != Tools::VT_EMPTY)
-    {
-        if (var.m_varType != Tools::VT_LONGLONG)
-            throw std::runtime_error("Index::ResultSetLimit: "
-                                     "Property ResultSetLimit must be Tools::VT_LONGLONG");
-        m_resultSetLimit = var.m_val.llVal;
-    }
-
-    // Cache the result set offset
-    var = m_properties.getProperty("ResultSetOffset");
-    if (var.m_varType != Tools::VT_EMPTY)
-    {
-        if (var.m_varType != Tools::VT_LONGLONG)
-            throw std::runtime_error("Index::ResultSetOffset: "
-                                     "Property ResultSetOffset must be Tools::VT_LONGLONG");
-        m_resultSetOffset = var.m_val.llVal;
-    }
 
 	m_rtree = RTree::createAndBulkLoadNewRTree(	  SpatialIndex::RTree::BLM_STR,
 												  ds,
