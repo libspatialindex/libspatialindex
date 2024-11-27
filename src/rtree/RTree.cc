@@ -566,28 +566,28 @@ void SpatialIndex::RTree::RTree::nearestNeighborQuery(uint32_t k, const IShape& 
 {
 	if (query.getDimension() != m_dimension) throw Tools::IllegalArgumentException("nearestNeighborQuery: Shape has the wrong number of dimensions.");
 
-	auto ascending = [](const NNEntry* lhs, const NNEntry* rhs) { return lhs->m_minDist > rhs->m_minDist;  };
-	std::priority_queue<NNEntry*, std::vector<NNEntry*>, decltype(ascending)> queue(ascending);
+	auto ascending = [](const NNEntry& lhs, const NNEntry& rhs) { return lhs.m_minDist > rhs.m_minDist;  };
+	std::priority_queue<NNEntry, std::vector<NNEntry>, decltype(ascending)> queue(ascending);
 
-	queue.push(new NNEntry(m_rootID, nullptr, 0.0));
+	queue.push(NNEntry(m_rootID, nullptr, 0.0));
 
 	uint32_t count = 0;
 	double knearest = 0.0;
 
 	while (! queue.empty())
 	{
-		NNEntry* pFirst = queue.top();
+		NNEntry pFirst = queue.top();
 
 		// report all nearest neighbors with equal greatest distances.
 		// (neighbors can be more than k, if many happen to have the same greatest distance).
-		if (count >= k && pFirst->m_minDist > knearest)	break;
+		if (count >= k && pFirst.m_minDist > knearest)	break;
 
 		queue.pop();
 
-		if (pFirst->m_pEntry == nullptr)
+		if (pFirst.m_pEntry == nullptr)
 		{
 			// n is a leaf or an index.
-			NodePtr n = readNode(pFirst->m_id);
+			NodePtr n = readNode(pFirst.m_id);
 			v.visitNode(*n);
 
 			for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
@@ -597,31 +597,28 @@ void SpatialIndex::RTree::RTree::nearestNeighborQuery(uint32_t k, const IShape& 
 					Data* e = new Data(n->m_pDataLength[cChild], n->m_pData[cChild], *(n->m_ptrMBR[cChild]), n->m_pIdentifier[cChild]);
 					// we need to compare the query with the actual data entry here, so we call the
 					// appropriate getMinimumDistance method of NearestNeighborComparator.
-					queue.push(new NNEntry(n->m_pIdentifier[cChild], e, nnc.getMinimumDistance(query, *e)));
+					queue.push(NNEntry(n->m_pIdentifier[cChild], e, nnc.getMinimumDistance(query, *e)));
 				}
 				else
 				{
-					queue.push(new NNEntry(n->m_pIdentifier[cChild], nullptr, nnc.getMinimumDistance(query, *(n->m_ptrMBR[cChild]))));
+					queue.push(NNEntry(n->m_pIdentifier[cChild], nullptr, nnc.getMinimumDistance(query, *(n->m_ptrMBR[cChild]))));
 				}
 			}
 		}
 		else
 		{
-			v.visitData(*(static_cast<IData*>(pFirst->m_pEntry)));
+			v.visitData(*(static_cast<IData*>(pFirst.m_pEntry)));
 			++(m_stats.m_u64QueryResults);
 			++count;
-			knearest = pFirst->m_minDist;
-			delete pFirst->m_pEntry;
+			knearest = pFirst.m_minDist;
+			delete pFirst.m_pEntry;
 		}
-
-		delete pFirst;
 	}
 
 	while (! queue.empty())
 	{
-		NNEntry* e = queue.top(); queue.pop();
-		if (e->m_pEntry != nullptr) delete e->m_pEntry;
-		delete e;
+		NNEntry e = queue.top(); queue.pop();
+		if (e.m_pEntry != nullptr) delete e.m_pEntry;
 	}
 }
 

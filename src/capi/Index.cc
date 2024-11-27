@@ -36,6 +36,30 @@ SpatialIndex::ISpatialIndex* Index::CreateIndex()
 
 	Tools::Variant var;
 
+	// Cache the result set limit
+    var = m_properties.getProperty("ResultSetLimit");
+    if (var.m_varType != Tools::VT_EMPTY)
+    {
+        if (var.m_varType != Tools::VT_LONGLONG)
+            throw std::runtime_error("Index::ResultSetLimit: "
+                                     "Property ResultSetLimit must be Tools::VT_LONGLONG");
+        m_resultSetLimit = var.m_val.llVal;
+    }
+    else
+        m_resultSetLimit = 0;
+
+    // Cache the result set offset
+    var = m_properties.getProperty("ResultSetOffset");
+    if (var.m_varType != Tools::VT_EMPTY)
+    {
+        if (var.m_varType != Tools::VT_LONGLONG)
+            throw std::runtime_error("Index::ResultSetOffset: "
+                                     "Property ResultSetOffset must be Tools::VT_LONGLONG");
+        m_resultSetOffset = var.m_val.llVal;
+    }
+    else
+        m_resultSetOffset = 0;
+
 	if (GetIndexType() == RT_RTree) {
 
 		try {
@@ -326,19 +350,7 @@ void Index::SetIndexVariant(RTIndexVariant v)
 
 int64_t Index::GetResultSetOffset()
 {
-    Tools::Variant var;
-    var = m_properties.getProperty("ResultSetOffset");
-
-    if (var.m_varType != Tools::VT_EMPTY)
-    {
-        if (var.m_varType != Tools::VT_LONGLONG)
-            throw std::runtime_error("Index::ResultSetOffset: "
-                                     "Property ResultSetOffset must be Tools::VT_LONGLONG");
-        return var.m_val.llVal;
-    }
-
-    // if we didn't get anything, we're returning 0 as there is no limit
-    return 0;
+    return m_resultSetOffset;
 }
 
 void Index::SetResultSetOffset(int64_t v)
@@ -347,24 +359,13 @@ void Index::SetResultSetOffset(int64_t v)
     var.m_varType = Tools::VT_LONGLONG;
     var.m_val.llVal = v;
     m_properties.setProperty("ResultSetOffset", var);
+    m_resultSetOffset = v;
 }
 
 
 int64_t Index::GetResultSetLimit()
 {
-    Tools::Variant var;
-    var = m_properties.getProperty("ResultSetLimit");
-
-    if (var.m_varType != Tools::VT_EMPTY)
-    {
-        if (var.m_varType != Tools::VT_LONGLONG)
-            throw std::runtime_error("Index::ResultSetLimit: "
-                                     "Property ResultSetLimit must be Tools::VT_LONGLONG");
-        return var.m_val.llVal;
-    }
-
-    // if we didn't get anything, we're returning 0 as there is no limit
-    return 0;
+    return m_resultSetLimit;
 }
 
 void Index::SetResultSetLimit(int64_t v)
@@ -373,6 +374,7 @@ void Index::SetResultSetLimit(int64_t v)
     var.m_varType = Tools::VT_LONGLONG;
     var.m_val.llVal = v;
     m_properties.setProperty("ResultSetLimit", var);
+    m_resultSetLimit = v;
 }
 
 void Index::flush()
