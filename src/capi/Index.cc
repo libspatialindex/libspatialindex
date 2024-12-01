@@ -257,6 +257,8 @@ void Index::Setup()
 	m_buffer = 0;
 	m_storage = 0;
 	m_rtree = 0;
+	m_resultSetLimit = 0;
+	m_resultSetOffset = 0;
 }
 
 RTIndexType Index::GetIndexType()
