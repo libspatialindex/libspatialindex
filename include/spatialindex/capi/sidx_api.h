@@ -43,6 +43,8 @@ SIDX_DLL IndexH Index_CreateWithStream( IndexPropertyH properties,
 										int (*readNext)(int64_t *id, double **pMin, double **pMax, uint32_t *nDimension, const uint8_t **pData, size_t *nDataLength)
 									   );
 
+SIDX_DLL IndexH Index_CreateWithArray(IndexPropertyH properties, uint64_t n, uint32_t dimension, uint64_t i_stri, uint64_t d_i_stri, uint64_t d_j_stri, int64_t *ids, double *mins, double *maxs);
+
 SIDX_DLL void Index_Destroy(IndexH index);
 SIDX_DLL IndexPropertyH Index_GetProperties(IndexH index);
 
