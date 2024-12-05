@@ -562,12 +562,26 @@ void SpatialIndex::RTree::RTree::pointLocationQuery(const Point& query, IVisitor
 	rangeQuery(IntersectionQuery, r, v);
 }
 
+template <class T, class S, class C>
+    S& Container(std::priority_queue<T, S, C>& q) {
+        struct HackedQueue : private std::priority_queue<T, S, C> {
+            static S& Container(std::priority_queue<T, S, C>& q) {
+                return q.*&HackedQueue::c;
+            }
+        };
+    return HackedQueue::Container(q);
+}
+
 void SpatialIndex::RTree::RTree::nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v, INearestNeighborComparator& nnc)
 {
 	if (query.getDimension() != m_dimension) throw Tools::IllegalArgumentException("nearestNeighborQuery: Shape has the wrong number of dimensions.");
 
 	auto ascending = [](const NNEntry& lhs, const NNEntry& rhs) { return lhs.m_minDist > rhs.m_minDist;  };
 	std::priority_queue<NNEntry, std::vector<NNEntry>, decltype(ascending)> queue(ascending);
+
+	// Extract the container from the queue
+	std::vector<NNEntry>& queue_c = Container(queue);
+	queue_c.reserve(64);
 
 	queue.push(NNEntry(m_rootID, nullptr, 0.0));
 
@@ -615,11 +629,9 @@ void SpatialIndex::RTree::RTree::nearestNeighborQuery(uint32_t k, const IShape& 
 		}
 	}
 
-	while (! queue.empty())
-	{
-		NNEntry e = queue.top(); queue.pop();
-		if (e.m_pEntry != nullptr) delete e.m_pEntry;
-	}
+	for (auto& e : queue_c)
+		if (e.m_pEntry)
+			delete e.m_pEntry;
 }
 
 void SpatialIndex::RTree::RTree::nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v)
