@@ -223,6 +223,72 @@ SIDX_C_DLL IndexH Index_CreateWithStream( IndexPropertyH hProp,
 	return NULL;
 }
 
+SIDX_DLL IndexH Index_CreateWithArray(IndexPropertyH hProp, uint64_t n, uint32_t dimension, uint64_t i_stri, uint64_t d_i_stri, uint64_t d_j_stri, int64_t *ids, double *mins, double *maxs)
+{
+    using namespace SpatialIndex;
+
+    VALIDATE_POINTER1(hProp, "Index_CreateWithArray", NULL);
+	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
+
+	struct ArrayStream : IDataStream
+	{
+	    ArrayStream(uint64_t n_, uint32_t d_, uint64_t i_stri_, uint64_t d_i_stri_,
+				    uint64_t d_j_stri_, int64_t* ids_, double* mins_, double* maxs_)
+		 : d(d_), i(0), n(n_), i_stri(i_stri_), d_i_stri(d_i_stri_),
+		   d_j_stri(d_j_stri_), ids(ids_), tmp(new double[2*d_]), mins(mins_),
+		   maxs(maxs_)
+		{}
+
+		~ArrayStream() { delete[] tmp; }
+
+	    IData* getNext() override
+	    {
+			if (i >= n)
+			    return nullptr;
+
+			for (uint32_t j = 0; j < d; ++j)
+			{
+		        tmp[j] = mins[i*d_i_stri + j*d_j_stri];
+				tmp[j + d] = maxs[i*d_i_stri + j*d_j_stri];
+			}
+			Region r(tmp, tmp + d, d);
+
+			return new RTree::Data(0, nullptr, r, ids[i++*i_stri]);
+	    }
+
+		bool hasNext() override { return i < n; }
+		void rewind() override {}
+		uint32_t size() override { return 0; }
+
+		uint32_t d;
+		uint64_t i, n, i_stri, d_i_stri, d_j_stri;
+		int64_t* ids;
+		double* tmp, *mins, *maxs;
+	};
+
+	ArrayStream* bs = new ArrayStream(n, dimension, i_stri, d_i_stri, d_j_stri,
+	                                  ids, mins, maxs);
+
+	try {
+		return (IndexH) new Index(*prop, std::unique_ptr<IDataStream>(bs));
+	} catch (Tools::Exception& e)
+	{
+		Error_PushError(RT_Failure,
+						e.what().c_str(),
+						"Index_CreateWithArray");
+	} catch (std::exception const& e)
+	{
+		Error_PushError(RT_Failure,
+						e.what(),
+						"Index_CreateWithArray");
+	} catch (...) {
+		Error_PushError(RT_Failure,
+						"Unknown Error",
+						"Index_CreateWithArray");
+	}
+	return NULL;
+}
+
 SIDX_C_DLL void Index_Destroy(IndexH index)
 {
 	VALIDATE_POINTER0(index, "Index_Destroy");

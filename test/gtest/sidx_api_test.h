@@ -140,4 +140,37 @@ TEST_F(SidxApiRTreeTest, contains_count) {
     EXPECT_EQ(1, nResults);
 }
 
+
+class SidxApiBulkRTreeTest : public testing::Test {
+  protected:
+  void SetUp() override {
+    IndexPropertyH props = IndexProperty_Create();
+    IndexProperty_SetDimension(props, 3);
+    IndexProperty_SetIndexType(props, RT_RTree);
+    IndexProperty_SetIndexStorage(props, RT_Memory);
+    struct { int64_t i; double p[3]; } ents[] = {
+      { 10, {-1, -1, -1}},
+      { 11, {5, 5, 5}}
+    };
+    uint64_t i_stri = &ents[1].i - &ents[0].i;
+    uint64_t d_i_stri = &ents[1].p[0] - &ents[0].p[0];
+    uint64_t d_j_stri = &ents[0].p[1] - &ents[0].p[0];
+    idx = Index_CreateWithArray(props, 2, 3, i_stri, d_i_stri, d_j_stri,
+                                &ents[0].i, ents[0].p, ents[0].p);
+    IndexProperty_Destroy(props);
+  }
+
+  void TearDown() override {
+    Index_Destroy(idx);
+  }
+
+  IndexH idx;
+};
+
+TEST_F(SidxApiBulkRTreeTest, bulk_intersects_count) {
+  uint64_t nResults = 42;
+  double min[] = {-100, -100, -100}, max[] = {100, 100, 100};
+  Index_Intersects_count(idx, min, max, 3, &nResults);
+  EXPECT_EQ(2, nResults);
+}
 #endif // SIDX_API_TEST_H

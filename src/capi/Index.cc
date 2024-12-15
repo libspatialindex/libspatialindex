@@ -119,6 +119,11 @@ Index::Index(	const Tools::PropertySet& poProperties,
 								uint32_t *nDimension,
 								const uint8_t **pData,
 								size_t *nDataLength))
+: Index(poProperties, std::unique_ptr<DataStream>(new DataStream(readNext)))
+{}
+
+Index::Index(const Tools::PropertySet& poProperties,
+             std::unique_ptr<SpatialIndex::IDataStream> ds)
 : m_properties(poProperties)
 {
 	using namespace SpatialIndex;
@@ -128,7 +133,6 @@ Index::Index(	const Tools::PropertySet& poProperties,
 	m_storage = CreateStorage();
 	m_buffer = CreateIndexBuffer(*m_storage);
 
-	DataStream ds(readNext);
 	SpatialIndex::id_type m_IdxIdentifier;
 
 	// For memory storage ensure we do not write any files to disk during
@@ -156,7 +160,7 @@ Index::Index(	const Tools::PropertySet& poProperties,
 	}
 
 	m_rtree = RTree::createAndBulkLoadNewRTree(	  SpatialIndex::RTree::BLM_STR,
-												  ds,
+												  *ds,
 												  *m_buffer,
 												  m_properties,
 												  m_IdxIdentifier);

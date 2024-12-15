@@ -30,12 +30,14 @@
 
 
 #include "sidx_export.h"
+#include <memory>
 
 class SIDX_DLL Index
 {
 
 public:
     Index(const Tools::PropertySet& poProperties);
+    Index(const Tools::PropertySet& poProperties, std::unique_ptr<SpatialIndex::IDataStream> stream);
     Index(const Tools::PropertySet& poProperties, int (*readNext)(SpatialIndex::id_type *id, double **pMin, double **pMax, uint32_t *nDimension, const uint8_t **pData, size_t* nDataLength));
     ~Index();
 
