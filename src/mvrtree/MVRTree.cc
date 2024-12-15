@@ -328,16 +328,16 @@ void SpatialIndex::MVRTree::MVRTree::pointLocationQuery(const Point& query, IVis
 	rangeQuery(IntersectionQuery, r, v);
 }
 
-void SpatialIndex::MVRTree::MVRTree::nearestNeighborQuery(uint32_t, const IShape&, IVisitor&, INearestNeighborComparator&)
+double SpatialIndex::MVRTree::MVRTree::nearestNeighborQuery(uint32_t, const IShape&, IVisitor&, INearestNeighborComparator&)
 {
 	throw Tools::IllegalStateException("nearestNeighborQuery: not implemented yet.");
 }
 
-void SpatialIndex::MVRTree::MVRTree::nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v)
+double SpatialIndex::MVRTree::MVRTree::nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v)
 {
 	if (query.getDimension() != m_dimension) throw Tools::IllegalArgumentException("nearestNeighborQuery: Shape has the wrong number of dimensions.");
 	NNComparator nnc;
-	nearestNeighborQuery(k, query, v, nnc);
+	return nearestNeighborQuery(k, query, v, nnc);
 }
 
 void SpatialIndex::MVRTree::MVRTree::selfJoinQuery(const IShape&, IVisitor&)
