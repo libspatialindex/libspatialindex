@@ -1653,6 +1653,8 @@ SIDX_C_DLL RTError Index_NearestNeighbors_id_v(IndexH index,
     try {
        for (uint64_t i = 0; i < n; ++i)
        {
+            double max_dist = dists ? dists[i] : 0.0;
+
             // Extract the bounding box
             for (uint64_t j = 0; j < d; ++j)
             {
@@ -1663,7 +1665,7 @@ SIDX_C_DLL RTError Index_NearestNeighbors_id_v(IndexH index,
             // Visit
             SpatialIndex::Region r(tmp.get(), tmp.get() + d, d);
             visitor.reset();
-            double dist = idx.nearestNeighborQuery(static_cast<uint32_t>(abs(knn)), r, visitor);
+            max_dist = idx.nearestNeighborQuery(static_cast<uint32_t>(abs(knn)), r, visitor, max_dist);
 
             uint64_t nrc = visitor.GetResultCount();
             if (knn < 0)
@@ -1672,7 +1674,7 @@ SIDX_C_DLL RTError Index_NearestNeighbors_id_v(IndexH index,
             if (cnts)
                 cnts[i] = nrc;
             if (dists)
-                dists[i] = dist;
+                dists[i] = max_dist;
 
             // Ensure we have enough space for the results
             if (k + nrc > idsz)

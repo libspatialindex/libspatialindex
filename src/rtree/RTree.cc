@@ -572,7 +572,7 @@ template <class T, class S, class C>
     return HackedQueue::Container(q);
 }
 
-double SpatialIndex::RTree::RTree::nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v, INearestNeighborComparator& nnc)
+double SpatialIndex::RTree::RTree::nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v, INearestNeighborComparator& nnc, double max_dist)
 {
     if (query.getDimension() != m_dimension) throw Tools::IllegalArgumentException("nearestNeighborQuery: Shape has the wrong number of dimensions.");
 
@@ -591,6 +591,8 @@ double SpatialIndex::RTree::RTree::nearestNeighborQuery(uint32_t k, const IShape
     while (! queue.empty())
     {
         NNEntry pFirst = queue.top();
+
+        if (max_dist && pFirst.m_minDist > max_dist) break;
 
         // report all nearest neighbors with equal greatest distances.
         // (neighbors can be more than k, if many happen to have the same greatest distance).
@@ -636,11 +638,11 @@ double SpatialIndex::RTree::RTree::nearestNeighborQuery(uint32_t k, const IShape
     return knearest;
 }
 
-double SpatialIndex::RTree::RTree::nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v)
+double SpatialIndex::RTree::RTree::nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v, double max_dist)
 {
 	if (query.getDimension() != m_dimension) throw Tools::IllegalArgumentException("nearestNeighborQuery: Shape has the wrong number of dimensions.");
 	NNComparator nnc;
-	return nearestNeighborQuery(k, query, v, nnc);
+	return nearestNeighborQuery(k, query, v, nnc, max_dist);
 }
 
 
