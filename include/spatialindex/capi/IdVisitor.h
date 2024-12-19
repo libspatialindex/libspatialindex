@@ -42,8 +42,9 @@ public:
     ~IdVisitor();
 
     uint64_t GetResultCount() const { return nResults; }
-    std::vector<uint64_t>& GetResults()  { return m_vector; }
-    
+    std::vector<uint64_t>& GetResults() { return m_vector; }
+    void reset() { nResults = 0; m_vector.clear(); }
+
     void visitNode(const SpatialIndex::INode& n);
     void visitData(const SpatialIndex::IData& d);
     void visitData(std::vector<const SpatialIndex::IData*>& v);

@@ -74,8 +74,8 @@ namespace SpatialIndex
 			virtual void containsWhatQuery(const IShape& query, IVisitor& v) ;
 			virtual void intersectsWithQuery(const IShape& query, IVisitor& v) ;
 			virtual void pointLocationQuery(const Point& query, IVisitor& v) ;
-			virtual void nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v, INearestNeighborComparator&);
-			virtual void nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v);
+			virtual double nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v, INearestNeighborComparator&, double max_dist=0.0);
+			virtual double nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v, double max_dist=0.0);
 			virtual void selfJoinQuery(const IShape& s, IVisitor& v) ;
 			virtual void queryStrategy(IQueryStrategy& qs) ;
 			virtual void getIndexProperties(Tools::PropertySet& out) const ;

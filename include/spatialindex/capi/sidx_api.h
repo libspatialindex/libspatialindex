@@ -167,6 +167,18 @@ SIDX_DLL RTError Index_Intersects_id(	IndexH index,
 										int64_t** items,
 										uint64_t* nResults);
 
+SIDX_C_DLL RTError Index_Intersects_id_v(IndexH index,
+                                         int64_t n,
+                                         uint32_t d,
+                                         uint64_t idsz,
+                                         uint64_t d_i_stri,
+                                         uint64_t d_j_stri,
+                                         const double* mins,
+                                         const double* maxs,
+                                         int64_t* ids,
+                                         uint64_t* cnts,
+                                         int64_t* nr);
+
 SIDX_C_DLL RTError Index_Contains_id(IndexH index,
                                      double *pdMin,
                                      double *pdMax,
@@ -257,6 +269,20 @@ SIDX_DLL RTError Index_NearestNeighbors_id( IndexH index,
 											uint32_t nDimension,
 											int64_t** items,
 											uint64_t* nResults);
+
+SIDX_C_DLL RTError Index_NearestNeighbors_id_v(IndexH index,
+                                               int64_t knn,
+                                               int64_t n,
+                                               uint32_t d,
+                                               uint64_t idsz,
+                                               uint64_t d_i_stri,
+                                               uint64_t d_j_stri,
+                                               const double* mins,
+                                               const double* maxs,
+                                               int64_t* ids,
+                                               uint64_t* cnts,
+                                               double* dists,
+                                               int64_t* nr);
 
 SIDX_DLL RTError Index_Intersects_internal(	IndexH index,
 											double* pdMin,

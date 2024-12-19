@@ -30,6 +30,7 @@
 #include <limits>
 #include <cassert>
 #include <cstring>
+#include <memory>
 #include <spatialindex/capi/sidx_api.h>
 #include <spatialindex/capi/sidx_impl.h>
 
@@ -1051,6 +1052,72 @@ SIDX_C_DLL RTError Index_Intersects_id(	  IndexH index,
 	return RT_None;
 }
 
+SIDX_C_DLL RTError Index_Intersects_id_v(IndexH index,
+                                         int64_t n,
+                                         uint32_t d,
+                                         uint64_t idsz,
+                                         uint64_t d_i_stri,
+                                         uint64_t d_j_stri,
+                                         const double* mins,
+                                         const double* maxs,
+                                         int64_t* ids,
+                                         uint64_t* cnts,
+                                         int64_t* nr)
+{
+    VALIDATE_POINTER1(index, "Index_Intersects_id_v", RT_Failure);
+    auto& idx = reinterpret_cast<Index*>(index)->index();
+    IdVisitor visitor;
+    std::unique_ptr<double[]> tmp = std::unique_ptr<double[]>(new double[2*d]);
+    uint64_t k = 0;
+
+    try {
+       for (uint64_t i = 0; i < n; ++i)
+       {
+            // Extract the bounding box
+            for (uint64_t j = 0; j < d; ++j)
+            {
+               tmp[j] = mins[i*d_i_stri + j*d_j_stri];
+               tmp[j + d] = maxs[i*d_i_stri + j*d_j_stri];
+            }
+
+            // Visit
+            SpatialIndex::Region r(tmp.get(), tmp.get() + d, d);
+            visitor.reset();
+            idx.intersectsWithQuery(r, visitor);
+
+            uint64_t nrc = visitor.GetResultCount();
+            if (cnts)
+                cnts[i] = nrc;
+
+            // Ensure we have enough space for the results
+            if (k + nrc > idsz)
+                return RT_None;
+
+            *nr = i + 1;
+            for (uint64_t idx : visitor.GetResults())
+                ids[k++] = idx;
+       }
+    } catch (Tools::Exception& e)
+    {
+        Error_PushError(RT_Failure,
+                        e.what().c_str(),
+                        "Index_Intersects_id_v");
+        return RT_Failure;
+    } catch (std::exception const& e)
+    {
+        Error_PushError(RT_Failure,
+                        e.what(),
+                        "Index_Intersects_id_v");
+        return RT_Failure;
+    } catch (...) {
+        Error_PushError(RT_Failure,
+                        "Unknown Error",
+                        "Index_Intersects_id_v");
+        return RT_Failure;
+    }
+    return RT_None;
+}
+
 SIDX_C_DLL RTError Index_TPIntersects_count(	  IndexH index,
                     double* pdMin,
                     double* pdMax,
@@ -1561,6 +1628,83 @@ SIDX_C_DLL RTError Index_NearestNeighbors_id(IndexH index,
 		return RT_Failure;
 	}
 	return RT_None;
+}
+
+SIDX_C_DLL RTError Index_NearestNeighbors_id_v(IndexH index,
+                                               int64_t knn,
+                                               int64_t n,
+                                               uint32_t d,
+                                               uint64_t idsz,
+                                               uint64_t d_i_stri,
+                                               uint64_t d_j_stri,
+                                               const double* mins,
+                                               const double* maxs,
+                                               int64_t* ids,
+                                               uint64_t* cnts,
+                                               double* dists,
+                                               int64_t* nr)
+{
+    VALIDATE_POINTER1(index, "Index_NearestNeighbors_id_v", RT_Failure);
+    auto& idx = reinterpret_cast<Index*>(index)->index();
+    IdVisitor visitor;
+    std::unique_ptr<double[]> tmp = std::unique_ptr<double[]>(new double[2*d]);
+    uint64_t k = 0;
+
+    try {
+       for (uint64_t i = 0; i < n; ++i)
+       {
+            double max_dist = dists ? dists[i] : 0.0;
+
+            // Extract the bounding box
+            for (uint64_t j = 0; j < d; ++j)
+            {
+               tmp[j] = mins[i*d_i_stri + j*d_j_stri];
+               tmp[j + d] = maxs[i*d_i_stri + j*d_j_stri];
+            }
+
+            // Visit
+            SpatialIndex::Region r(tmp.get(), tmp.get() + d, d);
+            visitor.reset();
+            max_dist = idx.nearestNeighborQuery(static_cast<uint32_t>(abs(knn)), r, visitor, max_dist);
+
+            uint64_t nrc = visitor.GetResultCount();
+            if (knn < 0)
+                nrc = std::min<uint64_t>(nrc, -knn);
+
+            if (cnts)
+                cnts[i] = nrc;
+            if (dists)
+                dists[i] = max_dist;
+
+            // Ensure we have enough space for the results
+            if (k + nrc > idsz)
+                return RT_None;
+
+            *nr = i + 1;
+            auto& res = visitor.GetResults();
+            for (uint64_t l = 0; l < nrc; ++l)
+                ids[k++] = res[l];
+
+       }
+    } catch (Tools::Exception& e)
+    {
+        Error_PushError(RT_Failure,
+                        e.what().c_str(),
+                        "Index_NearestNeighbors_id_v");
+        return RT_Failure;
+    } catch (std::exception const& e)
+    {
+        Error_PushError(RT_Failure,
+                        e.what(),
+                        "Index_NearestNeighbors_id_v");
+        return RT_Failure;
+    } catch (...) {
+        Error_PushError(RT_Failure,
+                        "Unknown Error",
+                        "Index_NearestNeighbors_id_v");
+        return RT_Failure;
+    }
+    return RT_None;
 }
 
 SIDX_C_DLL RTError Index_TPNearestNeighbors_obj(IndexH index,
