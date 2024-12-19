@@ -12,7 +12,7 @@ cmake_minimum_required(VERSION 3.13)
 
 project(spatialindex
   LANGUAGES CXX
-  VERSION "2.0.0"
+  VERSION "2.1.0"
   HOMEPAGE_URL "https://github.com/libspatialindex/libspatialindex"
 )
 
@@ -22,8 +22,8 @@ set(SIDX_VERSION_MINOR "${PROJECT_VERSION_MINOR}")
 set(SIDX_VERSION_PATCH "${PROJECT_VERSION_PATCH}")
 set(SIDX_VERSION_STRING "${PROJECT_VERSION}")
 
-set(SIDX_LIB_VERSION "7.0.0")
-set(SIDX_LIB_SOVERSION "7")
+set(SIDX_LIB_VERSION "8.0.0")
+set(SIDX_LIB_SOVERSION "8")
 
 include(GNUInstallDirs)
 

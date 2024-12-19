@@ -8,7 +8,7 @@
 :Author: Marios Hadjieleftheriou <mhadji@gmail.com>
 :Contact: Developer mailing list https://groups.io/g/libspatialindex/
 :Revision: 2.0
-:Date: 2024-05-17
+:Date: 2024-12-19
 
 See http://libspatialindex.org for full documentation.
 

@@ -29,7 +29,7 @@
 
 #ifndef SIDX_VERSION_MAJOR
 #define SIDX_VERSION_MAJOR    2
-#define SIDX_VERSION_MINOR    0
+#define SIDX_VERSION_MINOR    1
 #define SIDX_VERSION_REV      0
 #define SIDX_VERSION_BUILD    0
 #endif
@@ -39,10 +39,10 @@
 #endif
 
 #ifndef SIDX_RELEASE_DATE
-#define SIDX_RELEASE_DATE     20240517
+#define SIDX_RELEASE_DATE     20241219
 #endif
 
 #ifndef SIDX_RELEASE_NAME
-#define SIDX_RELEASE_NAME     "2.0.0"
+#define SIDX_RELEASE_NAME     "2.1.0"
 #endif
 

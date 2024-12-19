@@ -2,8 +2,8 @@
 
 :Author: Marios Hadjieleftheriou <mhadji@gmail.com>
 :Contact: Developer mailing list https://groups.io/g/libspatialindex/
-:Revision: 2.0.0
-:Date: 2024-05-28
+:Revision: 2.1.0
+:Date: 2024-12-19
 
 
 The entire website is available as a single PDF at http://libspatialindex.org/_/downloads/en/latest/pdf/
