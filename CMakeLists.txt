@@ -41,6 +41,7 @@ message(STATUS
 include(CTest)
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(BUILD_TESTING "Enables integrated test suites" OFF)
+option(SYSTEM_GTEST "Use an external/system copy of GoogleTest" OFF)
 
 if(DEFINED SIDX_BUILD_TESTS)
   message(DEPRECATION "SIDX_BUILD_TESTS has been replaced with BUILD_TESTING")
