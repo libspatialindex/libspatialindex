@@ -1070,6 +1070,9 @@ SIDX_C_DLL RTError Index_Intersects_id_v(IndexH index,
     std::unique_ptr<double[]> tmp = std::unique_ptr<double[]>(new double[2*d]);
     uint64_t k = 0;
 
+    // Clear the result count
+    *nr = 0;
+
     try {
        for (uint64_t i = 0; i < n; ++i)
        {
@@ -1649,6 +1652,9 @@ SIDX_C_DLL RTError Index_NearestNeighbors_id_v(IndexH index,
     IdVisitor visitor;
     std::unique_ptr<double[]> tmp = std::unique_ptr<double[]>(new double[2*d]);
     uint64_t k = 0;
+
+    // Clear the result count
+    *nr = 0;
 
     try {
        for (uint64_t i = 0; i < n; ++i)
