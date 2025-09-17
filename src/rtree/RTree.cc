@@ -590,13 +590,13 @@ double SpatialIndex::RTree::RTree::nearestNeighborQuery(uint32_t k, const IShape
             ++(m_stats.m_u64QueryResults);
             ++count;
             knearest = pFirst.m_minDist;
-            queue.pop();
+            queue.pop();  // Done with pFirst.
         }
         else
         {
             // n is a leaf or an index.
             NodePtr n = readNode(pFirst.m_id);
-            queue.pop();
+            queue.pop();  // Done with pFirst.
 
             v.visitNode(*n);
 
