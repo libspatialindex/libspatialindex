@@ -604,7 +604,7 @@ double SpatialIndex::RTree::RTree::nearestNeighborQuery(uint32_t k, const IShape
             {
                 if (n->m_level == 0)
                 {
-                    Data *e(new Data(n->m_pDataLength[cChild], n->m_pData[cChild], *(n->m_ptrMBR[cChild]), n->m_pIdentifier[cChild]));
+                    Data* e(new Data(n->m_pDataLength[cChild], n->m_pData[cChild], *(n->m_ptrMBR[cChild]), n->m_pIdentifier[cChild]));
                     // we need to compare the query with the actual data entry here, so we call the
                     // appropriate getMinimumDistance method of NearestNeighborComparator.
                     queue.push(NNEntry(n->m_pIdentifier[cChild], e, nnc.getMinimumDistance(query, e->m_region)));
