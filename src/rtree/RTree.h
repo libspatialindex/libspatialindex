@@ -156,8 +156,24 @@ namespace SpatialIndex
 				NNEntry(id_type id) : m_id(id), m_pEntry(nullptr), m_minDist(0) {}
 				NNEntry(id_type id, Data *e, double f) :
                     m_id(id), m_pEntry(e), m_minDist(f) {}
-				~NNEntry() = default;
+                NNEntry(NNEntry&& other)
+                {
+                    m_id = other.m_id;
+                    m_pEntry = other.m_pEntry;
+                    m_minDist = other.m_minDist;
+                    other.m_pEntry = nullptr;
+                }
+                NNEntry& operator=(NNEntry&& other)
+                {
+                    m_id = other.m_id;
+                    m_pEntry = other.m_pEntry;
+                    m_minDist = other.m_minDist;
+                    other.m_pEntry = nullptr;
+                    return *this;
 
+                }
+				~NNEntry()
+                { delete m_pEntry; }
 			}; // NNEntry
 
 			class NNComparator : public INearestNeighborComparator
