@@ -153,7 +153,9 @@ namespace SpatialIndex
 				Data* m_pEntry;
 				double m_minDist;
 
-				NNEntry(id_type id, Data* e, double f) : m_id(id), m_pEntry(e), m_minDist(f) {}
+				NNEntry(id_type id) : m_id(id), m_pEntry(nullptr), m_minDist(0) {}
+				NNEntry(id_type id, Data *e, double f) :
+                    m_id(id), m_pEntry(e), m_minDist(f) {}
 				~NNEntry() = default;
 
 			}; // NNEntry

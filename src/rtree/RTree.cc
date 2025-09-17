@@ -562,16 +562,6 @@ void SpatialIndex::RTree::RTree::pointLocationQuery(const Point& query, IVisitor
 	rangeQuery(IntersectionQuery, r, v);
 }
 
-template <class T, class S, class C>
-    S& Container(std::priority_queue<T, S, C>& q) {
-        struct HackedQueue : private std::priority_queue<T, S, C> {
-            static S& Container(std::priority_queue<T, S, C>& q) {
-                return q.*&HackedQueue::c;
-            }
-        };
-    return HackedQueue::Container(q);
-}
-
 double SpatialIndex::RTree::RTree::nearestNeighborQuery(uint32_t k, const IShape& query, IVisitor& v, INearestNeighborComparator& nnc, double max_dist)
 {
     if (query.getDimension() != m_dimension) throw Tools::IllegalArgumentException("nearestNeighborQuery: Shape has the wrong number of dimensions.");
@@ -579,18 +569,14 @@ double SpatialIndex::RTree::RTree::nearestNeighborQuery(uint32_t k, const IShape
     auto ascending = [](const NNEntry& lhs, const NNEntry& rhs) { return lhs.m_minDist > rhs.m_minDist;  };
     std::priority_queue<NNEntry, std::vector<NNEntry>, decltype(ascending)> queue(ascending);
 
-    // Extract the container from the queue
-    std::vector<NNEntry>& queue_c = Container(queue);
-    queue_c.reserve(64);
-
-    queue.push(NNEntry(m_rootID, nullptr, 0.0));
+    queue.push(NNEntry(m_rootID));
 
     uint32_t count = 0;
     double knearest = 0.0;
 
     while (! queue.empty())
     {
-        NNEntry pFirst = queue.top();
+        const NNEntry& pFirst = queue.top();
 
         if (max_dist && pFirst.m_minDist > max_dist) break;
 
@@ -598,19 +584,27 @@ double SpatialIndex::RTree::RTree::nearestNeighborQuery(uint32_t k, const IShape
         // (neighbors can be more than k, if many happen to have the same greatest distance).
         if (count >= k && pFirst.m_minDist > knearest) break;
 
-        queue.pop();
-
-        if (pFirst.m_pEntry == nullptr)
+        if (pFirst.m_pEntry)
+        {
+            v.visitData(*(static_cast<IData*>(pFirst.m_pEntry)));
+            ++(m_stats.m_u64QueryResults);
+            ++count;
+            knearest = pFirst.m_minDist;
+            queue.pop();
+        }
+        else
         {
             // n is a leaf or an index.
             NodePtr n = readNode(pFirst.m_id);
+            queue.pop();
+
             v.visitNode(*n);
 
             for (uint32_t cChild = 0; cChild < n->m_children; ++cChild)
             {
                 if (n->m_level == 0)
                 {
-                    Data* e = new Data(n->m_pDataLength[cChild], n->m_pData[cChild], *(n->m_ptrMBR[cChild]), n->m_pIdentifier[cChild]);
+                    Data *e(new Data(n->m_pDataLength[cChild], n->m_pData[cChild], *(n->m_ptrMBR[cChild]), n->m_pIdentifier[cChild]));
                     // we need to compare the query with the actual data entry here, so we call the
                     // appropriate getMinimumDistance method of NearestNeighborComparator.
                     queue.push(NNEntry(n->m_pIdentifier[cChild], e, nnc.getMinimumDistance(query, e->m_region)));
@@ -621,19 +615,7 @@ double SpatialIndex::RTree::RTree::nearestNeighborQuery(uint32_t k, const IShape
                 }
             }
         }
-        else
-        {
-            v.visitData(*(static_cast<IData*>(pFirst.m_pEntry)));
-            ++(m_stats.m_u64QueryResults);
-            ++count;
-            knearest = pFirst.m_minDist;
-            delete pFirst.m_pEntry;
-        }
     }
-
-    for (auto& e : queue_c)
-        if (e.m_pEntry)
-            delete e.m_pEntry;
 
     return knearest;
 }
