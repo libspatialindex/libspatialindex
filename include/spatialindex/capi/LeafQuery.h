@@ -32,22 +32,8 @@
 
 class LeafQueryResult;
 
-class SIDX_DLL LeafQuery : public SpatialIndex::IQueryStrategy
-{
-private:
-	std::queue<SpatialIndex::id_type> m_ids;
-	std::vector<LeafQueryResult> m_results;
-public:
 
-	LeafQuery();
-	~LeafQuery() { }
-	void getNextEntry(	const SpatialIndex::IEntry& entry, 
-						SpatialIndex::id_type& nextEntry, 
-						bool& hasNext);
-	std::vector<LeafQueryResult> const& GetResults() const {return m_results;}
-};
-
-class SIDX_DLL LeafQueryResult 
+class SIDX_DLL LeafQueryResult
 {
 private:
     std::vector<SpatialIndex::id_type> ids;
@@ -71,3 +57,19 @@ public:
     SpatialIndex::id_type getIdentifier() const {return m_id;}
     void setIdentifier(uint32_t v) {m_id = v;}
 };
+
+class SIDX_DLL LeafQuery : public SpatialIndex::IQueryStrategy
+{
+private:
+	std::queue<SpatialIndex::id_type> m_ids;
+	std::vector<LeafQueryResult> m_results;
+public:
+
+	LeafQuery();
+	~LeafQuery() {};
+	void getNextEntry(	const SpatialIndex::IEntry& entry,
+						SpatialIndex::id_type& nextEntry,
+						bool& hasNext);
+	std::vector<LeafQueryResult> const& GetResults() const {return m_results;}
+};
+
