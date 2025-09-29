@@ -36,6 +36,9 @@
 
 #include <cstring>
 
+// set to 1 to enable debugging output
+#define SI_DEBUG_OUTPUT 0
+
 using namespace SpatialIndex::MVRTree;
 
 SpatialIndex::MVRTree::Data::Data(uint32_t len, uint8_t* pData, TimeRegion& r, id_type id)
@@ -467,7 +470,9 @@ bool SpatialIndex::MVRTree::MVRTree::isIndexValid()
 	bool ret = true;
 	std::stack<ValidateEntry> st;
 	std::set<id_type> visitedEntries;
+#if SI_DEBUG_OUTPUT
 	uint32_t degenerateEntries = 0;
+#endif
 
 	for (uint32_t cRoot = 0; cRoot < m_roots.size(); ++cRoot)
 	{
@@ -492,7 +497,9 @@ bool SpatialIndex::MVRTree::MVRTree::isIndexValid()
 		if (itSet == visitedEntries.end())
 		{
 			visitedEntries.insert(e.m_pNode->m_identifier);
+#if SI_DEBUG_OUTPUT
 			if (e.m_pNode->m_nodeMBR.m_startTime == e.m_pNode->m_nodeMBR.m_endTime) ++degenerateEntries;
+# endif
 		}
 
 		TimeRegion tmpRegion;
@@ -546,8 +553,10 @@ bool SpatialIndex::MVRTree::MVRTree::isIndexValid()
 		}
 	}
 
-	//std::cerr << "Total accessible nodes: " << visitedEntries.size() << std::endl;
-	//std::cerr << "Degenerate nodes: " << degenerateEntries << std::endl;
+#if SI_DEBUG_OUTPUT
+	std::cerr << "Total accessible nodes: " << visitedEntries.size() << std::endl;
+	std::cerr << "Degenerate nodes: " << degenerateEntries << std::endl;
+#endif
 
 	return ret;
 }
