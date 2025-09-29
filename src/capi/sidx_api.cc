@@ -48,7 +48,7 @@ static __thread struct
     int code;
     char message[LAST_ERROR_BUFFER_SIZE];
     char method[LAST_ERROR_BUFFER_SIZE];
-} last_error = {0};
+} last_error = {0, "", ""};
 #else
 static std::stack<Error> errors;
 #endif
