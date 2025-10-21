@@ -26,6 +26,7 @@
 ******************************************************************************/
 
 #pragma once
+#include <spatialindex/rtree/IRTreeStatistics.h>
 
 namespace SpatialIndex
 {

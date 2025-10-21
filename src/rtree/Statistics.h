@@ -26,6 +26,7 @@
 ******************************************************************************/
 
 #pragma once
+#include <spatialindex/rtree/IRTreeStatistics.h>
 
 namespace SpatialIndex
 {
@@ -36,7 +37,7 @@ namespace SpatialIndex
 		class Leaf;
 		class Index;
 
-		class Statistics : public SpatialIndex::IStatistics
+		class Statistics : public SpatialIndex::RTree::IRTreeStatistics 
 		{
 		public:
 			Statistics();
@@ -52,13 +53,13 @@ namespace SpatialIndex
 			uint32_t getNumberOfNodes() const override;
 			uint64_t getNumberOfData() const override;
 
-			virtual uint64_t getSplits() const;
-			virtual uint64_t getHits() const;
-			virtual uint64_t getMisses() const;
-			virtual uint64_t getAdjustments() const;
-			virtual uint64_t getQueryResults() const;
-			virtual uint32_t getTreeHeight() const;
-			virtual uint32_t getNumberOfNodesInLevel(uint32_t l) const;
+			uint64_t getSplits() const override;
+			uint64_t getHits() const override;
+			uint64_t getMisses() const override;
+			uint64_t getAdjustments() const override;
+			uint64_t getQueryResults() const override;
+			uint32_t getTreeHeight() const override;
+			uint32_t getNumberOfNodesInLevel(uint32_t l) const override;
 
 		private:
 			void reset();
