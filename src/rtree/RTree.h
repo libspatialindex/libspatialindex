@@ -150,10 +150,16 @@ namespace SpatialIndex
 			{
 			public:
 				id_type m_id;
-				Data* m_pEntry;
+				std::unique_ptr<Data> m_pEntry;
 				double m_minDist;
 
-				NNEntry(id_type id, Data* e, double f) : m_id(id), m_pEntry(e), m_minDist(f) {}
+				NNEntry(id_type id) : m_id(id), m_minDist(0)
+                    {}
+				NNEntry(id_type id, std::unique_ptr<Data> e, double f) :
+                        m_id(id), m_pEntry(std::move(e)), m_minDist(f)
+                    {}
+                NNEntry(NNEntry&& other) = default;
+                NNEntry& operator=(NNEntry&& other) = default;
 				~NNEntry() = default;
 
 			}; // NNEntry
