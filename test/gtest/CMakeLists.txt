@@ -8,7 +8,12 @@ else()
 endif()
 
 set(SOURCES
+    Geometry.cpp
+    MVRTree.cpp
+    RTree.cpp
+    TPRTree.cpp
     test.h
+    NativeTestSupport.h
     sidx_api_test.h
     main.cc)
 
