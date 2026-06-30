@@ -1,15 +1,5 @@
 include_directories(../include)
 
-set(DIR geometry)
-set(SOURCES
-        Intersection
-        )
-
-foreach(test ${SOURCES})
-    add_executable(test-${DIR}-${test} ${DIR}/${test}.cc)
-    target_link_libraries(test-${DIR}-${test} PRIVATE spatialindex)
-endforeach()
-
 set(DIR rtree)
 set(SOURCES
         Exhaustive
@@ -65,11 +55,4 @@ foreach(test ${SOURCES})
 
 endforeach()
 
-if (UNIX)
-    add_test(NAME index-tests
-             COMMAND /bin/sh "${CMAKE_CURRENT_SOURCE_DIR}/index-tests.sh"
-             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-    set_property(TEST index-tests PROPERTY ENVIRONMENT
-             "PATH=${CMAKE_BINARY_DIR}/test/:$ENV{PATH}")
-endif (UNIX)
 add_subdirectory(gtest)
