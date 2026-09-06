@@ -99,6 +99,39 @@ jobs:
          path: |
           ./build/spatialindex-src-*
 
+  system-gtest:
+    name: Build against a system GoogleTest
+    runs-on: ubuntu-latest
+
+    steps:
+     - uses: actions/checkout@v7
+     - uses: mamba-org/setup-micromamba@v3
+       with:
+           init-shell: bash
+           environment-file: ci/environment.yml
+           environment-name: "build"
+           create-args: gtest
+           cache-environment: true
+           cache-downloads: true
+
+     - name: CMake
+       shell: bash -l {0}
+       run: |
+        cmake   -G "Ninja" \
+              -B build \
+              -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+              -DBUILD_TESTING=ON \
+              -DSYSTEM_GTEST=ON \
+              -DCMAKE_PREFIX_PATH=${CONDA_PREFIX}
+
+     - name: Compile
+       shell: bash -l {0}
+       run: ninja -C build
+
+     - name: Test
+       shell: bash -l {0}
+       run: ctest --test-dir build -VV --output-on-failure
+
   release:
     name: Gather and attach release
     runs-on: ubuntu-latest
