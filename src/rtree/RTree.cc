@@ -409,6 +409,20 @@ void SpatialIndex::RTree::RTree::insertData(uint32_t len, const uint8_t* pData, 
 	RegionPtr mbr = m_regionPool.acquire();
 	shape.getMBR(*mbr);
 
+	// Reject non-finite (NaN or +/-Infinity) coordinates here, at the point of insertion,
+	// rather than allowing them to silently enter the tree. A NaN or Infinite bound poisons
+	// every subsequent margin/area comparison it participates in (comparisons against NaN are
+	// always false), which can leave R*-tree's chooseSplitAxis() unable to select a split axis
+	// and crash much later, in an unrelated split, on data that looks unrelated to the bad
+	// insert. Failing fast here gives a clear, actionable error instead.
+	for (uint32_t cDim = 0; cDim < mbr->m_dimension; ++cDim)
+	{
+		if (!std::isfinite(mbr->m_pLow[cDim]) || !std::isfinite(mbr->m_pHigh[cDim]))
+			throw Tools::IllegalArgumentException(
+				"insertData: Shape region contains a NaN or Infinite coordinate."
+			);
+	}
+
 	uint8_t* buffer = nullptr;
 
 	if (len > 0)
