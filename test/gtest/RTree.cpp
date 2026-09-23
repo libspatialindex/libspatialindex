@@ -7,6 +7,26 @@
  */
 
 #include "NativeTestSupport.h"
+#include "../../src/rtree/RTree.h"
+#include "../../src/rtree/BulkLoader.h"
+
+TEST(RTreeTest, ExternalSorterMergesRunsInAscendingOrder) {
+    SpatialIndex::RTree::ExternalSorter sorter(2, 2);
+    const SpatialIndex::id_type input[] = {0, 2, 4, 6, 1, 3, 5, 7};
+
+    for (SpatialIndex::id_type id : input) {
+        const double coordinates[] = {static_cast<double>(id), 0.0};
+        SpatialIndex::Region region(coordinates, coordinates, 2);
+        sorter.insert(new SpatialIndex::RTree::ExternalSorter::Record(region, id, 0, nullptr, 0));
+    }
+
+    sorter.sort();
+    for (SpatialIndex::id_type expected = 0; expected < 8; ++expected) {
+        std::unique_ptr<SpatialIndex::RTree::ExternalSorter::Record> record(sorter.getNextRecord());
+        EXPECT_EQ(expected, record->m_id);
+    }
+    EXPECT_THROW(sorter.getNextRecord(), Tools::EndOfStreamException);
+}
 
 TEST(RTreeTest, NearestNeighborQueriesMatchExhaustiveSearch) {
     std::unique_ptr<SpatialIndex::IStorageManager> storage = sidx_test::memoryStorage();
