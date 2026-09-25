@@ -173,4 +173,26 @@ TEST_F(SidxApiBulkRTreeTest, bulk_intersects_count) {
   Index_Intersects_count(idx, min, max, 3, &nResults);
   EXPECT_EQ(2, nResults);
 }
+TEST(SidxApiErrorTest, error_stack_is_declared) {
+    // These are exported by libspatialindex_c; this only compiles if
+    // sidx_api.h declares them.
+    Error_Reset();
+    EXPECT_EQ(0, Error_GetErrorCount());
+    EXPECT_EQ(0, Error_GetLastErrorNum());
+
+    Error_PushError(RT_Failure, "message", "method");
+    EXPECT_EQ(1, Error_GetErrorCount());
+    EXPECT_EQ(RT_Failure, Error_GetLastErrorNum());
+    char* msg = Error_GetLastErrorMsg();
+    char* method = Error_GetLastErrorMethod();
+    EXPECT_STREQ("message", msg);
+    EXPECT_STREQ("method", method);
+    free(msg);
+    free(method);
+
+    Error_Pop();
+    EXPECT_EQ(0, Error_GetErrorCount());
+    Error_Reset();
+}
+
 #endif // SIDX_API_TEST_H
