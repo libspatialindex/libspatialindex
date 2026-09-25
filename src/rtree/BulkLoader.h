@@ -84,7 +84,7 @@ namespace SpatialIndex
 				{
 					bool operator()(const PQEntry& e1, const PQEntry& e2)
 					{
-						if (*(e1.m_r) < *(e2.m_r)) return true;
+						if (*(e2.m_r) < *(e1.m_r)) return true;
 						else return false;
 					}
 				};

@@ -8,6 +8,42 @@
 
 #include "NativeTestSupport.h"
 
+TEST(RTreeTest, STRBulkLoadKeepsLeavesSeparatedAcrossSortedRuns) {
+    const SpatialIndex::id_type input[] = {0, 2, 4, 6, 1, 3, 5, 7};
+    std::vector<std::pair<SpatialIndex::id_type, sidx_test::Rect> > entries;
+    for (SpatialIndex::id_type id : input) {
+        const double x = static_cast<double>(id);
+        entries.push_back(std::make_pair(id, sidx_test::Rect(x, 0.0, x, 0.0)));
+    }
+
+    Tools::PropertySet properties;
+    Tools::Variant value;
+    value.m_varType = Tools::VT_DOUBLE;
+    value.m_val.dblVal = 0.8;
+    properties.setProperty("FillFactor", value);
+    value.m_varType = Tools::VT_ULONG;
+    value.m_val.ulVal = 5;
+    properties.setProperty("IndexCapacity", value);
+    properties.setProperty("LeafCapacity", value);
+    value.m_val.ulVal = 2;
+    properties.setProperty("ExternalSortBufferPageSize", value);
+    properties.setProperty("ExternalSortBufferTotalPages", value);
+
+    sidx_test::RTreeDataStream stream(entries);
+    std::unique_ptr<SpatialIndex::IStorageManager> storage = sidx_test::memoryStorage();
+    SpatialIndex::id_type indexIdentifier;
+    std::unique_ptr<SpatialIndex::ISpatialIndex> tree(
+        SpatialIndex::RTree::createAndBulkLoadNewRTree(
+            SpatialIndex::RTree::BLM_STR, stream, *storage, properties, indexIdentifier));
+
+    sidx_test::IdVisitor visitor;
+    SpatialIndex::Region query = sidx_test::regionFromRect(sidx_test::Rect(3.0, 0.0, 3.0, 0.0));
+    tree->intersectsWithQuery(query, visitor);
+    EXPECT_EQ(1u, visitor.leafIO);
+    ASSERT_EQ(1u, visitor.ids.size());
+    EXPECT_EQ(3, visitor.ids.front());
+}
+
 TEST(RTreeTest, NearestNeighborQueriesMatchExhaustiveSearch) {
     std::unique_ptr<SpatialIndex::IStorageManager> storage = sidx_test::memoryStorage();
     SpatialIndex::id_type indexIdentifier;
