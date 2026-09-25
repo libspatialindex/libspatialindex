@@ -84,8 +84,7 @@ SIDX_C_DLL void Error_Reset(void) {
 #ifdef __GNUC__
     last_error.code = 0;
 #else
-	if (errors.empty()) return;
-	for (std::size_t i=0;i<errors.size();i++) errors.pop();
+	while (!errors.empty()) errors.pop();
 #endif
 }
 
