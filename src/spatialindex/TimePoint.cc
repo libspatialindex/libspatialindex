@@ -58,12 +58,8 @@ TimePoint::TimePoint(const Point& p, double tStart, double tEnd)
 }
 
 TimePoint::TimePoint(const TimePoint& p)
-	: m_startTime(p.m_startTime), m_endTime(p.m_endTime)
+	: Point(p), m_startTime(p.m_startTime), m_endTime(p.m_endTime)
 {
-	m_dimension = p.m_dimension;
-
-	m_pCoords = new double[m_dimension];
-	memcpy(m_pCoords, p.m_pCoords, m_dimension * sizeof(double));
 }
 
 TimePoint::~TimePoint()
@@ -73,8 +69,7 @@ TimePoint& TimePoint::operator=(const TimePoint& p)
 {
 	if (this != &p)
 	{
-		makeDimension(p.m_dimension);
-		memcpy(m_pCoords, p.m_pCoords, m_dimension * sizeof(double));
+		Point::operator=(p);
 		m_startTime = p.m_startTime;
 		m_endTime = p.m_endTime;
 	}
@@ -276,15 +271,9 @@ void TimePoint::makeInfinite(uint32_t dimension)
 
 void TimePoint::makeDimension(uint32_t dimension)
 {
-	if (m_dimension != dimension)
-	{
-		m_dimension = dimension;
-
-		delete[] m_pCoords;
-		m_pCoords = nullptr;
-
-		m_pCoords = new double[m_dimension];
-	}
+	// Point owns the coordinate storage (an inline buffer for small
+	// dimensions, a heap array otherwise); let it manage it.
+	Point::makeDimension(dimension);
 }
 
 std::ostream& SpatialIndex::operator<<(std::ostream& os, const TimePoint& pt)

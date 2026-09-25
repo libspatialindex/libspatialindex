@@ -21,6 +21,7 @@ set(SOURCES
     MVRTree.cpp
     RTree.cpp
     TPRTree.cpp
+    TimeShapes.cpp
     test.h
     NativeTestSupport.h
     sidx_api_test.h

@@ -73,24 +73,8 @@ TimeRegion::TimeRegion(const TimePoint& low, const TimePoint& high)
 }
 
 TimeRegion::TimeRegion(const TimeRegion& r)
-	: m_startTime(r.m_startTime), m_endTime(r.m_endTime)
+	: Region(r), m_startTime(r.m_startTime), m_endTime(r.m_endTime)
 {
-	m_dimension = r.m_dimension;
-	m_pLow = nullptr;
-
-	try
-	{
-		m_pLow = new double[m_dimension];
-		m_pHigh = new double[m_dimension];
-	}
-	catch (...)
-	{
-		delete[] m_pLow;
-		throw;
-	}
-
-	memcpy(m_pLow, r.m_pLow, m_dimension * sizeof(double));
-	memcpy(m_pHigh, r.m_pHigh, m_dimension * sizeof(double));
 }
 
 TimeRegion::~TimeRegion()
@@ -100,9 +84,7 @@ TimeRegion& TimeRegion::operator=(const TimeRegion& r)
 {
 	if(this != &r)
 	{
-		makeDimension(r.m_dimension);
-		memcpy(m_pLow, r.m_pLow, m_dimension * sizeof(double));
-		memcpy(m_pHigh, r.m_pHigh, m_dimension * sizeof(double));
+		Region::operator=(r);
 
 		m_startTime = r.m_startTime;
 		m_endTime = r.m_endTime;
@@ -388,17 +370,9 @@ void TimeRegion::makeInfinite(uint32_t dimension)
 
 void TimeRegion::makeDimension(uint32_t dimension)
 {
-	if (m_dimension != dimension)
-	{
-		m_dimension = dimension;
-
-		delete[] m_pLow;
-		delete[] m_pHigh;
-		m_pLow = nullptr; m_pHigh = nullptr;
-
-		m_pLow = new double[m_dimension];
-		m_pHigh = new double[m_dimension];
-	}
+	// Region owns the coordinate storage (an inline buffer for small
+	// dimensions, one heap block otherwise); let it manage it.
+	Region::makeDimension(dimension);
 }
 
 std::ostream& SpatialIndex::operator<<(std::ostream& os, const TimeRegion& r)
