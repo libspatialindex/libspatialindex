@@ -41,6 +41,12 @@ namespace Tools
 		~PointerPool()
 		{
 			assert(m_pool.size() <= m_capacity);
+
+			while (! m_pool.empty())
+			{
+				SpatialIndex::MVRTree::Node* x = m_pool.top(); m_pool.pop();
+				delete x;
+			}
 		}
 
 		PoolPointer<SpatialIndex::MVRTree::Node> acquire()
