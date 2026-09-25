@@ -775,6 +775,7 @@ SIDX_C_DLL RTError Index_Intersects_obj(  IndexH index,
 		Error_PushError(RT_Failure,
 						e.what().c_str(),
 						"Index_Intersects_obj");
+		return RT_Failure;
 	} catch (std::exception const& e)
 	{
     delete r;
@@ -782,13 +783,14 @@ SIDX_C_DLL RTError Index_Intersects_obj(  IndexH index,
 		Error_PushError(RT_Failure,
 						e.what(),
 						"Index_Intersects_obj");
-		delete visitor;
+		return RT_Failure;
 	} catch (...) {
     delete r;
     delete visitor;
 		Error_PushError(RT_Failure,
 						"Unknown Error",
 						"Index_Intersects_obj");
+		return RT_Failure;
 	}
 	return RT_None;
 }
@@ -825,6 +827,7 @@ SIDX_C_DLL RTError Index_Contains_obj(  IndexH index,
         Error_PushError(RT_Failure,
                         e.what().c_str(),
                         "Index_Contains_obj");
+        return RT_Failure;
     } catch (std::exception const& e)
     {
         delete r;
@@ -832,13 +835,14 @@ SIDX_C_DLL RTError Index_Contains_obj(  IndexH index,
         Error_PushError(RT_Failure,
                         e.what(),
                         "Index_Contains_obj");
-        delete visitor;
+        return RT_Failure;
     } catch (...) {
         delete r;
         delete visitor;
         Error_PushError(RT_Failure,
                         "Unknown Error",
                         "Index_Contains_obj");
+        return RT_Failure;
     }
     return RT_None;
 }
@@ -2068,7 +2072,9 @@ SIDX_C_DLL void Index_ClearBuffer(IndexH index)
 
 SIDX_C_DLL void Index_DestroyObjResults(IndexItemH* results, uint32_t nResults)
 {
-	VALIDATE_POINTER0(results, "Index_DestroyObjResults");
+	// See Index_Free: NULL is a valid (empty) result set.
+	if (results == NULL)
+		return;
 	SpatialIndex::IData* it;
 	for (uint32_t i=0; i< nResults; ++i) {
 		if (results[i] != NULL) {
@@ -2084,9 +2090,9 @@ SIDX_C_DLL void Index_DestroyObjResults(IndexItemH* results, uint32_t nResults)
 
 SIDX_C_DLL void Index_Free(void* results)
 {
-	VALIDATE_POINTER0(results, "Index_Free");
-	if (results != 0)
-	    std::free(results);
+	// Like free(), accept NULL without pushing an error: an empty result set
+	// may be NULL, and freeing it must not poison the next error check.
+	std::free(results);
 }
 
 SIDX_C_DLL RTError Index_GetLeaves(	IndexH index,

@@ -79,6 +79,24 @@ TEST_F(SidxApiRTreeTest, intersects_obj) {
   Index_DestroyObjResults(items, (uint32_t) nResults);
 }
 
+
+// Freeing NULL must not leave an error behind for the next check. The
+// declared API only exposes the most recent error, so check after each call.
+static void ExpectNoErrorFrom(const char* method) {
+    char* msg = Error_GetLastErrorMsg();
+    if (msg != NULL) {
+        EXPECT_EQ(nullptr, strstr(msg, method)) << msg;
+        free(msg);
+    }
+}
+
+TEST(SidxApiErrorTest, freeing_null_results_is_not_an_error) {
+    Index_Free(NULL);
+    ExpectNoErrorFrom("Index_Free");
+    Index_DestroyObjResults(NULL, 0);
+    ExpectNoErrorFrom("Index_DestroyObjResults");
+}
+
 TEST_F(SidxApiRTreeTest, intersects_nearest_obj) {
   uint64_t nResults;
   IndexItemH* items;
@@ -138,6 +156,19 @@ TEST_F(SidxApiRTreeTest, contains_count) {
     uint64_t nResults;
     Index_Contains_count(idx, min, max, nDims, &nResults);
     EXPECT_EQ(1, nResults);
+}
+
+
+TEST_F(SidxApiRTreeTest, obj_queries_report_failure) {
+    // A 3-dimensional query against the 2-dimensional index throws inside
+    // libspatialindex; the error must be reported through the return value.
+    double min3[] = {0.5, 0.5, 0.5};
+    double max3[] = {0.5, 0.5, 0.5};
+    uint64_t nResults = 0;
+    IndexItemH* items = nullptr;
+
+    EXPECT_EQ(RT_Failure, Index_Intersects_obj(idx, min3, max3, 3, &items, &nResults));
+    EXPECT_EQ(RT_Failure, Index_Contains_obj(idx, min3, max3, 3, &items, &nResults));
 }
 
 

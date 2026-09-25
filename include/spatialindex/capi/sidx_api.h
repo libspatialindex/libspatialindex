@@ -416,7 +416,16 @@ SIDX_DLL uint64_t IndexProperty_GetResultSetLimit(IndexPropertyH iprop);
 
 SIDX_C_DLL char* SIDX_Version(void);
 
+/* Error stack. Messages and method names returned by Error_GetLastErrorMsg()
+ * and Error_GetLastErrorMethod() are allocated with strdup() and must be
+ * released by the caller. */
+SIDX_C_DLL void Error_Reset(void);
+SIDX_C_DLL void Error_Pop(void);
+SIDX_C_DLL int Error_GetLastErrorNum(void);
 SIDX_C_DLL char* Error_GetLastErrorMsg(void);
+SIDX_C_DLL char* Error_GetLastErrorMethod(void);
+SIDX_C_DLL void Error_PushError(int code, const char *message, const char *method);
+SIDX_C_DLL int Error_GetErrorCount(void);
 
 IDX_C_END
 
