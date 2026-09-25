@@ -141,6 +141,19 @@ TEST_F(SidxApiRTreeTest, contains_count) {
 }
 
 
+TEST_F(SidxApiRTreeTest, obj_queries_report_failure) {
+    // A 3-dimensional query against the 2-dimensional index throws inside
+    // libspatialindex; the error must be reported through the return value.
+    double min3[] = {0.5, 0.5, 0.5};
+    double max3[] = {0.5, 0.5, 0.5};
+    uint64_t nResults = 0;
+    IndexItemH* items = nullptr;
+
+    EXPECT_EQ(RT_Failure, Index_Intersects_obj(idx, min3, max3, 3, &items, &nResults));
+    EXPECT_EQ(RT_Failure, Index_Contains_obj(idx, min3, max3, 3, &items, &nResults));
+}
+
+
 class SidxApiBulkRTreeTest : public testing::Test {
   protected:
   void SetUp() override {
