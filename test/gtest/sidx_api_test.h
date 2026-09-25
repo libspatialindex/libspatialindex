@@ -48,6 +48,51 @@ TEST_F(SidxApiRTreeTest, valid) {
   ASSERT_EQ(1, Index_IsValid(idx));
 }
 
+
+TEST(SidxApiPropertyTest, string_setters) {
+    IndexPropertyH props = IndexProperty_Create();
+    IndexProperty_SetIndexType(props, RT_RTree);
+    IndexProperty_SetIndexStorage(props, RT_Memory);
+
+    // Setting a value repeatedly must not leak (checked by LeakSanitizer
+    // when built with -fsanitize=address).
+    for (int i = 0; i < 100; ++i) {
+        ASSERT_EQ(RT_None, IndexProperty_SetFileName(props, "first"));
+        ASSERT_EQ(RT_None, IndexProperty_SetFileNameExtensionDat(props, "dat1"));
+        ASSERT_EQ(RT_None, IndexProperty_SetFileNameExtensionIdx(props, "idx1"));
+    }
+
+    // The index keeps a shallow copy of the property set, so its strings
+    // must survive the handle changing its values and being destroyed.
+    IndexH idx = Index_Create(props);
+    ASSERT_NE(nullptr, idx);
+    IndexProperty_SetFileName(props, "second");
+    IndexProperty_SetFileNameExtensionDat(props, "dat2");
+    IndexProperty_SetFileNameExtensionIdx(props, "idx2");
+
+    char* value = IndexProperty_GetFileName(props);
+    EXPECT_STREQ("second", value);
+    free(value);
+    IndexProperty_Destroy(props);
+
+    IndexPropertyH idx_props = Index_GetProperties(idx);
+    value = IndexProperty_GetFileName(idx_props);
+    EXPECT_STREQ("first", value);
+    free(value);
+    value = IndexProperty_GetFileNameExtensionDat(idx_props);
+    EXPECT_STREQ("dat1", value);
+    free(value);
+    value = IndexProperty_GetFileNameExtensionIdx(idx_props);
+    EXPECT_STREQ("idx1", value);
+    free(value);
+    IndexProperty_Destroy(idx_props);
+    Index_Destroy(idx);
+
+    props = IndexProperty_Create();
+    EXPECT_EQ(RT_Failure, IndexProperty_SetFileName(props, NULL));
+    IndexProperty_Destroy(props);
+}
+
 TEST_F(SidxApiRTreeTest, intersects_id) {
   uint64_t nResults;
   int64_t* items;  

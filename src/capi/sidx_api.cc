@@ -31,6 +31,9 @@
 #include <cassert>
 #include <cstring>
 #include <memory>
+#include <mutex>
+#include <string>
+#include <unordered_set>
 #include <spatialindex/capi/sidx_api.h>
 #include <spatialindex/capi/sidx_impl.h>
 
@@ -77,6 +80,31 @@ static std::stack<Error> errors;
 		Error_PushError( ret, message.c_str(), (func)); \
 		return (rc); \
    }} while(0)
+
+namespace {
+
+// Storage for the strings handed to PropertySet by the IndexProperty_Set*
+// string setters. A VT_PCHAR Variant doesn't own its pointer, and property
+// sets are copied shallowly (Index keeps its own copy, Index_GetProperties
+// hands out another), so a stored pointer can't be freed when one handle
+// changes the value or is destroyed. Each distinct string is instead stored
+// once for the life of the process, so setting the same values repeatedly
+// no longer allocates on every call.
+char* InternString(const char* value)
+{
+	struct Strings {
+		std::mutex mutex;
+		std::unordered_set<std::string> values;
+	};
+	// Never destroyed, so the pointers stay valid during static destruction.
+	static Strings* strings = new Strings;
+
+	std::lock_guard<std::mutex> lock(strings->mutex);
+	// Elements of an unordered_set don't move on rehash, so c_str() is stable.
+	return const_cast<char*>(strings->values.insert(value).first->c_str());
+}
+
+} // namespace
 
 IDX_C_START
 
@@ -3554,13 +3582,14 @@ SIDX_C_DLL RTError IndexProperty_SetFileName( IndexPropertyH hProp,
 	VALIDATE_POINTER1(	hProp,
 						"IndexProperty_SetFileName",
 						RT_Failure);
+	VALIDATE_POINTER1(value, "IndexProperty_SetFileName", RT_Failure);
 	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try
 	{
 		Tools::Variant var;
 		var.m_varType = Tools::VT_PCHAR;
-		var.m_val.pcVal = STRDUP(value); // not sure if we should copy here
+		var.m_val.pcVal = InternString(value);
 		prop->setProperty("FileName", var);
 	} catch (Tools::Exception& e)
 	{
@@ -3617,13 +3646,14 @@ SIDX_C_DLL RTError IndexProperty_SetFileNameExtensionDat( IndexPropertyH hProp,
 	VALIDATE_POINTER1(	hProp,
 						"IndexProperty_SetFileNameExtensionDat",
 						RT_Failure);
+	VALIDATE_POINTER1(value, "IndexProperty_SetFileNameExtensionDat", RT_Failure);
 	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try
 	{
 		Tools::Variant var;
 		var.m_varType = Tools::VT_PCHAR;
-		var.m_val.pcVal = STRDUP(value); // not sure if we should copy here
+		var.m_val.pcVal = InternString(value);
 		prop->setProperty("FileNameDat", var);
 
 	} catch (Tools::Exception& e)
@@ -3680,13 +3710,14 @@ SIDX_C_DLL RTError IndexProperty_SetFileNameExtensionIdx( IndexPropertyH hProp,
 	VALIDATE_POINTER1(	hProp,
 						"IndexProperty_SetFileNameExtensionIdx",
 						RT_Failure);
+	VALIDATE_POINTER1(value, "IndexProperty_SetFileNameExtensionIdx", RT_Failure);
 	Tools::PropertySet* prop = reinterpret_cast<Tools::PropertySet*>(hProp);
 
 	try
 	{
 		Tools::Variant var;
 		var.m_varType = Tools::VT_PCHAR;
-		var.m_val.pcVal = STRDUP(value); // not sure if we should copy here
+		var.m_val.pcVal = InternString(value);
 		prop->setProperty("FileNameIdx", var);
 
 	} catch (Tools::Exception& e)
