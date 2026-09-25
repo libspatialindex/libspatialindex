@@ -79,6 +79,24 @@ TEST_F(SidxApiRTreeTest, intersects_obj) {
   Index_DestroyObjResults(items, (uint32_t) nResults);  
 }
 
+
+// Freeing NULL must not leave an error behind for the next check. The
+// declared API only exposes the most recent error, so check after each call.
+static void ExpectNoErrorFrom(const char* method) {
+    char* msg = Error_GetLastErrorMsg();
+    if (msg != NULL) {
+        EXPECT_EQ(nullptr, strstr(msg, method)) << msg;
+        free(msg);
+    }
+}
+
+TEST(SidxApiErrorTest, freeing_null_results_is_not_an_error) {
+    Index_Free(NULL);
+    ExpectNoErrorFrom("Index_Free");
+    Index_DestroyObjResults(NULL, 0);
+    ExpectNoErrorFrom("Index_DestroyObjResults");
+}
+
 TEST_F(SidxApiRTreeTest, intersects_nearest_obj) {
   uint64_t nResults;
   IndexItemH* items;

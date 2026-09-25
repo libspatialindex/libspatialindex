@@ -2069,7 +2069,9 @@ SIDX_C_DLL void Index_ClearBuffer(IndexH index)
 
 SIDX_C_DLL void Index_DestroyObjResults(IndexItemH* results, uint32_t nResults)
 {
-	VALIDATE_POINTER0(results, "Index_DestroyObjResults");
+	// See Index_Free: NULL is a valid (empty) result set.
+	if (results == NULL)
+		return;
 	SpatialIndex::IData* it;
 	for (uint32_t i=0; i< nResults; ++i) {
 		if (results[i] != NULL) {
@@ -2085,9 +2087,9 @@ SIDX_C_DLL void Index_DestroyObjResults(IndexItemH* results, uint32_t nResults)
 
 SIDX_C_DLL void Index_Free(void* results)
 {
-	VALIDATE_POINTER0(results, "Index_Free");
-	if (results != 0)
-	    std::free(results);
+	// Like free(), accept NULL without pushing an error: an empty result set
+	// may be NULL, and freeing it must not poison the next error check.
+	std::free(results);
 }
 
 SIDX_C_DLL RTError Index_GetLeaves(	IndexH index,
