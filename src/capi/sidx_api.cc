@@ -776,6 +776,7 @@ SIDX_C_DLL RTError Index_Intersects_obj(  IndexH index,
 		Error_PushError(RT_Failure,
 						e.what().c_str(),
 						"Index_Intersects_obj");
+		return RT_Failure;
 	} catch (std::exception const& e)
 	{
     delete r;
@@ -783,13 +784,14 @@ SIDX_C_DLL RTError Index_Intersects_obj(  IndexH index,
 		Error_PushError(RT_Failure,
 						e.what(),
 						"Index_Intersects_obj");
-		delete visitor;
+		return RT_Failure;
 	} catch (...) {
     delete r;
     delete visitor;
 		Error_PushError(RT_Failure,
 						"Unknown Error",
 						"Index_Intersects_obj");
+		return RT_Failure;
 	}
 	return RT_None;
 }
@@ -826,6 +828,7 @@ SIDX_C_DLL RTError Index_Contains_obj(  IndexH index,
         Error_PushError(RT_Failure,
                         e.what().c_str(),
                         "Index_Contains_obj");
+        return RT_Failure;
     } catch (std::exception const& e)
     {
         delete r;
@@ -833,13 +836,14 @@ SIDX_C_DLL RTError Index_Contains_obj(  IndexH index,
         Error_PushError(RT_Failure,
                         e.what(),
                         "Index_Contains_obj");
-        delete visitor;
+        return RT_Failure;
     } catch (...) {
         delete r;
         delete visitor;
         Error_PushError(RT_Failure,
                         "Unknown Error",
                         "Index_Contains_obj");
+        return RT_Failure;
     }
     return RT_None;
 }
