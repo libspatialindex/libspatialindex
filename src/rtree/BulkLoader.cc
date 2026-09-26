@@ -26,6 +26,7 @@
 ******************************************************************************/
 
 #include <cstring>
+#include <memory>
 #include <cstdio>
 #include <cmath>
 
@@ -294,8 +295,12 @@ ExternalSorter::Record* ExternalSorter::getNextRecord()
 	}
 	else
 	{
-		ret = new Record();
-		ret->loadFromFile(*m_sortedFile);
+		// loadFromFile throws EndOfStreamException once the sorted file is
+		// exhausted, which is how callers detect the end of the input, so the
+		// record must not leak when it does.
+		std::unique_ptr<Record> r(new Record());
+		r->loadFromFile(*m_sortedFile);
+		ret = r.release();
 	}
 
 	return ret;
