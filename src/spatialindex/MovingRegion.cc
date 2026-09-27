@@ -107,31 +107,13 @@ MovingRegion::MovingRegion(
 MovingRegion::MovingRegion(const MovingPoint& low, const MovingPoint& high)
 {
 	m_startTime = low.m_startTime;
-	m_endTime = high.m_endTime;;
-	m_dimension = low.m_dimension;
-	m_pLow = nullptr; m_pHigh = nullptr;
-	m_pVLow = nullptr; m_pVHigh = nullptr;
+	m_endTime = high.m_endTime;
 
 	if (m_endTime <= m_startTime) throw Tools::IllegalArgumentException("MovingRegion: Cannot support degenerate time intervals.");
 
 	if (low.m_dimension != high.m_dimension) throw Tools::IllegalArgumentException("MovingRegion: arguments have different number of dimensions.");
 
-	try
-	{
-		m_pLow = new double[m_dimension];
-		m_pHigh = new double[m_dimension];
-		m_pVLow = new double[m_dimension];
-		m_pVHigh = new double[m_dimension];
-
-	}
-	catch (...)
-	{
-		delete[] m_pLow;
-		delete[] m_pHigh;
-		delete[] m_pVLow;
-		delete[] m_pVHigh;
-		throw;
-	}
+	makeDimension(low.m_dimension);
 
 	memcpy(m_pLow, low.m_pCoords, m_dimension * sizeof(double));
 	memcpy(m_pHigh, high.m_pCoords, m_dimension * sizeof(double));
@@ -143,26 +125,8 @@ MovingRegion::MovingRegion(const MovingRegion& r)
 {
 	m_startTime = r.m_startTime;
 	m_endTime = r.m_endTime;
-	m_pLow = nullptr; m_pHigh = nullptr;
-	m_pVLow = nullptr; m_pVHigh = nullptr;
 
-	m_dimension = r.m_dimension;
-
-	try
-	{
-		m_pLow = new double[m_dimension];
-		m_pHigh = new double[m_dimension];
-		m_pVLow = new double[m_dimension];
-		m_pVHigh = new double[m_dimension];
-	}
-	catch (...)
-	{
-		delete[] m_pLow;
-		delete[] m_pHigh;
-		delete[] m_pVLow;
-		delete[] m_pVHigh;
-		throw;
-	}
+	makeDimension(r.m_dimension);
 
 	memcpy(m_pLow, r.m_pLow, m_dimension * sizeof(double));
 	memcpy(m_pHigh, r.m_pHigh, m_dimension * sizeof(double));
@@ -177,27 +141,10 @@ void MovingRegion::initialize(
 {
 	m_startTime = tStart;
 	m_endTime = tEnd;
-	m_dimension = dimension;
-	m_pLow = nullptr; m_pHigh = nullptr;
-	m_pVLow = nullptr; m_pVHigh = nullptr;
 
 	if (m_endTime <= m_startTime) throw Tools::IllegalArgumentException("MovingRegion: Cannot support degenerate time intervals.");
 
-	try
-	{
-		m_pLow = new double[m_dimension];
-		m_pHigh = new double[m_dimension];
-		m_pVLow = new double[m_dimension];
-		m_pVHigh = new double[m_dimension];
-	}
-	catch (...)
-	{
-		delete[] m_pLow;
-		delete[] m_pHigh;
-		delete[] m_pVLow;
-		delete[] m_pVHigh;
-		throw;
-	}
+	makeDimension(dimension);
 
 	// first store the point coordinates, than the point velocities.
 	memcpy(m_pLow, pLow, m_dimension * sizeof(double));
@@ -1172,20 +1119,19 @@ void MovingRegion::makeInfinite(uint32_t dimension)
 
 void MovingRegion::makeDimension(uint32_t dimension)
 {
-	if (m_dimension != dimension)
+	// The positions (m_pLow/m_pHigh) are stored by Region, which keeps small
+	// dimensions in an inline buffer and larger ones in a single heap block;
+	// only the velocities are allocated here. Region::makeDimension is called
+	// directly (not TimeRegion's) so that Region alone manages that storage.
+	if (m_dimension != dimension || m_pVLow == nullptr)
 	{
-		delete[] m_pLow;
-		delete[] m_pHigh;
 		delete[] m_pVLow;
 		delete[] m_pVHigh;
-		m_pLow = nullptr; m_pHigh = nullptr;
 		m_pVLow = nullptr; m_pVHigh = nullptr;
 
-		m_dimension = dimension;
-		m_pLow = new double[m_dimension];
-		m_pHigh = new double[m_dimension];
-		m_pVLow = new double[m_dimension];
-		m_pVHigh = new double[m_dimension];
+		Region::makeDimension(dimension);
+		m_pVLow = new double[dimension];
+		m_pVHigh = new double[dimension];
 	}
 }
 

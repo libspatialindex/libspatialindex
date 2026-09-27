@@ -87,20 +87,8 @@ MovingPoint::MovingPoint(const MovingPoint& p)
 {
 	m_startTime = p.m_startTime;
 	m_endTime = p.m_endTime;
-	m_pCoords = nullptr;
 
-	m_dimension = p.m_dimension;
-
-	try
-	{
-		m_pCoords = new double[m_dimension];
-		m_pVCoords = new double[m_dimension];
-	}
-	catch (...)
-	{
-		delete[] m_pCoords;
-		throw;
-	}
+	makeDimension(p.m_dimension);
 
 	memcpy(m_pCoords, p.m_pCoords, m_dimension * sizeof(double));
 	memcpy(m_pVCoords, p.m_pVCoords, m_dimension * sizeof(double));
@@ -115,24 +103,13 @@ void MovingPoint::initialize(
 	const double* pCoords, const double* pVCoords,
 	double tStart, double tEnd, uint32_t dimension)
 {
-	m_dimension = dimension;
 	m_startTime = tStart;
 	m_endTime = tEnd;
-	m_pCoords = nullptr;
 
 	if (m_endTime <= m_startTime)
 		throw Tools::IllegalArgumentException("MovingPoint: Cannot support degenerate time intervals.");
 
-	try
-	{
-		m_pCoords = new double[m_dimension];
-		m_pVCoords = new double[m_dimension];
-	}
-	catch (...)
-	{
-		delete[] m_pCoords;
-		throw;
-	}
+	makeDimension(dimension);
 
 	// first store the point coordinates, than the point velocities.
 	memcpy(m_pCoords, pCoords, m_dimension * sizeof(double));
@@ -295,15 +272,17 @@ void MovingPoint::makeInfinite(uint32_t dimension)
 
 void MovingPoint::makeDimension(uint32_t dimension)
 {
-	if (m_dimension != dimension)
+	// The position (m_pCoords) is stored by Point, which keeps small
+	// dimensions in an inline buffer and larger ones on the heap; only the
+	// velocity is allocated here. Point::makeDimension is called directly
+	// (not TimePoint's) so that Point alone manages that storage.
+	if (m_dimension != dimension || m_pVCoords == nullptr)
 	{
-		delete[] m_pCoords;
 		delete[] m_pVCoords;
-		m_pCoords = nullptr; m_pVCoords = nullptr;
+		m_pVCoords = nullptr;
 
-		m_dimension = dimension;
-		m_pCoords = new double[m_dimension];
-		m_pVCoords = new double[m_dimension];
+		Point::makeDimension(dimension);
+		m_pVCoords = new double[dimension];
 	}
 }
 
