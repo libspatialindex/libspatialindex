@@ -29,7 +29,7 @@ class SidxApiRTreeTest : public testing::Test {
       IndexProperty_SetIndexType(props, RT_RTree);
       IndexProperty_SetIndexStorage(props, RT_Memory);
       idx = Index_Create(props);
-      IndexProperty_Destroy(props); 
+      IndexProperty_Destroy(props);
       Index_InsertData(idx, nId, min, max, nDims, (uint8_t *)pszData, strlen(pszData) + 1);
     }
 
@@ -50,33 +50,33 @@ TEST_F(SidxApiRTreeTest, valid) {
 
 TEST_F(SidxApiRTreeTest, intersects_id) {
   uint64_t nResults;
-  int64_t* items;  
+  int64_t* items;
   Index_Intersects_id(idx, min, max, nDims, &items, &nResults);
   EXPECT_EQ(1, nResults);
-  EXPECT_EQ(nId, items[0]);   
-  free(items);  
+  EXPECT_EQ(nId, items[0]);
+  free(items);
 }
 
 TEST_F(SidxApiRTreeTest, intersects_nearest_id) {
   uint64_t nResults;
-  int64_t* items;  
+  int64_t* items;
   Index_NearestNeighbors_id(idx, min, max, nDims, &items, &nResults);
   EXPECT_EQ(1, nResults);
-  EXPECT_EQ(nId, items[0]);   
-  free(items);  
+  EXPECT_EQ(nId, items[0]);
+  free(items);
 }
 
 TEST_F(SidxApiRTreeTest, intersects_obj) {
   uint64_t nResults;
   IndexItemH* items;
   char* pszRes = nullptr;
-  uint64_t len = 0;  
+  uint64_t len = 0;
   Index_Intersects_obj(idx, min, max, nDims, &items, &nResults);
   ASSERT_EQ(1, nResults);
   IndexItem_GetData(items[0], (uint8_t **)&pszRes, &len);
   EXPECT_EQ(0, strcmp(pszData, pszRes));
   free(pszRes);
-  Index_DestroyObjResults(items, (uint32_t) nResults);  
+  Index_DestroyObjResults(items, (uint32_t) nResults);
 }
 
 
@@ -101,13 +101,13 @@ TEST_F(SidxApiRTreeTest, intersects_nearest_obj) {
   uint64_t nResults;
   IndexItemH* items;
   char* pszRes = nullptr;
-  uint64_t len = 0;  
+  uint64_t len = 0;
   Index_NearestNeighbors_obj(idx, min, max, nDims, &items, &nResults);
   ASSERT_EQ(1, nResults);
   IndexItem_GetData(items[0], (uint8_t **)&pszRes, &len);
   EXPECT_EQ(0, strcmp(pszData, pszRes));
   free(pszRes);
-  Index_DestroyObjResults(items, (uint32_t) nResults); 
+  Index_DestroyObjResults(items, (uint32_t) nResults);
 }
 
 TEST_F(SidxApiRTreeTest, intersects_count) {
@@ -224,6 +224,16 @@ TEST(SidxApiErrorTest, error_stack_is_declared) {
     Error_Pop();
     EXPECT_EQ(0, Error_GetErrorCount());
     Error_Reset();
+}
+
+TEST(SidxApiErrorTest, reset_clears_all_errors) {
+    // Where errors are kept on a stack (MSVC), Error_Reset must remove all
+    // of them, not just some.
+    for (int i = 0; i < 5; ++i)
+        Error_PushError(RT_Failure, "message", "method");
+    Error_Reset();
+    EXPECT_EQ(0, Error_GetErrorCount());
+    EXPECT_EQ(0, Error_GetLastErrorNum());
 }
 
 #endif // SIDX_API_TEST_H
