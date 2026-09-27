@@ -25,6 +25,7 @@
  * DEALINGS IN THE SOFTWARE.
 ******************************************************************************/
 
+#include <cmath>
 #include <limits>
 
 #include <spatialindex/SpatialIndex.h>
@@ -257,6 +258,9 @@ void SpatialIndex::TPRTree::TPRTree::insertData(uint32_t len, const uint8_t* pDa
 	const Tools::IInterval *pivI  = dynamic_cast<const Tools::IInterval*>(&shape);
 	if (pivI == nullptr) throw Tools::IllegalArgumentException("insertData: Shape does not support the Tools::IInterval interface.");
 
+	// A NaN start time would pass the check below (every comparison with NaN
+	// is false) and then become the tree's current time.
+	if (! std::isfinite(pivI->getLowerBound())) throw Tools::IllegalArgumentException("insertData: Shape start time is NaN or Infinite.");
 	if (pivI->getLowerBound() < m_currentTime) throw Tools::IllegalArgumentException("insertData: Shape start time is older than tree current time.");
 
 	Region mbr;
@@ -264,6 +268,18 @@ void SpatialIndex::TPRTree::TPRTree::insertData(uint32_t len, const uint8_t* pDa
 	Region vbr;
 	es->getVMBR(vbr);
 	assert(mbr.m_dimension == vbr.m_dimension);
+
+	// Reject non-finite (NaN or +/-Infinity) positions and velocities at the
+	// point of insertion, as RTree::insertData does (#303). A NaN or Infinite
+	// value poisons every later margin/area comparison it takes part in and
+	// can crash much later, in an unrelated split.
+	for (uint32_t cDim = 0; cDim < mbr.m_dimension; ++cDim)
+	{
+		if (! std::isfinite(mbr.m_pLow[cDim]) || ! std::isfinite(mbr.m_pHigh[cDim]))
+			throw Tools::IllegalArgumentException("insertData: Shape region contains a NaN or Infinite coordinate.");
+		if (! std::isfinite(vbr.m_pLow[cDim]) || ! std::isfinite(vbr.m_pHigh[cDim]))
+			throw Tools::IllegalArgumentException("insertData: Shape velocity contains a NaN or Infinite value.");
+	}
 
 	MovingRegionPtr mr = m_regionPool.acquire();
 	mr->makeDimension(mbr.m_dimension);

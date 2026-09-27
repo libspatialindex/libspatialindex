@@ -25,6 +25,7 @@
  * DEALINGS IN THE SOFTWARE.
 ******************************************************************************/
 
+#include <cmath>
 #include <limits>
 
 #include <spatialindex/SpatialIndex.h>
@@ -256,11 +257,24 @@ void SpatialIndex::MVRTree::MVRTree::insertData(uint32_t len, const uint8_t* pDa
 	if (shape.getDimension() != m_dimension) throw Tools::IllegalArgumentException("insertData: Shape has the wrong number of dimensions.");
 	const Tools::IInterval* ti = dynamic_cast<const Tools::IInterval*>(&shape);
 	if (ti == nullptr) throw Tools::IllegalArgumentException("insertData: Shape does not support the Tools::IInterval interface.");
+	// A NaN start time would pass the check below (every comparison with NaN
+	// is false) and then become the tree's current time.
+	if (! std::isfinite(ti->getLowerBound())) throw Tools::IllegalArgumentException("insertData: Shape start time is NaN or Infinite.");
 	if (ti->getLowerBound() < m_currentTime) throw Tools::IllegalArgumentException("insertData: Shape start time is older than tree current time.");
 
 	// convert the shape into a TimeRegion (R-Trees index regions only; i.e., approximations of the shapes).
 	Region mbrold;
 	shape.getMBR(mbrold);
+
+	// Reject non-finite (NaN or +/-Infinity) coordinates at the point of
+	// insertion, as RTree::insertData does (#303). A NaN or Infinite bound
+	// poisons every later margin/area comparison it takes part in and can
+	// crash much later, in an unrelated split.
+	for (uint32_t cDim = 0; cDim < mbrold.m_dimension; ++cDim)
+	{
+		if (! std::isfinite(mbrold.m_pLow[cDim]) || ! std::isfinite(mbrold.m_pHigh[cDim]))
+			throw Tools::IllegalArgumentException("insertData: Shape region contains a NaN or Infinite coordinate.");
+	}
 
 	TimeRegionPtr mbr = m_regionPool.acquire();
 	mbr->makeDimension(mbrold.m_dimension);

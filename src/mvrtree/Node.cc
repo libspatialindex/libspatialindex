@@ -1128,7 +1128,7 @@ void Node::rtreeSplit(
 			// For all remaining entries compute the difference of the cost of grouping an
 			// entry in either group. When done, choose the entry that yielded the maximum
 			// difference. In case of linear split, select any entry (e.g. the first one.)
-			uint32_t sel;
+			uint32_t sel = std::numeric_limits<uint32_t>::max();
 			double md1 = 0.0, md2 = 0.0;
 			double m = -std::numeric_limits<double>::max();
 			double d1, d2, d;
@@ -1148,7 +1148,11 @@ void Node::rtreeSplit(
 					d2 = b->getArea() - a2;
 					d = std::abs(d1 - d2);
 
-					if (d > m)
+					// Always accept the first remaining entry: d is NaN when
+					// the areas involved have overflowed to infinity, and NaN
+					// fails every comparison, which would otherwise leave sel
+					// uninitialized and used as an index (see #107/#303).
+					if (sel == std::numeric_limits<uint32_t>::max() || d > m)
 					{
 						m = d;
 						md1 = d1; md2 = d2;
@@ -1320,8 +1324,11 @@ void Node::rstarSplit(
 
 		double margin = std::min(marginl, marginh);
 
-		// keep minimum margin as split axis.
-		if (margin < minimumMargin)
+		// Keep minimum margin as split axis. Combining otherwise-finite
+		// child MBRs can still overflow marginl/marginh to infinity; the
+		// first dimension is always accepted so splitAxis/sortOrder never
+		// stay at their sentinel values in that case (see #107/#303).
+		if (cDim == 0 || margin < minimumMargin)
 		{
 			minimumMargin = margin;
 			splitAxis = cDim;
@@ -1372,7 +1379,10 @@ void Node::rstarSplit(
 
 		double o = bb1.getIntersectingArea(bb2);
 
-		if (o < mo)
+		// Overlap/area can overflow to infinity for otherwise finite input;
+		// always accept the first distribution so splitPoint never stays at
+		// its sentinel value (see #107/#303).
+		if (cChild == 1 || o < mo)
 		{
 			splitPoint = cChild;
 			mo = o;
@@ -1413,6 +1423,13 @@ void Node::pickSeeds(uint32_t& index1, uint32_t& index2, uint32_t total)
 	double separation = -std::numeric_limits<double>::max();
 	double inefficiency = -std::numeric_limits<double>::max();
 	uint32_t cDim, cChild, cIndex;
+
+	// Seed with the first two entries. Every selection below is guarded by a
+	// comparison that NaN fails, and NaN is reachable from finite input once
+	// an area/width overflows to infinity; without these defaults the caller
+	// would split on two uninitialized indices (see #107/#303).
+	index1 = 0;
+	index2 = 1;
 
 	switch (m_pTree->m_treeVariant)
 	{

@@ -749,7 +749,7 @@ void Node::rtreeSplit(uint32_t dataLength, uint8_t* pData, Region& mbr, id_type 
 			// For all remaining entries compute the difference of the cost of grouping an
 			// entry in either group. When done, choose the entry that yielded the maximum
 			// difference. In case of linear split, select any entry (e.g. the first one.)
-			uint32_t sel;
+			uint32_t sel = std::numeric_limits<uint32_t>::max();
 			double md1 = 0.0, md2 = 0.0;
 			double m = -std::numeric_limits<double>::max();
 			double d1, d2, d;
@@ -769,7 +769,11 @@ void Node::rtreeSplit(uint32_t dataLength, uint8_t* pData, Region& mbr, id_type 
 					d2 = b->getArea() - a2;
 					d = std::abs(d1 - d2);
 
-					if (d > m)
+					// Always accept the first remaining entry: d is NaN when
+					// the areas involved have overflowed to infinity, and NaN
+					// fails every comparison, which would otherwise leave sel
+					// uninitialized and used as an index (see #107/#303).
+					if (sel == std::numeric_limits<uint32_t>::max() || d > m)
 					{
 						m = d;
 						md1 = d1; md2 = d2;
@@ -948,15 +952,27 @@ void Node::rstarSplit(uint32_t dataLength, uint8_t* pData, MovingRegion& mbr, id
 
 		double margin = std::min(std::min(marginl, marginh), std::min(marginvl, marginvh));
 
-		// keep minimum margin as split axis.
-		if (margin < minimumMargin)
+		// Keep minimum margin as split axis. Combining otherwise-finite
+		// child MBRs can still overflow the margins to infinity; the first
+		// dimension is always accepted so splitAxis/sortOrder never stay at
+		// their sentinel values in that case (see #107/#303).
+		if (cDim == 0 || margin < minimumMargin)
 		{
 			minimumMargin = margin;
 			splitAxis = cDim;
-			if (marginl < marginh && marginl < marginvl && marginl < marginvh) sortOrder = 0;
-			else if (marginh < marginl && marginh < marginvl && marginh < marginvh) sortOrder = 1;
-			else if (marginvl < marginl && marginvl < marginh && marginvl < marginvh) sortOrder = 2;
-			else if (marginvh < marginl && marginvh < marginh && marginvh < marginvl) sortOrder = 3;
+
+			// Sort by whichever of the four orders has the least margin,
+			// preferring the earliest on ties. The previous chain of strict
+			// comparisons selected nothing when two margins tied (or any was
+			// NaN), leaving sortOrder at the previous axis's value or at its
+			// sentinel, in which case no sort was applied at all before
+			// choosing the split point.
+			const double margins[4] = {marginl, marginh, marginvl, marginvh};
+			sortOrder = 0;
+			for (uint32_t cOrder = 1; cOrder < 4; ++cOrder)
+			{
+				if (margins[cOrder] < margins[sortOrder]) sortOrder = cOrder;
+			}
 		}
 
 		// increase the dimension according to which the data entries should be sorted.
@@ -1006,7 +1022,10 @@ void Node::rstarSplit(uint32_t dataLength, uint8_t* pData, MovingRegion& mbr, id
 
 		double o = bb1.getIntersectingAreaInTime(ivT, bb2);
 
-		if (o < mo)
+		// Overlap/area can overflow to infinity for otherwise finite input;
+		// always accept the first distribution so splitPoint never stays at
+		// its sentinel value (see #107/#303).
+		if (cChild == 1 || o < mo)
 		{
 			splitPoint = cChild;
 			mo = o;
@@ -1050,6 +1069,13 @@ void Node::pickSeeds(uint32_t& index1, uint32_t& index2)
 	double separation = -std::numeric_limits<double>::max();
 	double inefficiency = -std::numeric_limits<double>::max();
 	uint32_t cDim, cChild, cIndex;
+
+	// Seed with the first two entries. Every selection below is guarded by a
+	// comparison that NaN fails, and NaN is reachable from finite input once
+	// an area/width overflows to infinity; without these defaults the caller
+	// would split on two uninitialized indices (see #107/#303).
+	index1 = 0;
+	index2 = 1;
 
 	switch (m_pTree->m_treeVariant)
 	{
