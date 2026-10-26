@@ -167,7 +167,11 @@ uint32_t Index::findLeastEnlargement(const TimeRegion& r) const
 		double a = m_ptrMBR[cChild]->getArea();
 		double enl = t->getArea() - a;
 
-		if (enl < area)
+		// Always accept the first live child: when the areas involved have
+		// overflowed to infinity, enl is NaN (inf - inf) and fails every
+		// comparison below, which would otherwise return the uint32_t
+		// sentinel for chooseSubtree() to index with (see #107/#303).
+		if (best == std::numeric_limits<uint32_t>::max() || enl < area)
 		{
 			area = enl;
 			best = cChild;
@@ -216,7 +220,10 @@ uint32_t Index::findLeastOverlap(const TimeRegion& r) const
 		entries[cLiveEntries]->m_ca = entries[cLiveEntries]->m_combined->getArea();
 		entries[cLiveEntries]->m_enlargement = entries[cLiveEntries]->m_ca - entries[cLiveEntries]->m_oa;
 
-		if (entries[cLiveEntries]->m_enlargement < me)
+		// As in findLeastEnlargement(), always accept the first live child
+		// so a NaN enlargement cannot leave best null for the dereferences
+		// below.
+		if (best == nullptr || entries[cLiveEntries]->m_enlargement < me)
 		{
 			me = entries[cLiveEntries]->m_enlargement;
 			best = entries[cLiveEntries];

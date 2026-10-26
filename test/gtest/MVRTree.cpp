@@ -81,3 +81,90 @@ TEST(MVRTreeTest, MixedIntersectionQueriesMatchExhaustiveSearch) {
 
     EXPECT_TRUE(tree->isIndexValid());
 }
+
+// Port of the RTree regressions for #107 / #303 to the MVR-tree, which has
+// the same selection loops (see the comments on the RTree tests).
+
+TEST(MVRTreeTest, InsertingNonFiniteValuesThrowsInsteadOfCorruptingTree) {
+    std::unique_ptr<SpatialIndex::IStorageManager> storage = sidx_test::memoryStorage();
+    SpatialIndex::id_type indexIdentifier;
+    std::unique_ptr<SpatialIndex::ISpatialIndex> tree(
+        SpatialIndex::MVRTree::createNewMVRTree(
+            *storage, 0.7, 10, 10, 2, SpatialIndex::MVRTree::RV_RSTAR, indexIdentifier));
+
+    const double nan = std::numeric_limits<double>::quiet_NaN();
+    const double inf = std::numeric_limits<double>::infinity();
+
+    double nan_low[2] = {nan, 1.0}, nan_high[2] = {2.0, 2.0};
+    EXPECT_THROW(
+        tree->insertData(0, nullptr, SpatialIndex::TimeRegion(nan_low, nan_high, 0.0, 1.0, 2), 1),
+        Tools::IllegalArgumentException);
+
+    double inf_low[2] = {1.0, 1.0}, inf_high[2] = {inf, 2.0};
+    EXPECT_THROW(
+        tree->insertData(0, nullptr, SpatialIndex::TimeRegion(inf_low, inf_high, 0.0, 1.0, 2), 2),
+        Tools::IllegalArgumentException);
+
+    // A NaN start time passes the "older than current time" check, since
+    // every comparison with NaN is false.
+    double low[2] = {0.0, 0.0}, high[2] = {1.0, 1.0};
+    EXPECT_THROW(
+        tree->insertData(0, nullptr, SpatialIndex::TimeRegion(low, high, nan, 1.0, 2), 3),
+        Tools::IllegalArgumentException);
+
+    // Rejected input must not leave partial state behind.
+    EXPECT_NO_THROW(
+        tree->insertData(0, nullptr, SpatialIndex::TimeRegion(low, high, 0.0, 1.0, 2), 4));
+    EXPECT_TRUE(tree->isIndexValid());
+}
+
+// Two finite points far enough apart that any MBR covering both has an area
+// that overflows to infinity, then enough ordinary points to grow the tree
+// deep enough for chooseSubtree() to reach findLeastEnlargement() and
+// findLeastOverlap(), mixing overflowing points back in. (10 is the smallest
+// node capacity the MVR-tree accepts.) Before the fix this
+// ran into the uint32_t sentinel / null / uninitialized indices left by the
+// selection loops when every comparison fails on NaN.
+static void mvrInsertOverflowingThenOrdinaryPoints(
+    SpatialIndex::MVRTree::MVRTreeVariant variant, double fillFactor) {
+    std::unique_ptr<SpatialIndex::IStorageManager> storage = sidx_test::memoryStorage();
+    SpatialIndex::id_type indexIdentifier;
+    std::unique_ptr<SpatialIndex::ISpatialIndex> tree(
+        SpatialIndex::MVRTree::createNewMVRTree(
+            *storage, fillFactor, 10, 10, 2, variant, indexIdentifier));
+
+    const double m = std::numeric_limits<double>::max() / 4.0;
+    auto insertPoint = [&tree](SpatialIndex::id_type id, double x, double y) {
+        double p[2] = {x, y};
+        const double t = static_cast<double>(id);
+        tree->insertData(0, nullptr, SpatialIndex::TimeRegion(p, p, t, t + 1.0, 2), id);
+    };
+
+    EXPECT_NO_THROW(insertPoint(0, -m, -m));
+    EXPECT_NO_THROW(insertPoint(1, m, m));
+
+    for (SpatialIndex::id_type i = 2; i < 200; ++i) {
+        EXPECT_NO_THROW(insertPoint(i, static_cast<double>(i), static_cast<double>(i)));
+    }
+
+    for (SpatialIndex::id_type i = 200; i < 260; ++i) {
+        double s = (i % 3 == 0) ? m : static_cast<double>(i);
+        EXPECT_NO_THROW(insertPoint(i, s, -s));
+    }
+
+    EXPECT_TRUE(tree->isIndexValid());
+}
+
+TEST(MVRTreeTest, SubtreeChoiceStaysSafeWhenAggregateAreaOverflows) {
+    mvrInsertOverflowingThenOrdinaryPoints(SpatialIndex::MVRTree::RV_RSTAR, 0.7);
+}
+
+// RV_LINEAR/RV_QUADRATIC go through rtreeSplit()/pickSeeds() instead, and
+// require a fill factor below 0.5.
+TEST(MVRTreeTest, LinearSplitStaysSafeWhenAggregateAreaOverflows) {
+    mvrInsertOverflowingThenOrdinaryPoints(SpatialIndex::MVRTree::RV_LINEAR, 0.4);
+}
+
+TEST(MVRTreeTest, QuadraticSplitStaysSafeWhenAggregateAreaOverflows) {
+    mvrInsertOverflowingThenOrdinaryPoints(SpatialIndex::MVRTree::RV_QUADRATIC, 0.4);
+}
