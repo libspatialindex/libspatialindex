@@ -295,7 +295,17 @@ ExternalSorter::Record* ExternalSorter::getNextRecord()
 	else
 	{
 		ret = new Record();
-		ret->loadFromFile(*m_sortedFile);
+		try
+		{
+			ret->loadFromFile(*m_sortedFile);
+		}
+		catch (...)
+		{
+			// loadFromFile throws EndOfStreamException once the sorted file
+			// is exhausted; free the record allocated for that last read.
+			delete ret;
+			throw;
+		}
 	}
 
 	return ret;

@@ -963,10 +963,12 @@ void Node::rstarSplit(uint32_t dataLength, uint8_t* pData, MovingRegion& mbr, id
 
 			// Sort by whichever of the four orders has the least margin,
 			// preferring the earliest on ties. The previous chain of strict
-			// comparisons selected nothing when two margins tied (or any was
-			// NaN), leaving sortOrder at the previous axis's value or at its
-			// sentinel, in which case no sort was applied at all before
-			// choosing the split point.
+			// comparisons selected nothing when two margins tied, which is
+			// always the case when splitting a leaf of moving points (low ==
+			// high and vlow == vhigh): sortOrder then kept the previous
+			// axis's value or its sentinel, and in the latter case the
+			// entries were never re-sorted, so the split point was chosen
+			// along the last dimension rather than along splitAxis.
 			const double margins[4] = {marginl, marginh, marginvl, marginvh};
 			sortOrder = 0;
 			for (uint32_t cOrder = 1; cOrder < 4; ++cOrder)

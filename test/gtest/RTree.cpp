@@ -44,6 +44,47 @@ TEST(RTreeTest, STRBulkLoadKeepsLeavesSeparatedAcrossSortedRuns) {
     EXPECT_EQ(3, visitor.ids.front());
 }
 
+TEST(RTreeTest, STRBulkLoadThroughExternalSortFilesReturnsEveryEntry) {
+    // Small external-sort buffers force ExternalSorter to spill to sorted
+    // files and to read every slab back until end of stream.
+    std::vector<std::pair<SpatialIndex::id_type, sidx_test::Rect> > entries;
+    std::map<SpatialIndex::id_type, sidx_test::Rect> expected;
+    for (SpatialIndex::id_type id = 0; id < 500; ++id) {
+        const double x = static_cast<double>((id * 37) % 500);
+        const double y = static_cast<double>((id * 91) % 500);
+        sidx_test::Rect rect(x, y, x + 0.5, y + 0.5);
+        entries.push_back(std::make_pair(id, rect));
+        expected[id] = rect;
+    }
+
+    Tools::PropertySet properties;
+    Tools::Variant value;
+    value.m_varType = Tools::VT_DOUBLE;
+    value.m_val.dblVal = 0.7;
+    properties.setProperty("FillFactor", value);
+    value.m_varType = Tools::VT_ULONG;
+    value.m_val.ulVal = 10;
+    properties.setProperty("IndexCapacity", value);
+    properties.setProperty("LeafCapacity", value);
+    value.m_val.ulVal = 4;
+    properties.setProperty("ExternalSortBufferPageSize", value);
+    properties.setProperty("ExternalSortBufferTotalPages", value);
+
+    sidx_test::RTreeDataStream stream(entries);
+    std::unique_ptr<SpatialIndex::IStorageManager> storage = sidx_test::memoryStorage();
+    SpatialIndex::id_type indexIdentifier;
+    std::unique_ptr<SpatialIndex::ISpatialIndex> tree(
+        SpatialIndex::RTree::createAndBulkLoadNewRTree(
+            SpatialIndex::RTree::BLM_STR, stream, *storage, properties, indexIdentifier));
+
+    sidx_test::Rect all(-1.0, -1.0, 501.0, 501.0);
+    sidx_test::IdVisitor visitor;
+    SpatialIndex::Region query = sidx_test::regionFromRect(all);
+    tree->intersectsWithQuery(query, visitor);
+    sidx_test::expectSameIds(sidx_test::intersectingIds(expected, all), visitor.ids);
+    EXPECT_TRUE(tree->isIndexValid());
+}
+
 TEST(RTreeTest, NearestNeighborQueriesMatchExhaustiveSearch) {
     std::unique_ptr<SpatialIndex::IStorageManager> storage = sidx_test::memoryStorage();
     SpatialIndex::id_type indexIdentifier;
