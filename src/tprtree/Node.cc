@@ -953,10 +953,21 @@ void Node::rstarSplit(uint32_t dataLength, uint8_t* pData, MovingRegion& mbr, id
 		{
 			minimumMargin = margin;
 			splitAxis = cDim;
-			if (marginl < marginh && marginl < marginvl && marginl < marginvh) sortOrder = 0;
-			else if (marginh < marginl && marginh < marginvl && marginh < marginvh) sortOrder = 1;
-			else if (marginvl < marginl && marginvl < marginh && marginvl < marginvh) sortOrder = 2;
-			else if (marginvh < marginl && marginvh < marginh && marginvh < marginvl) sortOrder = 3;
+
+			// Sort by whichever of the four orders has the least margin,
+			// preferring the earliest on ties. The previous chain of strict
+			// comparisons selected nothing when two margins tied, which is
+			// always the case when splitting a leaf of moving points (low ==
+			// high and vlow == vhigh): sortOrder then kept the previous
+			// axis's value or its sentinel, and in the latter case the
+			// entries were never re-sorted, so the split point was chosen
+			// along the last dimension rather than along splitAxis.
+			const double margins[4] = {marginl, marginh, marginvl, marginvh};
+			sortOrder = 0;
+			for (uint32_t cOrder = 1; cOrder < 4; ++cOrder)
+			{
+				if (margins[cOrder] < margins[sortOrder]) sortOrder = cOrder;
+			}
 		}
 
 		// increase the dimension according to which the data entries should be sorted.
