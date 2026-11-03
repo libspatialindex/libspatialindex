@@ -256,11 +256,10 @@ double LineSegment::getMinimumDistance(const Point& p) const
 			"LineSegment::getMinimumDistance: Distance for high dimensional spaces not supported!"
 		);
 
-	if (m_pEndPoint[0] >= m_pStartPoint[0] - std::numeric_limits<double>::epsilon() &&
-		m_pEndPoint[0] <= m_pStartPoint[0] + std::numeric_limits<double>::epsilon()) return std::abs(p.m_pCoords[0] - m_pStartPoint[0]);
-
-	if (m_pEndPoint[1] >= m_pStartPoint[1] - std::numeric_limits<double>::epsilon() &&
-		m_pEndPoint[1] <= m_pStartPoint[1] + std::numeric_limits<double>::epsilon()) return std::abs(p.m_pCoords[1] - m_pStartPoint[1]);
+	if (m_dimension != p.m_dimension)
+		throw Tools::IllegalArgumentException(
+			"LineSegment::getMinimumDistance: Shapes have different number of dimensions."
+		);
 
 	double x1 = m_pStartPoint[0];
 	double x2 = m_pEndPoint[0];
@@ -269,7 +268,22 @@ double LineSegment::getMinimumDistance(const Point& p) const
 	double y2 = m_pEndPoint[1];
 	double y0 = p.m_pCoords[1];
 
-	return std::abs((x2 - x1) * (y1 - y0) - (x1 - x0) * (y2 - y1)) / (std::sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
+	// project the point onto the segment and clamp the projection to the
+	// endpoints, so that the distance is to the segment, not to its line.
+	double dx = x2 - x1;
+	double dy = y2 - y1;
+	double len2 = dx * dx + dy * dy;
+	double t = 0.0;
+	if (len2 > 0.0)
+	{
+		t = ((x0 - x1) * dx + (y0 - y1) * dy) / len2;
+		t = std::max(0.0, std::min(1.0, t));
+	}
+
+	double cx = x1 + t * dx - x0;
+	double cy = y1 + t * dy - y0;
+
+	return std::sqrt(cx * cx + cy * cy);
 }
 
 bool LineSegment::intersectsRegion(const Region& r) const

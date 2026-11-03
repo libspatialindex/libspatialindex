@@ -61,3 +61,34 @@ TEST(GeometryLineSegmentTest, IntersectsRegions) {
     EXPECT_TRUE(r3.intersectsShape(ls1));
     EXPECT_TRUE(ls1.intersectsShape(r3));
 }
+
+TEST(GeometryLineSegmentTest, MinimumDistanceToPoint) {
+    double s[2] = {0.0, 0.0};
+    double e[2] = {4.0, 0.0};
+    SpatialIndex::LineSegment ls(s, e, 2);
+
+    // closest to the interior of the segment
+    double c1[2] = {2.0, 3.0};
+    EXPECT_DOUBLE_EQ(ls.getMinimumDistance(SpatialIndex::Point(c1, 2)), 3.0);
+
+    // collinear with the segment but past its end point
+    double c2[2] = {7.0, 0.0};
+    EXPECT_DOUBLE_EQ(ls.getMinimumDistance(SpatialIndex::Point(c2, 2)), 3.0);
+
+    // beyond the start point, off the line
+    double c3[2] = {-3.0, 4.0};
+    EXPECT_DOUBLE_EQ(ls.getMinimumDistance(SpatialIndex::Point(c3, 2)), 5.0);
+
+    // diagonal segment, point beyond the end point
+    double ds[2] = {0.0, 0.0};
+    double de[2] = {1.0, 1.0};
+    SpatialIndex::LineSegment diag(ds, de, 2);
+    double c4[2] = {4.0, 5.0};
+    EXPECT_DOUBLE_EQ(diag.getMinimumDistance(SpatialIndex::Point(c4, 2)), 5.0);
+
+    // a Ball far away from the segment does not intersect it
+    double bc[2] = {10.0, 0.0};
+    SpatialIndex::Ball ball(1.0, SpatialIndex::Point(bc, 2));
+    EXPECT_FALSE(ball.intersectsShape(ls));
+    EXPECT_DOUBLE_EQ(ball.getMinimumDistance(ls), 5.0);
+}
