@@ -275,6 +275,8 @@ bool Region::touchesRegion(const Region& r) const
 			"Region::touchesRegion: Regions have different number of dimensions."
 		);
 
+	if (!intersectsRegion(r)) return false;
+
 	for (uint32_t i = 0; i < m_dimension; ++i)
 	{
 		if (
@@ -370,6 +372,8 @@ bool Region::touchesPoint(const Point& p) const
 		throw Tools::IllegalArgumentException(
 			"Region::touchesPoint: Point has different number of dimensions."
 		);
+
+	if (!containsPoint(p)) return false;
 
 	for (uint32_t i = 0; i < m_dimension; ++i)
 	{
