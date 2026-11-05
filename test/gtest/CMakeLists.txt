@@ -18,6 +18,7 @@ endif()
 
 set(SOURCES
     Geometry.cpp
+    MovingShapes.cpp
     MVRTree.cpp
     RTree.cpp
     TPRTree.cpp

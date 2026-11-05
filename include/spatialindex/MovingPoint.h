@@ -75,7 +75,7 @@ namespace SpatialIndex
 			double tStart, double tEnd, uint32_t dimension);
 
 	public:
-		double* m_pVCoords;
+		double* m_pVCoords{nullptr};
 
 		friend SIDX_DLL std::ostream& operator<<(std::ostream& os, const MovingPoint& pt);
 	}; // MovingPoint
