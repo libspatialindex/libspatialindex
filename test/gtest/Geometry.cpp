@@ -5,6 +5,8 @@
  * directly through the libspatialindex C++ API.
  */
 
+#include <cmath>
+
 #include <spatialindex/SpatialIndex.h>
 
 #include "test.h"
@@ -91,4 +93,16 @@ TEST(GeometryLineSegmentTest, MinimumDistanceToPoint) {
     SpatialIndex::Ball ball(1.0, SpatialIndex::Point(bc, 2));
     EXPECT_FALSE(ball.intersectsShape(ls));
     EXPECT_DOUBLE_EQ(ball.getMinimumDistance(ls), 5.0);
+
+    // large coordinates, where the closest point is half a unit away from
+    // the point on each axis
+    const double T = 4503599627370496.0;
+    double fs[2] = {T, 0.0};
+    double fe[2] = {T + 2.0, 2.0};
+    SpatialIndex::LineSegment far(fs, fe, 2);
+    double c5[2] = {T + 1.0, 0.0};
+    SpatialIndex::Point p5(c5, 2);
+    EXPECT_DOUBLE_EQ(far.getMinimumDistance(p5), std::sqrt(0.5));
+    SpatialIndex::Ball farBall(1.0, p5);
+    EXPECT_TRUE(farBall.intersectsShape(far));
 }

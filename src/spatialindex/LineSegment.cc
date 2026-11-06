@@ -280,8 +280,10 @@ double LineSegment::getMinimumDistance(const Point& p) const
 		t = std::max(0.0, std::min(1.0, t));
 	}
 
-	double cx = x1 + t * dx - x0;
-	double cy = y1 + t * dy - y0;
+	// subtract the point first, so that a small offset is not rounded away
+	// when the coordinates are large.
+	double cx = (x1 - x0) + t * dx;
+	double cy = (y1 - y0) + t * dy;
 
 	return std::sqrt(cx * cx + cy * cy);
 }
