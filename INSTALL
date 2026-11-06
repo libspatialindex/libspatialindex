@@ -31,6 +31,34 @@ The simplest way to compile this package is:
      source code directory by typing `make clean'.  To also remove the
      files that `cmake' created, you need to remove them manually.
 
+Running the Tests
+=================
+
+From the source directory, configure a separate build directory with the
+integrated test suites enabled, then build before running CTest:
+
+     cmake -S . -B build -DBUILD_TESTING=ON
+     cmake --build build --parallel 2
+     (cd build && ctest --output-on-failure)
+
+CTest runs `libsidxtest', which contains the GoogleTest test cases. No
+installation step is needed to run these tests. For a multi-configuration
+generator, select the same configuration when building and testing, for
+example `cmake --build build --config Release' and
+`(cd build && ctest -C Release --output-on-failure)'.
+
+GoogleTest 1.14.0 is bundled in the source tree and used by default; no
+separate GoogleTest download or installation is needed. Building the
+bundled tests requires a C compiler and a C++ compiler supporting C++14.
+If you use an installed GoogleTest, its C++ standard requirement also
+applies. To select it, add
+`-DSYSTEM_GTEST=ON' when configuring, and make its installation prefix
+available to CMake (for example with `-DCMAKE_PREFIX_PATH=/path/to/prefix').
+
+The integrated CTest suite uses native C++ tests, not a shell-script
+harness. The separate shell scripts under `test/postinstall' check an
+installed library and are not run by the commands above.
+
 Compilers and Options
 =====================
 
